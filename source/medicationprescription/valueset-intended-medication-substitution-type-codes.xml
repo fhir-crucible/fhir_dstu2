@@ -1,0 +1,62 @@
+<ValueSet xmlns="http://hl7.org/fhir" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../schema/valueset.xsd">
+  <text>
+    <status value="generated"/>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p>The value set to instantiate this attribute should be drawn from a terminologically robust code system that consists of or 
+        contains concepts to support the medication process, in particular the process and reasons for substitution.</p>
+      <p>Possible sources include:</p>
+      <ul>
+        <li>Values from the HL7 ActSubstanceAdminSubstitutionCode code system</li>
+      </ul>
+      <p>The HL7 set is used here as the example terminology.</p>
+    </div>
+  </text>
+  <name value="Substitution Type Codes"/>
+  <publisher value="FHIR Project team"/>
+  <telecom>  
+    <system value="url"/>
+    <value value="http://hl7.org/fhir"/>
+  </telecom>
+  <description value="This value set includes values from the HL7 code system ActSubstanceAdminSubstitutionCode"/>
+  <status value="draft"/>
+  <compose>
+    <include>
+      <system value="http://hl7.org/fhir/v3/substanceAdminSubstitution"/>
+      <concept>
+        <code value="E"/>
+      </concept>
+      <concept>
+        <code value="EC"/>
+      </concept>
+      <concept>
+        <code value="BC"/>
+      </concept>
+      <concept>
+        <code value="G"/>
+      </concept>
+      <concept>
+        <code value="TE"/>
+      </concept>
+      <concept>
+        <code value="TB"/>
+      </concept>
+      <concept>
+        <code value="TG"/>
+      </concept>
+      <concept>
+        <code value="F"/>
+      </concept>
+      <concept>
+        <code value="N"/>
+      </concept>
+    </include>
+    <include>
+      <system value="http://hl7.org/fhir/v3/NullFlavor"/>
+      <concept>
+        <code value="UNK"/>
+      </concept>
+    </include>
+  </compose>
+</ValueSet>
+

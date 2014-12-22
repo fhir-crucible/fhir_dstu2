@@ -1,0 +1,47 @@
+<div xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml ../../schema/fhir-xhtml.xsd" xmlns="http://www.w3.org/1999/xhtml">
+
+<div>
+<h2>Scope and Usage</h2>
+<!-- PA original:
+<p>
+
+Ballot note: The Person resource does justice to Person registries that keep track of Persons regardless 
+of their role. The Person resource is also a primary resource to point to for people acting in a particular role
+such as SubjectofCare (formerly Patient), Practitioner and Agent. Very few attributes are specific to any role and
+so Person is kept lean. Most attributes are expected to be tied to the role the Person plays rather than the 
+Person himself. Examples of that are Guardian (SubjectofCare), ContactParty (SubjectOfCare, Practitioner), 
+and multipleBirthInd (SubjectofCare).
+</p>
+-->
+<p>
+  A natural person has identity outside of a healthcare setting. The Person resource is used to capture this
+  information and to relate the person as an individual to other resources that do have a health-related context.
+</p>
+  <p>
+    For example, while a patient resource may be created and maintained by each organization providing care for that person as a patient, a person resource provides a mechanism for linking patient resources across different organizations and their unique patient identity domains. Additionally, a person resource may be used by organizations to allow patients to manage their demographic data while maintaining stricter control of the associated patient resource data.
+  </p>
+  <p>
+    This resource is not referenced by any other resources.
+  </p>
+</div>
+
+<!-- (recommended): 
+<div>
+<h2>Boundaries and Relationships</h2>
+<p>
+Explains how this resource relates to others. Particularly important is to differentiate between appropriate usages for related resources when an implementer might be confused about what to reference when.
+</p>
+</div>
+-->
+
+<!-- (optional):
+<div>
+<h2>Background and Context</h2>
+<p>
+Provides additional detail on exactly how the resource is to be used
+</p>
+</div>
+-->
+
+
+</div>

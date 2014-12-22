@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<%file newheader%>
+</head>
+<body>
+<%file newnavbar%>
+
+<div class="col-9">
+
+<%profileheader base%>
+<h1><%title%></h1>
+<p>
+The official URL for this profile is:
+</p>
+<pre>
+<%profileurl%>
+</pre>
+<p>
+<%profiledesc%>
+</p>
+<p>
+This profile was published on <%date%> <%status%> by <%author%>.
+<!-- Use the <a href="<%profile.review%>">Review Spreadsheet</a> to comment on this profile. -->
+</p>
+
+<%summary%>
+
+<a name="profile"> </a>
+<h2>
+Formal Views of Profile Content
+</h2>
+
+<p>
+<a href="about-profiles.html">Description of Profiles, Differentials, Snapshots, and how the XML and JSON presentations work</a>.
+</p>
+
+<div id="tabs">
+ <ul>
+  <li><a href="#tabs-diff">Differential Table</a></li>
+  <li><a href="#tabs-snap">Snapshot Table</a></li>
+  <li><a href="#tabs-xml">XML</a></li>
+  <li><a href="#tabs-json">JSON</a></li>
+  <li><a href="#tabs-all">All</a></li>
+ </ul>
+ 
+ <div id="tabs-diff">
+  <div id="tbl-diff">
+   <p><b>Differential View</b></p>
+   <p>This structure is derived from <%base-link%>.</p>
+   <div id="tbl-diff-inner">
+     <%profile-structure-table-diff%> 
+   </div>
+  </div>
+ </div>
+  
+ <div id="tabs-snap">
+  <div id="tbl-snap">
+   <p><b>Snapshot View</b></p>
+   <div id="tbl-snap-inner">
+    <%profile-structure-table%>
+   </div>
+  </div>
+ </div>
+  
+ <div id="tabs-xml">
+  <div id="xml">
+   <p><b>XML Template</b></p>
+   <div id="xml-inner">
+    <%xml%>
+   </div>
+  </div>
+ </div>
+ 
+ <div id="tabs-json">
+  <div id="json">
+   <p><b>JSON Template</b></p>
+   <div id="json-inner">
+    <p>todo</p>
+   </div>
+  </div>
+ </div>
+
+ <div id="tabs-all">
+  <div id="all-tbl-diff">
+   <p><b>Differential View</b></p>
+   <p>This structure is derived from <%base-link%>.</p>
+   <div id="all-tbl-diff-inner">
+     <%profile-structure-table-diff%> 
+   </div>
+  </div>
+  <div id="all-tbl-snap">
+   <p><b>Snapshot View</b></p>
+   <div id="all-tbl-snap-inner">
+    <%profile-structure-table%>
+   </div>
+  </div>
+  <div id="all-xml">
+   <p><b>XML Template</b></p>
+   <div id="all-xml-inner">
+    <%xml%>
+   </div>
+  </div>
+  <div id="all-json">
+   <p><b>JSON Template</b></p>
+   <div id="all-json-inner">
+    <p>todo</p>
+   </div>
+  </div>
+ </div>
+</div>
+  
+<p>&nbsp;</p>  
+<p>Other definitions: <!-- <a href="<%name%>.sch">Schematron</a> (todo), <a href="<%name%>.questionnaire.html">Questionnaire</a>--> (todo)</p>
+
+
+<a name="tx"> </a>
+<%profile.tx%>
+
+<%profile.inv%>
+
+
+<%profile.notes%>.
+
+</div>
+
+<%file newfooter%>
+
+<script src="external/jquery/jquery.js"> </script>
+<script src="jquery-ui.min.js"> </script>
+<script>
+try {
+  var currentTabIndex = sessionStorage.getItem('fhir-resource-tab-index');
+}
+catch(exception){ 
+  if (navigator.userAgent.toLowerCase().indexof('msie') == -1)
+    alert(exception);
+}
+
+if (!currentTabIndex)
+  currentTabIndex = '0';
+
+$( '#tabs' ).tabs({
+         active: currentTabIndex,
+         activate: function( event, ui ) {
+             var active = $('.selector').tabs('option', 'active');
+             currentTabIndex = ui.newTab.index();
+             try {
+               sessionStorage.setItem('fhir-resource-tab-index', currentTabIndex);
+             }
+             catch(exception){ 
+              if (navigator.userAgent.toLowerCase().indexof('msie') == -1)
+                alert(exception);
+             }
+         }
+     });
+</script>
+    
+    
+</body>
+</html>

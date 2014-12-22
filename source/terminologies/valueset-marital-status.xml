@@ -1,0 +1,59 @@
+<ValueSet xmlns="http://hl7.org/fhir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../schema/valueset.xsd">
+  <name value="Marital Status Codes"/>
+  <publisher value="FHIR Project team"/>
+  <telecom>  
+    <system value="url"/>
+    <value value="http://hl7.org/fhir"/>
+  </telecom>
+  <description value="This value set defines the set of codes that can be used to indicate the marital status of a person"/>
+  <status value="draft"/>
+  <define>
+    <system value="http://hl7.org/fhir/marital-status"/>
+    <caseSensitive value="true"/>
+    <concept>
+      <!-- work around for missing code in v3 code system - should be temporary, until added in v3 -->
+      <code value="U"/>
+      <display value="unmarried"/>
+      <definition value="The person is not presently married. The marital history is not known or stated"/>
+    </concept>
+  </define>
+  <compose>
+    <include>
+      <system value="http://hl7.org/fhir/v3/MaritalStatus"/>
+      <concept>
+        <code value="A"/>
+      </concept>
+      <concept>
+        <code value="D"/>
+      </concept>
+      <concept>
+        <code value="I"/>
+      </concept>
+      <concept>
+        <code value="L"/>
+      </concept>
+      <concept>
+        <code value="M"/>
+      </concept>
+      <concept>
+        <code value="P"/>
+      </concept>
+      <concept>
+        <code value="S"/>
+      </concept>
+      <concept>
+        <code value="T"/>
+      </concept>
+      <concept>
+        <code value="W"/>
+      </concept>
+    </include>
+    <include>
+      <system value="http://hl7.org/fhir/v3/NullFlavor"/>
+      <concept>
+        <code value="UNK"/>
+      </concept>
+    </include>
+  </compose>
+</ValueSet>
+

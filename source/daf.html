@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+
+
+      
+[%settitle U.S. Data Access Framework (DAF) Implementation Guide%]
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+[%file newheader%]
+</head>
+<body>
+[%file newnavbar%]
+
+<div class="col-9">
+
+<a name="DAF"> </a> 
+<h2>U.S. Data Access Framework (DAF) Implementation Guide</h2>
+<p>
+This implementation guide is prepared as a U.S. Realm Specification on behalf of the 
+<a href="http://www.healthit.gov/newsroom/about-onc">U.S. Office of the National Coordinator (ONC)</a>.
+However, much of the content is likely to be usable in other jurisdictions.
+</p>
+
+<h3>Draft for Comment Ballot</h3>
+<p>
+This FHIR Implementation Guide is undergoing a Draft for Comment ballot.  The focus of the ballot is limited in scope to the IG, the profiles, operations, value sets and conformance
+statements it defines, though comments on the underlying resources will also be accepted.  This guide will be balloted separately from the FHIR specification itself.  
+</p>
+
+<h3>Background</h3>
+<ul>
+  <li><a href="daf-intro.html">Introduction</a> - How this project came to be and what it is trying to achieve</li>
+  <li><a href="daf-security.html">Security</a> - Security and privacy rules and considerations</li>
+  <li><a href="daf-outstandingissues.html">Outstanding Issues</a> - Issues that need to be resolved</li>
+  <li><a href="http://wiki.siframework.org/Data+Access+Framework+Homepage">Project wiki containing development materials and discussions (for additional background)</a></li>
+</ul>
+
+<h3>Specification</h3>
+<p>
+The <i>DAF FHIR Implementation Guide</i> is built on top of the <a href="index.html">HL7 FHIR</a> standard.  The DAF FHIR IG maps various Meaningful Use data elements to FHIR resources using resource specific profiles. Each DAF resource specific profile constrains the cardinality as necessary, binds vocabularies to the data elements as appropriate, adds extensions where appropriate, defines search parameters for queries and adds invariants to the profiles. The table below provides a top-level mapping of the Meaningful Use Stage 2 data elements to the corresponding DAF Resource profile along with the identification of the base FHIR resource. 
+</p>
+<div>
+<h4>Mapping of Meaningful Use data elements to DAF profiles and FHIR resources</h4>
+	<table class="grid">
+        <thead>
+          <tr>
+            <th>Meaningful Use conceptual data element</th>
+            <th>DAF FHIR profile</th>
+			<th>FHIR Resource</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+			<td>Allergies</td>
+			<td><a href="allergyintolerance-daf.html">DAFAllergyIntolerance</a></td>
+			<td><a href="allergyintolerance.html">AllergyIntolerance</a></td>
+		  </tr>
+		  <tr>
+			<td>Diagnostic Order</td>
+			<td><a href="diagnosticorder-daf.html">DAFDiagnosticOrder</a></td>
+			<td><a href="diagnosticorder.html">DiagnosticOrder</a></td>
+		  </tr>
+		  <tr>
+			<td>Diagnostic Report</td>
+			<td><a href="diagnosticreport-daf.html">DAFDiagnosticReport</a></td>
+			<td><a href="diagnosticreport.html">DiagnosticReport</a></td>
+		  </tr>		  
+		  <tr>
+			<td>Encounters</td>
+			<td><a href="encounter-daf.html">DAFEncounter</a></td>
+			<td><a href="encounter.html">Encounter</a></td>
+		  </tr>
+		  <tr>
+			<td>FamilyHistory</td>
+			<td><a href="familyhistory-daf.html">DAFFamilyHistory</a></td>
+			<td><a href="familyhistory.html">FamilyHistory</a></td>
+		  </tr>
+		  <tr>
+			<td>Immunizations</td>
+			<td><a href="immunization-daf.html">DAFImmunization</a></td>
+			<td><a href="immunization.html">Immunization</a></td>
+		  </tr>
+		  <tr>
+			<td>LabResults</td>
+			<td><a href="observation-daf-results.html">DAFLabResults</a></td>
+			<td><a href="observation.html">Observation</a></td>
+		  </tr>
+		  <tr>
+			<td>Medications</td>
+			<td><a href="daf-medicationusage.html">DAF profiles for medications</a></td>
+			<td>FHIR medication resources</td>
+		  </tr>
+		  <tr>
+			<td>Patient Demographics</td>
+			<td><a href="patient-daf.html">DAFPatient</a></td>
+			<td><a href="patient.html">Patient</a></td>
+		  </tr>
+		  <tr>
+			<td>Problems</td>
+			<td><a href="condition-daf.html">DAFCondition (Problem)</a></td>
+			<td><a href="condition.html">Condition</a></td>
+		  </tr>
+		  <tr>
+			<td>Procedures</td>
+			<td><a href="procedure-daf.html">DAFProcedure</a></td>
+			<td><a href="procedure.html">Procedure</a></td>
+		  </tr>
+		  <tr>
+			<td>Smoking Status</td>
+			<td><a href="observation-daf-smokingstatus.html">DAFSmokingStatus</a></td>
+			<td><a href="observation.html">Observation</a></td>
+		  </tr>
+		  <tr>
+			<td>Vital Signs</td>
+			<td><a href="observation-daf-vitalsigns.html">DAFVitalSigns</a></td>
+			<td><a href="observation.html">Observation</a></td>
+		  </tr>
+		  <tr>
+			<td>Problems, Medications and Allergies Lists</td>
+			<td><a href="list-daf.html">DAFList</a></td>
+			<td><a href="list.html">List</a></td>
+		  </tr>	  
+		</tbody>
+	</table>
+</div>
+
+<p>
+Additional resources such as <a href="provenance.html">Provenance</a>, <a href="securityevent.html">SecurityEvent</a> and others are likely to be used in DAF solutions. As well, basic aspects of the FHIR protocol, including <a href="http.html">RESTful operations</a>, <a href="datatypes.html">data types</a>, <a href="search.html">search</a>, etc. also apply.
+<!-- Todo: decide how explicit the list of relevant sections needs to be -->
+</p>
+
+<h3>Conformance Requirements</h3>
+<p>
+The DAF Conformance statements which define the expected capabilities of each of the DAF actors are listed below:
+</p>
+<ul>
+      <li><a href="conformance-daf-query-requestor.html">DAF Requestor</a> - DAF Requestors are responsible for creating and initiating the queries for patients or populations.</li>
+      <li><a href="conformance-daf-query-responder.html">DAF Responder</a>- DAF Responders are responsible to provide responses to the queries submitted by the requestors.</li>
+</ul>
+
+<h3>Author Information</h3>
+
+	<table class="grid">
+        <thead>
+          <tr>
+            <th>Author Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+			<td>Brett Marquard (Primary)</td>
+		  </tr>
+		  <tr>
+			<td>Nagesh Bashyam (Primary)</td>
+		  </tr>
+		  <tr>
+			<td>Grahame Grieve (Supporting)</td>
+		  </tr>
+		  <tr>
+			<td>Lloyd McKenzie (Supporting)</td>
+		  </tr>
+		</tbody>
+	</table>
+	
+</div>
+
+[%file newfooter%]
+
+</body>
+</html>

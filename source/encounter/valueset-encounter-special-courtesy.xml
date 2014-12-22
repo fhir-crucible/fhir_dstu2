@@ -1,0 +1,40 @@
+<ValueSet xmlns="http://hl7.org/fhir" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../schema/valueset.xsd">
+  <name value="SpecialCourtesy"/>
+  <publisher value="FHIR Project team"/>
+  <telecom>  
+    <system value="url"/>
+    <value value="http://hl7.org/fhir"/>
+  </telecom>
+  <description value="This value set defines a set of codes that can be used to indicate special courtesies provided to the patient."/>
+  <status value="draft"/>
+  <compose>
+    <include>
+      <system value="http://hl7.org/fhir/v3/EncounterSpecialCourtesy"/>
+      <concept>
+        <code value="EXT"/>
+      </concept>
+      <concept>
+        <code value="NRM"/>
+      </concept>
+      <concept>
+        <code value="PRF"/>
+      </concept>
+      <concept>
+        <code value="STF"/>
+      </concept>
+      <concept>
+        <code value="VIP"/>
+      </concept>
+    </include>
+    <include>
+      <system value="http://hl7.org/fhir/v3/NullFlavor"/>
+      <concept>
+        <code value="UNK"/>
+      </concept>
+    </include>
+  </compose>
+  
+</ValueSet>
+
+

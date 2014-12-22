@@ -1,0 +1,4 @@
+- idref is broken in schema
+- workover DAF (incl value sets)
+- revise the definitions on concept map equivalence
+- search parameters for profiles

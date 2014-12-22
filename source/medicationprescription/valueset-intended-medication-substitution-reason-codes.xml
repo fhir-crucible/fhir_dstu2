@@ -1,0 +1,62 @@
+<ValueSet xmlns="http://hl7.org/fhir" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../schema/valueset.xsd">
+  <text>
+    <status value="generated"/>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p>The value set to instantiate this attribute should be drawn from a terminologically robust code system that consists of or 
+        contains concepts to support the medication process, in particular the process and reasons for substitution.</p>
+      <p>Possible sources include:</p>
+      <ul>
+        <li>The HL7 SubstanceAdminSubstitutionReason value set</li>
+      </ul>
+      <p>The HL7 set is used here as the example terminology.</p>
+    </div>
+  </text>
+  <name value="Substitution Reason Codes"/>
+  <publisher value="FHIR Project team"/>
+  <telecom>  
+    <system value="url"/>
+    <value value="http://hl7.org/fhir"/>
+  </telecom>
+  <description value="This value set includes some introduction (procedure) codes from SNOMED CT - provided as an exemplar"/>
+  <status value="draft"/>
+  <compose>
+    <include>
+      <system value="http://hl7.org/fhir/v3/_SubstanceAdminSubstitutionReason"/>
+      <concept>
+        <code value="CT"/>
+      </concept>
+      <concept>
+        <code value="FP"/>
+      </concept>
+      <concept>
+        <code value="OS"/>
+      </concept>
+      <concept>
+        <code value="RR"/>
+      </concept>
+    </include>
+    <include>
+      <system value="http://hl7.org/fhir/v3/_SubstanceAdministrationPermissionRefusalReasonCode"/>
+      <concept>
+        <code value="NOUSEPERM"/>
+      </concept>
+      <concept>
+        <code value="PATINELIG"/>
+      </concept>
+      <concept>
+        <code value="PROTUNMET"/>
+      </concept>
+      <concept>
+        <code value="PROVUNAUTH"/>
+      </concept>
+    </include>
+    <include>
+      <system value="http://hl7.org/fhir/v3/NullFlavor"/>
+      <concept>
+        <code value="UNK"/>
+      </concept>
+    </include>
+  </compose>
+</ValueSet>
+

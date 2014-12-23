@@ -1,0 +1,14 @@
+*.class
+schema
+implementations/*
+!implementations/ruby
+implementations/ruby/output
+.project
+ivy/
+publish/
+temp/**
+tools/java/imports/
+implementations/ruby/base/*
+tools/java/org.hl7.fhir.tools.core/bin/
+tools/java/org.hl7.fhir.tools.core/.settings/
+tools/java/org.hl7.fhir.instance/bin/

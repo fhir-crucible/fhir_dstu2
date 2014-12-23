@@ -72,7 +72,7 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
       }
       block.ln(">");
       block.bs();
-      block.ln("<%== render :template => 'element', :locals => {model: model} %>");
+      block.ln("<%== render :template => 'element', :locals => {model: model, is_resource: false} %>");
 
       for (ElementDefn nestedElement : elementDefinition.getElements()) {
         if (!nestedElement.isXmlAttribute()) generateElement(block, nestedElement);
@@ -105,6 +105,11 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
     // open element
     fileBlock.ln("<% local_name = name || '" + name + "' %>");
     fileBlock.ln("<<%= (is_lowercase) ? local_name.downcase : local_name %>");
+    if (!isResource(elementDefinition)) {
+      // add xml id from element if it is present and this is not a resource
+      // resources have their ids as a child rather than an attribute
+      fileBlock.ln("<%if model.xmlId%> id=\"<%= model.xmlId%>\"<%end%>");
+    }
     // add other attribute elements
     for (ElementDefn nestedElement : elementDefinition.getElements()) {
       if (nestedElement.isXmlAttribute()) generateElement(fileBlock, nestedElement);
@@ -114,7 +119,7 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
     fileBlock.bs();
     
     // render resource and element templates for backbone data
-    fileBlock.ln("<%== render :template => 'element', :locals => {model: model} %>");
+    fileBlock.ln("<%== render :template => 'element', :locals => {model: model, is_resource: "+isResource(elementDefinition)+"} %>");
     if (isResource(elementDefinition)) fileBlock.ln("<%== render :template => 'resource', :locals => {model: model} %>");
   }
 
@@ -157,13 +162,13 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
     case STRING:
       block.ln(getValueFieldLine(typeName, originalTypeName, multipleCardinality, elementDefinition.isXmlAttribute()));
       break;
-    case REFERENCE:
-      block.ln(getNestedElementLine(typeName, originalTypeName, "resourcereference", multipleCardinality));
+    case RESOURCE:
+      block.ln(getResourceFieldLine(typeName, originalTypeName));
       break;
     case QUANTITY:
       block.ln(getNestedElementLine(typeName, originalTypeName, "quantity", multipleCardinality));
       break;
-    case RESOURCE:
+    case REFERENCE:
       block.ln(getNestedElementLine(typeName, originalTypeName, typeRef.getName(), multipleCardinality));
       break;
     case EMBEDDED:
@@ -185,6 +190,15 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
         +   "<%- else -%>"
         +     "<%== model." + typeName + "().to_xml(is_root: false, name: \"" + originalTypeName + "#{model." + typeName + "Type()}\")%>"
         +   "<%- end -%>"
+        + "<%- end -%>";      
+  }
+
+  private String getResourceFieldLine(String typeName, String originalTypeName) {
+    return ""
+        + "<%- if !model." + typeName + "().nil? -%>"
+        + "<"+typeName+">"
+        +     "<%== model." + typeName + "().to_xml(is_root: false, name: \"#{model." + typeName + "Type()}\")%>"
+        + "</"+typeName+">"
         + "<%- end -%>";      
   }
 

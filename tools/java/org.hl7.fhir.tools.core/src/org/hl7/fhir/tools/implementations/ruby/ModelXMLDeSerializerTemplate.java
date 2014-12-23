@@ -151,13 +151,13 @@ public class ModelXMLDeSerializerTemplate extends ResourceGenerator {
       case STRING:
         block.ln(getValueFieldLine(typeName, originalTypeName, multipleCardinality, elementDefinition.isXmlAttribute()));
         break;
-      case REFERENCE:
-        block.ln(getNestedElementLine(typeName, originalTypeName, "ResourceReference", multipleCardinality));
+      case RESOURCE:
+        addAnyResourceLines(block, typeName);
         break;
       case QUANTITY:
         block.ln(getNestedElementLine(typeName, originalTypeName, "Quantity", multipleCardinality));
         break;
-      case RESOURCE:
+      case REFERENCE:
         block.ln(getNestedElementLine(typeName, originalTypeName, typeRef.getName(), multipleCardinality));
         break;
       case EMBEDDED:
@@ -175,6 +175,14 @@ public class ModelXMLDeSerializerTemplate extends ResourceGenerator {
       block.ln("  v = e.at_xpath('@value').try(:value)");
       block.ln("  v = \"FHIR::#{model."+typeName+"Type}\".constantize.parse_xml_entry(e) unless v");
       block.ln("  model."+typeName+" = {type: model."+typeName+"Type, value: v}");
+      block.ln("end");
+    }
+
+    private void addAnyResourceLines(GenBlock block, String typeName) {
+      block.ln("entry.xpath(\"./fhir:resource/*\").each do |e|");
+      block.ln("  model.resourceType = e.name");
+      block.ln("  v = \"FHIR::#{model.resourceType}\".constantize.parse_xml_entry(e) unless v");
+      block.ln("  model.resource = {type: model.resourceType, value: v}");
       block.ln("end");
     }
 

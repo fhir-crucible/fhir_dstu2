@@ -271,13 +271,14 @@ public class MongoidModel extends ResourceGenerator {
     case STRING:
       block.ln(getValueFieldLine(typeName, "String", multipleCardinality));
       break;
-    case REFERENCE:
-      block.ln(getNestedElementLine(typeName, "ResourceReference", multipleCardinality));
+    case RESOURCE:
+      block.ln(getValueFieldLine(typeName+"Type", "String", multipleCardinality));
+      block.ln(getValueFieldLine(typeName, "FHIR::AnyType", multipleCardinality));
       break;
     case QUANTITY:
       block.ln(getNestedElementLine(typeName, "Quantity", multipleCardinality));
       break;
-    case RESOURCE:
+    case REFERENCE:
       block.ln(getNestedElementLine(typeName, typeRef.getName(), multipleCardinality));
       break;
     case EMBEDDED:

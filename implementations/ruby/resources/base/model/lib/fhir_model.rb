@@ -36,6 +36,7 @@ Dir.glob(File.join(root, 'lib','formats','export','**','*.rb')).each do |file|
 end
 
 require_relative File.join(root, 'lib','models','partial_date_time.rb')
+require_relative File.join(root, 'lib','models','extensions','element.rb')
 require_relative File.join(root, 'lib','models','extensions','resource.rb')
 Dir.glob(File.join(root, 'lib','models','**','*.rb')).each do |file|
   require file

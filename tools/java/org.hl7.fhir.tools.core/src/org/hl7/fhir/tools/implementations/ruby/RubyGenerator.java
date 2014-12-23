@@ -120,6 +120,15 @@ public class RubyGenerator extends BaseGenerator implements PlatformGenerator {
       generateXMLSerializerTemplate(name, dirs.get("xmlTemplateDir"), definitions);
       generateXMLDeSerializerTemplate(name, dirs.get("deserializerDir"), definitions);
     }
+    
+//    Map<String, ResourceDefn> base = definitions.getBaseResources();
+//    for(String name: base.keySet()){
+//      System.out.println("BASE RESOURCE: " + name);
+//      generateMongoidModel(name, dirs.get("modelDir"), definitions);
+//      generateXMLSerializerTemplate(name, dirs.get("xmlTemplateDir"), definitions);
+//      generateXMLDeSerializerTemplate(name, dirs.get("deserializerDir"), definitions);
+//    }
+
 
     String genericControllerTemplate = TextFile.fileToString(Utilities.path(resourcesDir, "templates", "generic_controller.rb.st"));
     Map<String, ResourceDefn> namesAndDefinitions = definitions.getResources();

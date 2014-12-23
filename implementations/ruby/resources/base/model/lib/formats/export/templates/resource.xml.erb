@@ -9,3 +9,7 @@
       </contained>
     <%end%>
 <% end %>
+
+<%- if !model.meta().nil? -%><%== render :template => 'resource_resourcemetacomponent', :locals => {name: 'meta', model: model.meta()} %><%- end -%>
+<%- if !model.implicitRules().nil? -%><implicitRules value="<%= model.implicitRules() %>"/><%- end -%>
+<%- if !model.language().nil? -%><language value="<%= model.language() %>"/><%- end -%>

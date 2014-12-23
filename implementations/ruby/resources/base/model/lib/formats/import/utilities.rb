@@ -44,7 +44,25 @@ module FHIR
           model.contained ||= []
           model.contained << "FHIR::#{contained_entry.name}".constantize.parse_xml_entry(contained_entry)
         end
+
+        set_model_data(model, 'meta', parse_resource_metadata(entry.at_xpath('./fhir:meta')))
+        set_model_data(model, 'implicitRules', entry.at_xpath('./fhir:implicitRules/@value').try(:value))
+        set_model_data(model, 'language', entry.at_xpath('./fhir:language/@value').try(:value))
+
       end
+
+      def parse_resource_metadata(entry) 
+          return nil unless entry
+          model = FHIR::Resource::ResourceMetaComponent.new
+          self.parse_element_data(model, entry)
+          set_model_data(model, 'versionId', entry.at_xpath('./fhir:versionId/@value').try(:value))
+          set_model_data(model, 'lastUpdated', parse_date_time(entry.at_xpath('./fhir:lastUpdated/@value').try(:value)))
+          set_model_data(model, 'profile', entry.xpath('./fhir:profile/@value').map {|e| e.value })
+          set_model_data(model, 'security', entry.xpath('./fhir:security').map {|e| FHIR::Coding.parse_xml_entry(e)})
+          set_model_data(model, 'tag', entry.xpath('./fhir:tag').map {|e| FHIR::Coding.parse_xml_entry(e)})
+          model
+      end
+
 
       # Deserialize JSON into a single FHIR Resource
       def from_fhir_json(json)

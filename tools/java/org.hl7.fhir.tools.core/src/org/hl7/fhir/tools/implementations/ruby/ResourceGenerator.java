@@ -32,10 +32,10 @@ public abstract class ResourceGenerator {
     INSTANT("instant"),
     CODE("code"),
     STRING("string", "uri", "id", "oid", "idref"),
-    REFERENCE("Resource"),
+    RESOURCE("Resource"),
     QUANTITY("Age", "Count", "Duration", "Money"),
     IGNORED("xhtml","div"),
-    RESOURCE(),
+    REFERENCE(),
     EMBEDDED();
     
     private List<String> elementTypes;
@@ -45,7 +45,7 @@ public abstract class ResourceGenerator {
     }
 
     public static FieldType getFieldType(String elementType) {
-      FieldType found = RESOURCE;
+      FieldType found = REFERENCE;
       for (FieldType fieldType : FieldType.values()) {
         if (fieldType.elementTypes != null && fieldType.elementTypes.contains(elementType)) {
           return fieldType;
@@ -140,6 +140,7 @@ public abstract class ResourceGenerator {
   protected ElementDefn getRootDefinition() {
     ElementDefn el = null;
     ResourceDefn resource = definitions.getResources().get(name);
+    resource = (resource == null) ? definitions.getBaseResources().get(name) : resource;
     if (resource != null) {
       el = resource.getRoot();
     } else {

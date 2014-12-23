@@ -1,0 +1,11 @@
+<%- if !model.text().nil? -%>
+  <%== render :template => 'narrative', :locals => {name: 'text', model: model.text()} %>
+<%- end -%>
+
+<% if !model.contained.blank? %>
+    <%model.contained.each do |element|%>
+      <contained>
+        <%== element.to_xml(is_root: false) %>
+      </contained>
+    <%end%>
+<% end %>

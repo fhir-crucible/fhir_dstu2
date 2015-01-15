@@ -42,8 +42,10 @@ module FHIR
 
         entry.xpath('./fhir:contained/*').each do |contained_entry|
           model.contained ||= []
-          model.contained << "FHIR::#{contained_entry.name}".constantize.parse_xml_entry(contained_entry)
-        end
+          if is_fhir_class?("FHIR::#{contained_entry.name}")
+            model.contained << "FHIR::#{contained_entry.name}".constantize.parse_xml_entry(contained_entry)
+          end
+         end
 
         set_model_data(model, 'meta', parse_resource_metadata(entry.at_xpath('./fhir:meta')))
         set_model_data(model, 'implicitRules', entry.at_xpath('./fhir:implicitRules/@value').try(:value))

@@ -173,7 +173,7 @@ public class ModelXMLDeSerializerTemplate extends ResourceGenerator {
       block.ln("entry.xpath(\"./*[contains(local-name(),'"+typeName+"')]\").each do |e| ");
       block.ln("  model."+typeName+"Type = e.name.gsub('"+typeName+"','')");
       block.ln("  v = e.at_xpath('@value').try(:value)");
-      block.ln("  if v.nil? && is_fhir_class?(\"FHIR::#{model.valueType}\")");
+      block.ln("  if v.nil? && is_fhir_class?(\"FHIR::#{model."+typeName+"Type}\")");
       block.ln("    v = \"FHIR::#{model."+typeName+"Type}\".constantize.parse_xml_entry(e)");
       block.ln("  end");
       block.ln("  model."+typeName+" = {type: model."+typeName+"Type, value: v}");
@@ -183,10 +183,10 @@ public class ModelXMLDeSerializerTemplate extends ResourceGenerator {
     private void addAnyResourceLines(GenBlock block, String typeName) {
       block.ln("entry.xpath(\"./fhir:resource/*\").each do |e|");
       block.ln("  model.resourceType = e.name");
-      block.ln("  if v.nil? && is_fhir_class?(\"FHIR::#{model.resourceType}\")");
-      block.ln("    v = \"FHIR::#{model.resourceType}\".constantize.parse_xml_entry(e)");
-      block.ln("  end");
-      block.ln("  model.resource = {type: model.resourceType, value: v}");
+      
+      block.ln("  v = \"FHIR::#{model.resourceType}\".constantize.parse_xml_entry(e) unless v");
+      block.ln("  model.resource = v");
+      block.ln("  #model.resource = {type: model.resourceType, value: v}");
       block.ln("end");
     }
 

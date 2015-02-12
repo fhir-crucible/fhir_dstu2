@@ -231,7 +231,8 @@ public class MongoidModel extends ResourceGenerator {
     switch (fieldType) {
     case ANY:
       block.ln(getValueFieldLine(typeName+"Type", "String", multipleCardinality));
-      block.ln(getValueFieldLine(typeName, "FHIR::AnyType", multipleCardinality));
+      block.ln("attr_accessor :"+typeName);
+      block.ln("# " + getValueFieldLine(typeName, "FHIR::AnyType", multipleCardinality));
       break;
     case BINARY:
       block.ln(getValueFieldLine(typeName, "Moped::BSON::Binary", multipleCardinality));
@@ -273,7 +274,8 @@ public class MongoidModel extends ResourceGenerator {
       break;
     case RESOURCE:
       block.ln(getValueFieldLine(typeName+"Type", "String", multipleCardinality));
-      block.ln(getValueFieldLine(typeName, "FHIR::AnyType", multipleCardinality));
+      block.ln("attr_accessor :"+typeName);
+      block.ln("# " + getValueFieldLine(typeName, "FHIR::AnyType", multipleCardinality));
       break;
     case QUANTITY:
       block.ln(getNestedElementLine(typeName, "Quantity", multipleCardinality));

@@ -184,11 +184,11 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
     return ""
         + "<%- if !model." + typeName + "().nil? -%>"
         +   "<%- if FHIR::AnyType::PRIMITIVES.include? model." + typeName + "Type().downcase -%>"
-        +     "<" + originalTypeName + "<%= model." + typeName + "Type() %>" + " value=\"<%= model." + typeName + "() %>\"/>"
+        +     "<" + originalTypeName + "<%= model." + typeName + "Type() %>" + " value=\"<%= model." + typeName + "()[:value] %>\"/>"
         +   "<%- elsif FHIR::AnyType::DATE_TIMES.include? model." + typeName + "Type().downcase -%>"
-        +     "<" + originalTypeName + "<%= model." + typeName + "Type() %>" + " value=\"<%= model." + typeName + "().iso8601 %>\"/>"
+        +     "<" + originalTypeName + "<%= model." + typeName + "Type() %>" + " value=\"<%= model." + typeName + "()[:value] %>\"/>"
         +   "<%- else -%>"
-        +     "<%== model." + typeName + "().to_xml(is_root: false, name: \"" + originalTypeName + "#{model." + typeName + "Type()}\")%>"
+        +     "<%== model." + typeName + "()[:value].to_xml(is_root: false, name: \"" + originalTypeName + "#{model." + typeName + "Type()}\")%>"
         +   "<%- end -%>"
         + "<%- end -%>";      
   }

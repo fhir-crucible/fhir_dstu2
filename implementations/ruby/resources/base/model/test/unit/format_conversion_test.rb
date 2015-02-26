@@ -17,11 +17,13 @@ class RunConversionTest < Test::Unit::TestCase
   FileUtils.rm_rf(ERROR_DIR_JJ) if File.directory?(ERROR_DIR_JJ)
   FileUtils.mkdir_p ERROR_DIR_JJ
  
- FileUtils.rm_rf(ERROR_DIR_XJ) if File.directory?(ERROR_DIR_XJ)
+  FileUtils.rm_rf(ERROR_DIR_XJ) if File.directory?(ERROR_DIR_XJ)
   FileUtils.mkdir_p ERROR_DIR_XJ
    
   example_xml_files = Dir.glob(example_xml_files)
   
+  utils = Class.new.extend(FHIR::Formats::Utilities)
+
   Dir.glob(example_json_files).each do | json_file |
     
     json_basename = File.basename(json_file,'.json')
@@ -35,6 +37,7 @@ class RunConversionTest < Test::Unit::TestCase
     # Ignoring examples that aren't FHIR
     root_element = Nokogiri::XML(File.read(xml_file)).root.try(:name)
     next if (root_element.nil? || ['Workbook', 'div'].include?(root_element))
+    next if !utils.is_fhir_class? "FHIR::#{root_element}"
 
     # TODO: probably want these eventually
     next if EXCLUDED_RESOURCES.include?(root_element)

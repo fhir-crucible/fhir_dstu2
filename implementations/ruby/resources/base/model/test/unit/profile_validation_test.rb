@@ -39,7 +39,7 @@ class ProfileValidationTest < Test::Unit::TestCase
     next if profile.nil?
     
     define_method("test_#{json_basename}_profile_validation_json") do
-      run_json_validate(json_basename,example_json_hash,profile)
+      run_json_validate(json_basename,example_json_string,example_json_hash,profile)
     end
   end
 
@@ -61,24 +61,26 @@ class ProfileValidationTest < Test::Unit::TestCase
     end
   end
   
-  def run_json_validate(example_name, example_json_hash, profile)
+  def run_json_validate(example_name, example_json_string, example_json_hash, profile)
     
-    valid = profile.is_valid_json? example_json_string
+    valid = profile.is_valid?(example_json_hash,'JSON')
     if !valid
+      puts profile.errors
       File.open("#{ERROR_DIR_JSON}/#{example_name}.json", 'w:UTF-8') {|file| file.write(example_json_string)}      
     end
 
-    assert(valid)
+    assert(valid,"JSON example does not conform to profile: #{profile.name}")
   end
 
   def run_xml_validate(example_name, example_xml_string, profile)
     
-    valid = profile.is_valid_xml? example_xml_string
+    valid = profile.is_valid?(example_xml_string,'XML')
     if !valid
+      puts profile.errors
       File.open("#{ERROR_DIR}/#{example_name}.xml", 'w:UTF-8') {|file| file.write(example_xml_string)}      
     end
 
-    assert(valid)
+    assert(valid,"XML example does not conform to profile: #{profile.name}")
   end
     
 end

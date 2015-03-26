@@ -10733,17 +10733,17 @@ public class XmlParser extends XmlParserBase {
   }
 
   protected void composeNarrative(String name, Narrative element) throws Exception {
-    if (element != null) {
-      composeElementAttributes(element);
-      xml.open(FHIR_NS, name);
-      composeElementElements(element);
-      if (element.hasStatusElement())
-        composeEnumeration("status", element.getStatusElement(), new Narrative.NarrativeStatusEnumFactory());
-      if (element.hasDiv()) {
-        composeXhtml("div", element.getDiv());
-      }
-      xml.close(FHIR_NS, name);
-    }
+//    if (element != null) {
+//      composeElementAttributes(element);
+//      xml.open(FHIR_NS, name);
+//      composeElementElements(element);
+//      if (element.hasStatusElement())
+//        composeEnumeration("status", element.getStatusElement(), new Narrative.NarrativeStatusEnumFactory());
+//      if (element.hasDiv()) {
+//        composeXhtml("div", element.getDiv());
+//      }
+//      xml.close(FHIR_NS, name);
+//    }
   }
 
   protected void composePeriod(String name, Period element) throws Exception {

@@ -4,6 +4,7 @@ module FHIR
     attr_accessor :errors
 
     @@base_profiles = nil
+    @@other_profiles = nil
     @@type_profiles = nil
 
     def self.load_profiles
@@ -12,7 +13,11 @@ module FHIR
         xml = File.read(filename)
         @@base_profiles = FHIR::Bundle.from_xml(xml)
       end
-
+      if @@other_profiles.nil?
+        filename = File.join(File.dirname(__FILE__),'profiles-others.xml')
+        xml = File.read(filename)
+        @@other_profiles = FHIR::Bundle.from_xml(xml)
+      end
       if @@type_profiles.nil?
         filename = File.join(File.dirname(__FILE__),'profiles-types.xml')
         xml = File.read(filename)
@@ -27,6 +32,21 @@ module FHIR
       @@base_profiles.entry.each do |entry|
         if entry.resourceType == 'Profile'
           if !entry.resource.nil? && (entry.resource.fhirType == resource_name || entry.resource.name == resource_name)
+            return entry.resource
+          end
+        end
+      end
+
+      nil
+    end
+
+    def self.get_other_profile(profile_name)
+      return nil if profile_name.nil?
+      load_profiles
+
+      @@other_profiles.entry.each do |entry|
+        if entry.resourceType == 'Profile'
+          if !entry.resource.nil? && (entry.resource.xmlId == profile_name || entry.resource.name == profile_name || entry.resource.url == profile_name)
             return entry.resource
           end
         end
@@ -137,6 +157,12 @@ module FHIR
                   if(!element.binding.nil?)
                     matching_type+=check_binding(element,value)
                   end
+                elsif data_type_code=='CodeableConcept' && element.patternType=='CodeableConcept' && !element.pattern.nil?
+                  # TODO check that the CodeableConcept matches the defined pattern
+                  binding.pry
+                elsif data_type_code=='String' && !element.maxLength.nil? && (value.size>element.maxLength)
+                  @errors << "#{element.path} exceed maximum length of #{element.maxLength}: #{value}"
+                  return false                  
                 end
               else
                 @errors << "#{element.path} is not a valid #{data_type_code}: '#{value}'"
@@ -145,15 +171,15 @@ module FHIR
             if matching_type<=0
               @errors << "#{element.path} did not match one of the valid data types: #{element.fhirType.map{|e|e.code}.to_s}"
               return false
-            end           
+            end  
+            if !element.fixed.nil? && element!=value
+              errors << "#{element.path} value of '#{value}' did not match fixed value: #{element.fixed}"
+              return false
+            end                     
           end
         end
 
-        # TODO check 'fixed[x] values
-        # TODO check 'pattern[x]' values
-        # TODO check 'maxLength'
         # TODO check 'constraint.xpath' constraints
-
       end
 
       true
@@ -209,6 +235,12 @@ module FHIR
                   if(!element.binding.nil?)
                     matching_type+=check_binding(element,value)
                   end
+                elsif data_type_code=='CodeableConcept' && element.patternType=='CodeableConcept' && !element.pattern.nil?
+                  # TODO check that the CodeableConcept matches the defined pattern
+                  binding.pry
+                elsif data_type_code=='String' && !element.maxLength.nil? && (value.size>element.maxLength)
+                  @errors << "#{element.path} exceed maximum length of #{element.maxLength}: #{value}"
+                  return false                  
                 end
               else
                 @errors << "#{element.path} is not a valid #{data_type_code}: '#{value}'"
@@ -218,12 +250,14 @@ module FHIR
               @errors << "#{element.path} did not match one of the valid data types: #{element.fhirType.map{|e|e.code}.to_s}"
               return false
             end
+            if !element.fixed.nil? && element!=value
+              errors << "#{element.path} value of '#{value}' did not match fixed value: #{element.fixed}"
+              return false
+            end
+         
           end
         end
 
-        # TODO check 'fixed[x] values
-        # TODO check 'pattern[x]' values
-        # TODO check 'maxLength'
         # TODO check 'constraint.xpath' constraints
       end
 
@@ -338,7 +372,6 @@ module FHIR
           contained_resources_valid
         elsif representation == 'JSON'
           resource_type = value['resourceType']
-          binding.pry if resource_type.nil?
           profile = FHIR::Profile.get_base_profile(resource_type)
           if !profile.nil?
             retVal = profile.is_valid?(value,representation)

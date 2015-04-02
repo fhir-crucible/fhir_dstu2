@@ -135,17 +135,7 @@ module FHIR
                 matching_type+=1 
                 if data_type_code == 'code' # then check the binding
                   if(!element.binding.nil?)
-                    valueset = FHIR::ValueSet.get_base_valueset(element.binding.name)
-                    valueset = FHIR::ValueSet.get_base_valueset(element.binding.referenceUri) if valueset.nil?
-                    valueset = FHIR::ValueSet.get_base_valueset(element.binding.referenceReference.reference) if valueset.nil? && !element.binding.referenceReference.nil?
-
-                    if valueset.nil?
-                      @errors << "#{element.path} has unknown ValueSet: '#{element.binding.name}'"
-                      matching_type-=1 if !element.binding.isExtensible
-                    elsif !element.binding.isExtensible && !valueset.include?(value)
-                      @errors << "#{element.path} has invalid code '#{value}' from '#{element.short}'"
-                      matching_type-=1
-                    end
+                    matching_type+=check_binding(element,value)
                   end
                 end
               else
@@ -217,17 +207,7 @@ module FHIR
                 matching_type+=1 
                 if data_type_code == 'code' # then check the binding
                   if(!element.binding.nil?)
-                    valueset = FHIR::ValueSet.get_base_valueset(element.binding.name)
-                    valueset = FHIR::ValueSet.get_base_valueset(element.binding.referenceUri) if valueset.nil?
-                    valueset = FHIR::ValueSet.get_base_valueset(element.binding.referenceReference.reference) if valueset.nil? && !element.binding.referenceReference.nil?
-
-                    if valueset.nil?
-                      @errors << "#{element.path} has unknown ValueSet: '#{element.binding.name}'"
-                      matching_type-=1 if !element.binding.isExtensible
-                    elsif !element.binding.isExtensible && !valueset.include?(value)
-                      @errors << "#{element.path} has invalid code '#{value}' from '#{element.short}'"
-                      matching_type-=1
-                    end
+                    matching_type+=check_binding(element,value)
                   end
                 end
               else
@@ -383,6 +363,37 @@ module FHIR
           false
         end
       end
+    end
+
+    def check_binding(element,value)
+      valueset = FHIR::ValueSet.get_base_valueset(element.binding.name)
+      valueset = FHIR::ValueSet.get_base_valueset(element.binding.referenceUri) if valueset.nil?
+      valueset = FHIR::ValueSet.get_base_valueset(element.binding.referenceReference.reference) if valueset.nil? && !element.binding.referenceReference.nil?
+
+      matching_type = 0
+
+      if element.binding.name=='MimeType'
+        matches = MIME::Types[value]
+        if (matches.nil? || matches.size==0) && (value.downcase!='xml' && value.downcase!='json')
+          @errors << "#{element.path} has invalid mime-type: '#{value}'"
+          matching_type-=1 if !element.binding.isExtensible
+        end
+      elsif element.binding.name=='Language'
+        hasRegion = (!(value =~ /-/).nil?)
+        valid = !BCP47::Language.identify(value).nil? && (!hasRegion || !BCP47::Region.identify(value).nil?)
+        if !valid
+          @errors << "#{element.path} has unrecognized language: '#{value}'"
+          matching_type-=1 if !element.binding.isExtensible                      
+        end
+      elsif valueset.nil?
+        @errors << "#{element.path} has unknown ValueSet: '#{element.binding.name}'"
+        matching_type-=1 if !element.binding.isExtensible
+      elsif !element.binding.isExtensible && !valueset.include?(value)
+        @errors << "#{element.path} has invalid code '#{value}' from '#{element.short}'"
+        matching_type-=1
+      end
+
+      matching_type
     end
 
   private :is_valid_xml?, :is_valid_json?, :get_json_nodes, :is_data_type?

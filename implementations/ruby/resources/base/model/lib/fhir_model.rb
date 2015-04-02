@@ -8,6 +8,8 @@ require 'nokogiri'
 require 'mongoid-history'
 require 'date_time_precision'
 require 'date_time_precision/format/iso8601'
+require 'mime/types'
+require 'bcp47'
 
 Moped::BSON = BSON
 

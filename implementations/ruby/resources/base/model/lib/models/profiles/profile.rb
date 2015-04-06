@@ -2,6 +2,7 @@ module FHIR
   class Profile
 
     attr_accessor :errors
+    attr_accessor :warnings
 
     @@base_profiles = nil
     @@other_profiles = nil
@@ -83,8 +84,12 @@ module FHIR
     # representation == one of ['Resource','XML','JSON']
     def is_valid?(resource,representation='Resource')
       @errors = []
+      @warnings = []
       if representation.downcase=='resource'
-        return false if !is_fhir_class?(resource.class.to_s) || resource.class.name.demodulize!=fhirType
+        if !is_fhir_class?(resource.class.to_s) || resource.class.name.demodulize!=fhirType
+          @errors << "Not a FHIR Resource: #{resource.class.to_s}"
+          return false
+        end
         is_valid_xml? resource.to_xml
       elsif representation.downcase=='xml'
         is_valid_xml? resource
@@ -123,6 +128,7 @@ module FHIR
           path = path.gsub(name,"fhir:#{resource_type}").gsub('.','/fhir:')
         end
         nodes = doc.xpath(path)
+        nodes = doc.xpath(path.gsub('fhir:','')) if nodes.nil? || nodes.size==0
 
         # Check the cardinality
         min = element.min
@@ -134,7 +140,6 @@ module FHIR
           end
         if (nodes.size < min) && (nodes.size > max)
           @errors << "#{element.path} failed cardinality test (#{min}..#{max}) -- found #{nodes.size}"
-          return false 
         end
 
         # Check the datatype for each node, only if the element has one declared
@@ -149,6 +154,7 @@ module FHIR
             value = node.to_xml if value.nil? # probably an embedded resource like Narrative
 
             # the element is valid, if it matches at least one of the datatypes
+            temp_messages = []
             element.fhirType.each do |type|
               data_type_code = type.code
               if is_data_type?(data_type_code,value,'XML')
@@ -162,27 +168,46 @@ module FHIR
                   binding.pry
                 elsif data_type_code=='String' && !element.maxLength.nil? && (value.size>element.maxLength)
                   @errors << "#{element.path} exceed maximum length of #{element.maxLength}: #{value}"
-                  return false                  
                 end
               else
-                @errors << "#{element.path} is not a valid #{data_type_code}: '#{value}'"
+                temp_messages << "#{element.path} is not a valid #{data_type_code}: '#{value}'"
               end
             end
             if matching_type<=0
+              @errors += temp_messages
               @errors << "#{element.path} did not match one of the valid data types: #{element.fhirType.map{|e|e.code}.to_s}"
-              return false
+            else
+              @warnings += temp_messages
             end  
             if !element.fixed.nil? && element!=value
-              errors << "#{element.path} value of '#{value}' did not match fixed value: #{element.fixed}"
-              return false
+              @errors << "#{element.path} value of '#{value}' did not match fixed value: #{element.fixed}"
             end                     
           end
         end
 
-        # TODO check 'constraint.xpath' constraints
+        # check 'constraint.xpath' constraints
+        if !element.constraint.empty?
+          element.constraint.each do |constraint|
+            nodes.each do |node|
+              begin
+                result = node.xpath(constraint.xpath)
+                if !result
+                  if constraint.severity=='error'
+                    @errors << "#{element.path}: failed #{name} invariant rule #{constraint.key}: #{constraint.human}"
+                  else
+                    @warnings << "#{element.path}: failed #{name} invariant rule #{constraint.key}: #{constraint.human}"
+                  end
+                end
+              rescue Exception => exp
+                @warnings << "#{element.path}: invalid XPath 1.0 expression for #{name} invariant rule #{constraint.key}: #{constraint.human}"
+              end
+            end
+          end
+        end
+
       end
 
-      true
+      @errors.size==0
     end
 
     # Checks whether or not the "json" is valid according to this profile.
@@ -200,7 +225,10 @@ module FHIR
       resource_type = json['resourceType']
       if !resource_type.nil?
         fhir_class = get_fhir_class_from_resource_type(resource_type)
-        return false if fhir_class.nil? or resource_type!=fhirType
+        if fhir_class.nil? or resource_type!=fhirType
+          @errors << "Invalid resourceType '#{resource_type}' or mismatch with '#{fhirType}'"
+          return false
+        end
       end
 
       snapshot.element.each do |element|
@@ -218,7 +246,6 @@ module FHIR
           end
         if (nodes.size < min) && (nodes.size > max)
           @errors << "#{element.path} failed cardinality test (#{min}..#{max}) -- found #{nodes.size}"
-          return false 
         end
 
         # Check the datatype for each node, only if the element has one declared
@@ -227,6 +254,7 @@ module FHIR
             matching_type = 0
 
             # the element is valid, if it matches at least one of the datatypes
+            temp_messages = []
             element.fhirType.each do |type|
               data_type_code = type.code
               if is_data_type?(data_type_code,value,'JSON')
@@ -240,28 +268,33 @@ module FHIR
                   binding.pry
                 elsif data_type_code=='String' && !element.maxLength.nil? && (value.size>element.maxLength)
                   @errors << "#{element.path} exceed maximum length of #{element.maxLength}: #{value}"
-                  return false                  
                 end
               else
-                @errors << "#{element.path} is not a valid #{data_type_code}: '#{value}'"
+                temp_messages << "#{element.path} is not a valid #{data_type_code}: '#{value}'"
               end
             end
             if matching_type<=0
+              @errors += temp_messages
               @errors << "#{element.path} did not match one of the valid data types: #{element.fhirType.map{|e|e.code}.to_s}"
-              return false
+            else
+              @warnings += temp_messages
             end
             if !element.fixed.nil? && element!=value
-              errors << "#{element.path} value of '#{value}' did not match fixed value: #{element.fixed}"
-              return false
+              @errors << "#{element.path} value of '#{value}' did not match fixed value: #{element.fixed}"
             end
-         
+          end
+       end
+
+        # check 'constraint.xpath' constraints
+        if !element.constraint.empty?
+          element.constraint.each do |constraint|
+            @warnings << "#{element.path}: unable to evaluate XPath expression against JSON for #{name} invariant rule #{constraint.key}: #{constraint.human}"
           end
         end
 
-        # TODO check 'constraint.xpath' constraints
       end
 
-      true
+      @errors.size==0
     end
 
     def get_json_nodes(json,path)
@@ -309,7 +342,10 @@ module FHIR
         profile = FHIR::Profile.get_base_profile(data_type_code)
         if !profile.nil?
           retVal = profile.is_valid?(value,representation)
-          @errors += profile.errors if !retVal
+          if !retVal
+            @errors += profile.errors 
+            @warnings += profile.warnings
+          end
           return retVal
         end
       end
@@ -362,7 +398,7 @@ module FHIR
       when 'decimal'
         (!Float(value).nil? rescue false)
       when 'resource'
-        if representation == 'XML'
+        if representation.downcase == 'xml'
           doc = Nokogiri::XML(value)
           contained_resources_valid = true
           doc.root.element_children do |element|
@@ -370,13 +406,16 @@ module FHIR
             contained_resources_valid = contained_resources_valid && is_valid_xml?(element.to_xml)
           end
           contained_resources_valid
-        elsif representation == 'JSON'
+        elsif representation.downcase == 'json'
           resource_type = value['resourceType']
           profile = FHIR::Profile.get_base_profile(resource_type)
           if !profile.nil?
             retVal = profile.is_valid?(value,representation)
-            @errors += profile.errors if !retVal
-            return retVal
+            if !retVal
+              @errors += profile.errors 
+              @warnings += profile.warnings
+            end
+            retVal
           else
             @errors << "Unable to find base type profile: #{resource_type}"
             false
@@ -389,8 +428,11 @@ module FHIR
         profile = FHIR::Profile.get_type_profile(data_type_code)
         if !profile.nil?
           retVal = profile.is_valid?(value,representation)
-          @errors += profile.errors if !retVal
-          return retVal
+          if !retVal
+            @errors += profile.errors 
+            @warnings += profile.warnings
+          end
+          retVal
         else
           @errors << "Unable to find base type profile: #{data_type_code}"
           false

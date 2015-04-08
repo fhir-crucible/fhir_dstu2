@@ -16,14 +16,17 @@
       (e.g. "intravenous infusion" where "infusion" is the method or "IV into left subclavian vein" where "left subclavian vein" is the site) 
       should not be used in this value set.
       </p>
+      <p>This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (IHTSDO), and distributed by agreement between IHTSDO and HL7. Implementer use of SNOMED CT is not covered by this agreement</p>  
     </div>
   </text>
   <name value="SNOMED CT Route Codes"/>
   <publisher value="FHIR Project team"/>
-  <telecom>  
+  <contact>
+    <telecom>  
     <system value="url"/>
     <value value="http://hl7.org/fhir"/>
   </telecom>
+  </contact>
   <description value="This value set includes all Route codes from SNOMED CT - provided as an exemplar"/>
   <copyright value="This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (IHTSDO), and distributed by agreement between IHTSDO and HL7. Implementer use of SNOMED CT is not covered by this agreement"/>  
   <status value="draft"/>

@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -53,7 +53,7 @@ public class ReferralRequest extends DomainResource {
         /**
          * The referral has been transmitted, but not yet acknowledged by the recipient.
          */
-        SENT, 
+        REQUESTED, 
         /**
          * The referral has been acknowledged by the recipient, and is in the process of being actioned.
          */
@@ -63,9 +63,13 @@ public class ReferralRequest extends DomainResource {
          */
         CANCELLED, 
         /**
+         * The recipient has agreed to deliver the care requested by the referral.
+         */
+        ACCEPTED, 
+        /**
          * The recipient has declined to accept the referral.
          */
-        REFUSED, 
+        REJECTED, 
         /**
          * The referral has been completely actioned.
          */
@@ -79,14 +83,16 @@ public class ReferralRequest extends DomainResource {
                 return null;
         if ("draft".equals(codeString))
           return DRAFT;
-        if ("sent".equals(codeString))
-          return SENT;
+        if ("requested".equals(codeString))
+          return REQUESTED;
         if ("active".equals(codeString))
           return ACTIVE;
         if ("cancelled".equals(codeString))
           return CANCELLED;
-        if ("refused".equals(codeString))
-          return REFUSED;
+        if ("accepted".equals(codeString))
+          return ACCEPTED;
+        if ("rejected".equals(codeString))
+          return REJECTED;
         if ("completed".equals(codeString))
           return COMPLETED;
         throw new Exception("Unknown Referralstatus code '"+codeString+"'");
@@ -94,10 +100,11 @@ public class ReferralRequest extends DomainResource {
         public String toCode() {
           switch (this) {
             case DRAFT: return "draft";
-            case SENT: return "sent";
+            case REQUESTED: return "requested";
             case ACTIVE: return "active";
             case CANCELLED: return "cancelled";
-            case REFUSED: return "refused";
+            case ACCEPTED: return "accepted";
+            case REJECTED: return "rejected";
             case COMPLETED: return "completed";
             default: return "?";
           }
@@ -105,10 +112,11 @@ public class ReferralRequest extends DomainResource {
         public String getSystem() {
           switch (this) {
             case DRAFT: return "";
-            case SENT: return "";
+            case REQUESTED: return "";
             case ACTIVE: return "";
             case CANCELLED: return "";
-            case REFUSED: return "";
+            case ACCEPTED: return "";
+            case REJECTED: return "";
             case COMPLETED: return "";
             default: return "?";
           }
@@ -116,57 +124,63 @@ public class ReferralRequest extends DomainResource {
         public String getDefinition() {
           switch (this) {
             case DRAFT: return "A draft referral that has yet to be send.";
-            case SENT: return "The referral has been transmitted, but not yet acknowledged by the recipient.";
+            case REQUESTED: return "The referral has been transmitted, but not yet acknowledged by the recipient.";
             case ACTIVE: return "The referral has been acknowledged by the recipient, and is in the process of being actioned.";
             case CANCELLED: return "The referral has been cancelled without being completed. For example it is no longer needed.";
-            case REFUSED: return "The recipient has declined to accept the referral.";
+            case ACCEPTED: return "The recipient has agreed to deliver the care requested by the referral.";
+            case REJECTED: return "The recipient has declined to accept the referral.";
             case COMPLETED: return "The referral has been completely actioned.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case DRAFT: return "draft";
-            case SENT: return "sent";
-            case ACTIVE: return "active";
-            case CANCELLED: return "cancelled";
-            case REFUSED: return "refused";
-            case COMPLETED: return "completed";
+            case DRAFT: return "Draft";
+            case REQUESTED: return "Requested";
+            case ACTIVE: return "Active";
+            case CANCELLED: return "Cancelled";
+            case ACCEPTED: return "Accepted";
+            case REJECTED: return "Rejected";
+            case COMPLETED: return "Completed";
             default: return "?";
           }
         }
     }
 
-  public static class ReferralstatusEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class ReferralstatusEnumFactory implements EnumFactory<Referralstatus> {
+    public Referralstatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("draft".equals(codeString))
           return Referralstatus.DRAFT;
-        if ("sent".equals(codeString))
-          return Referralstatus.SENT;
+        if ("requested".equals(codeString))
+          return Referralstatus.REQUESTED;
         if ("active".equals(codeString))
           return Referralstatus.ACTIVE;
         if ("cancelled".equals(codeString))
           return Referralstatus.CANCELLED;
-        if ("refused".equals(codeString))
-          return Referralstatus.REFUSED;
+        if ("accepted".equals(codeString))
+          return Referralstatus.ACCEPTED;
+        if ("rejected".equals(codeString))
+          return Referralstatus.REJECTED;
         if ("completed".equals(codeString))
           return Referralstatus.COMPLETED;
-        throw new Exception("Unknown Referralstatus code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown Referralstatus code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(Referralstatus code) {
       if (code == Referralstatus.DRAFT)
         return "draft";
-      if (code == Referralstatus.SENT)
-        return "sent";
+      if (code == Referralstatus.REQUESTED)
+        return "requested";
       if (code == Referralstatus.ACTIVE)
         return "active";
       if (code == Referralstatus.CANCELLED)
         return "cancelled";
-      if (code == Referralstatus.REFUSED)
-        return "refused";
+      if (code == Referralstatus.ACCEPTED)
+        return "accepted";
+      if (code == Referralstatus.REJECTED)
+        return "rejected";
       if (code == Referralstatus.COMPLETED)
         return "completed";
       return "?";
@@ -176,42 +190,42 @@ public class ReferralRequest extends DomainResource {
     /**
      * The workflow status of the referral or transfer of care request.
      */
-    @Child(name="status", type={CodeType.class}, order=-1, min=1, max=1)
-    @Description(shortDefinition="draft | sent | active | cancelled | refused | completed", formalDefinition="The workflow status of the referral or transfer of care request." )
+    @Child(name ="status", type={CodeType.class}, order=0, min=1, max=1)
+    @Description(shortDefinition="draft | requested | active | cancelled | accepted | rejected | completed", formalDefinition="The workflow status of the referral or transfer of care request." )
     protected Enumeration<Referralstatus> status;
 
     /**
      * Business Id that uniquely identifies the referral/care transfer request instance.
      */
-    @Child(name="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="identifier", type={Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Identifier of request", formalDefinition="Business Id that uniquely identifies the referral/care transfer request instance." )
     protected List<Identifier> identifier;
 
     /**
      * An indication of the type of referral (or where applicable the type of transfer of care) request.
      */
-    @Child(name="type", type={CodeableConcept.class}, order=1, min=0, max=1)
+    @Child(name ="type", type={CodeableConcept.class}, order=2, min=0, max=1)
     @Description(shortDefinition="Referral/Transition of care request type", formalDefinition="An indication of the type of referral (or where applicable the type of transfer of care) request." )
     protected CodeableConcept type;
 
     /**
      * Indication of the clinical domain or discipline to which the referral or transfer of care request is sent.
      */
-    @Child(name="specialty", type={CodeableConcept.class}, order=2, min=0, max=1)
+    @Child(name ="specialty", type={CodeableConcept.class}, order=3, min=0, max=1)
     @Description(shortDefinition="The clinical specialty (discipline) that the referral is requested for", formalDefinition="Indication of the clinical domain or discipline to which the referral or transfer of care request is sent." )
     protected CodeableConcept specialty;
 
     /**
      * An indication of the urgency of referral (or where applicable the type of transfer of care) request.
      */
-    @Child(name="priority", type={CodeableConcept.class}, order=3, min=0, max=1)
+    @Child(name ="priority", type={CodeableConcept.class}, order=4, min=0, max=1)
     @Description(shortDefinition="Urgency of referral / transfer of care request", formalDefinition="An indication of the urgency of referral (or where applicable the type of transfer of care) request." )
     protected CodeableConcept priority;
 
     /**
      * The patient who is the subject of a referral or transfer of care request.
      */
-    @Child(name="patient", type={Patient.class}, order=4, min=0, max=1)
+    @Child(name ="patient", type={Patient.class}, order=5, min=0, max=1)
     @Description(shortDefinition="Patient referred to care or transfer", formalDefinition="The patient who is the subject of a referral or transfer of care request." )
     protected Reference patient;
 
@@ -223,7 +237,7 @@ public class ReferralRequest extends DomainResource {
     /**
      * The healthcare provider or provider organization who/which initaited the referral/transfer of care request. Can also be  Patient (a self referral).
      */
-    @Child(name="requester", type={Practitioner.class, Organization.class, Patient.class}, order=5, min=0, max=1)
+    @Child(name ="requester", type={Practitioner.class, Organization.class, Patient.class}, order=6, min=0, max=1)
     @Description(shortDefinition="Requester of referral / transfer of care", formalDefinition="The healthcare provider or provider organization who/which initaited the referral/transfer of care request. Can also be  Patient (a self referral)." )
     protected Reference requester;
 
@@ -235,7 +249,7 @@ public class ReferralRequest extends DomainResource {
     /**
      * The healthcare provider(s) or provider organization(s) who/which is to receive the referral/transfer of care request.
      */
-    @Child(name="recipient", type={Practitioner.class, Organization.class}, order=6, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="recipient", type={Practitioner.class, Organization.class}, order=7, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Receiver of referral / transfer of care request", formalDefinition="The healthcare provider(s) or provider organization(s) who/which is to receive the referral/transfer of care request." )
     protected List<Reference> recipient;
     /**
@@ -247,7 +261,7 @@ public class ReferralRequest extends DomainResource {
     /**
      * The encounter at which the request for referral or transfer of care is initiated.
      */
-    @Child(name="encounter", type={Encounter.class}, order=7, min=0, max=1)
+    @Child(name ="encounter", type={Encounter.class}, order=8, min=0, max=1)
     @Description(shortDefinition="Encounter", formalDefinition="The encounter at which the request for referral or transfer of care is initiated." )
     protected Reference encounter;
 
@@ -259,35 +273,35 @@ public class ReferralRequest extends DomainResource {
     /**
      * Date/DateTime the request for referral or transfer of care is sent by the author.
      */
-    @Child(name="dateSent", type={DateTimeType.class}, order=8, min=0, max=1)
+    @Child(name ="dateSent", type={DateTimeType.class}, order=9, min=0, max=1)
     @Description(shortDefinition="Date referral/transfer of care request is sent", formalDefinition="Date/DateTime the request for referral or transfer of care is sent by the author." )
     protected DateTimeType dateSent;
 
     /**
      * Description of clinical condition indicating why referral/transfer of care is requested.
      */
-    @Child(name="reason", type={CodeableConcept.class}, order=9, min=0, max=1)
+    @Child(name ="reason", type={CodeableConcept.class}, order=10, min=0, max=1)
     @Description(shortDefinition="Reason for referral / Transfer of care request", formalDefinition="Description of clinical condition indicating why referral/transfer of care is requested." )
     protected CodeableConcept reason;
 
     /**
      * The reason gives a short description of why the referral is being made, the description expands on this to support a more complete clinical summary.
      */
-    @Child(name="description", type={StringType.class}, order=10, min=0, max=1)
+    @Child(name ="description", type={StringType.class}, order=11, min=0, max=1)
     @Description(shortDefinition="A textual description of the referral", formalDefinition="The reason gives a short description of why the referral is being made, the description expands on this to support a more complete clinical summary." )
     protected StringType description;
 
     /**
      * The service(s) that is/are requested to be provided to the patient.
      */
-    @Child(name="serviceRequested", type={CodeableConcept.class}, order=11, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="serviceRequested", type={CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Service(s) requested", formalDefinition="The service(s) that is/are requested to be provided to the patient." )
     protected List<CodeableConcept> serviceRequested;
 
     /**
      * Any additional (administrative, financial or clinical) information required to support request for referral or transfer of care.
      */
-    @Child(name="supportingInformation", type={}, order=12, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="supportingInformation", type={}, order=13, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Additonal information to support referral or transfer of care request", formalDefinition="Any additional (administrative, financial or clinical) information required to support request for referral or transfer of care." )
     protected List<Reference> supportingInformation;
     /**
@@ -299,7 +313,7 @@ public class ReferralRequest extends DomainResource {
     /**
      * The period of time within which the services identified in the referral/transfer of care is specified or required to occur.
      */
-    @Child(name="fulfillmentTime", type={Period.class}, order=13, min=0, max=1)
+    @Child(name ="fulfillmentTime", type={Period.class}, order=14, min=0, max=1)
     @Description(shortDefinition="Requested service(s) fulfillment time", formalDefinition="The period of time within which the services identified in the referral/transfer of care is specified or required to occur." )
     protected Period fulfillmentTime;
 
@@ -322,7 +336,7 @@ public class ReferralRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ReferralRequest.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<Referralstatus>();
+          this.status = new Enumeration<Referralstatus>(new ReferralstatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -354,7 +368,7 @@ public class ReferralRequest extends DomainResource {
      */
     public ReferralRequest setStatus(Referralstatus value) { 
         if (this.status == null)
-          this.status = new Enumeration<Referralstatus>();
+          this.status = new Enumeration<Referralstatus>(new ReferralstatusEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -389,6 +403,16 @@ public class ReferralRequest extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public ReferralRequest addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #type} (An indication of the type of referral (or where applicable the type of transfer of care) request.)
      */
@@ -397,7 +421,7 @@ public class ReferralRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ReferralRequest.type");
         else if (Configuration.doAutoCreate())
-          this.type = new CodeableConcept();
+          this.type = new CodeableConcept(); // cc
       return this.type;
     }
 
@@ -421,7 +445,7 @@ public class ReferralRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ReferralRequest.specialty");
         else if (Configuration.doAutoCreate())
-          this.specialty = new CodeableConcept();
+          this.specialty = new CodeableConcept(); // cc
       return this.specialty;
     }
 
@@ -445,7 +469,7 @@ public class ReferralRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ReferralRequest.priority");
         else if (Configuration.doAutoCreate())
-          this.priority = new CodeableConcept();
+          this.priority = new CodeableConcept(); // cc
       return this.priority;
     }
 
@@ -469,7 +493,7 @@ public class ReferralRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ReferralRequest.patient");
         else if (Configuration.doAutoCreate())
-          this.patient = new Reference();
+          this.patient = new Reference(); // cc
       return this.patient;
     }
 
@@ -493,7 +517,7 @@ public class ReferralRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ReferralRequest.patient");
         else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient();
+          this.patientTarget = new Patient(); // aa
       return this.patientTarget;
     }
 
@@ -513,7 +537,7 @@ public class ReferralRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ReferralRequest.requester");
         else if (Configuration.doAutoCreate())
-          this.requester = new Reference();
+          this.requester = new Reference(); // cc
       return this.requester;
     }
 
@@ -574,6 +598,16 @@ public class ReferralRequest extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public ReferralRequest addRecipient(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.recipient == null)
+        this.recipient = new ArrayList<Reference>();
+      this.recipient.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #recipient} (The actual objects that are the target of the reference. The reference library doesn't populate this, but you can use this to hold the resources if you resolvethemt. The healthcare provider(s) or provider organization(s) who/which is to receive the referral/transfer of care request.)
      */
@@ -591,7 +625,7 @@ public class ReferralRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ReferralRequest.encounter");
         else if (Configuration.doAutoCreate())
-          this.encounter = new Reference();
+          this.encounter = new Reference(); // cc
       return this.encounter;
     }
 
@@ -615,7 +649,7 @@ public class ReferralRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ReferralRequest.encounter");
         else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter();
+          this.encounterTarget = new Encounter(); // aa
       return this.encounterTarget;
     }
 
@@ -635,7 +669,7 @@ public class ReferralRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ReferralRequest.dateSent");
         else if (Configuration.doAutoCreate())
-          this.dateSent = new DateTimeType();
+          this.dateSent = new DateTimeType(); // bb
       return this.dateSent;
     }
 
@@ -658,14 +692,14 @@ public class ReferralRequest extends DomainResource {
     /**
      * @return Date/DateTime the request for referral or transfer of care is sent by the author.
      */
-    public DateAndTime getDateSent() { 
+    public Date getDateSent() { 
       return this.dateSent == null ? null : this.dateSent.getValue();
     }
 
     /**
      * @param value Date/DateTime the request for referral or transfer of care is sent by the author.
      */
-    public ReferralRequest setDateSent(DateAndTime value) { 
+    public ReferralRequest setDateSent(Date value) { 
       if (value == null)
         this.dateSent = null;
       else {
@@ -684,7 +718,7 @@ public class ReferralRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ReferralRequest.reason");
         else if (Configuration.doAutoCreate())
-          this.reason = new CodeableConcept();
+          this.reason = new CodeableConcept(); // cc
       return this.reason;
     }
 
@@ -708,7 +742,7 @@ public class ReferralRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ReferralRequest.description");
         else if (Configuration.doAutoCreate())
-          this.description = new StringType();
+          this.description = new StringType(); // bb
       return this.description;
     }
 
@@ -779,6 +813,16 @@ public class ReferralRequest extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public ReferralRequest addServiceRequested(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.serviceRequested == null)
+        this.serviceRequested = new ArrayList<CodeableConcept>();
+      this.serviceRequested.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #supportingInformation} (Any additional (administrative, financial or clinical) information required to support request for referral or transfer of care.)
      */
@@ -809,6 +853,16 @@ public class ReferralRequest extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public ReferralRequest addSupportingInformation(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.supportingInformation == null)
+        this.supportingInformation = new ArrayList<Reference>();
+      this.supportingInformation.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #supportingInformation} (The actual objects that are the target of the reference. The reference library doesn't populate this, but you can use this to hold the resources if you resolvethemt. Any additional (administrative, financial or clinical) information required to support request for referral or transfer of care.)
      */
@@ -826,7 +880,7 @@ public class ReferralRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ReferralRequest.fulfillmentTime");
         else if (Configuration.doAutoCreate())
-          this.fulfillmentTime = new Period();
+          this.fulfillmentTime = new Period(); // cc
       return this.fulfillmentTime;
     }
 
@@ -902,6 +956,32 @@ public class ReferralRequest extends DomainResource {
         return copy();
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof ReferralRequest))
+          return false;
+        ReferralRequest o = (ReferralRequest) other;
+        return compareDeep(status, o.status, true) && compareDeep(identifier, o.identifier, true) && compareDeep(type, o.type, true)
+           && compareDeep(specialty, o.specialty, true) && compareDeep(priority, o.priority, true) && compareDeep(patient, o.patient, true)
+           && compareDeep(requester, o.requester, true) && compareDeep(recipient, o.recipient, true) && compareDeep(encounter, o.encounter, true)
+           && compareDeep(dateSent, o.dateSent, true) && compareDeep(reason, o.reason, true) && compareDeep(description, o.description, true)
+           && compareDeep(serviceRequested, o.serviceRequested, true) && compareDeep(supportingInformation, o.supportingInformation, true)
+           && compareDeep(fulfillmentTime, o.fulfillmentTime, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof ReferralRequest))
+          return false;
+        ReferralRequest o = (ReferralRequest) other;
+        return compareValues(status, o.status, true) && compareValues(dateSent, o.dateSent, true) && compareValues(description, o.description, true)
+          ;
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (status == null || status.isEmpty()) && (identifier == null || identifier.isEmpty())
            && (type == null || type.isEmpty()) && (specialty == null || specialty.isEmpty()) && (priority == null || priority.isEmpty())
@@ -917,6 +997,8 @@ public class ReferralRequest extends DomainResource {
     return ResourceType.ReferralRequest;
    }
 
+  @SearchParamDefinition(name="requester", path="ReferralRequest.requester", description="Requester of referral / transfer of care", type="reference" )
+  public static final String SP_REQUESTER = "requester";
   @SearchParamDefinition(name="patient", path="ReferralRequest.patient", description="Who the referral is about", type="reference" )
   public static final String SP_PATIENT = "patient";
   @SearchParamDefinition(name="status", path="ReferralRequest.status", description="The status of the referral", type="token" )

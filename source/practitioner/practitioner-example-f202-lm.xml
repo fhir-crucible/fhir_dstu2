@@ -3,13 +3,13 @@
   <id value="f202"/>
  <identifier><!--The identifier for the person as this practitioner (fictive)-->
     <use value="official"/>
-        <label value="UZI-nummer"/>
+        <type><text value="UZI-nummer"/></type>
         <system value="urn:oid:2.16.528.1.1007.3.1"/>
     <value value="12345678902"/>
  </identifier>
     <identifier><!--The identifier for this individual-->
         <use value="official"/>
-        <label value="BIG-nummer"/>
+        <type><text value="BIG-nummer"/></type>
         <system value="https://www.bigregister.nl/"/>
         <value value="12345678902"/>
     </identifier> 
@@ -40,10 +40,11 @@
         <reference value="Media/@LM-203.bmp"/>
         <display value="Picture_Luigi_Maas"/>
     </photo>-->
-  <organization>
+		<practitionerRole>
+  <managingOrganization>
      <reference value="Organization/f201"/>
      <display value="AUMC"/>
- </organization>
+ </managingOrganization>
  <role>
      <coding>
         <system value="http://snomed.info/sct"/>
@@ -58,4 +59,5 @@
         <display value="Medical laboratory technician"/>
     </coding>
  </specialty>
+		</practitionerRole>
 </Practitioner>

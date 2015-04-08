@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -49,14 +49,14 @@ public class Order extends DomainResource {
         /**
          * Code specifies when request should be done. The code may simply be a priority code.
          */
-        @Child(name="code", type={CodeableConcept.class}, order=1, min=0, max=1)
+        @Child(name ="code", type={CodeableConcept.class}, order=1, min=0, max=1)
         @Description(shortDefinition="Code specifies when request should be done. The code may simply be a priority code", formalDefinition="Code specifies when request should be done. The code may simply be a priority code." )
         protected CodeableConcept code;
 
         /**
          * A formal schedule.
          */
-        @Child(name="schedule", type={Timing.class}, order=2, min=0, max=1)
+        @Child(name ="schedule", type={Timing.class}, order=2, min=0, max=1)
         @Description(shortDefinition="A formal schedule", formalDefinition="A formal schedule." )
         protected Timing schedule;
 
@@ -74,7 +74,7 @@ public class Order extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create OrderWhenComponent.code");
             else if (Configuration.doAutoCreate())
-              this.code = new CodeableConcept();
+              this.code = new CodeableConcept(); // cc
           return this.code;
         }
 
@@ -98,7 +98,7 @@ public class Order extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create OrderWhenComponent.schedule");
             else if (Configuration.doAutoCreate())
-              this.schedule = new Timing();
+              this.schedule = new Timing(); // cc
           return this.schedule;
         }
 
@@ -128,6 +128,26 @@ public class Order extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof OrderWhenComponent))
+          return false;
+        OrderWhenComponent o = (OrderWhenComponent) other;
+        return compareDeep(code, o.code, true) && compareDeep(schedule, o.schedule, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof OrderWhenComponent))
+          return false;
+        OrderWhenComponent o = (OrderWhenComponent) other;
+        return true;
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (code == null || code.isEmpty()) && (schedule == null || schedule.isEmpty())
           ;
@@ -138,33 +158,33 @@ public class Order extends DomainResource {
     /**
      * Identifiers assigned to this order by the orderer or by the receiver.
      */
-    @Child(name="identifier", type={Identifier.class}, order=-1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Identifiers assigned to this order by the orderer or by the receiver", formalDefinition="Identifiers assigned to this order by the orderer or by the receiver." )
     protected List<Identifier> identifier;
 
     /**
      * When the order was made.
      */
-    @Child(name="date", type={DateTimeType.class}, order=0, min=0, max=1)
+    @Child(name ="date", type={DateTimeType.class}, order=1, min=0, max=1)
     @Description(shortDefinition="When the order was made", formalDefinition="When the order was made." )
     protected DateTimeType date;
 
     /**
      * Patient this order is about.
      */
-    @Child(name="subject", type={Patient.class}, order=1, min=0, max=1)
+    @Child(name ="subject", type={Patient.class, Group.class, Device.class, Substance.class}, order=2, min=0, max=1)
     @Description(shortDefinition="Patient this order is about", formalDefinition="Patient this order is about." )
     protected Reference subject;
 
     /**
      * The actual object that is the target of the reference (Patient this order is about.)
      */
-    protected Patient subjectTarget;
+    protected Resource subjectTarget;
 
     /**
      * Who initiated the order.
      */
-    @Child(name="source", type={Practitioner.class}, order=2, min=0, max=1)
+    @Child(name ="source", type={Practitioner.class}, order=3, min=0, max=1)
     @Description(shortDefinition="Who initiated the order", formalDefinition="Who initiated the order." )
     protected Reference source;
 
@@ -176,7 +196,7 @@ public class Order extends DomainResource {
     /**
      * Who is intended to fulfill the order.
      */
-    @Child(name="target", type={Organization.class, Device.class, Practitioner.class}, order=3, min=0, max=1)
+    @Child(name ="target", type={Organization.class, Device.class, Practitioner.class}, order=4, min=0, max=1)
     @Description(shortDefinition="Who is intended to fulfill the order", formalDefinition="Who is intended to fulfill the order." )
     protected Reference target;
 
@@ -188,14 +208,14 @@ public class Order extends DomainResource {
     /**
      * Text - why the order was made.
      */
-    @Child(name="reason", type={CodeableConcept.class}, order=4, min=0, max=1)
+    @Child(name ="reason", type={CodeableConcept.class}, order=5, min=0, max=1)
     @Description(shortDefinition="Text - why the order was made", formalDefinition="Text - why the order was made." )
     protected Type reason;
 
     /**
      * If required by policy.
      */
-    @Child(name="authority", type={}, order=5, min=0, max=1)
+    @Child(name ="authority", type={}, order=6, min=0, max=1)
     @Description(shortDefinition="If required by policy", formalDefinition="If required by policy." )
     protected Reference authority;
 
@@ -207,14 +227,14 @@ public class Order extends DomainResource {
     /**
      * When order should be fulfilled.
      */
-    @Child(name="when", type={}, order=6, min=0, max=1)
+    @Child(name ="when", type={}, order=7, min=0, max=1)
     @Description(shortDefinition="When order should be fulfilled", formalDefinition="When order should be fulfilled." )
     protected OrderWhenComponent when;
 
     /**
      * What action is being ordered.
      */
-    @Child(name="detail", type={}, order=7, min=1, max=Child.MAX_UNLIMITED)
+    @Child(name ="detail", type={}, order=8, min=1, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="What action is being ordered", formalDefinition="What action is being ordered." )
     protected List<Reference> detail;
     /**
@@ -223,7 +243,7 @@ public class Order extends DomainResource {
     protected List<Resource> detailTarget;
 
 
-    private static final long serialVersionUID = 400955487L;
+    private static final long serialVersionUID = 595782234L;
 
     public Order() {
       super();
@@ -259,6 +279,16 @@ public class Order extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Order addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #date} (When the order was made.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
@@ -267,7 +297,7 @@ public class Order extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Order.date");
         else if (Configuration.doAutoCreate())
-          this.date = new DateTimeType();
+          this.date = new DateTimeType(); // bb
       return this.date;
     }
 
@@ -290,14 +320,14 @@ public class Order extends DomainResource {
     /**
      * @return When the order was made.
      */
-    public DateAndTime getDate() { 
+    public Date getDate() { 
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value When the order was made.
      */
-    public Order setDate(DateAndTime value) { 
+    public Order setDate(Date value) { 
       if (value == null)
         this.date = null;
       else {
@@ -316,7 +346,7 @@ public class Order extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Order.subject");
         else if (Configuration.doAutoCreate())
-          this.subject = new Reference();
+          this.subject = new Reference(); // cc
       return this.subject;
     }
 
@@ -335,19 +365,14 @@ public class Order extends DomainResource {
     /**
      * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Patient this order is about.)
      */
-    public Patient getSubjectTarget() { 
-      if (this.subjectTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Order.subject");
-        else if (Configuration.doAutoCreate())
-          this.subjectTarget = new Patient();
+    public Resource getSubjectTarget() { 
       return this.subjectTarget;
     }
 
     /**
      * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Patient this order is about.)
      */
-    public Order setSubjectTarget(Patient value) { 
+    public Order setSubjectTarget(Resource value) { 
       this.subjectTarget = value;
       return this;
     }
@@ -360,7 +385,7 @@ public class Order extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Order.source");
         else if (Configuration.doAutoCreate())
-          this.source = new Reference();
+          this.source = new Reference(); // cc
       return this.source;
     }
 
@@ -384,7 +409,7 @@ public class Order extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Order.source");
         else if (Configuration.doAutoCreate())
-          this.sourceTarget = new Practitioner();
+          this.sourceTarget = new Practitioner(); // aa
       return this.sourceTarget;
     }
 
@@ -404,7 +429,7 @@ public class Order extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Order.target");
         else if (Configuration.doAutoCreate())
-          this.target = new Reference();
+          this.target = new Reference(); // cc
       return this.target;
     }
 
@@ -480,7 +505,7 @@ public class Order extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Order.authority");
         else if (Configuration.doAutoCreate())
-          this.authority = new Reference();
+          this.authority = new Reference(); // cc
       return this.authority;
     }
 
@@ -519,7 +544,7 @@ public class Order extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Order.when");
         else if (Configuration.doAutoCreate())
-          this.when = new OrderWhenComponent();
+          this.when = new OrderWhenComponent(); // cc
       return this.when;
     }
 
@@ -565,6 +590,16 @@ public class Order extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Order addDetail(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.detail == null)
+        this.detail = new ArrayList<Reference>();
+      this.detail.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #detail} (The actual objects that are the target of the reference. The reference library doesn't populate this, but you can use this to hold the resources if you resolvethemt. What action is being ordered.)
      */
@@ -578,7 +613,7 @@ public class Order extends DomainResource {
         super.listChildren(childrenList);
         childrenList.add(new Property("identifier", "Identifier", "Identifiers assigned to this order by the orderer or by the receiver.", 0, java.lang.Integer.MAX_VALUE, identifier));
         childrenList.add(new Property("date", "dateTime", "When the order was made.", 0, java.lang.Integer.MAX_VALUE, date));
-        childrenList.add(new Property("subject", "Reference(Patient)", "Patient this order is about.", 0, java.lang.Integer.MAX_VALUE, subject));
+        childrenList.add(new Property("subject", "Reference(Patient|Group|Device|Substance)", "Patient this order is about.", 0, java.lang.Integer.MAX_VALUE, subject));
         childrenList.add(new Property("source", "Reference(Practitioner)", "Who initiated the order.", 0, java.lang.Integer.MAX_VALUE, source));
         childrenList.add(new Property("target", "Reference(Organization|Device|Practitioner)", "Who is intended to fulfill the order.", 0, java.lang.Integer.MAX_VALUE, target));
         childrenList.add(new Property("reason[x]", "CodeableConcept|Reference(Any)", "Text - why the order was made.", 0, java.lang.Integer.MAX_VALUE, reason));
@@ -612,6 +647,29 @@ public class Order extends DomainResource {
 
       protected Order typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Order))
+          return false;
+        Order o = (Order) other;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(date, o.date, true) && compareDeep(subject, o.subject, true)
+           && compareDeep(source, o.source, true) && compareDeep(target, o.target, true) && compareDeep(reason, o.reason, true)
+           && compareDeep(authority, o.authority, true) && compareDeep(when, o.when, true) && compareDeep(detail, o.detail, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Order))
+          return false;
+        Order o = (Order) other;
+        return compareValues(date, o.date, true);
       }
 
       public boolean isEmpty() {

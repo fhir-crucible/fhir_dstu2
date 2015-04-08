@@ -59,8 +59,8 @@ Resource Content
   <div id="tabs-json">
     <div id="json">
       <p><b>JSON Template</b></p>
-      <div id="xml-inner">
-        <p>todo</p>
+      <div id="json-inner">
+        <%json%>
       </div>
     </div>
   </div>
@@ -89,8 +89,8 @@ Resource Content
     <div id="json">
       <a name="json"> </a>
       <p><b>JSON Template</b></p>
-      <div id="xml-inner">
-        <p>to do</p>
+      <div id="json-inner">
+        <%json%>
       </div>
     </div>  
   </div>
@@ -114,34 +114,28 @@ Resource Content
 
 
 
-<script src="external/jquery/jquery.js"> </script>
+  <script src="external/jquery/jquery.js"> </script>
 <script src="jquery-ui.min.js"> </script>
 <script>
-try {
-  var currentTabIndex = sessionStorage.getItem('fhir-resource-tab-index');
-}
-catch(exception){ 
-  if (navigator.userAgent.toLowerCase().indexof('msie') == -1)
-    alert(exception);
-}
+ try {
+   var currentTabIndex = sessionStorage.getItem('fhir-resource-tab-index');
+ } catch(exception){ 
+ }
+ if (!currentTabIndex)
+   currentTabIndex = '0';
 
-if (!currentTabIndex)
-  currentTabIndex = '0';
-
-$( '#tabs' ).tabs({
-         active: currentTabIndex,
-         activate: function( event, ui ) {
-             var active = $('.selector').tabs('option', 'active');
-             currentTabIndex = ui.newTab.index();
-             try {
-               sessionStorage.setItem('fhir-resource-tab-index', currentTabIndex);
-             }
-             catch(exception){ 
-              if (navigator.userAgent.toLowerCase().indexof('msie') == -1)
-                alert(exception);
-             }
-         }
-     });
+$( '#tabs' ).tabs({ active: currentTabIndex, activate: function( event, ui ) { store(ui.newTab.index()); } });
+<%othertabs setup%>     
+     
+function store(currentTab) {
+  document.activeElement.blur();
+  try {
+    sessionStorage.setItem('fhir-resource-tab-index', currentTab);
+  } catch(exception){ 
+  }
+  $( '#tabs' ).tabs('option', 'active', currentTab);
+<%othertabs store%>     
+}     
 </script>
     
 </body>

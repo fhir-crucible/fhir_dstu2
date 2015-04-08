@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -106,17 +106,17 @@ public class ContactPoint extends Type {
         }
         public String getDisplay() {
           switch (this) {
-            case PHONE: return "phone";
-            case FAX: return "fax";
-            case EMAIL: return "email";
-            case URL: return "url";
+            case PHONE: return "Phone";
+            case FAX: return "Fax";
+            case EMAIL: return "Email";
+            case URL: return "Url";
             default: return "?";
           }
         }
     }
 
-  public static class ContactPointSystemEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class ContactPointSystemEnumFactory implements EnumFactory<ContactPointSystem> {
+    public ContactPointSystem fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -128,9 +128,9 @@ public class ContactPoint extends Type {
           return ContactPointSystem.EMAIL;
         if ("url".equals(codeString))
           return ContactPointSystem.URL;
-        throw new Exception("Unknown ContactPointSystem code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown ContactPointSystem code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(ContactPointSystem code) {
       if (code == ContactPointSystem.PHONE)
         return "phone";
       if (code == ContactPointSystem.FAX)
@@ -215,18 +215,18 @@ public class ContactPoint extends Type {
         }
         public String getDisplay() {
           switch (this) {
-            case HOME: return "home";
-            case WORK: return "work";
-            case TEMP: return "temp";
-            case OLD: return "old";
-            case MOBILE: return "mobile";
+            case HOME: return "Home";
+            case WORK: return "Work";
+            case TEMP: return "Temp";
+            case OLD: return "Old";
+            case MOBILE: return "Mobile";
             default: return "?";
           }
         }
     }
 
-  public static class ContactPointUseEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class ContactPointUseEnumFactory implements EnumFactory<ContactPointUse> {
+    public ContactPointUse fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -240,9 +240,9 @@ public class ContactPoint extends Type {
           return ContactPointUse.OLD;
         if ("mobile".equals(codeString))
           return ContactPointUse.MOBILE;
-        throw new Exception("Unknown ContactPointUse code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown ContactPointUse code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(ContactPointUse code) {
       if (code == ContactPointUse.HOME)
         return "home";
       if (code == ContactPointUse.WORK)
@@ -260,28 +260,28 @@ public class ContactPoint extends Type {
     /**
      * Telecommunications form for contact point - what communications system is required to make use of the contact.
      */
-    @Child(name="system", type={CodeType.class}, order=-1, min=0, max=1)
+    @Child(name ="system", type={CodeType.class}, order=0, min=0, max=1)
     @Description(shortDefinition="phone | fax | email | url", formalDefinition="Telecommunications form for contact point - what communications system is required to make use of the contact." )
     protected Enumeration<ContactPointSystem> system;
 
     /**
      * The actual contact point details, in a form that is meaningful to the designated communication system (i.e. phone number or email address).
      */
-    @Child(name="value", type={StringType.class}, order=0, min=0, max=1)
+    @Child(name ="value", type={StringType.class}, order=1, min=0, max=1)
     @Description(shortDefinition="The actual contact point details", formalDefinition="The actual contact point details, in a form that is meaningful to the designated communication system (i.e. phone number or email address)." )
     protected StringType value;
 
     /**
      * Identifies the purpose for the contact point.
      */
-    @Child(name="use", type={CodeType.class}, order=1, min=0, max=1)
+    @Child(name ="use", type={CodeType.class}, order=2, min=0, max=1)
     @Description(shortDefinition="home | work | temp | old | mobile - purpose of this contact point", formalDefinition="Identifies the purpose for the contact point." )
     protected Enumeration<ContactPointUse> use;
 
     /**
      * Time period when the contact point was/is in use.
      */
-    @Child(name="period", type={Period.class}, order=2, min=0, max=1)
+    @Child(name ="period", type={Period.class}, order=3, min=0, max=1)
     @Description(shortDefinition="Time period when the contact point was/is in use", formalDefinition="Time period when the contact point was/is in use." )
     protected Period period;
 
@@ -299,7 +299,7 @@ public class ContactPoint extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ContactPoint.system");
         else if (Configuration.doAutoCreate())
-          this.system = new Enumeration<ContactPointSystem>();
+          this.system = new Enumeration<ContactPointSystem>(new ContactPointSystemEnumFactory()); // bb
       return this.system;
     }
 
@@ -334,7 +334,7 @@ public class ContactPoint extends Type {
         this.system = null;
       else {
         if (this.system == null)
-          this.system = new Enumeration<ContactPointSystem>();
+          this.system = new Enumeration<ContactPointSystem>(new ContactPointSystemEnumFactory());
         this.system.setValue(value);
       }
       return this;
@@ -348,7 +348,7 @@ public class ContactPoint extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ContactPoint.value");
         else if (Configuration.doAutoCreate())
-          this.value = new StringType();
+          this.value = new StringType(); // bb
       return this.value;
     }
 
@@ -397,7 +397,7 @@ public class ContactPoint extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ContactPoint.use");
         else if (Configuration.doAutoCreate())
-          this.use = new Enumeration<ContactPointUse>();
+          this.use = new Enumeration<ContactPointUse>(new ContactPointUseEnumFactory()); // bb
       return this.use;
     }
 
@@ -432,7 +432,7 @@ public class ContactPoint extends Type {
         this.use = null;
       else {
         if (this.use == null)
-          this.use = new Enumeration<ContactPointUse>();
+          this.use = new Enumeration<ContactPointUse>(new ContactPointUseEnumFactory());
         this.use.setValue(value);
       }
       return this;
@@ -446,7 +446,7 @@ public class ContactPoint extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ContactPoint.period");
         else if (Configuration.doAutoCreate())
-          this.period = new Period();
+          this.period = new Period(); // cc
       return this.period;
     }
 
@@ -482,6 +482,28 @@ public class ContactPoint extends Type {
 
       protected ContactPoint typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof ContactPoint))
+          return false;
+        ContactPoint o = (ContactPoint) other;
+        return compareDeep(system, o.system, true) && compareDeep(value, o.value, true) && compareDeep(use, o.use, true)
+           && compareDeep(period, o.period, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof ContactPoint))
+          return false;
+        ContactPoint o = (ContactPoint) other;
+        return compareValues(system, o.system, true) && compareValues(value, o.value, true) && compareValues(use, o.use, true)
+          ;
       }
 
       public boolean isEmpty() {

@@ -49,6 +49,8 @@ import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.io.FileUtils;
+
 import net.sf.saxon.TransformerFactoryImpl;
 
 public class Utilities {
@@ -234,15 +236,18 @@ public class Utilities {
   }
 
   public static void clearDirectory(String folder) throws IOException {
-	  String[] files = new CSFile(folder).list();
-	  if (files != null) {
-		  for (String f : files) {
-			  File fh = new CSFile(folder+File.separatorChar+f);
-			  if (fh.isDirectory()) 
-				  clearDirectory(fh.getAbsolutePath());
-			  fh.delete();
-		  }
-	  }
+    File dir = new File(folder);
+    if (dir.exists())
+      FileUtils.cleanDirectory(dir);
+//	  String[] files = new CSFile(folder).list();
+//	  if (files != null) {
+//		  for (String f : files) {
+//			  File fh = new CSFile(folder+File.separatorChar+f);
+//			  if (fh.isDirectory()) 
+//				  clearDirectory(fh.getAbsolutePath());
+//			  fh.delete();
+//		  }
+//	  }
   }
 
   public static void createDirectory(String path) throws IOException{
@@ -345,8 +350,12 @@ public class Utilities {
 
 
   public static String appendSlash(String definitions) {
-    return definitions.endsWith(File.separator) ? definitions : definitions+File.separator;
-  }
+	    return definitions.endsWith(File.separator) ? definitions : definitions+File.separator;
+	  }
+
+  public static String appendForwardSlash(String definitions) {
+	    return definitions.endsWith("/") ? definitions : definitions+"/";
+	  }
 
 
   public static String fileTitle(String file) {
@@ -425,7 +434,7 @@ public class Utilities {
     boolean d = false;
     for(String arg: args) {
       if (!d)
-        d = true;
+        d = !noString(arg);
       else if (!s.toString().endsWith(File.separator))
         s.append(File.separator);
       s.append(arg);
@@ -487,9 +496,10 @@ public class Utilities {
   public static String appendPeriod(String s) {
     if (Utilities.noString(s))
       return s;
-    if (s.endsWith("."))
+    s = s.trim();
+    if (s.endsWith(".") || s.endsWith("?"))
       return s;
-    return s.trim()+".";
+    return s+".";
   }
 
 
@@ -644,5 +654,71 @@ public class Utilities {
     boolean ok = s.matches("^http(s{0,1})://[a-zA-Z0-9_/\\-\\.]+\\.([A-Za-z/]{2,5})[a-zA-Z0-9_/\\&\\?\\=\\-\\.\\~\\%]*");
     return ok;
  }
+
+
+  public static String escapeJson(String value) {
+    if (value == null)
+      return "";
+    
+    StringBuilder b = new StringBuilder();
+    for (char c : value.toCharArray()) {
+      if (c == '\r')
+        b.append("\\r");
+      else if (c == '\n')
+        b.append("\\n");
+      else if (c == '"')
+        b.append("\\\"");
+      else if (c == '\'')
+        b.append("\\'");
+      else if (c == '\\')
+        b.append("\\\\");
+      else 
+        b.append(c);
+    }   
+    return b.toString();
+  }
+
+  public static String humanize(String code) {
+    StringBuilder b = new StringBuilder();
+    boolean lastBreak = true;
+    for (char c : code.toCharArray()) {
+      if (Character.isAlphabetic(c)) {
+        if (lastBreak)
+          b.append(Character.toUpperCase(c));
+        else { 
+          if (Character.isUpperCase(c))
+            b.append(" ");          
+          b.append(c);
+        }
+        lastBreak = false;
+      } else {
+        b.append(" ");
+        lastBreak = true;
+      }
+    }
+    if (b.length() == 0)
+      return code;
+    else 
+      return b.toString();
+  }
+
+
+  public static String uncapitalize(String s) {
+    if( s == null ) return null;
+    if( s.length() == 0 ) return s;
+    if( s.length() == 1 ) return s.toLowerCase();
+    
+    return s.substring(0, 1).toLowerCase() + s.substring(1);
+  }
+
+
+  public static int charCount(String s, char c) {
+	  int res = 0;
+	  for (char ch : s.toCharArray())
+		if (ch == c)
+		  res++;
+	  return res;
+  }
+
 
 }

@@ -6,22 +6,10 @@ file: cond-uslab-example2.xml
 Description: USLab Reason For Study Profile Canonical Example: Lead Exposure -->
 <Condition xmlns="http://hl7.org/fhir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../schema/condition.xsd">
 	<id value="uslab-example2"/>
-	<text>
-		<status value="generated"/>
-		<div xmlns="http://www.w3.org/1999/xhtml">
-			<p>Condition/uslab-example1</p>
-			<ul>
-				
-			<li>file: cond-uslab-example2.xml</li>
-			<li> id: uslab-example2</li>
-			<li> Name: USLab Condition Example2</li>
-			<li>Description: USLab  Reason For Study Profile Canonical Example: Lead Exposure</li>
-			</ul>
-		</div>
-	</text>
-	<subject>
-		<reference value="Patient/uslab-example1"/>
-	</subject>
+	<patient>
+		<reference value="Patient/uslab-example2"/>
+		<display value="Todd Lerr"/>
+	</patient>
 	<!--EH note to balloters-  these examples are  to demonstrate content and structure the clinical scenario and ICD coding is artificial and  probably wrong.--><code>
 		<coding>
 			<system value="http://www.cms.gov/Medicare/Coding/ICD10/index.html"/>
@@ -35,8 +23,8 @@ Description: USLab Reason For Study Profile Canonical Example: Lead Exposure -->
 			<code value="diagnosis"/>
 			<display value="Diagnosis"/>
 		</coding>
-		
+
 	</category>
-	<status value="provisional"/>
-	
+	<clinicalStatus value="provisional"/>
+
 </Condition>

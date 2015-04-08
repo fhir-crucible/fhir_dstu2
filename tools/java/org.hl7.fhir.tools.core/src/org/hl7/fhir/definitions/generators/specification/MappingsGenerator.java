@@ -36,12 +36,11 @@ import java.util.List;
 import org.hl7.fhir.definitions.model.Definitions;
 import org.hl7.fhir.definitions.model.ElementDefn;
 import org.hl7.fhir.definitions.model.ResourceDefn;
+import org.hl7.fhir.definitions.model.ResourceDefn.StringPair;
 import org.hl7.fhir.instance.model.ElementDefinition;
 import org.hl7.fhir.instance.model.ElementDefinition.ElementDefinitionMappingComponent;
-import org.hl7.fhir.instance.model.ExtensionDefinition;
-import org.hl7.fhir.instance.model.ExtensionDefinition.ExtensionDefinitionMappingComponent;
-import org.hl7.fhir.instance.model.Profile;
-import org.hl7.fhir.instance.model.Profile.ProfileMappingComponent;
+import org.hl7.fhir.instance.model.StructureDefinition;
+import org.hl7.fhir.instance.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.utilities.Utilities;
 
 public class MappingsGenerator {
@@ -59,6 +58,10 @@ public class MappingsGenerator {
 
   }
 
+  private static final int ROOT_ONLY = 1;
+  private static final int ALL = 2;
+  private static final int CHILDREN_ONLY = 3;
+
   String mappings;
 	String mappingsList;
 	private Definitions definitions;
@@ -70,12 +73,12 @@ public class MappingsGenerator {
   }
 
 
-  public void generate(Profile profile) {
+  public void generate(StructureDefinition profile) {
     if (profile.getMapping().isEmpty())
       mappings = "<p>No Mappings</p>";
     else {
       StringBuilder s = new StringBuilder();
-      for (ProfileMappingComponent map : profile.getMapping()) {
+      for (StructureDefinitionMappingComponent map : profile.getMapping()) {
 
         s.append("<a name=\""+map.getIdentity() +"\"> </a><h3>Mappings for "+map.getName()+" ("+map.getUri()+")</h3>");
         if (map.hasComments())
@@ -102,12 +105,12 @@ public class MappingsGenerator {
     }
   }
   
-  public void generate(ExtensionDefinition ed) {
+  public void generateExtension(StructureDefinition ed) {
     if (ed.getMapping().isEmpty())
       mappings = "<p>No Mappings</p>";
     else {
       StringBuilder s = new StringBuilder();
-      for (ExtensionDefinitionMappingComponent map : ed.getMapping()) {
+      for (StructureDefinitionMappingComponent map : ed.getMapping()) {
 
         s.append("<a name=\""+map.getIdentity() +"\"> </a><h3>Mappings for "+map.getName()+" ("+map.getUri()+")</h3>");
         if (map.hasComments())
@@ -119,7 +122,7 @@ public class MappingsGenerator {
 
         s.append(" <tr><td colspan=\"3\"><b>"+Utilities.escapeXml(ed.getName())+"</b></td></tr>\r\n");
         String path = null;
-        for (ElementDefinition e : ed.getElement()) {
+        for (ElementDefinition e : ed.getSnapshot().getElement()) {
           if (path == null || !e.getPath().startsWith(path)) {
             path = null;
             if (e.hasMax() && e.getMax().equals("0")) {
@@ -185,13 +188,24 @@ public class MappingsGenerator {
 			s.append("<a name=\""+m+"\"> </a><a name=\""+definitions.getMapTypes().get(m).getId()+"\"> </a><h3>Mappings for "+definitions.getMapTypes().get(m).getTitle()+" ("+m+")</h3>");
 			s.append(definitions.getMapTypes().get(m).getPreamble());
 			s.append("<table class=\"grid\">\r\n");
-			genElement(s, 0, resource.getRoot(), m, true);
+      genElement(s, 0, resource.getRoot(), m, ROOT_ONLY);
+			genInherited(s, resource, m);
+			genElement(s, 0, resource.getRoot(), m, CHILDREN_ONLY);
 			s.append("</table>\r\n");
 		}
 	  mappings = s.toString();
 	  mappingsList = list.length() == 0 ? "" : list.toString().substring(1);
 	}
 
+  private void genInherited(StringBuilder s, ResourceDefn resource, String m) {
+    for (StringPair t : resource.getMappings(m)) {
+      s.append(" <tr><td><i>");
+      s.append("&nbsp;");
+      s.append("&nbsp;(");
+      s.append(t.name.contains(".") ? t.name.substring(t.name.indexOf(".")+1) : t.name);
+      s.append(")</i></td><td>"+Utilities.escapeXml(t.value).replace("\n", "<br/>\n")+"</td></tr>\r\n");
+    }
+  }
 
   public void generate(List<ElementDefn> elements) {
 		StringBuilder s = new StringBuilder();
@@ -201,7 +215,6 @@ public class MappingsGenerator {
 		Collections.sort(maps);
 
 		StringBuilder list = new StringBuilder();
-		boolean first = true;
 		for (String m : maps) {
 			list.append("|"+definitions.getMapTypes().get(m).getTitle() + "#"+m);
       s.append("<a name=\""+m+"\"> </a>\r\n");
@@ -210,13 +223,15 @@ public class MappingsGenerator {
 			s.append("<table class=\"grid\">\r\n");
 			for (ElementDefn e : elements) 
 				if (elementHasMapping(e, m)) {
-				  genElement(s, 0, e, m, first);
-				  first = false;
+				  genElement(s, 0, e, m, ALL);
 				}
 			s.append("</table>\r\n");
 		}
 	  mappings = s.toString();
-	  mappingsList = list.toString().substring(1);
+	  if (list.toString().length() > 1)
+	    mappingsList = list.toString().substring(1);
+	  else
+      mappingsList = list.toString();
 	}
 	
 
@@ -231,7 +246,8 @@ public class MappingsGenerator {
 		return false;
 	}
 
-	private void genElement(StringBuilder s, int indent, ElementDefn elem, String m, boolean first) {
+	private void genElement(StringBuilder s, int indent, ElementDefn elem, String m, int children) {
+	  if (children == ROOT_ONLY || children == ALL) {
 		s.append(" <tr><td>");
 		if (indent == 0) {
       s.append("<a name=\""+elem.getName()+"\"> </a>");
@@ -248,9 +264,12 @@ public class MappingsGenerator {
 		else
 		  s.append(elem.getName());
 		s.append("</td><td>"+Utilities.escapeXml(elem.getMappings().get(m)).replace("\n", "<br/>\n")+"</td></tr>\r\n");
-		for (ElementDefn child :elem.getElements()) {
-			genElement(s, indent+1, child, m, false);
+	  }
+    if (children == CHILDREN_ONLY || children == ALL) {
+	  for (ElementDefn child :elem.getElements()) {
+			genElement(s, indent+1, child, m, ALL);
 		}
+    }
 	}
 
 	private void listKnownMappings(ElementDefn e, List<String> maps) {
@@ -261,8 +280,8 @@ public class MappingsGenerator {
 			listKnownMappings(c,  maps);		
 	}
 
-  private void listKnownMappings(Profile profile, List<String> maps) {
-    for (ProfileMappingComponent map : profile.getMapping())
+  private void listKnownMappings(StructureDefinition profile, List<String> maps) {
+    for (StructureDefinitionMappingComponent map : profile.getMapping())
       if (!maps.contains(map.getIdentity()))
         maps.add(map.getIdentity());
   }

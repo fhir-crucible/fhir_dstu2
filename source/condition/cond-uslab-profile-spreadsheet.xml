@@ -10,15 +10,18 @@
   <LastAuthor>Eric Haas</LastAuthor>
   <Created>2012-03-19T11:12:07Z</Created>
   <LastSaved>2014-12-07T04:16:15Z</LastSaved>
-  <Version>12.00</Version>
+  <Version>14.00</Version>
  </DocumentProperties>
+ <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+  <AllowPNG/>
+ </OfficeDocumentSettings>
  <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
   <WindowHeight>8790</WindowHeight>
   <WindowWidth>18015</WindowWidth>
   <WindowTopX>1470</WindowTopX>
   <WindowTopY>915</WindowTopY>
   <TabRatio>761</TabRatio>
-  <ActiveSheet>2</ActiveSheet>
+  <ActiveSheet>1</ActiveSheet>
   <FirstVisibleSheet>1</FirstVisibleSheet>
   <RefModeR1C1/>
   <ProtectStructure>False</ProtectStructure>
@@ -979,7 +982,7 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s74"><Data ss:Type="String">extension.uri</Data></Cell>
-    <Cell ss:StyleID="s79"><Data ss:Type="String">http://hl7.org/fhir/ExtensionDefinition/</Data></Cell>
+    <Cell ss:StyleID="s79"><Data ss:Type="String">http://hl7.org/fhir/StructureDefinition/</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s80"><Data ss:Type="String">introduction</Data></Cell>
@@ -989,7 +992,10 @@
     <Cell ss:StyleID="s82"><Data ss:Type="String">notes</Data></Cell>
     <Cell ss:StyleID="s83"/>
    </Row>
-   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">category</Data></Cell>
+    <Cell><Data ss:Type="String">uslab</Data></Cell>
+   </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
    <PageSetup>
@@ -1003,6 +1009,7 @@
     <HorizontalResolution>600</HorizontalResolution>
     <VerticalResolution>600</VerticalResolution>
    </Print>
+   <Selected/>
    <FreezePanes/>
    <FrozenNoSplit/>
    <SplitHorizontal>1</SplitHorizontal>
@@ -1022,7 +1029,7 @@
     </Pane>
     <Pane>
      <Number>0</Number>
-     <ActiveRow>9</ActiveRow>
+     <ActiveRow>14</ActiveRow>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>
@@ -1203,14 +1210,14 @@
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s105"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><Data ss:Type="String">Condition.subject</Data><NamedCell
+    <Cell ss:StyleID="s106"><Data ss:Type="String">Condition.patient</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><Data ss:Type="String">Patient</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><Data ss:Type="String">1..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s107"><Data ss:Type="String">Reference(Patient){http://hl7.org/fhir/Profile/patient-uslab-uslabpatient}|Reference(Patient){http://hl7.org/fhir/Profile/patient-uslab-uslabphpatient}</Data><NamedCell
+    <Cell ss:StyleID="s107"><Data ss:Type="String">Reference(Patient){http://hl7.org/fhir/StructureDefinition/patient-uslab-uslabpatient}|Reference(Patient){http://hl7.org/fhir/StructureDefinition/patient-uslab-uslabphpatient}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -1555,7 +1562,7 @@
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s105"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><Data ss:Type="String">Condition.status</Data><NamedCell
+    <Cell ss:StyleID="s106"><Data ss:Type="String">Condition.clinicalStatus</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><Data ss:Type="String">1..1</Data><NamedCell
@@ -3806,7 +3813,6 @@
     <HorizontalResolution>600</HorizontalResolution>
     <VerticalResolution>600</VerticalResolution>
    </Print>
-   <Selected/>
    <FreezePanes/>
    <FrozenNoSplit/>
    <SplitHorizontal>1</SplitHorizontal>
@@ -4080,14 +4086,14 @@
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s105"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><Data ss:Type="String">Condition.subject</Data><NamedCell
+    <Cell ss:StyleID="s106"><Data ss:Type="String">Condition.patient</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><Data ss:Type="String">Patient</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><Data ss:Type="String">1..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s107"><Data ss:Type="String">Reference(Patient){http://hl7.org/fhir/Profile/patient-uslab-uslabpatient}|Reference(Patient){http://hl7.org/fhir/Profile/patient-uslab-uslabphpatient}</Data><NamedCell
+    <Cell ss:StyleID="s107"><Data ss:Type="String">Reference(Patient){http://hl7.org/fhir/StructureDefinition/patient-uslab-uslabpatient}|Reference(Patient){http://hl7.org/fhir/StructureDefinition/patient-uslab-uslabphpatient}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -4142,7 +4148,7 @@
     <Cell ss:StyleID="s103"/>
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s104"/>
-    <Cell ss:Index="5" ss:StyleID="s106"><Data ss:Type="String">Condition.coding</Data><NamedCell
+    <Cell ss:Index="5" ss:StyleID="s106"><Data ss:Type="String">Condition.code.coding</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><Data ss:Type="String">ICD-9CM code</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -4172,7 +4178,7 @@
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s105"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><Data ss:Type="String">Condition.coding.system</Data><NamedCell
+    <Cell ss:StyleID="s106"><Data ss:Type="String">Condition.code.coding.system</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><Data ss:Type="String">1..1</Data><NamedCell
@@ -4201,7 +4207,7 @@
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s105"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><Data ss:Type="String">Condition.coding.code</Data><NamedCell
+    <Cell ss:StyleID="s106"><Data ss:Type="String">Condition.code.coding.code</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><Data ss:Type="String">1..1</Data><NamedCell
@@ -4230,7 +4236,7 @@
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s105"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><Data ss:Type="String">Condition.coding.display</Data><NamedCell
+    <Cell ss:StyleID="s106"><Data ss:Type="String">Condition.code.coding.display</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><Data ss:Type="String">0..1</Data><NamedCell
@@ -4405,7 +4411,7 @@
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s105"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><Data ss:Type="String">Condition.status</Data><NamedCell
+    <Cell ss:StyleID="s106"><Data ss:Type="String">Condition.clinicalStatus</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><Data ss:Type="String">1..1</Data><NamedCell
@@ -6596,7 +6602,7 @@
     <Pane>
      <Number>0</Number>
      <ActiveRow>8</ActiveRow>
-     <ActiveCol>10</ActiveCol>
+     <ActiveCol>4</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

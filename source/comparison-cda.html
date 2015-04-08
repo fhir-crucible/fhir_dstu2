@@ -65,7 +65,7 @@ These resources make it clear how to represent common structures like allergies 
 pressure "out of the box" and ensure that there's only one way for core content to be 
 represented.  It does however create the limitation that an appropriate resource must have 
 been defined in order to share content.  In the early stages of FHIR development, it may be 
-necessary to make use of the <a href="other.html">Other</a> resource if an appropriate standard 
+necessary to make use of the <a href="basic.html">Basic</a> resource if an appropriate standard 
 resource has not yet been defined.
 </p>
 <p>
@@ -74,7 +74,7 @@ order to understand the meaning of instances.  (While the meaning can theoretica
 by looking at RIM attributes and codes, the reality is that this is often not safe or sufficient.  
 As such, pretty much every CDA instance includes <i>templateId</i> attribute values scattered 
 throughout the instance to define meaning.  With FHIR, meaning is defined by the resource.  
-<a href="profile.html">Profiles</a> can be used to define extensions, but they never refine the 
+<a href="profiling.html">Profiles</a> can be used to define extensions, but they never refine the 
 meaning of core elements.  While the profiles used in constructing a particular instance can be 
 declared within the instance via <a href="resource.html#tag">tags</a>.  However, such declaration 
 is not required.

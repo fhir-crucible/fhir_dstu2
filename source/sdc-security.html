@@ -14,9 +14,9 @@
 <h3>General Security Considerations</h3>
 <p>
 Some of the SDC transactions make use of patient-specific information.  Even those that merely retrieve empty forms could
-be abused by malicious actors to corrupt the form - resulting in the potential subsequent exposure of patient data.  For this
-reason, all SDC transactions must be appropriately secured with access limited to authorized individuals, data protected 
-while in transit and appropriate audit measure taken.
+be abused by malicious actors to corrupt the form - resulting in the potential subsequent exposure of patient data.  For 
+this reason, all SDC transactions must be appropriately secured with access limited to authorized individuals, data 
+protected while in transit and appropriate audit measures taken.
 </p>
 <p>
 Implementers should be aware of the <a href="security.html">security considerations</a> associated with FHIR transactions,
@@ -37,13 +37,13 @@ For the purposes of SDC, security conformance rules are as follows:
   taking place over a secure network connection.<br/>
   (Using TLS even within a secured network environment is still encouraged to provide defense in depth.)</li>
   <li>Systems SHALL use OAuth or an equivalent mechanism to provide necessary authentication (user or system-level)</li>
-  <li>Systems SHALL use either IHE's ATNA standard for audit logging or an equivalent using the <a href="securityevent.html">SecurityEvent</a>
+  <li>Systems SHALL use either IHE's ATNA standard for audit logging or an equivalent using the <a href="auditevent.html">AuditEvent</a>
   resource</li>
   <li>Where workflow requires digital signatures on forms or on answer submissions, implementers SHALL make use of the
   <a href="provenance.html">Provenance</a> resource to record such signatures.</li>
 </ul>
 
-<h3>Consent</h3>
+<h4>Consent</h4>
 <p>
 The SDC workflow envisions the sharing of patient-identifiable healthcare information from 
 <a href="conformance-sdc-form-filler.html">SDC Form Filler</a> systems to <a href="conformance-sdc-form-manager.html">SDC Form Manager</a>.

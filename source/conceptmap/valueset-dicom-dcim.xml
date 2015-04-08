@@ -6,7 +6,9 @@
     <div xmlns="http://www.w3.org/1999/xhtml">
    <h2>DICOM Code Definitions (DCM)</h2>
    <p>The meanings of codes defined in DICOM, either explicitly or by reference to another part of DICOM or an external reference document or standard</p>
-   <p>These codes are excerpted from Digital Imaging and Communications in Medicine (DICOM) Standard, Part 16: Content Mapping Resource, Copyright 2011 by the National Electrical Manufacturers Association"</p>
+   <p>These codes are excerpted from Digital Imaging and Communications in Medicine (DICOM) Standard, 
+    <a href="http://medical.nema.org/medical/dicom/current/output/chtml/part16/chapter_D.html#table_D-1">Part 16: Content Mapping Resource,</a> 
+    Copyright 1992-2015 by the National Electrical Manufacturers Association"</p>
    <table>
       <tr>
         <td><b>Code</b></td>
@@ -8368,9 +8370,10 @@
       </tr>  
 
     </table>    
+    <p>These codes are excerpted from Digital Imaging and Communications in Medicine (DICOM) Standard, Part 16: Content Mapping Resource, Copyright 2011 by the National Electrical Manufacturers Association</p>
     </div>
   </text>
-  <identifier value="http://nema.org/dicom/vs/dcid"/>
+  <url value="http://nema.org/dicom/vs/dicm"/>
   <version value="01"/>
   <name value="DICOM Code Definitions (DCM)"/>
   <publisher value="NEMA/DICOM"/>
@@ -8379,7 +8382,7 @@
   <status value="active"/>
   <date value="2010-08-26"/>
   <define>
-    <system value="http://nema.org/dicom/dcid"/>
+    <system value="http://nema.org/dicom/dicm"/>
     <caseSensitive value="true"/>
 
     <concept>

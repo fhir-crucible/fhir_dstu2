@@ -47,6 +47,11 @@
               <system value="http://unitsofmeasure.org"/>
               <code value="mg"/>
             </numerator>
+            <denominator>
+              <value value="1"/>
+              <system value="http://unitsofmeasure.org"/>
+              <code value="1"/>
+            </denominator>
           </amount>
         </ingredient>
       </product>
@@ -56,9 +61,8 @@
   <patient>
     <reference value="Patient/example"/>
   </patient>
-  <whenGiven>
-    <start value="2010"/>
-  </whenGiven>
+  <status value="completed"/>
+  <effectiveDateTime value="2010"/>
   <medication>
     <reference value="#2"/> 
   </medication>
@@ -66,8 +70,8 @@
     <schedule>
       <repeat>
         <frequency value="1"/>
-        <duration value="1"/>
-        <units value="d"/>
+        <period value="1"/>
+        <periodUnits value="d"/>
       </repeat>
     </schedule>
     <asNeededBoolean value="true"/>

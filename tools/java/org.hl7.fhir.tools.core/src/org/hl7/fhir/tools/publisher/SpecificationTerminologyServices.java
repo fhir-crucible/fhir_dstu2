@@ -22,12 +22,10 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.hl7.fhir.instance.client.EFhirClientException;
-import org.hl7.fhir.instance.client.IFHIRClient;
 import org.hl7.fhir.instance.client.FHIRSimpleClient;
-import org.hl7.fhir.instance.formats.JsonParser;
-import org.hl7.fhir.instance.formats.JsonParser;
-import org.hl7.fhir.instance.formats.ResourceOrFeed;
+import org.hl7.fhir.instance.client.IFHIRClient;
 import org.hl7.fhir.instance.formats.IParser.OutputStyle;
+import org.hl7.fhir.instance.formats.JsonParser;
 import org.hl7.fhir.instance.model.Bundle;
 import org.hl7.fhir.instance.model.OperationOutcome;
 import org.hl7.fhir.instance.model.OperationOutcome.IssueSeverity;
@@ -37,22 +35,22 @@ import org.hl7.fhir.instance.model.ValueSet;
 import org.hl7.fhir.instance.model.ValueSet.ConceptDefinitionComponent;
 import org.hl7.fhir.instance.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.instance.model.ValueSet.ValueSetComposeComponent;
-import org.hl7.fhir.instance.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.instance.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.instance.utils.ITerminologyServices;
 import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.utilities.xml.XMLWriter;
-import org.tmatesoft.sqljet.core.internal.lang.SqlParser.operation_conflict_clause_return;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class SpecificationTerminologyServices  implements ITerminologyServices {
+public class SpecificationTerminologyServices implements ITerminologyServices {
 
-  public class Concept {
+  public static class Concept {
     private String display; // preferred
     private List<String> displays = new ArrayList<String>();
+
     public boolean has(String d) {
       if (display.equalsIgnoreCase(d))
         return true;
@@ -61,6 +59,7 @@ public class SpecificationTerminologyServices  implements ITerminologyServices {
           return true;
       return false;
     }
+
     public String summary() {
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
       b.append(display);
@@ -69,17 +68,19 @@ public class SpecificationTerminologyServices  implements ITerminologyServices {
           b.append(s);
       return b.toString();
     }
-    
   }
+
   private Map<String, Concept> snomedCodes = new HashMap<String, Concept>();
   private Map<String, Concept> loincCodes = new HashMap<String, Concept>();
   private boolean triedServer = false;
   private boolean serverOk = false;
   private String cache;
+  private String tsServer;
   
-  public SpecificationTerminologyServices(String cache) {
+  public SpecificationTerminologyServices(String cache, String tsServer) {
     super();
     this.cache = cache;
+    this.tsServer = tsServer;
   }
 
   @Override
@@ -128,7 +129,7 @@ public class SpecificationTerminologyServices  implements ITerminologyServices {
       return new ValidationResult(IssueSeverity.WARNING, "Unknown Snomed Code "+code);
   }
 
-  private class SnomedServerResponse  {
+  private static class SnomedServerResponse  {
     String correctExpression;
     String display;
   }
@@ -138,8 +139,8 @@ public class SpecificationTerminologyServices  implements ITerminologyServices {
       triedServer = true;
       serverOk = false;
       HttpClient httpclient = new DefaultHttpClient();
-      HttpGet httpget = new HttpGet("http://fhir.healthintersections.com.au/snomed/tool/"+URLEncoder.encode(code, "UTF-8").replace("+", "%20"));
-//      HttpGet httpget = new HttpGet("http://localhost:960/snomed/tool/"+URLEncoder.encode(code, "UTF-8").replace("+", "%20")); // don't like the url encoded this way
+      // HttpGet httpget = new HttpGet("http://fhir.healthintersections.com.au/snomed/tool/"+URLEncoder.encode(code, "UTF-8").replace("+", "%20"));
+      HttpGet httpget = new HttpGet("http://localhost:960/snomed/tool/"+URLEncoder.encode(code, "UTF-8").replace("+", "%20")); // don't like the url encoded this way
       HttpResponse response = httpclient.execute(httpget);
       HttpEntity entity = response.getEntity();
       InputStream instream = entity.getContent();
@@ -270,7 +271,6 @@ public class SpecificationTerminologyServices  implements ITerminologyServices {
     }
     xml.close("snomed");
     xml.close();
-    
   }
   
   public void loadLoinc(String filename) throws Exception {
@@ -289,10 +289,7 @@ public class SpecificationTerminologyServices  implements ITerminologyServices {
   }
 
   @Override
-  public List<ValueSetExpansionContainsComponent> expandVS(ConceptSetComponent inc) throws Exception {
-    ValueSet vs = new ValueSet();
-    vs.setCompose(new ValueSetComposeComponent());
-    vs.getCompose().getInclude().add(inc);
+  public ValueSet expandVS(ValueSet vs) throws Exception {
     ByteArrayOutputStream b = new  ByteArrayOutputStream();
     JsonParser parser = new JsonParser();
     parser.setOutputStyle(OutputStyle.NORMAL);
@@ -304,10 +301,9 @@ public class SpecificationTerminologyServices  implements ITerminologyServices {
       if (r instanceof OperationOutcome)
         throw new Exception(((OperationOutcome) r).getIssue().get(0).getDetails());
       else
-        return ((ValueSet) ((Bundle)r).getEntry().get(0).getResource()).getExpansion().getContains();
+        return ((ValueSet) ((Bundle)r).getEntry().get(0).getResource());
     }
-    vs.setIdentifier("urn:uuid:"+UUID.randomUUID().toString().toLowerCase()); // that's all we're going to set
-    
+    vs.setUrl("urn:uuid:"+UUID.randomUUID().toString().toLowerCase()); // that's all we're going to set
         
     if (!triedServer || serverOk) {
       try {
@@ -315,15 +311,14 @@ public class SpecificationTerminologyServices  implements ITerminologyServices {
         serverOk = false;
         // for this, we use the FHIR client
         IFHIRClient client = new FHIRSimpleClient();
-        client.initialize("http://fhir.healthintersections.com.au/open");
-        //client.initialize("http://localhost:960/open");
+        client.initialize(tsServer);
         Map<String, String> params = new HashMap<String, String>();
         params.put("_query", "expand");
         params.put("limit", "500");
-        Bundle result = client.searchPost(ValueSet.class, vs, params);
+        ValueSet result = client.expandValueset(vs);
         serverOk = true;
         parser.compose(new FileOutputStream(fn), result);
-        return ((ValueSet) result.getEntry().get(0).getResource()).getExpansion().getContains();
+        return result;
       } catch (EFhirClientException e) {
         serverOk = true;
         parser.compose(new FileOutputStream(fn), e.getServerErrors().get(0));
@@ -334,6 +329,13 @@ public class SpecificationTerminologyServices  implements ITerminologyServices {
       }
     } else
       throw new Exception("Server is not available");
+  }
+  @Override
+  public ValueSetExpansionComponent expandVS(ConceptSetComponent inc) throws Exception {
+    ValueSet vs = new ValueSet();
+    vs.setCompose(new ValueSetComposeComponent());
+    vs.getCompose().getInclude().add(inc);
+    return expandVS(vs).getExpansion();
   }
 
   @Override
@@ -367,7 +369,7 @@ public class SpecificationTerminologyServices  implements ITerminologyServices {
       else
         return ((OperationOutcome) ((Bundle) r).getEntry().get(0).getResource());
     }
-    vs.setIdentifier("urn:uuid:"+UUID.randomUUID().toString().toLowerCase()); // that's all we're going to set
+    vs.setUrl("urn:uuid:"+UUID.randomUUID().toString().toLowerCase()); // that's all we're going to set
         
     if (!triedServer || serverOk) {
       try {
@@ -375,8 +377,7 @@ public class SpecificationTerminologyServices  implements ITerminologyServices {
         serverOk = false;
         // for this, we use the FHIR client
         IFHIRClient client = new FHIRSimpleClient();
-        client.initialize("http://fhir.healthintersections.com.au/open");
-        //client.initialize("http://localhost:961/open");
+        client.initialize(tsServer);
         Map<String, String> params = new HashMap<String, String>();
         params.put("_query", "validate");
         params.put("system", system);
@@ -401,4 +402,5 @@ public class SpecificationTerminologyServices  implements ITerminologyServices {
   public boolean verifiesSystem(String system) {
     return true;
   }
+
 }

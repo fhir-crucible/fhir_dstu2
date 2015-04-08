@@ -31,6 +31,8 @@ package org.hl7.fhir.definitions.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.utilities.Utilities;
+
 
 
 /*
@@ -64,8 +66,9 @@ public class TypeRef {
 		return name;
 	}
 
-	public void setName(String name) {
+	public TypeRef setName(String name) {
 		this.name = name;
+		return this;
 	}
 
 	public List<String> getParams() {
@@ -199,4 +202,8 @@ public class TypeRef {
 				|| tn.equals("uuid") || tn.equals("sid") || tn.equals("id")
 				|| tn.equals("date") || tn.equals("dateTime");
 	}
+
+  public boolean hasProfile() {
+    return !Utilities.noString(profile);
+  }
 }

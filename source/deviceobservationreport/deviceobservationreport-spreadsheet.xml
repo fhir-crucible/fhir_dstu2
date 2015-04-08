@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <?mso-application progid="Excel.Sheet"?>
 <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
  xmlns:o="urn:schemas-microsoft-com:office:office"
@@ -16,10 +16,6 @@
   <AllowPNG/>
  </OfficeDocumentSettings>
  <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
-  <SupBook>
-   <Path>\Users\Lloyd\Documents\SVN\FHIR\build\source\templates\Invariants</Path>
-   <SheetName>Invariants</SheetName>
-  </SupBook>
   <WindowHeight>9084</WindowHeight>
   <WindowWidth>20844</WindowWidth>
   <WindowTopX>0</WindowTopX>
@@ -3579,12 +3575,7 @@
    <Value>&quot;*,Reference(A|B),boolean,string,code,id,oid,uuid,integer,decimal,date,dateTime,time,instant,uri,base64Binary,CodeableConcept,Coding,Identifier,Period,Timing,Range,Quantity,Age,Distance,Duration,Count,Money,Ratio,HumanName,Address,ContactPoint,SampledData&quot;</Value>
    <ErrorHide/>
   </DataValidation>
-  <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C4,R4C4:R100C4</Range>
-   <Type>List</Type>
-   <Value>'\Users\Lloyd\Documents\SVN\FHIR\build\source\templates\[Invariants]Invariants'!#REF!</Value>
-   <ErrorHide/>
-  </DataValidation>
+
   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
    <Range>R2C3:R100C3</Range>
    <Type>List</Type>
@@ -5662,9 +5653,9 @@
    </Condition>
   </ConditionalFormatting>
  </Worksheet>
- <Worksheet ss:Name="Packages">
+ <Worksheet ss:Name="Profiles">
   <Names>
-   <NamedRange ss:Name="_FilterDatabase" ss:RefersTo="=Packages!R1C1:R2C4"/>
+   <NamedRange ss:Name="_FilterDatabase" ss:RefersTo="=Profiles!R1C1:R2C4"/>
   </Names>
   <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="41" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s111" ss:DefaultRowHeight="15">

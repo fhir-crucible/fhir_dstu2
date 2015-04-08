@@ -49,14 +49,14 @@
       </table>
     </div>
   </text>
-  <date value="2006-01-13T23:01:00"/>
+  <date value="2006-01-13T23:01:00Z"/>
   <method>
     <coding>
       <code value="BRCAPRO"/>
     </coding>
   </method>
   <basis>
-    <reference value="FamilyHistory/"/>
+    <reference value="List/prognosis"/>
   </basis>
   <prediction>
     <outcome>

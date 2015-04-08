@@ -19,14 +19,16 @@
 
     The identifier should be globally unique - a UUID, an OID, or a URL/URI
    -->
-  <identifier value="68D043B5-9ECF-4559-A57A-396E0D452311"/>
+  <url value="68D043B5-9ECF-4559-A57A-396E0D452311"/>
   <version value="20130510"/>
   <name value="ACME EHR Conformance statement"/>
   <publisher value="ACME Corporation"/>
-  <telecom>
+  <contact>
+    <telecom>
     <system value="email"/>
     <value value="wile@acme.org"/>
   </telecom>
+  </contact>
   <description value="This is the FHIR conformance statement for the main EHR at ACME for the private interface - it does not describe the public interface"/>
   <date value="2012-01-04"/>
   <software>
@@ -105,10 +107,10 @@
       <!-- specify a profile for the request person. Very often there's no point profiling 
         the response, it's not interesting -->
       <request>
-        <reference value="Profile/101"/>
+        <reference value="StructureDefinition/101"/>
       </request> 
       <response>
-        <reference value="Profile/101"/>
+        <reference value="StructureDefinition/101"/>
       </response> 
     </event>
   </messaging>

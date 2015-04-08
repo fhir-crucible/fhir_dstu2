@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -47,21 +47,21 @@ public class Basic extends DomainResource {
     /**
      * Identifier assigned to the resource for business purposes, outside the context of FHIR.
      */
-    @Child(name="identifier", type={Identifier.class}, order=-1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Business identifier", formalDefinition="Identifier assigned to the resource for business purposes, outside the context of FHIR." )
     protected List<Identifier> identifier;
 
     /**
      * Identifies the 'type' of resource - equivalent to the resource name for other resources.
      */
-    @Child(name="code", type={CodeableConcept.class}, order=0, min=1, max=1)
+    @Child(name ="code", type={CodeableConcept.class}, order=1, min=1, max=1)
     @Description(shortDefinition="Kind of Resource", formalDefinition="Identifies the 'type' of resource - equivalent to the resource name for other resources." )
     protected CodeableConcept code;
 
     /**
      * Identifies the patient, practitioner, device or any other resource that is the "focus" of this resoruce.
      */
-    @Child(name="subject", type={}, order=1, min=0, max=1)
+    @Child(name ="subject", type={}, order=2, min=0, max=1)
     @Description(shortDefinition="Identifies the", formalDefinition="Identifies the patient, practitioner, device or any other resource that is the 'focus' of this resoruce." )
     protected Reference subject;
 
@@ -73,7 +73,7 @@ public class Basic extends DomainResource {
     /**
      * Indicates who was responsible for creating the resource instance.
      */
-    @Child(name="author", type={Practitioner.class, Patient.class, RelatedPerson.class}, order=2, min=0, max=1)
+    @Child(name ="author", type={Practitioner.class, Patient.class, RelatedPerson.class}, order=3, min=0, max=1)
     @Description(shortDefinition="Who created", formalDefinition="Indicates who was responsible for creating the resource instance." )
     protected Reference author;
 
@@ -85,7 +85,7 @@ public class Basic extends DomainResource {
     /**
      * Identifies when the resource was first created.
      */
-    @Child(name="created", type={DateType.class}, order=3, min=0, max=1)
+    @Child(name ="created", type={DateType.class}, order=4, min=0, max=1)
     @Description(shortDefinition="When created", formalDefinition="Identifies when the resource was first created." )
     protected DateType created;
 
@@ -130,6 +130,16 @@ public class Basic extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Basic addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #code} (Identifies the 'type' of resource - equivalent to the resource name for other resources.)
      */
@@ -138,7 +148,7 @@ public class Basic extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Basic.code");
         else if (Configuration.doAutoCreate())
-          this.code = new CodeableConcept();
+          this.code = new CodeableConcept(); // cc
       return this.code;
     }
 
@@ -162,7 +172,7 @@ public class Basic extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Basic.subject");
         else if (Configuration.doAutoCreate())
-          this.subject = new Reference();
+          this.subject = new Reference(); // cc
       return this.subject;
     }
 
@@ -201,7 +211,7 @@ public class Basic extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Basic.author");
         else if (Configuration.doAutoCreate())
-          this.author = new Reference();
+          this.author = new Reference(); // cc
       return this.author;
     }
 
@@ -240,7 +250,7 @@ public class Basic extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Basic.created");
         else if (Configuration.doAutoCreate())
-          this.created = new DateType();
+          this.created = new DateType(); // bb
       return this.created;
     }
 
@@ -263,14 +273,14 @@ public class Basic extends DomainResource {
     /**
      * @return Identifies when the resource was first created.
      */
-    public DateAndTime getCreated() { 
+    public Date getCreated() { 
       return this.created == null ? null : this.created.getValue();
     }
 
     /**
      * @param value Identifies when the resource was first created.
      */
-    public Basic setCreated(DateAndTime value) { 
+    public Basic setCreated(Date value) { 
       if (value == null)
         this.created = null;
       else {
@@ -309,6 +319,27 @@ public class Basic extends DomainResource {
         return copy();
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Basic))
+          return false;
+        Basic o = (Basic) other;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(code, o.code, true) && compareDeep(subject, o.subject, true)
+           && compareDeep(author, o.author, true) && compareDeep(created, o.created, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Basic))
+          return false;
+        Basic o = (Basic) other;
+        return compareValues(created, o.created, true);
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (identifier == null || identifier.isEmpty()) && (code == null || code.isEmpty())
            && (subject == null || subject.isEmpty()) && (author == null || author.isEmpty()) && (created == null || created.isEmpty())
@@ -320,6 +351,8 @@ public class Basic extends DomainResource {
     return ResourceType.Basic;
    }
 
+  @SearchParamDefinition(name="author", path="Basic.author", description="Who created", type="reference" )
+  public static final String SP_AUTHOR = "author";
   @SearchParamDefinition(name="patient", path="Basic.subject", description="Identifies the", type="reference" )
   public static final String SP_PATIENT = "patient";
   @SearchParamDefinition(name="created", path="Basic.created", description="When created", type="date" )

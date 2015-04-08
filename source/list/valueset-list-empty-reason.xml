@@ -2,16 +2,19 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../schema/valueset.xsd">
   <name value="List Empty Reasons"/>
   <publisher value="FHIR Project"/>
-  <telecom>  
+  <contact>
+    <telecom>  
     <system value="url"/>
     <value value="http://hl7.org/fhir"/>
   </telecom>
+  </contact>
   <description value="General reasons for a list to be empty. Reasons are either related to a summary list (i.e. problem or medication list) or to a workflow related list (i.e. consultation list)"/>
   <status value="draft"/>
   <define>
     <system value="http://hl7.org/fhir/list-empty-reason"/>
+    <caseSensitive value="true"/>      
     <concept>
-      <extension url="http://hl7.org/fhir/ExtensionDefinition/valueset-comments">
+      <extension url="http://hl7.org/fhir/StructureDefinition/valueset-comments">
         <valueString value="Other language is sometimes used for this concept, such as 'no significant [x] known'.&#13;&#10;SNOMED CT includes many codes for this general concept, but no single generalisation. If using SNOMED CT, use this code and the appropriate specific SNOMED CT code"/>
       </extension>
       <code value="nilknown"/>
@@ -27,7 +30,7 @@
       <definition value="THe investigation to find out whether there are items for this list has not occurred"/>
     </concept>
     <concept>
-      <extension url="http://hl7.org/fhir/ExtensionDefinition/valueset-comments">
+      <extension url="http://hl7.org/fhir/StructureDefinition/valueset-comments">
         <valueString value="In spite of the definition, this code should be used carefully as it represents potential information leakage or the perception thereof"/>
       </extension>
       <code value="withheld"/>

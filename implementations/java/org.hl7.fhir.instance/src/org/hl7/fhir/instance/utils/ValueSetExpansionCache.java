@@ -35,6 +35,7 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.instance.client.EFhirClientException;
 import org.hl7.fhir.instance.formats.XmlParser;
 import org.hl7.fhir.instance.model.OperationOutcome;
@@ -50,27 +51,29 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
 
 	  @Override
 	  public ValueSetExpansionOutcome expand(ValueSet source) throws ETooCostly {
-	  	if (expansions.containsKey(source.getIdentifier()))
-	  		return expansions.get(source.getIdentifier());
+	  	if (expansions.containsKey(source.getUrl()))
+	  		return expansions.get(source.getUrl());
 	  	ValueSetExpander vse = new ValueSetExpanderSimple(context, ValueSetExpansionCache.this);
 	  	ValueSetExpansionOutcome vso = vse.expand(source);
 	  	if (vso.getError() != null && context.hasClient()) {
 	  	  // well, we'll see if the designated server can expand it, and if it can, we'll cache it locally
 	  	  try {
 	  	    vso = new ValueSetExpansionOutcome(context.getClient().expandValueset(source), null);
-	  	    new XmlParser().compose(new FileOutputStream(Utilities.path(cacheFolder, makeFile(source.getIdentifier()))), vso.getValueset(), true);
+	  	    new XmlParser().compose(new FileOutputStream(Utilities.path(cacheFolder, makeFile(source.getUrl()))), vso.getValueset(), true);
 	  	  } catch (EFhirClientException e) {
           try {
+            if (!e.getServerErrors().isEmpty()) {
             OperationOutcome oo = e.getServerErrors().get(0);
-            ToolingExtensions.setStringExtension(oo, VS_ID_EXT, source.getIdentifier());
-            new XmlParser().compose(new FileOutputStream(Utilities.path(cacheFolder, makeFile(source.getIdentifier()))), oo, true);
+            ToolingExtensions.setStringExtension(oo, VS_ID_EXT, source.getUrl());
+            new XmlParser().compose(new FileOutputStream(Utilities.path(cacheFolder, makeFile(source.getUrl()))), oo, true);
+            }
             vso = new ValueSetExpansionOutcome(vso.getService(), e.getMessage());
           } catch (Exception e1) {
           }
         } catch (Exception e) {
 	  	  }
 	  	}
-	  	expansions.put(source.getIdentifier(), vso);
+	  	expansions.put(source.getUrl(), vso);
 	  	return vso;
 	  }
 
@@ -81,32 +84,38 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
 
   private static final String VS_ID_EXT = "http://tools/cache";
 
-	private Map<String, ValueSetExpansionOutcome> expansions = new HashMap<String, ValueSetExpansionOutcome>();
-  private WorkerContext context;
-  private String cacheFolder;
+  private final Map<String, ValueSetExpansionOutcome> expansions = new HashMap<String, ValueSetExpansionOutcome>();
+  private final WorkerContext context;
+  private final String cacheFolder;
 	
-	public ValueSetExpansionCache(WorkerContext context, String cacheFolder) throws Exception {
+  public ValueSetExpansionCache(WorkerContext context, String cacheFolder) throws Exception {
     super();
     this.context = context;
     this.cacheFolder = cacheFolder;
     if (this.cacheFolder != null)
       loadCache();
   }
-  
-	private void loadCache() throws Exception {
-	  String[] files = new File(cacheFolder).list();
-    for (String f : files) {
-      if (f.endsWith(".xml")) {
-        Resource r = (ValueSet) new XmlParser().parse(new FileInputStream(Utilities.path(cacheFolder, f)));
-        if (r instanceof OperationOutcome) {
-          OperationOutcome oo = (OperationOutcome) r;
-          expansions.put(ToolingExtensions.getExtension(oo,VS_ID_EXT).getValue().toString(), new ValueSetExpansionOutcome(new XhtmlComposer().setXmlOnly(true).composePlainText(oo.getText().getDiv())));
-        } else {
-          ValueSet vs = (ValueSet) r; 
-          expansions.put(vs.getIdentifier(), new ValueSetExpansionOutcome(vs, null));
+
+  private void loadCache() throws Exception {
+        File[] files = new File(cacheFolder).listFiles();
+        for (File f : files) {
+            if (f.getName().endsWith(".xml")) {
+                final FileInputStream is = new FileInputStream(f);
+                try {
+                    Resource r = new XmlParser().parse(is);
+                    if (r instanceof OperationOutcome) {
+                        OperationOutcome oo = (OperationOutcome) r;
+                        expansions.put(ToolingExtensions.getExtension(oo, VS_ID_EXT).getValue().toString(),
+                                new ValueSetExpansionOutcome(new XhtmlComposer().setXmlOnly(true).composePlainText(oo.getText().getDiv())));
+                    } else {
+                        ValueSet vs = (ValueSet) r;
+                        expansions.put(vs.getUrl(), new ValueSetExpansionOutcome(vs, null));
+                    }
+                } finally {
+                    IOUtils.closeQuietly(is);
+                }
+            }
         }
-      }
-    }
   }
   
 	@Override

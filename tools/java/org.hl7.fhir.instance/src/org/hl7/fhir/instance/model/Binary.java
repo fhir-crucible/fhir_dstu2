@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -48,14 +48,14 @@ public class Binary extends Resource {
     /**
      * MimeType of the binary content represented as a standard MimeType (BCP 13).
      */
-    @Child(name="contentType", type={CodeType.class}, order=-1, min=1, max=1)
+    @Child(name ="contentType", type={CodeType.class}, order=0, min=1, max=1)
     @Description(shortDefinition="MimeType of the binary content", formalDefinition="MimeType of the binary content represented as a standard MimeType (BCP 13)." )
     protected CodeType contentType;
 
     /**
      * The actual content, base64 encoded.
      */
-    @Child(name="content", type={Base64BinaryType.class}, order=0, min=1, max=1)
+    @Child(name ="content", type={Base64BinaryType.class}, order=1, min=1, max=1)
     @Description(shortDefinition="The actual content", formalDefinition="The actual content, base64 encoded." )
     protected Base64BinaryType content;
 
@@ -79,7 +79,7 @@ public class Binary extends Resource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Binary.contentType");
         else if (Configuration.doAutoCreate())
-          this.contentType = new CodeType();
+          this.contentType = new CodeType(); // bb
       return this.contentType;
     }
 
@@ -124,7 +124,7 @@ public class Binary extends Resource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Binary.content");
         else if (Configuration.doAutoCreate())
-          this.content = new Base64BinaryType();
+          this.content = new Base64BinaryType(); // bb
       return this.content;
     }
 
@@ -177,6 +177,26 @@ public class Binary extends Resource {
 
       protected Binary typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Binary))
+          return false;
+        Binary o = (Binary) other;
+        return compareDeep(contentType, o.contentType, true) && compareDeep(content, o.content, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Binary))
+          return false;
+        Binary o = (Binary) other;
+        return compareValues(contentType, o.contentType, true) && compareValues(content, o.content, true);
       }
 
       public boolean isEmpty() {

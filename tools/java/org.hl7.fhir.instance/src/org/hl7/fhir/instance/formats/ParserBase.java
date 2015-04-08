@@ -39,9 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
-import org.hl7.fhir.instance.model.DateAndTime;
 import org.hl7.fhir.instance.model.Resource;
-import org.hl7.fhir.instance.model.Resource.ResourceMetaComponent;
 import org.hl7.fhir.instance.model.Type;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -56,15 +54,6 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   public Resource parse(byte[] bytes) throws Exception {
     ByteArrayInputStream bi = new ByteArrayInputStream(bytes);
   	return parse(bi);
-  }
-
-  public ResourceMetaComponent parseMeta(String input) throws Exception {
-    return parseMeta(input.getBytes("UTF-8"));
-  }
-
-  public ResourceMetaComponent parseMeta(byte[] bytes) throws Exception {
-    ByteArrayInputStream bi = new ByteArrayInputStream(bytes);
-    return parseMeta(bi);
   }
 
   public Type parseType(String input, String typeName) throws Exception {
@@ -86,16 +75,6 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     return bytes.toByteArray();
   }
 
-  public String composeString(ResourceMetaComponent meta) throws Exception {
-    return new String(composeBytes(meta));
-  }
-
-  public byte[] composeBytes(ResourceMetaComponent meta) throws Exception {
-    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    compose(bytes, meta);
-    return bytes.toByteArray();
-  }
-  
   public String composeString(Type type, String typeName) throws Exception {
     return new String(composeBytes(type, typeName));
   }
@@ -177,17 +156,8 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   }
 
 
-  protected DateAndTime parseDateTimePrimitive(String value) throws ParseException {
-    return new DateAndTime(value);
-  }
-
-
   protected String parseCodePrimitive(String value) {
     return value;
-  }
-
-  protected DateAndTime parseDatePrimitive(String value) throws ParseException {
-    return new DateAndTime(value);
   }
 
   protected String parseTimePrimitive(String value) throws ParseException {
@@ -222,10 +192,6 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     return java.lang.Boolean.valueOf(value);
   }
   
-  protected DateAndTime parseInstantPrimitive(String value) throws Exception {
-    return new DateAndTime(value);
-  }
-
   protected String parseIdPrimitive(String value) {
     return value;
   }

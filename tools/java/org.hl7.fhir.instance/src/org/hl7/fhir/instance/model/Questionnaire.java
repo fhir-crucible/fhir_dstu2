@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -107,8 +107,8 @@ public class Questionnaire extends DomainResource {
         }
     }
 
-  public static class QuestionnaireStatusEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class QuestionnaireStatusEnumFactory implements EnumFactory<QuestionnaireStatus> {
+    public QuestionnaireStatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -118,9 +118,9 @@ public class Questionnaire extends DomainResource {
           return QuestionnaireStatus.PUBLISHED;
         if ("retired".equals(codeString))
           return QuestionnaireStatus.RETIRED;
-        throw new Exception("Unknown QuestionnaireStatus code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown QuestionnaireStatus code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(QuestionnaireStatus code) {
       if (code == QuestionnaireStatus.DRAFT)
         return "draft";
       if (code == QuestionnaireStatus.PUBLISHED)
@@ -169,6 +169,10 @@ public class Questionnaire extends DomainResource {
          */
         TEXT, 
         /**
+         * Answer is a url (website, FTP site, etc.).
+         */
+        URL, 
+        /**
          * Answer is a choice from a list of options.
          */
         CHOICE, 
@@ -213,6 +217,8 @@ public class Questionnaire extends DomainResource {
           return STRING;
         if ("text".equals(codeString))
           return TEXT;
+        if ("url".equals(codeString))
+          return URL;
         if ("choice".equals(codeString))
           return CHOICE;
         if ("open-choice".equals(codeString))
@@ -236,6 +242,7 @@ public class Questionnaire extends DomainResource {
             case TIME: return "time";
             case STRING: return "string";
             case TEXT: return "text";
+            case URL: return "url";
             case CHOICE: return "choice";
             case OPENCHOICE: return "open-choice";
             case ATTACHMENT: return "attachment";
@@ -255,6 +262,7 @@ public class Questionnaire extends DomainResource {
             case TIME: return "";
             case STRING: return "";
             case TEXT: return "";
+            case URL: return "";
             case CHOICE: return "";
             case OPENCHOICE: return "";
             case ATTACHMENT: return "";
@@ -274,6 +282,7 @@ public class Questionnaire extends DomainResource {
             case TIME: return "Answer is a time independent of date.";
             case STRING: return "Answer is a short (few words to short sentence) free-text entry.";
             case TEXT: return "Answer is a long (potentially multi-paragram) free-text entry.";
+            case URL: return "Answer is a url (website, FTP site, etc.).";
             case CHOICE: return "Answer is a choice from a list of options.";
             case OPENCHOICE: return "Answer is a choice from a list of options or a free-text entry.";
             case ATTACHMENT: return "Answer is binary content such as a image, PDF, etc.";
@@ -284,27 +293,28 @@ public class Questionnaire extends DomainResource {
         }
         public String getDisplay() {
           switch (this) {
-            case BOOLEAN: return "boolean";
-            case DECIMAL: return "decimal";
-            case INTEGER: return "integer";
-            case DATE: return "date";
-            case DATETIME: return "dateTime";
-            case INSTANT: return "instant";
-            case TIME: return "time";
-            case STRING: return "string";
-            case TEXT: return "text";
-            case CHOICE: return "choice";
-            case OPENCHOICE: return "open-choice";
-            case ATTACHMENT: return "attachment";
-            case REFERENCE: return "reference";
-            case QUANTITY: return "quantity";
+            case BOOLEAN: return "Boolean";
+            case DECIMAL: return "Decimal";
+            case INTEGER: return "Integer";
+            case DATE: return "Date";
+            case DATETIME: return "Date Time";
+            case INSTANT: return "Instant";
+            case TIME: return "Time";
+            case STRING: return "String";
+            case TEXT: return "Text";
+            case URL: return "Url";
+            case CHOICE: return "Choice";
+            case OPENCHOICE: return "Open Choice";
+            case ATTACHMENT: return "Attachment";
+            case REFERENCE: return "Reference";
+            case QUANTITY: return "Quantity";
             default: return "?";
           }
         }
     }
 
-  public static class AnswerFormatEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class AnswerFormatEnumFactory implements EnumFactory<AnswerFormat> {
+    public AnswerFormat fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -326,6 +336,8 @@ public class Questionnaire extends DomainResource {
           return AnswerFormat.STRING;
         if ("text".equals(codeString))
           return AnswerFormat.TEXT;
+        if ("url".equals(codeString))
+          return AnswerFormat.URL;
         if ("choice".equals(codeString))
           return AnswerFormat.CHOICE;
         if ("open-choice".equals(codeString))
@@ -336,9 +348,9 @@ public class Questionnaire extends DomainResource {
           return AnswerFormat.REFERENCE;
         if ("quantity".equals(codeString))
           return AnswerFormat.QUANTITY;
-        throw new Exception("Unknown AnswerFormat code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown AnswerFormat code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(AnswerFormat code) {
       if (code == AnswerFormat.BOOLEAN)
         return "boolean";
       if (code == AnswerFormat.DECIMAL)
@@ -357,6 +369,8 @@ public class Questionnaire extends DomainResource {
         return "string";
       if (code == AnswerFormat.TEXT)
         return "text";
+      if (code == AnswerFormat.URL)
+        return "url";
       if (code == AnswerFormat.CHOICE)
         return "choice";
       if (code == AnswerFormat.OPENCHOICE)
@@ -374,58 +388,58 @@ public class Questionnaire extends DomainResource {
     @Block()
     public static class GroupComponent extends BackboneElement {
         /**
-         * A identifier that is unique within the questionnaire allowing linkage to the equivalent group in a QuestionnaireAnswers resource.
+         * An identifier that is unique within the questionnaire allowing linkage to the equivalent group in a QuestionnaireAnswers resource.
          */
-        @Child(name="linkId", type={StringType.class}, order=1, min=0, max=1)
-        @Description(shortDefinition="To link questionnaire with questionnaire answers", formalDefinition="A identifier that is unique within the questionnaire allowing linkage to the equivalent group in a QuestionnaireAnswers resource." )
+        @Child(name ="linkId", type={StringType.class}, order=1, min=0, max=1)
+        @Description(shortDefinition="To link questionnaire with questionnaire answers", formalDefinition="An identifier that is unique within the questionnaire allowing linkage to the equivalent group in a QuestionnaireAnswers resource." )
         protected StringType linkId;
 
         /**
          * The human-readable name for this section of the questionnaire.
          */
-        @Child(name="title", type={StringType.class}, order=2, min=0, max=1)
+        @Child(name ="title", type={StringType.class}, order=2, min=0, max=1)
         @Description(shortDefinition="Name to be displayed for group", formalDefinition="The human-readable name for this section of the questionnaire." )
         protected StringType title;
 
         /**
          * Identifies a how this group of questions is known in a particular terminology such as LOINC.
          */
-        @Child(name="concept", type={Coding.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name ="concept", type={Coding.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
         @Description(shortDefinition="Concept that represents this section on a questionnaire", formalDefinition="Identifies a how this group of questions is known in a particular terminology such as LOINC." )
         protected List<Coding> concept;
 
         /**
          * Additional text for the group, used for display purposes.
          */
-        @Child(name="text", type={StringType.class}, order=4, min=0, max=1)
+        @Child(name ="text", type={StringType.class}, order=4, min=0, max=1)
         @Description(shortDefinition="Additional text for the group", formalDefinition="Additional text for the group, used for display purposes." )
         protected StringType text;
 
         /**
          * If true, indicates that the group must be present and have required questions within it answered.  If false, the group may be skipped when answering the questionnaire.
          */
-        @Child(name="required", type={BooleanType.class}, order=5, min=0, max=1)
+        @Child(name ="required", type={BooleanType.class}, order=5, min=0, max=1)
         @Description(shortDefinition="Must group be included in data results?", formalDefinition="If true, indicates that the group must be present and have required questions within it answered.  If false, the group may be skipped when answering the questionnaire." )
         protected BooleanType required;
 
         /**
          * Whether the group may occur multiple times in the instance, containing multiple sets of answers.
          */
-        @Child(name="repeats", type={BooleanType.class}, order=6, min=0, max=1)
+        @Child(name ="repeats", type={BooleanType.class}, order=6, min=0, max=1)
         @Description(shortDefinition="Whether the group may repeat", formalDefinition="Whether the group may occur multiple times in the instance, containing multiple sets of answers." )
         protected BooleanType repeats;
 
         /**
          * A sub-group within a group. The ordering of groups within this group is relevant.
          */
-        @Child(name="group", type={GroupComponent.class}, order=7, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name ="group", type={GroupComponent.class}, order=7, min=0, max=Child.MAX_UNLIMITED)
         @Description(shortDefinition="Nested questionnaire group", formalDefinition="A sub-group within a group. The ordering of groups within this group is relevant." )
         protected List<GroupComponent> group;
 
         /**
          * Set of questions within this group. The order of questions within the group is relevant.
          */
-        @Child(name="question", type={}, order=8, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name ="question", type={}, order=8, min=0, max=Child.MAX_UNLIMITED)
         @Description(shortDefinition="Questions in this group", formalDefinition="Set of questions within this group. The order of questions within the group is relevant." )
         protected List<QuestionComponent> question;
 
@@ -436,14 +450,14 @@ public class Questionnaire extends DomainResource {
       }
 
         /**
-         * @return {@link #linkId} (A identifier that is unique within the questionnaire allowing linkage to the equivalent group in a QuestionnaireAnswers resource.). This is the underlying object with id, value and extensions. The accessor "getLinkId" gives direct access to the value
+         * @return {@link #linkId} (An identifier that is unique within the questionnaire allowing linkage to the equivalent group in a QuestionnaireAnswers resource.). This is the underlying object with id, value and extensions. The accessor "getLinkId" gives direct access to the value
          */
         public StringType getLinkIdElement() { 
           if (this.linkId == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create GroupComponent.linkId");
             else if (Configuration.doAutoCreate())
-              this.linkId = new StringType();
+              this.linkId = new StringType(); // bb
           return this.linkId;
         }
 
@@ -456,7 +470,7 @@ public class Questionnaire extends DomainResource {
         }
 
         /**
-         * @param value {@link #linkId} (A identifier that is unique within the questionnaire allowing linkage to the equivalent group in a QuestionnaireAnswers resource.). This is the underlying object with id, value and extensions. The accessor "getLinkId" gives direct access to the value
+         * @param value {@link #linkId} (An identifier that is unique within the questionnaire allowing linkage to the equivalent group in a QuestionnaireAnswers resource.). This is the underlying object with id, value and extensions. The accessor "getLinkId" gives direct access to the value
          */
         public GroupComponent setLinkIdElement(StringType value) { 
           this.linkId = value;
@@ -464,14 +478,14 @@ public class Questionnaire extends DomainResource {
         }
 
         /**
-         * @return A identifier that is unique within the questionnaire allowing linkage to the equivalent group in a QuestionnaireAnswers resource.
+         * @return An identifier that is unique within the questionnaire allowing linkage to the equivalent group in a QuestionnaireAnswers resource.
          */
         public String getLinkId() { 
           return this.linkId == null ? null : this.linkId.getValue();
         }
 
         /**
-         * @param value A identifier that is unique within the questionnaire allowing linkage to the equivalent group in a QuestionnaireAnswers resource.
+         * @param value An identifier that is unique within the questionnaire allowing linkage to the equivalent group in a QuestionnaireAnswers resource.
          */
         public GroupComponent setLinkId(String value) { 
           if (Utilities.noString(value))
@@ -492,7 +506,7 @@ public class Questionnaire extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create GroupComponent.title");
             else if (Configuration.doAutoCreate())
-              this.title = new StringType();
+              this.title = new StringType(); // bb
           return this.title;
         }
 
@@ -563,6 +577,16 @@ public class Questionnaire extends DomainResource {
           return t;
         }
 
+    // syntactic sugar
+        public GroupComponent addConcept(Coding t) { //3
+          if (t == null)
+            return this;
+          if (this.concept == null)
+            this.concept = new ArrayList<Coding>();
+          this.concept.add(t);
+          return this;
+        }
+
         /**
          * @return {@link #text} (Additional text for the group, used for display purposes.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
          */
@@ -571,7 +595,7 @@ public class Questionnaire extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create GroupComponent.text");
             else if (Configuration.doAutoCreate())
-              this.text = new StringType();
+              this.text = new StringType(); // bb
           return this.text;
         }
 
@@ -620,7 +644,7 @@ public class Questionnaire extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create GroupComponent.required");
             else if (Configuration.doAutoCreate())
-              this.required = new BooleanType();
+              this.required = new BooleanType(); // bb
           return this.required;
         }
 
@@ -644,20 +668,16 @@ public class Questionnaire extends DomainResource {
          * @return If true, indicates that the group must be present and have required questions within it answered.  If false, the group may be skipped when answering the questionnaire.
          */
         public boolean getRequired() { 
-          return this.required == null ? false : this.required.getValue();
+          return this.required == null || this.required.isEmpty() ? false : this.required.getValue();
         }
 
         /**
          * @param value If true, indicates that the group must be present and have required questions within it answered.  If false, the group may be skipped when answering the questionnaire.
          */
         public GroupComponent setRequired(boolean value) { 
-          if (value == false)
-            this.required = null;
-          else {
             if (this.required == null)
               this.required = new BooleanType();
             this.required.setValue(value);
-          }
           return this;
         }
 
@@ -669,7 +689,7 @@ public class Questionnaire extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create GroupComponent.repeats");
             else if (Configuration.doAutoCreate())
-              this.repeats = new BooleanType();
+              this.repeats = new BooleanType(); // bb
           return this.repeats;
         }
 
@@ -693,20 +713,16 @@ public class Questionnaire extends DomainResource {
          * @return Whether the group may occur multiple times in the instance, containing multiple sets of answers.
          */
         public boolean getRepeats() { 
-          return this.repeats == null ? false : this.repeats.getValue();
+          return this.repeats == null || this.repeats.isEmpty() ? false : this.repeats.getValue();
         }
 
         /**
          * @param value Whether the group may occur multiple times in the instance, containing multiple sets of answers.
          */
         public GroupComponent setRepeats(boolean value) { 
-          if (value == false)
-            this.repeats = null;
-          else {
             if (this.repeats == null)
               this.repeats = new BooleanType();
             this.repeats.setValue(value);
-          }
           return this;
         }
 
@@ -740,6 +756,16 @@ public class Questionnaire extends DomainResource {
           return t;
         }
 
+    // syntactic sugar
+        public GroupComponent addGroup(GroupComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.group == null)
+            this.group = new ArrayList<GroupComponent>();
+          this.group.add(t);
+          return this;
+        }
+
         /**
          * @return {@link #question} (Set of questions within this group. The order of questions within the group is relevant.)
          */
@@ -770,9 +796,19 @@ public class Questionnaire extends DomainResource {
           return t;
         }
 
+    // syntactic sugar
+        public GroupComponent addQuestion(QuestionComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.question == null)
+            this.question = new ArrayList<QuestionComponent>();
+          this.question.add(t);
+          return this;
+        }
+
         protected void listChildren(List<Property> childrenList) {
           super.listChildren(childrenList);
-          childrenList.add(new Property("linkId", "string", "A identifier that is unique within the questionnaire allowing linkage to the equivalent group in a QuestionnaireAnswers resource.", 0, java.lang.Integer.MAX_VALUE, linkId));
+          childrenList.add(new Property("linkId", "string", "An identifier that is unique within the questionnaire allowing linkage to the equivalent group in a QuestionnaireAnswers resource.", 0, java.lang.Integer.MAX_VALUE, linkId));
           childrenList.add(new Property("title", "string", "The human-readable name for this section of the questionnaire.", 0, java.lang.Integer.MAX_VALUE, title));
           childrenList.add(new Property("concept", "Coding", "Identifies a how this group of questions is known in a particular terminology such as LOINC.", 0, java.lang.Integer.MAX_VALUE, concept));
           childrenList.add(new Property("text", "string", "Additional text for the group, used for display purposes.", 0, java.lang.Integer.MAX_VALUE, text));
@@ -808,6 +844,29 @@ public class Questionnaire extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof GroupComponent))
+          return false;
+        GroupComponent o = (GroupComponent) other;
+        return compareDeep(linkId, o.linkId, true) && compareDeep(title, o.title, true) && compareDeep(concept, o.concept, true)
+           && compareDeep(text, o.text, true) && compareDeep(required, o.required, true) && compareDeep(repeats, o.repeats, true)
+           && compareDeep(group, o.group, true) && compareDeep(question, o.question, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof GroupComponent))
+          return false;
+        GroupComponent o = (GroupComponent) other;
+        return compareValues(linkId, o.linkId, true) && compareValues(title, o.title, true) && compareValues(text, o.text, true)
+           && compareValues(required, o.required, true) && compareValues(repeats, o.repeats, true);
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (linkId == null || linkId.isEmpty()) && (title == null || title.isEmpty())
            && (concept == null || concept.isEmpty()) && (text == null || text.isEmpty()) && (required == null || required.isEmpty())
@@ -822,49 +881,49 @@ public class Questionnaire extends DomainResource {
         /**
          * An identifier that is unique within the questionnaire allowing linkage to the equivalent group in a [[[QuestionnaireAnswers]]] resource.
          */
-        @Child(name="linkId", type={StringType.class}, order=1, min=0, max=1)
+        @Child(name ="linkId", type={StringType.class}, order=1, min=0, max=1)
         @Description(shortDefinition="To link questionnaire with questionnaire answers", formalDefinition="An identifier that is unique within the questionnaire allowing linkage to the equivalent group in a [[[QuestionnaireAnswers]]] resource." )
         protected StringType linkId;
 
         /**
          * Identifies a how this question is known in a particular terminology such as LOINC.
          */
-        @Child(name="concept", type={Coding.class}, order=2, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name ="concept", type={Coding.class}, order=2, min=0, max=Child.MAX_UNLIMITED)
         @Description(shortDefinition="Concept that represents this question on a questionnaire", formalDefinition="Identifies a how this question is known in a particular terminology such as LOINC." )
         protected List<Coding> concept;
 
         /**
-         * Text of the question as it is shown to the user.
+         * The actual question as shown to the user to prompt them for an answer.
          */
-        @Child(name="text", type={StringType.class}, order=3, min=0, max=1)
-        @Description(shortDefinition="Text of the question as it is shown to the user", formalDefinition="Text of the question as it is shown to the user." )
+        @Child(name ="text", type={StringType.class}, order=3, min=0, max=1)
+        @Description(shortDefinition="Text of the question as it is shown to the user", formalDefinition="The actual question as shown to the user to prompt them for an answer." )
         protected StringType text;
 
         /**
          * The expected format of the answer, e.g. the type of input (string, integer) or whether a (multiple) choice is expected.
          */
-        @Child(name="type", type={CodeType.class}, order=4, min=0, max=1)
+        @Child(name ="type", type={CodeType.class}, order=4, min=0, max=1)
         @Description(shortDefinition="boolean | decimal | integer | date | dateTime +", formalDefinition="The expected format of the answer, e.g. the type of input (string, integer) or whether a (multiple) choice is expected." )
         protected Enumeration<AnswerFormat> type;
 
         /**
-         * If true, indicates that the group must be present and have required questions within it answered.  If false, the group may be skipped when answering the questionnaire.
+         * If true, indicates that the question must be answered and have required groups within it also present.  If false, the question and any contained groups may be skipped when answering the questionnaire.
          */
-        @Child(name="required", type={BooleanType.class}, order=5, min=0, max=1)
-        @Description(shortDefinition="Must group be included in data results?", formalDefinition="If true, indicates that the group must be present and have required questions within it answered.  If false, the group may be skipped when answering the questionnaire." )
+        @Child(name ="required", type={BooleanType.class}, order=5, min=0, max=1)
+        @Description(shortDefinition="Must question be answered in data results?", formalDefinition="If true, indicates that the question must be answered and have required groups within it also present.  If false, the question and any contained groups may be skipped when answering the questionnaire." )
         protected BooleanType required;
 
         /**
-         * Whether the group may occur multiple times in the instance, containing multiple sets of answers.
+         * If true, the question may have more than one answer.
          */
-        @Child(name="repeats", type={BooleanType.class}, order=6, min=0, max=1)
-        @Description(shortDefinition="Whether the group may repeat", formalDefinition="Whether the group may occur multiple times in the instance, containing multiple sets of answers." )
+        @Child(name ="repeats", type={BooleanType.class}, order=6, min=0, max=1)
+        @Description(shortDefinition="Can question  have multiple answers?", formalDefinition="If true, the question may have more than one answer." )
         protected BooleanType repeats;
 
         /**
          * Reference to a valueset containing the possible options.
          */
-        @Child(name="options", type={ValueSet.class}, order=7, min=0, max=1)
+        @Child(name ="options", type={ValueSet.class}, order=7, min=0, max=1)
         @Description(shortDefinition="Valueset containing the possible options", formalDefinition="Reference to a valueset containing the possible options." )
         protected Reference options;
 
@@ -876,7 +935,7 @@ public class Questionnaire extends DomainResource {
         /**
          * Nested group, containing nested question for this question. The order of groups within the question is relevant.
          */
-        @Child(name="group", type={GroupComponent.class}, order=8, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name ="group", type={GroupComponent.class}, order=8, min=0, max=Child.MAX_UNLIMITED)
         @Description(shortDefinition="Nested questionnaire group", formalDefinition="Nested group, containing nested question for this question. The order of groups within the question is relevant." )
         protected List<GroupComponent> group;
 
@@ -894,7 +953,7 @@ public class Questionnaire extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create QuestionComponent.linkId");
             else if (Configuration.doAutoCreate())
-              this.linkId = new StringType();
+              this.linkId = new StringType(); // bb
           return this.linkId;
         }
 
@@ -965,15 +1024,25 @@ public class Questionnaire extends DomainResource {
           return t;
         }
 
+    // syntactic sugar
+        public QuestionComponent addConcept(Coding t) { //3
+          if (t == null)
+            return this;
+          if (this.concept == null)
+            this.concept = new ArrayList<Coding>();
+          this.concept.add(t);
+          return this;
+        }
+
         /**
-         * @return {@link #text} (Text of the question as it is shown to the user.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         * @return {@link #text} (The actual question as shown to the user to prompt them for an answer.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
          */
         public StringType getTextElement() { 
           if (this.text == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create QuestionComponent.text");
             else if (Configuration.doAutoCreate())
-              this.text = new StringType();
+              this.text = new StringType(); // bb
           return this.text;
         }
 
@@ -986,7 +1055,7 @@ public class Questionnaire extends DomainResource {
         }
 
         /**
-         * @param value {@link #text} (Text of the question as it is shown to the user.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         * @param value {@link #text} (The actual question as shown to the user to prompt them for an answer.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
          */
         public QuestionComponent setTextElement(StringType value) { 
           this.text = value;
@@ -994,14 +1063,14 @@ public class Questionnaire extends DomainResource {
         }
 
         /**
-         * @return Text of the question as it is shown to the user.
+         * @return The actual question as shown to the user to prompt them for an answer.
          */
         public String getText() { 
           return this.text == null ? null : this.text.getValue();
         }
 
         /**
-         * @param value Text of the question as it is shown to the user.
+         * @param value The actual question as shown to the user to prompt them for an answer.
          */
         public QuestionComponent setText(String value) { 
           if (Utilities.noString(value))
@@ -1022,7 +1091,7 @@ public class Questionnaire extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create QuestionComponent.type");
             else if (Configuration.doAutoCreate())
-              this.type = new Enumeration<AnswerFormat>();
+              this.type = new Enumeration<AnswerFormat>(new AnswerFormatEnumFactory()); // bb
           return this.type;
         }
 
@@ -1057,21 +1126,21 @@ public class Questionnaire extends DomainResource {
             this.type = null;
           else {
             if (this.type == null)
-              this.type = new Enumeration<AnswerFormat>();
+              this.type = new Enumeration<AnswerFormat>(new AnswerFormatEnumFactory());
             this.type.setValue(value);
           }
           return this;
         }
 
         /**
-         * @return {@link #required} (If true, indicates that the group must be present and have required questions within it answered.  If false, the group may be skipped when answering the questionnaire.). This is the underlying object with id, value and extensions. The accessor "getRequired" gives direct access to the value
+         * @return {@link #required} (If true, indicates that the question must be answered and have required groups within it also present.  If false, the question and any contained groups may be skipped when answering the questionnaire.). This is the underlying object with id, value and extensions. The accessor "getRequired" gives direct access to the value
          */
         public BooleanType getRequiredElement() { 
           if (this.required == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create QuestionComponent.required");
             else if (Configuration.doAutoCreate())
-              this.required = new BooleanType();
+              this.required = new BooleanType(); // bb
           return this.required;
         }
 
@@ -1084,7 +1153,7 @@ public class Questionnaire extends DomainResource {
         }
 
         /**
-         * @param value {@link #required} (If true, indicates that the group must be present and have required questions within it answered.  If false, the group may be skipped when answering the questionnaire.). This is the underlying object with id, value and extensions. The accessor "getRequired" gives direct access to the value
+         * @param value {@link #required} (If true, indicates that the question must be answered and have required groups within it also present.  If false, the question and any contained groups may be skipped when answering the questionnaire.). This is the underlying object with id, value and extensions. The accessor "getRequired" gives direct access to the value
          */
         public QuestionComponent setRequiredElement(BooleanType value) { 
           this.required = value;
@@ -1092,35 +1161,31 @@ public class Questionnaire extends DomainResource {
         }
 
         /**
-         * @return If true, indicates that the group must be present and have required questions within it answered.  If false, the group may be skipped when answering the questionnaire.
+         * @return If true, indicates that the question must be answered and have required groups within it also present.  If false, the question and any contained groups may be skipped when answering the questionnaire.
          */
         public boolean getRequired() { 
-          return this.required == null ? false : this.required.getValue();
+          return this.required == null || this.required.isEmpty() ? false : this.required.getValue();
         }
 
         /**
-         * @param value If true, indicates that the group must be present and have required questions within it answered.  If false, the group may be skipped when answering the questionnaire.
+         * @param value If true, indicates that the question must be answered and have required groups within it also present.  If false, the question and any contained groups may be skipped when answering the questionnaire.
          */
         public QuestionComponent setRequired(boolean value) { 
-          if (value == false)
-            this.required = null;
-          else {
             if (this.required == null)
               this.required = new BooleanType();
             this.required.setValue(value);
-          }
           return this;
         }
 
         /**
-         * @return {@link #repeats} (Whether the group may occur multiple times in the instance, containing multiple sets of answers.). This is the underlying object with id, value and extensions. The accessor "getRepeats" gives direct access to the value
+         * @return {@link #repeats} (If true, the question may have more than one answer.). This is the underlying object with id, value and extensions. The accessor "getRepeats" gives direct access to the value
          */
         public BooleanType getRepeatsElement() { 
           if (this.repeats == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create QuestionComponent.repeats");
             else if (Configuration.doAutoCreate())
-              this.repeats = new BooleanType();
+              this.repeats = new BooleanType(); // bb
           return this.repeats;
         }
 
@@ -1133,7 +1198,7 @@ public class Questionnaire extends DomainResource {
         }
 
         /**
-         * @param value {@link #repeats} (Whether the group may occur multiple times in the instance, containing multiple sets of answers.). This is the underlying object with id, value and extensions. The accessor "getRepeats" gives direct access to the value
+         * @param value {@link #repeats} (If true, the question may have more than one answer.). This is the underlying object with id, value and extensions. The accessor "getRepeats" gives direct access to the value
          */
         public QuestionComponent setRepeatsElement(BooleanType value) { 
           this.repeats = value;
@@ -1141,23 +1206,19 @@ public class Questionnaire extends DomainResource {
         }
 
         /**
-         * @return Whether the group may occur multiple times in the instance, containing multiple sets of answers.
+         * @return If true, the question may have more than one answer.
          */
         public boolean getRepeats() { 
-          return this.repeats == null ? false : this.repeats.getValue();
+          return this.repeats == null || this.repeats.isEmpty() ? false : this.repeats.getValue();
         }
 
         /**
-         * @param value Whether the group may occur multiple times in the instance, containing multiple sets of answers.
+         * @param value If true, the question may have more than one answer.
          */
         public QuestionComponent setRepeats(boolean value) { 
-          if (value == false)
-            this.repeats = null;
-          else {
             if (this.repeats == null)
               this.repeats = new BooleanType();
             this.repeats.setValue(value);
-          }
           return this;
         }
 
@@ -1169,7 +1230,7 @@ public class Questionnaire extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create QuestionComponent.options");
             else if (Configuration.doAutoCreate())
-              this.options = new Reference();
+              this.options = new Reference(); // cc
           return this.options;
         }
 
@@ -1193,7 +1254,7 @@ public class Questionnaire extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create QuestionComponent.options");
             else if (Configuration.doAutoCreate())
-              this.optionsTarget = new ValueSet();
+              this.optionsTarget = new ValueSet(); // aa
           return this.optionsTarget;
         }
 
@@ -1235,14 +1296,24 @@ public class Questionnaire extends DomainResource {
           return t;
         }
 
+    // syntactic sugar
+        public QuestionComponent addGroup(GroupComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.group == null)
+            this.group = new ArrayList<GroupComponent>();
+          this.group.add(t);
+          return this;
+        }
+
         protected void listChildren(List<Property> childrenList) {
           super.listChildren(childrenList);
           childrenList.add(new Property("linkId", "string", "An identifier that is unique within the questionnaire allowing linkage to the equivalent group in a [[[QuestionnaireAnswers]]] resource.", 0, java.lang.Integer.MAX_VALUE, linkId));
           childrenList.add(new Property("concept", "Coding", "Identifies a how this question is known in a particular terminology such as LOINC.", 0, java.lang.Integer.MAX_VALUE, concept));
-          childrenList.add(new Property("text", "string", "Text of the question as it is shown to the user.", 0, java.lang.Integer.MAX_VALUE, text));
+          childrenList.add(new Property("text", "string", "The actual question as shown to the user to prompt them for an answer.", 0, java.lang.Integer.MAX_VALUE, text));
           childrenList.add(new Property("type", "code", "The expected format of the answer, e.g. the type of input (string, integer) or whether a (multiple) choice is expected.", 0, java.lang.Integer.MAX_VALUE, type));
-          childrenList.add(new Property("required", "boolean", "If true, indicates that the group must be present and have required questions within it answered.  If false, the group may be skipped when answering the questionnaire.", 0, java.lang.Integer.MAX_VALUE, required));
-          childrenList.add(new Property("repeats", "boolean", "Whether the group may occur multiple times in the instance, containing multiple sets of answers.", 0, java.lang.Integer.MAX_VALUE, repeats));
+          childrenList.add(new Property("required", "boolean", "If true, indicates that the question must be answered and have required groups within it also present.  If false, the question and any contained groups may be skipped when answering the questionnaire.", 0, java.lang.Integer.MAX_VALUE, required));
+          childrenList.add(new Property("repeats", "boolean", "If true, the question may have more than one answer.", 0, java.lang.Integer.MAX_VALUE, repeats));
           childrenList.add(new Property("options", "Reference(ValueSet)", "Reference to a valueset containing the possible options.", 0, java.lang.Integer.MAX_VALUE, options));
           childrenList.add(new Property("group", "@Questionnaire.group", "Nested group, containing nested question for this question. The order of groups within the question is relevant.", 0, java.lang.Integer.MAX_VALUE, group));
         }
@@ -1269,6 +1340,29 @@ public class Questionnaire extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof QuestionComponent))
+          return false;
+        QuestionComponent o = (QuestionComponent) other;
+        return compareDeep(linkId, o.linkId, true) && compareDeep(concept, o.concept, true) && compareDeep(text, o.text, true)
+           && compareDeep(type, o.type, true) && compareDeep(required, o.required, true) && compareDeep(repeats, o.repeats, true)
+           && compareDeep(options, o.options, true) && compareDeep(group, o.group, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof QuestionComponent))
+          return false;
+        QuestionComponent o = (QuestionComponent) other;
+        return compareValues(linkId, o.linkId, true) && compareValues(text, o.text, true) && compareValues(type, o.type, true)
+           && compareValues(required, o.required, true) && compareValues(repeats, o.repeats, true);
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (linkId == null || linkId.isEmpty()) && (concept == null || concept.isEmpty())
            && (text == null || text.isEmpty()) && (type == null || type.isEmpty()) && (required == null || required.isEmpty())
@@ -1281,46 +1375,53 @@ public class Questionnaire extends DomainResource {
     /**
      * This records identifiers associated with this question set that are defined by business processed and/ or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).
      */
-    @Child(name="identifier", type={Identifier.class}, order=-1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="External Ids for this questionnaire", formalDefinition="This records identifiers associated with this question set that are defined by business processed and/ or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation)." )
     protected List<Identifier> identifier;
 
     /**
      * The version number assigned by the publisher for business reasons.  It may remain the same when the resource is updated.
      */
-    @Child(name="version", type={StringType.class}, order=0, min=0, max=1)
+    @Child(name ="version", type={StringType.class}, order=1, min=0, max=1)
     @Description(shortDefinition="Logical id for this version of Questionnaire", formalDefinition="The version number assigned by the publisher for business reasons.  It may remain the same when the resource is updated." )
     protected StringType version;
 
     /**
      * The lifecycle status of the questionnaire as a whole.
      */
-    @Child(name="status", type={CodeType.class}, order=1, min=1, max=1)
+    @Child(name ="status", type={CodeType.class}, order=2, min=1, max=1)
     @Description(shortDefinition="draft | published | retired", formalDefinition="The lifecycle status of the questionnaire as a whole." )
     protected Enumeration<QuestionnaireStatus> status;
 
     /**
      * The date that this questionnaire was last changed.
      */
-    @Child(name="date", type={DateTimeType.class}, order=2, min=0, max=1)
+    @Child(name ="date", type={DateTimeType.class}, order=3, min=0, max=1)
     @Description(shortDefinition="Date this version was authored", formalDefinition="The date that this questionnaire was last changed." )
     protected DateTimeType date;
 
     /**
-     * Organization responsible for developing and maintaining the questionnaire.
+     * Organization or person responsible for developing and maintaining the questionnaire.
      */
-    @Child(name="publisher", type={StringType.class}, order=3, min=0, max=1)
-    @Description(shortDefinition="Organization who designed the questionnaire", formalDefinition="Organization responsible for developing and maintaining the questionnaire." )
+    @Child(name ="publisher", type={StringType.class}, order=4, min=0, max=1)
+    @Description(shortDefinition="Organization/individual who designed the questionnaire", formalDefinition="Organization or person responsible for developing and maintaining the questionnaire." )
     protected StringType publisher;
+
+    /**
+     * Contact details to assist a user in finding and communicating with the publisher.
+     */
+    @Child(name ="telecom", type={ContactPoint.class}, order=5, min=0, max=Child.MAX_UNLIMITED)
+    @Description(shortDefinition="Contact information of the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
+    protected List<ContactPoint> telecom;
 
     /**
      * A collection of related questions (or further groupings of questions).
      */
-    @Child(name="group", type={}, order=4, min=1, max=1)
+    @Child(name ="group", type={}, order=6, min=1, max=1)
     @Description(shortDefinition="Grouped questions", formalDefinition="A collection of related questions (or further groupings of questions)." )
     protected GroupComponent group;
 
-    private static final long serialVersionUID = 2121035996L;
+    private static final long serialVersionUID = -852096969L;
 
     public Questionnaire() {
       super();
@@ -1362,6 +1463,16 @@ public class Questionnaire extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Questionnaire addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #version} (The version number assigned by the publisher for business reasons.  It may remain the same when the resource is updated.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
      */
@@ -1370,7 +1481,7 @@ public class Questionnaire extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Questionnaire.version");
         else if (Configuration.doAutoCreate())
-          this.version = new StringType();
+          this.version = new StringType(); // bb
       return this.version;
     }
 
@@ -1419,7 +1530,7 @@ public class Questionnaire extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Questionnaire.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<QuestionnaireStatus>();
+          this.status = new Enumeration<QuestionnaireStatus>(new QuestionnaireStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -1451,7 +1562,7 @@ public class Questionnaire extends DomainResource {
      */
     public Questionnaire setStatus(QuestionnaireStatus value) { 
         if (this.status == null)
-          this.status = new Enumeration<QuestionnaireStatus>();
+          this.status = new Enumeration<QuestionnaireStatus>(new QuestionnaireStatusEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -1464,7 +1575,7 @@ public class Questionnaire extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Questionnaire.date");
         else if (Configuration.doAutoCreate())
-          this.date = new DateTimeType();
+          this.date = new DateTimeType(); // bb
       return this.date;
     }
 
@@ -1487,14 +1598,14 @@ public class Questionnaire extends DomainResource {
     /**
      * @return The date that this questionnaire was last changed.
      */
-    public DateAndTime getDate() { 
+    public Date getDate() { 
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value The date that this questionnaire was last changed.
      */
-    public Questionnaire setDate(DateAndTime value) { 
+    public Questionnaire setDate(Date value) { 
       if (value == null)
         this.date = null;
       else {
@@ -1506,14 +1617,14 @@ public class Questionnaire extends DomainResource {
     }
 
     /**
-     * @return {@link #publisher} (Organization responsible for developing and maintaining the questionnaire.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @return {@link #publisher} (Organization or person responsible for developing and maintaining the questionnaire.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public StringType getPublisherElement() { 
       if (this.publisher == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Questionnaire.publisher");
         else if (Configuration.doAutoCreate())
-          this.publisher = new StringType();
+          this.publisher = new StringType(); // bb
       return this.publisher;
     }
 
@@ -1526,7 +1637,7 @@ public class Questionnaire extends DomainResource {
     }
 
     /**
-     * @param value {@link #publisher} (Organization responsible for developing and maintaining the questionnaire.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @param value {@link #publisher} (Organization or person responsible for developing and maintaining the questionnaire.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public Questionnaire setPublisherElement(StringType value) { 
       this.publisher = value;
@@ -1534,14 +1645,14 @@ public class Questionnaire extends DomainResource {
     }
 
     /**
-     * @return Organization responsible for developing and maintaining the questionnaire.
+     * @return Organization or person responsible for developing and maintaining the questionnaire.
      */
     public String getPublisher() { 
       return this.publisher == null ? null : this.publisher.getValue();
     }
 
     /**
-     * @param value Organization responsible for developing and maintaining the questionnaire.
+     * @param value Organization or person responsible for developing and maintaining the questionnaire.
      */
     public Questionnaire setPublisher(String value) { 
       if (Utilities.noString(value))
@@ -1555,6 +1666,46 @@ public class Questionnaire extends DomainResource {
     }
 
     /**
+     * @return {@link #telecom} (Contact details to assist a user in finding and communicating with the publisher.)
+     */
+    public List<ContactPoint> getTelecom() { 
+      if (this.telecom == null)
+        this.telecom = new ArrayList<ContactPoint>();
+      return this.telecom;
+    }
+
+    public boolean hasTelecom() { 
+      if (this.telecom == null)
+        return false;
+      for (ContactPoint item : this.telecom)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    /**
+     * @return {@link #telecom} (Contact details to assist a user in finding and communicating with the publisher.)
+     */
+    // syntactic sugar
+    public ContactPoint addTelecom() { //3
+      ContactPoint t = new ContactPoint();
+      if (this.telecom == null)
+        this.telecom = new ArrayList<ContactPoint>();
+      this.telecom.add(t);
+      return t;
+    }
+
+    // syntactic sugar
+    public Questionnaire addTelecom(ContactPoint t) { //3
+      if (t == null)
+        return this;
+      if (this.telecom == null)
+        this.telecom = new ArrayList<ContactPoint>();
+      this.telecom.add(t);
+      return this;
+    }
+
+    /**
      * @return {@link #group} (A collection of related questions (or further groupings of questions).)
      */
     public GroupComponent getGroup() { 
@@ -1562,7 +1713,7 @@ public class Questionnaire extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Questionnaire.group");
         else if (Configuration.doAutoCreate())
-          this.group = new GroupComponent();
+          this.group = new GroupComponent(); // cc
       return this.group;
     }
 
@@ -1584,7 +1735,8 @@ public class Questionnaire extends DomainResource {
         childrenList.add(new Property("version", "string", "The version number assigned by the publisher for business reasons.  It may remain the same when the resource is updated.", 0, java.lang.Integer.MAX_VALUE, version));
         childrenList.add(new Property("status", "code", "The lifecycle status of the questionnaire as a whole.", 0, java.lang.Integer.MAX_VALUE, status));
         childrenList.add(new Property("date", "dateTime", "The date that this questionnaire was last changed.", 0, java.lang.Integer.MAX_VALUE, date));
-        childrenList.add(new Property("publisher", "string", "Organization responsible for developing and maintaining the questionnaire.", 0, java.lang.Integer.MAX_VALUE, publisher));
+        childrenList.add(new Property("publisher", "string", "Organization or person responsible for developing and maintaining the questionnaire.", 0, java.lang.Integer.MAX_VALUE, publisher));
+        childrenList.add(new Property("telecom", "ContactPoint", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, telecom));
         childrenList.add(new Property("group", "", "A collection of related questions (or further groupings of questions).", 0, java.lang.Integer.MAX_VALUE, group));
       }
 
@@ -1600,6 +1752,11 @@ public class Questionnaire extends DomainResource {
         dst.status = status == null ? null : status.copy();
         dst.date = date == null ? null : date.copy();
         dst.publisher = publisher == null ? null : publisher.copy();
+        if (telecom != null) {
+          dst.telecom = new ArrayList<ContactPoint>();
+          for (ContactPoint i : telecom)
+            dst.telecom.add(i.copy());
+        };
         dst.group = group == null ? null : group.copy();
         return dst;
       }
@@ -1608,10 +1765,33 @@ public class Questionnaire extends DomainResource {
         return copy();
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Questionnaire))
+          return false;
+        Questionnaire o = (Questionnaire) other;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true) && compareDeep(status, o.status, true)
+           && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true) && compareDeep(telecom, o.telecom, true)
+           && compareDeep(group, o.group, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Questionnaire))
+          return false;
+        Questionnaire o = (Questionnaire) other;
+        return compareValues(version, o.version, true) && compareValues(status, o.status, true) && compareValues(date, o.date, true)
+           && compareValues(publisher, o.publisher, true);
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (identifier == null || identifier.isEmpty()) && (version == null || version.isEmpty())
            && (status == null || status.isEmpty()) && (date == null || date.isEmpty()) && (publisher == null || publisher.isEmpty())
-           && (group == null || group.isEmpty());
+           && (telecom == null || telecom.isEmpty()) && (group == null || group.isEmpty());
       }
 
   @Override

@@ -5,7 +5,7 @@
     <identifier>
         <!--The identifier for the person as this patient (fictive)-->
         <use value="official"/>
-        <label value="BSN"/>
+        <type><text value="BSN"/></type>
         <system value="urn:oid:2.16.840.1.113883.2.4.6.3"/>
         <value value="123456789"/>
     </identifier>
@@ -13,7 +13,7 @@
     <identifier>
         <!--The identifier for this individual-->
         <use value="official"/>
-        <label value="BSN"/>
+        <type><text value="BSN"/></type>
         <system value="urn:oid:2.16.840.1.113883.2.4.6.3"/>
         <value value="123456789"/>
     </identifier>
@@ -94,11 +94,14 @@
         </telecom>
     </contact>
     <communication>
+      <language>
             <coding>
                 <system value="urn:std:iso:639-1"/>
                 <code value="nl-NL"/>
                 <display value="Dutch"/>
             </coding>
+      </language>
+      <preferred value="true" />
     </communication>
     <managingOrganization>
         <reference value="Organization/f201"/>

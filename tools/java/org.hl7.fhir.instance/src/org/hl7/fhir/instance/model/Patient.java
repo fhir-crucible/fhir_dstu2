@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -40,7 +40,7 @@ import org.hl7.fhir.instance.model.annotations.Block;
 import org.hl7.fhir.instance.model.annotations.Child;
 import org.hl7.fhir.instance.model.annotations.Description;
 /**
- * Demographics and other administrative information about a person or animal receiving care or other health-related services.
+ * Demographics and other administrative information about an individual or animal receiving care or other health-related services.
  */
 @ResourceDef(name="Patient", profile="http://hl7.org/fhir/Profile/Patient")
 public class Patient extends DomainResource {
@@ -108,17 +108,17 @@ public class Patient extends DomainResource {
         }
         public String getDisplay() {
           switch (this) {
-            case MALE: return "male";
-            case FEMALE: return "female";
-            case OTHER: return "other";
-            case UNKNOWN: return "unknown";
+            case MALE: return "Male";
+            case FEMALE: return "Female";
+            case OTHER: return "Other";
+            case UNKNOWN: return "Unknown";
             default: return "?";
           }
         }
     }
 
-  public static class AdministrativeGenderEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class AdministrativeGenderEnumFactory implements EnumFactory<AdministrativeGender> {
+    public AdministrativeGender fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -130,9 +130,9 @@ public class Patient extends DomainResource {
           return AdministrativeGender.OTHER;
         if ("unknown".equals(codeString))
           return AdministrativeGender.UNKNOWN;
-        throw new Exception("Unknown AdministrativeGender code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown AdministrativeGender code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(AdministrativeGender code) {
       if (code == AdministrativeGender.MALE)
         return "male";
       if (code == AdministrativeGender.FEMALE)
@@ -207,8 +207,8 @@ public class Patient extends DomainResource {
         }
     }
 
-  public static class LinkTypeEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class LinkTypeEnumFactory implements EnumFactory<LinkType> {
+    public LinkType fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -218,9 +218,9 @@ public class Patient extends DomainResource {
           return LinkType.REFER;
         if ("seealso".equals(codeString))
           return LinkType.SEEALSO;
-        throw new Exception("Unknown LinkType code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown LinkType code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(LinkType code) {
       if (code == LinkType.REPLACE)
         return "replace";
       if (code == LinkType.REFER)
@@ -236,42 +236,42 @@ public class Patient extends DomainResource {
         /**
          * The nature of the relationship between the patient and the contact person.
          */
-        @Child(name="relationship", type={CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name ="relationship", type={CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
         @Description(shortDefinition="The kind of relationship", formalDefinition="The nature of the relationship between the patient and the contact person." )
         protected List<CodeableConcept> relationship;
 
         /**
-         * A name associated with the person.
+         * A name associated with the contact person.
          */
-        @Child(name="name", type={HumanName.class}, order=2, min=0, max=1)
-        @Description(shortDefinition="A name associated with the person", formalDefinition="A name associated with the person." )
+        @Child(name ="name", type={HumanName.class}, order=2, min=0, max=1)
+        @Description(shortDefinition="A name associated with the contact person", formalDefinition="A name associated with the contact person." )
         protected HumanName name;
 
         /**
          * A contact detail for the person, e.g. a telephone number or an email address.
          */
-        @Child(name="telecom", type={ContactPoint.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name ="telecom", type={ContactPoint.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
         @Description(shortDefinition="A contact detail for the person", formalDefinition="A contact detail for the person, e.g. a telephone number or an email address." )
         protected List<ContactPoint> telecom;
 
         /**
          * Address for the contact person.
          */
-        @Child(name="address", type={Address.class}, order=4, min=0, max=1)
+        @Child(name ="address", type={Address.class}, order=4, min=0, max=1)
         @Description(shortDefinition="Address for the contact person", formalDefinition="Address for the contact person." )
         protected Address address;
 
         /**
-         * Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.
+         * Administrative Gender - the gender that the contact person is considered to have for administration and record keeping purposes.
          */
-        @Child(name="gender", type={CodeType.class}, order=5, min=0, max=1)
-        @Description(shortDefinition="male | female | other | unknown", formalDefinition="Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes." )
+        @Child(name ="gender", type={CodeType.class}, order=5, min=0, max=1)
+        @Description(shortDefinition="male | female | other | unknown", formalDefinition="Administrative Gender - the gender that the contact person is considered to have for administration and record keeping purposes." )
         protected Enumeration<AdministrativeGender> gender;
 
         /**
          * Organization on behalf of which the contact is acting or for which the contact is working.
          */
-        @Child(name="organization", type={Organization.class}, order=6, min=0, max=1)
+        @Child(name ="organization", type={Organization.class}, order=6, min=0, max=1)
         @Description(shortDefinition="Organization that is associated with the contact", formalDefinition="Organization on behalf of which the contact is acting or for which the contact is working." )
         protected Reference organization;
 
@@ -281,10 +281,10 @@ public class Patient extends DomainResource {
         protected Organization organizationTarget;
 
         /**
-         * The period during which this person or organization is valid to be contacted relating to this patient.
+         * The period during which this contact person or organization is valid to be contacted relating to this patient.
          */
-        @Child(name="period", type={Period.class}, order=7, min=0, max=1)
-        @Description(shortDefinition="The period during which this person or organization is valid to be contacted relating to this patient", formalDefinition="The period during which this person or organization is valid to be contacted relating to this patient." )
+        @Child(name ="period", type={Period.class}, order=7, min=0, max=1)
+        @Description(shortDefinition="The period during which this contact person or organization is valid to be contacted relating to this patient", formalDefinition="The period during which this contact person or organization is valid to be contacted relating to this patient." )
         protected Period period;
 
         private static final long serialVersionUID = 364269017L;
@@ -323,15 +323,25 @@ public class Patient extends DomainResource {
           return t;
         }
 
+    // syntactic sugar
+        public ContactComponent addRelationship(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.relationship == null)
+            this.relationship = new ArrayList<CodeableConcept>();
+          this.relationship.add(t);
+          return this;
+        }
+
         /**
-         * @return {@link #name} (A name associated with the person.)
+         * @return {@link #name} (A name associated with the contact person.)
          */
         public HumanName getName() { 
           if (this.name == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ContactComponent.name");
             else if (Configuration.doAutoCreate())
-              this.name = new HumanName();
+              this.name = new HumanName(); // cc
           return this.name;
         }
 
@@ -340,7 +350,7 @@ public class Patient extends DomainResource {
         }
 
         /**
-         * @param value {@link #name} (A name associated with the person.)
+         * @param value {@link #name} (A name associated with the contact person.)
          */
         public ContactComponent setName(HumanName value) { 
           this.name = value;
@@ -377,6 +387,16 @@ public class Patient extends DomainResource {
           return t;
         }
 
+    // syntactic sugar
+        public ContactComponent addTelecom(ContactPoint t) { //3
+          if (t == null)
+            return this;
+          if (this.telecom == null)
+            this.telecom = new ArrayList<ContactPoint>();
+          this.telecom.add(t);
+          return this;
+        }
+
         /**
          * @return {@link #address} (Address for the contact person.)
          */
@@ -385,7 +405,7 @@ public class Patient extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ContactComponent.address");
             else if (Configuration.doAutoCreate())
-              this.address = new Address();
+              this.address = new Address(); // cc
           return this.address;
         }
 
@@ -402,14 +422,14 @@ public class Patient extends DomainResource {
         }
 
         /**
-         * @return {@link #gender} (Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.). This is the underlying object with id, value and extensions. The accessor "getGender" gives direct access to the value
+         * @return {@link #gender} (Administrative Gender - the gender that the contact person is considered to have for administration and record keeping purposes.). This is the underlying object with id, value and extensions. The accessor "getGender" gives direct access to the value
          */
         public Enumeration<AdministrativeGender> getGenderElement() { 
           if (this.gender == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ContactComponent.gender");
             else if (Configuration.doAutoCreate())
-              this.gender = new Enumeration<AdministrativeGender>();
+              this.gender = new Enumeration<AdministrativeGender>(new AdministrativeGenderEnumFactory()); // bb
           return this.gender;
         }
 
@@ -422,7 +442,7 @@ public class Patient extends DomainResource {
         }
 
         /**
-         * @param value {@link #gender} (Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.). This is the underlying object with id, value and extensions. The accessor "getGender" gives direct access to the value
+         * @param value {@link #gender} (Administrative Gender - the gender that the contact person is considered to have for administration and record keeping purposes.). This is the underlying object with id, value and extensions. The accessor "getGender" gives direct access to the value
          */
         public ContactComponent setGenderElement(Enumeration<AdministrativeGender> value) { 
           this.gender = value;
@@ -430,21 +450,21 @@ public class Patient extends DomainResource {
         }
 
         /**
-         * @return Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.
+         * @return Administrative Gender - the gender that the contact person is considered to have for administration and record keeping purposes.
          */
         public AdministrativeGender getGender() { 
           return this.gender == null ? null : this.gender.getValue();
         }
 
         /**
-         * @param value Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.
+         * @param value Administrative Gender - the gender that the contact person is considered to have for administration and record keeping purposes.
          */
         public ContactComponent setGender(AdministrativeGender value) { 
           if (value == null)
             this.gender = null;
           else {
             if (this.gender == null)
-              this.gender = new Enumeration<AdministrativeGender>();
+              this.gender = new Enumeration<AdministrativeGender>(new AdministrativeGenderEnumFactory());
             this.gender.setValue(value);
           }
           return this;
@@ -458,7 +478,7 @@ public class Patient extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ContactComponent.organization");
             else if (Configuration.doAutoCreate())
-              this.organization = new Reference();
+              this.organization = new Reference(); // cc
           return this.organization;
         }
 
@@ -482,7 +502,7 @@ public class Patient extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ContactComponent.organization");
             else if (Configuration.doAutoCreate())
-              this.organizationTarget = new Organization();
+              this.organizationTarget = new Organization(); // aa
           return this.organizationTarget;
         }
 
@@ -495,14 +515,14 @@ public class Patient extends DomainResource {
         }
 
         /**
-         * @return {@link #period} (The period during which this person or organization is valid to be contacted relating to this patient.)
+         * @return {@link #period} (The period during which this contact person or organization is valid to be contacted relating to this patient.)
          */
         public Period getPeriod() { 
           if (this.period == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ContactComponent.period");
             else if (Configuration.doAutoCreate())
-              this.period = new Period();
+              this.period = new Period(); // cc
           return this.period;
         }
 
@@ -511,7 +531,7 @@ public class Patient extends DomainResource {
         }
 
         /**
-         * @param value {@link #period} (The period during which this person or organization is valid to be contacted relating to this patient.)
+         * @param value {@link #period} (The period during which this contact person or organization is valid to be contacted relating to this patient.)
          */
         public ContactComponent setPeriod(Period value) { 
           this.period = value;
@@ -521,12 +541,12 @@ public class Patient extends DomainResource {
         protected void listChildren(List<Property> childrenList) {
           super.listChildren(childrenList);
           childrenList.add(new Property("relationship", "CodeableConcept", "The nature of the relationship between the patient and the contact person.", 0, java.lang.Integer.MAX_VALUE, relationship));
-          childrenList.add(new Property("name", "HumanName", "A name associated with the person.", 0, java.lang.Integer.MAX_VALUE, name));
+          childrenList.add(new Property("name", "HumanName", "A name associated with the contact person.", 0, java.lang.Integer.MAX_VALUE, name));
           childrenList.add(new Property("telecom", "ContactPoint", "A contact detail for the person, e.g. a telephone number or an email address.", 0, java.lang.Integer.MAX_VALUE, telecom));
           childrenList.add(new Property("address", "Address", "Address for the contact person.", 0, java.lang.Integer.MAX_VALUE, address));
-          childrenList.add(new Property("gender", "code", "Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.", 0, java.lang.Integer.MAX_VALUE, gender));
+          childrenList.add(new Property("gender", "code", "Administrative Gender - the gender that the contact person is considered to have for administration and record keeping purposes.", 0, java.lang.Integer.MAX_VALUE, gender));
           childrenList.add(new Property("organization", "Reference(Organization)", "Organization on behalf of which the contact is acting or for which the contact is working.", 0, java.lang.Integer.MAX_VALUE, organization));
-          childrenList.add(new Property("period", "Period", "The period during which this person or organization is valid to be contacted relating to this patient.", 0, java.lang.Integer.MAX_VALUE, period));
+          childrenList.add(new Property("period", "Period", "The period during which this contact person or organization is valid to be contacted relating to this patient.", 0, java.lang.Integer.MAX_VALUE, period));
         }
 
       public ContactComponent copy() {
@@ -550,6 +570,28 @@ public class Patient extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof ContactComponent))
+          return false;
+        ContactComponent o = (ContactComponent) other;
+        return compareDeep(relationship, o.relationship, true) && compareDeep(name, o.name, true) && compareDeep(telecom, o.telecom, true)
+           && compareDeep(address, o.address, true) && compareDeep(gender, o.gender, true) && compareDeep(organization, o.organization, true)
+           && compareDeep(period, o.period, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof ContactComponent))
+          return false;
+        ContactComponent o = (ContactComponent) other;
+        return compareValues(gender, o.gender, true);
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (relationship == null || relationship.isEmpty()) && (name == null || name.isEmpty())
            && (telecom == null || telecom.isEmpty()) && (address == null || address.isEmpty()) && (gender == null || gender.isEmpty())
@@ -562,23 +604,23 @@ public class Patient extends DomainResource {
     @Block()
     public static class AnimalComponent extends BackboneElement {
         /**
-         * Identifies the high level categorization of the kind of animal.
+         * Identifies the high level taxonomic categorization of the kind of animal.
          */
-        @Child(name="species", type={CodeableConcept.class}, order=1, min=1, max=1)
-        @Description(shortDefinition="E.g. Dog, Cow", formalDefinition="Identifies the high level categorization of the kind of animal." )
+        @Child(name ="species", type={CodeableConcept.class}, order=1, min=1, max=1)
+        @Description(shortDefinition="E.g. Dog, Cow", formalDefinition="Identifies the high level taxonomic categorization of the kind of animal." )
         protected CodeableConcept species;
 
         /**
          * Identifies the detailed categorization of the kind of animal.
          */
-        @Child(name="breed", type={CodeableConcept.class}, order=2, min=0, max=1)
+        @Child(name ="breed", type={CodeableConcept.class}, order=2, min=0, max=1)
         @Description(shortDefinition="E.g. Poodle, Angus", formalDefinition="Identifies the detailed categorization of the kind of animal." )
         protected CodeableConcept breed;
 
         /**
          * Indicates the current state of the animal's reproductive organs.
          */
-        @Child(name="genderStatus", type={CodeableConcept.class}, order=3, min=0, max=1)
+        @Child(name ="genderStatus", type={CodeableConcept.class}, order=3, min=0, max=1)
         @Description(shortDefinition="E.g. Neutered, Intact", formalDefinition="Indicates the current state of the animal's reproductive organs." )
         protected CodeableConcept genderStatus;
 
@@ -594,14 +636,14 @@ public class Patient extends DomainResource {
       }
 
         /**
-         * @return {@link #species} (Identifies the high level categorization of the kind of animal.)
+         * @return {@link #species} (Identifies the high level taxonomic categorization of the kind of animal.)
          */
         public CodeableConcept getSpecies() { 
           if (this.species == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create AnimalComponent.species");
             else if (Configuration.doAutoCreate())
-              this.species = new CodeableConcept();
+              this.species = new CodeableConcept(); // cc
           return this.species;
         }
 
@@ -610,7 +652,7 @@ public class Patient extends DomainResource {
         }
 
         /**
-         * @param value {@link #species} (Identifies the high level categorization of the kind of animal.)
+         * @param value {@link #species} (Identifies the high level taxonomic categorization of the kind of animal.)
          */
         public AnimalComponent setSpecies(CodeableConcept value) { 
           this.species = value;
@@ -625,7 +667,7 @@ public class Patient extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create AnimalComponent.breed");
             else if (Configuration.doAutoCreate())
-              this.breed = new CodeableConcept();
+              this.breed = new CodeableConcept(); // cc
           return this.breed;
         }
 
@@ -649,7 +691,7 @@ public class Patient extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create AnimalComponent.genderStatus");
             else if (Configuration.doAutoCreate())
-              this.genderStatus = new CodeableConcept();
+              this.genderStatus = new CodeableConcept(); // cc
           return this.genderStatus;
         }
 
@@ -667,7 +709,7 @@ public class Patient extends DomainResource {
 
         protected void listChildren(List<Property> childrenList) {
           super.listChildren(childrenList);
-          childrenList.add(new Property("species", "CodeableConcept", "Identifies the high level categorization of the kind of animal.", 0, java.lang.Integer.MAX_VALUE, species));
+          childrenList.add(new Property("species", "CodeableConcept", "Identifies the high level taxonomic categorization of the kind of animal.", 0, java.lang.Integer.MAX_VALUE, species));
           childrenList.add(new Property("breed", "CodeableConcept", "Identifies the detailed categorization of the kind of animal.", 0, java.lang.Integer.MAX_VALUE, breed));
           childrenList.add(new Property("genderStatus", "CodeableConcept", "Indicates the current state of the animal's reproductive organs.", 0, java.lang.Integer.MAX_VALUE, genderStatus));
         }
@@ -681,9 +723,167 @@ public class Patient extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof AnimalComponent))
+          return false;
+        AnimalComponent o = (AnimalComponent) other;
+        return compareDeep(species, o.species, true) && compareDeep(breed, o.breed, true) && compareDeep(genderStatus, o.genderStatus, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof AnimalComponent))
+          return false;
+        AnimalComponent o = (AnimalComponent) other;
+        return true;
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (species == null || species.isEmpty()) && (breed == null || breed.isEmpty())
            && (genderStatus == null || genderStatus.isEmpty());
+      }
+
+  }
+
+    @Block()
+    public static class PatientCommunicationComponent extends BackboneElement {
+        /**
+         * The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case. E.g. "en" for English, or "en-US" for American English versus "en-EN" for England English.
+         */
+        @Child(name ="language", type={CodeableConcept.class}, order=1, min=1, max=1)
+        @Description(shortDefinition="The language which can be used to communicate with the patient about his or her health", formalDefinition="The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case. E.g. 'en' for English, or 'en-US' for American English versus 'en-EN' for England English." )
+        protected CodeableConcept language;
+
+        /**
+         * Indicates whether or not the Patient prefers this language (over other languages he masters up a certain level).
+         */
+        @Child(name ="preferred", type={BooleanType.class}, order=2, min=0, max=1)
+        @Description(shortDefinition="Language preference indicator", formalDefinition="Indicates whether or not the Patient prefers this language (over other languages he masters up a certain level)." )
+        protected BooleanType preferred;
+
+        private static final long serialVersionUID = 633792918L;
+
+      public PatientCommunicationComponent() {
+        super();
+      }
+
+      public PatientCommunicationComponent(CodeableConcept language) {
+        super();
+        this.language = language;
+      }
+
+        /**
+         * @return {@link #language} (The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case. E.g. "en" for English, or "en-US" for American English versus "en-EN" for England English.)
+         */
+        public CodeableConcept getLanguage() { 
+          if (this.language == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PatientCommunicationComponent.language");
+            else if (Configuration.doAutoCreate())
+              this.language = new CodeableConcept(); // cc
+          return this.language;
+        }
+
+        public boolean hasLanguage() { 
+          return this.language != null && !this.language.isEmpty();
+        }
+
+        /**
+         * @param value {@link #language} (The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case. E.g. "en" for English, or "en-US" for American English versus "en-EN" for England English.)
+         */
+        public PatientCommunicationComponent setLanguage(CodeableConcept value) { 
+          this.language = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #preferred} (Indicates whether or not the Patient prefers this language (over other languages he masters up a certain level).). This is the underlying object with id, value and extensions. The accessor "getPreferred" gives direct access to the value
+         */
+        public BooleanType getPreferredElement() { 
+          if (this.preferred == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PatientCommunicationComponent.preferred");
+            else if (Configuration.doAutoCreate())
+              this.preferred = new BooleanType(); // bb
+          return this.preferred;
+        }
+
+        public boolean hasPreferredElement() { 
+          return this.preferred != null && !this.preferred.isEmpty();
+        }
+
+        public boolean hasPreferred() { 
+          return this.preferred != null && !this.preferred.isEmpty();
+        }
+
+        /**
+         * @param value {@link #preferred} (Indicates whether or not the Patient prefers this language (over other languages he masters up a certain level).). This is the underlying object with id, value and extensions. The accessor "getPreferred" gives direct access to the value
+         */
+        public PatientCommunicationComponent setPreferredElement(BooleanType value) { 
+          this.preferred = value;
+          return this;
+        }
+
+        /**
+         * @return Indicates whether or not the Patient prefers this language (over other languages he masters up a certain level).
+         */
+        public boolean getPreferred() { 
+          return this.preferred == null || this.preferred.isEmpty() ? false : this.preferred.getValue();
+        }
+
+        /**
+         * @param value Indicates whether or not the Patient prefers this language (over other languages he masters up a certain level).
+         */
+        public PatientCommunicationComponent setPreferred(boolean value) { 
+            if (this.preferred == null)
+              this.preferred = new BooleanType();
+            this.preferred.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> childrenList) {
+          super.listChildren(childrenList);
+          childrenList.add(new Property("language", "CodeableConcept", "The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case. E.g. 'en' for English, or 'en-US' for American English versus 'en-EN' for England English.", 0, java.lang.Integer.MAX_VALUE, language));
+          childrenList.add(new Property("preferred", "boolean", "Indicates whether or not the Patient prefers this language (over other languages he masters up a certain level).", 0, java.lang.Integer.MAX_VALUE, preferred));
+        }
+
+      public PatientCommunicationComponent copy() {
+        PatientCommunicationComponent dst = new PatientCommunicationComponent();
+        copyValues(dst);
+        dst.language = language == null ? null : language.copy();
+        dst.preferred = preferred == null ? null : preferred.copy();
+        return dst;
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof PatientCommunicationComponent))
+          return false;
+        PatientCommunicationComponent o = (PatientCommunicationComponent) other;
+        return compareDeep(language, o.language, true) && compareDeep(preferred, o.preferred, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof PatientCommunicationComponent))
+          return false;
+        PatientCommunicationComponent o = (PatientCommunicationComponent) other;
+        return compareValues(preferred, o.preferred, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && (language == null || language.isEmpty()) && (preferred == null || preferred.isEmpty())
+          ;
       }
 
   }
@@ -693,7 +893,7 @@ public class Patient extends DomainResource {
         /**
          * The other patient resource that the link refers to.
          */
-        @Child(name="other", type={Patient.class}, order=1, min=1, max=1)
+        @Child(name ="other", type={Patient.class}, order=1, min=1, max=1)
         @Description(shortDefinition="The other patient resource that the link refers to", formalDefinition="The other patient resource that the link refers to." )
         protected Reference other;
 
@@ -705,7 +905,7 @@ public class Patient extends DomainResource {
         /**
          * The type of link between this patient resource and another patient resource.
          */
-        @Child(name="type", type={CodeType.class}, order=2, min=1, max=1)
+        @Child(name ="type", type={CodeType.class}, order=2, min=1, max=1)
         @Description(shortDefinition="replace | refer | seealso - type of link", formalDefinition="The type of link between this patient resource and another patient resource." )
         protected Enumeration<LinkType> type;
 
@@ -729,7 +929,7 @@ public class Patient extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create PatientLinkComponent.other");
             else if (Configuration.doAutoCreate())
-              this.other = new Reference();
+              this.other = new Reference(); // cc
           return this.other;
         }
 
@@ -753,7 +953,7 @@ public class Patient extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create PatientLinkComponent.other");
             else if (Configuration.doAutoCreate())
-              this.otherTarget = new Patient();
+              this.otherTarget = new Patient(); // aa
           return this.otherTarget;
         }
 
@@ -773,7 +973,7 @@ public class Patient extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create PatientLinkComponent.type");
             else if (Configuration.doAutoCreate())
-              this.type = new Enumeration<LinkType>();
+              this.type = new Enumeration<LinkType>(new LinkTypeEnumFactory()); // bb
           return this.type;
         }
 
@@ -805,7 +1005,7 @@ public class Patient extends DomainResource {
          */
         public PatientLinkComponent setType(LinkType value) { 
             if (this.type == null)
-              this.type = new Enumeration<LinkType>();
+              this.type = new Enumeration<LinkType>(new LinkTypeEnumFactory());
             this.type.setValue(value);
           return this;
         }
@@ -824,6 +1024,26 @@ public class Patient extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof PatientLinkComponent))
+          return false;
+        PatientLinkComponent o = (PatientLinkComponent) other;
+        return compareDeep(other, o.other, true) && compareDeep(type, o.type, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof PatientLinkComponent))
+          return false;
+        PatientLinkComponent o = (PatientLinkComponent) other;
+        return compareValues(type, o.type, true);
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (other == null || other.isEmpty()) && (type == null || type.isEmpty())
           ;
@@ -832,100 +1052,100 @@ public class Patient extends DomainResource {
   }
 
     /**
-     * An identifier that applies to this person as a patient.
+     * An identifier for this patient.
      */
-    @Child(name="identifier", type={Identifier.class}, order=-1, min=0, max=Child.MAX_UNLIMITED)
-    @Description(shortDefinition="An identifier for the person as this patient", formalDefinition="An identifier that applies to this person as a patient." )
+    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
+    @Description(shortDefinition="An identifier for this patient", formalDefinition="An identifier for this patient." )
     protected List<Identifier> identifier;
 
     /**
      * A name associated with the individual.
      */
-    @Child(name="name", type={HumanName.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="name", type={HumanName.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="A name associated with the patient", formalDefinition="A name associated with the individual." )
     protected List<HumanName> name;
 
     /**
      * A contact detail (e.g. a telephone number or an email address) by which the individual may be contacted.
      */
-    @Child(name="telecom", type={ContactPoint.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="telecom", type={ContactPoint.class}, order=2, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="A contact detail for the individual", formalDefinition="A contact detail (e.g. a telephone number or an email address) by which the individual may be contacted." )
     protected List<ContactPoint> telecom;
 
     /**
      * Administrative Gender - the gender that the patient is considered to have for administration and record keeping purposes.
      */
-    @Child(name="gender", type={CodeType.class}, order=2, min=0, max=1)
+    @Child(name ="gender", type={CodeType.class}, order=3, min=0, max=1)
     @Description(shortDefinition="male | female | other | unknown", formalDefinition="Administrative Gender - the gender that the patient is considered to have for administration and record keeping purposes." )
     protected Enumeration<AdministrativeGender> gender;
 
     /**
-     * The date and time of birth for the individual.
+     * The date of birth for the individual.
      */
-    @Child(name="birthDate", type={DateType.class}, order=3, min=0, max=1)
-    @Description(shortDefinition="The date and time of birth for the individual", formalDefinition="The date and time of birth for the individual." )
+    @Child(name ="birthDate", type={DateType.class}, order=4, min=0, max=1)
+    @Description(shortDefinition="The date of birth for the individual", formalDefinition="The date of birth for the individual." )
     protected DateType birthDate;
 
     /**
      * Indicates if the individual is deceased or not.
      */
-    @Child(name="deceased", type={BooleanType.class, DateTimeType.class}, order=4, min=0, max=1)
+    @Child(name ="deceased", type={BooleanType.class, DateTimeType.class}, order=5, min=0, max=1)
     @Description(shortDefinition="Indicates if the individual is deceased or not", formalDefinition="Indicates if the individual is deceased or not." )
     protected Type deceased;
 
     /**
      * Addresses for the individual.
      */
-    @Child(name="address", type={Address.class}, order=5, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="address", type={Address.class}, order=6, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Addresses for the individual", formalDefinition="Addresses for the individual." )
     protected List<Address> address;
 
     /**
      * This field contains a patient's most recent marital (civil) status.
      */
-    @Child(name="maritalStatus", type={CodeableConcept.class}, order=6, min=0, max=1)
-    @Description(shortDefinition="Marital (civil) status of a person", formalDefinition="This field contains a patient's most recent marital (civil) status." )
+    @Child(name ="maritalStatus", type={CodeableConcept.class}, order=7, min=0, max=1)
+    @Description(shortDefinition="Marital (civil) status of a patient", formalDefinition="This field contains a patient's most recent marital (civil) status." )
     protected CodeableConcept maritalStatus;
 
     /**
      * Indicates whether the patient is part of a multiple or indicates the actual birth order.
      */
-    @Child(name="multipleBirth", type={BooleanType.class, IntegerType.class}, order=7, min=0, max=1)
+    @Child(name ="multipleBirth", type={BooleanType.class, IntegerType.class}, order=8, min=0, max=1)
     @Description(shortDefinition="Whether patient is part of a multiple birth", formalDefinition="Indicates whether the patient is part of a multiple or indicates the actual birth order." )
     protected Type multipleBirth;
 
     /**
-     * Image of the person.
+     * Image of the patient.
      */
-    @Child(name="photo", type={Attachment.class}, order=8, min=0, max=Child.MAX_UNLIMITED)
-    @Description(shortDefinition="Image of the person", formalDefinition="Image of the person." )
+    @Child(name ="photo", type={Attachment.class}, order=9, min=0, max=Child.MAX_UNLIMITED)
+    @Description(shortDefinition="Image of the patient", formalDefinition="Image of the patient." )
     protected List<Attachment> photo;
 
     /**
      * A contact party (e.g. guardian, partner, friend) for the patient.
      */
-    @Child(name="contact", type={}, order=9, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="contact", type={}, order=10, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="A contact party (e.g. guardian, partner, friend) for the patient", formalDefinition="A contact party (e.g. guardian, partner, friend) for the patient." )
     protected List<ContactComponent> contact;
 
     /**
      * This element has a value if the patient is an animal.
      */
-    @Child(name="animal", type={}, order=10, min=0, max=1)
+    @Child(name ="animal", type={}, order=11, min=0, max=1)
     @Description(shortDefinition="If this patient is an animal (non-human)", formalDefinition="This element has a value if the patient is an animal." )
     protected AnimalComponent animal;
 
     /**
      * Languages which may be used to communicate with the patient about his or her health.
      */
-    @Child(name="communication", type={CodeableConcept.class}, order=11, min=0, max=Child.MAX_UNLIMITED)
-    @Description(shortDefinition="Languages which may be used to communicate with the patient about his or her health", formalDefinition="Languages which may be used to communicate with the patient about his or her health." )
-    protected List<CodeableConcept> communication;
+    @Child(name ="communication", type={}, order=12, min=0, max=Child.MAX_UNLIMITED)
+    @Description(shortDefinition="A list of Languages which may be used to communicate with the patient about his or her health", formalDefinition="Languages which may be used to communicate with the patient about his or her health." )
+    protected List<PatientCommunicationComponent> communication;
 
     /**
      * Patient's nominated care provider.
      */
-    @Child(name="careProvider", type={Organization.class, Practitioner.class}, order=12, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="careProvider", type={Organization.class, Practitioner.class}, order=13, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Patient's nominated care provider", formalDefinition="Patient's nominated care provider." )
     protected List<Reference> careProvider;
     /**
@@ -937,7 +1157,7 @@ public class Patient extends DomainResource {
     /**
      * Organization that is the custodian of the patient record.
      */
-    @Child(name="managingOrganization", type={Organization.class}, order=13, min=0, max=1)
+    @Child(name ="managingOrganization", type={Organization.class}, order=14, min=0, max=1)
     @Description(shortDefinition="Organization that is the custodian of the patient record", formalDefinition="Organization that is the custodian of the patient record." )
     protected Reference managingOrganization;
 
@@ -947,27 +1167,27 @@ public class Patient extends DomainResource {
     protected Organization managingOrganizationTarget;
 
     /**
-     * Link to another patient resource that concerns the same actual person.
+     * Link to another patient resource that concerns the same actual patient.
      */
-    @Child(name="link", type={}, order=14, min=0, max=Child.MAX_UNLIMITED)
-    @Description(shortDefinition="Link to another patient resource that concerns the same actual person", formalDefinition="Link to another patient resource that concerns the same actual person." )
+    @Child(name ="link", type={}, order=15, min=0, max=Child.MAX_UNLIMITED)
+    @Description(shortDefinition="Link to another patient resource that concerns the same actual person", formalDefinition="Link to another patient resource that concerns the same actual patient." )
     protected List<PatientLinkComponent> link;
 
     /**
      * Whether this patient record is in active use.
      */
-    @Child(name="active", type={BooleanType.class}, order=15, min=0, max=1)
+    @Child(name ="active", type={BooleanType.class}, order=16, min=0, max=1)
     @Description(shortDefinition="Whether this patient's record is in active use", formalDefinition="Whether this patient record is in active use." )
     protected BooleanType active;
 
-    private static final long serialVersionUID = 473576981L;
+    private static final long serialVersionUID = 2057666410L;
 
     public Patient() {
       super();
     }
 
     /**
-     * @return {@link #identifier} (An identifier that applies to this person as a patient.)
+     * @return {@link #identifier} (An identifier for this patient.)
      */
     public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
@@ -985,7 +1205,7 @@ public class Patient extends DomainResource {
     }
 
     /**
-     * @return {@link #identifier} (An identifier that applies to this person as a patient.)
+     * @return {@link #identifier} (An identifier for this patient.)
      */
     // syntactic sugar
     public Identifier addIdentifier() { //3
@@ -994,6 +1214,16 @@ public class Patient extends DomainResource {
         this.identifier = new ArrayList<Identifier>();
       this.identifier.add(t);
       return t;
+    }
+
+    // syntactic sugar
+    public Patient addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
     }
 
     /**
@@ -1026,6 +1256,16 @@ public class Patient extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Patient addName(HumanName t) { //3
+      if (t == null)
+        return this;
+      if (this.name == null)
+        this.name = new ArrayList<HumanName>();
+      this.name.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #telecom} (A contact detail (e.g. a telephone number or an email address) by which the individual may be contacted.)
      */
@@ -1056,6 +1296,16 @@ public class Patient extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Patient addTelecom(ContactPoint t) { //3
+      if (t == null)
+        return this;
+      if (this.telecom == null)
+        this.telecom = new ArrayList<ContactPoint>();
+      this.telecom.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #gender} (Administrative Gender - the gender that the patient is considered to have for administration and record keeping purposes.). This is the underlying object with id, value and extensions. The accessor "getGender" gives direct access to the value
      */
@@ -1064,7 +1314,7 @@ public class Patient extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Patient.gender");
         else if (Configuration.doAutoCreate())
-          this.gender = new Enumeration<AdministrativeGender>();
+          this.gender = new Enumeration<AdministrativeGender>(new AdministrativeGenderEnumFactory()); // bb
       return this.gender;
     }
 
@@ -1099,21 +1349,21 @@ public class Patient extends DomainResource {
         this.gender = null;
       else {
         if (this.gender == null)
-          this.gender = new Enumeration<AdministrativeGender>();
+          this.gender = new Enumeration<AdministrativeGender>(new AdministrativeGenderEnumFactory());
         this.gender.setValue(value);
       }
       return this;
     }
 
     /**
-     * @return {@link #birthDate} (The date and time of birth for the individual.). This is the underlying object with id, value and extensions. The accessor "getBirthDate" gives direct access to the value
+     * @return {@link #birthDate} (The date of birth for the individual.). This is the underlying object with id, value and extensions. The accessor "getBirthDate" gives direct access to the value
      */
     public DateType getBirthDateElement() { 
       if (this.birthDate == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Patient.birthDate");
         else if (Configuration.doAutoCreate())
-          this.birthDate = new DateType();
+          this.birthDate = new DateType(); // bb
       return this.birthDate;
     }
 
@@ -1126,7 +1376,7 @@ public class Patient extends DomainResource {
     }
 
     /**
-     * @param value {@link #birthDate} (The date and time of birth for the individual.). This is the underlying object with id, value and extensions. The accessor "getBirthDate" gives direct access to the value
+     * @param value {@link #birthDate} (The date of birth for the individual.). This is the underlying object with id, value and extensions. The accessor "getBirthDate" gives direct access to the value
      */
     public Patient setBirthDateElement(DateType value) { 
       this.birthDate = value;
@@ -1134,16 +1384,16 @@ public class Patient extends DomainResource {
     }
 
     /**
-     * @return The date and time of birth for the individual.
+     * @return The date of birth for the individual.
      */
-    public DateAndTime getBirthDate() { 
+    public Date getBirthDate() { 
       return this.birthDate == null ? null : this.birthDate.getValue();
     }
 
     /**
-     * @param value The date and time of birth for the individual.
+     * @param value The date of birth for the individual.
      */
-    public Patient setBirthDate(DateAndTime value) { 
+    public Patient setBirthDate(Date value) { 
       if (value == null)
         this.birthDate = null;
       else {
@@ -1221,6 +1471,16 @@ public class Patient extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Patient addAddress(Address t) { //3
+      if (t == null)
+        return this;
+      if (this.address == null)
+        this.address = new ArrayList<Address>();
+      this.address.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #maritalStatus} (This field contains a patient's most recent marital (civil) status.)
      */
@@ -1229,7 +1489,7 @@ public class Patient extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Patient.maritalStatus");
         else if (Configuration.doAutoCreate())
-          this.maritalStatus = new CodeableConcept();
+          this.maritalStatus = new CodeableConcept(); // cc
       return this.maritalStatus;
     }
 
@@ -1283,7 +1543,7 @@ public class Patient extends DomainResource {
     }
 
     /**
-     * @return {@link #photo} (Image of the person.)
+     * @return {@link #photo} (Image of the patient.)
      */
     public List<Attachment> getPhoto() { 
       if (this.photo == null)
@@ -1301,7 +1561,7 @@ public class Patient extends DomainResource {
     }
 
     /**
-     * @return {@link #photo} (Image of the person.)
+     * @return {@link #photo} (Image of the patient.)
      */
     // syntactic sugar
     public Attachment addPhoto() { //3
@@ -1310,6 +1570,16 @@ public class Patient extends DomainResource {
         this.photo = new ArrayList<Attachment>();
       this.photo.add(t);
       return t;
+    }
+
+    // syntactic sugar
+    public Patient addPhoto(Attachment t) { //3
+      if (t == null)
+        return this;
+      if (this.photo == null)
+        this.photo = new ArrayList<Attachment>();
+      this.photo.add(t);
+      return this;
     }
 
     /**
@@ -1342,6 +1612,16 @@ public class Patient extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Patient addContact(ContactComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.contact == null)
+        this.contact = new ArrayList<ContactComponent>();
+      this.contact.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #animal} (This element has a value if the patient is an animal.)
      */
@@ -1350,7 +1630,7 @@ public class Patient extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Patient.animal");
         else if (Configuration.doAutoCreate())
-          this.animal = new AnimalComponent();
+          this.animal = new AnimalComponent(); // cc
       return this.animal;
     }
 
@@ -1369,16 +1649,16 @@ public class Patient extends DomainResource {
     /**
      * @return {@link #communication} (Languages which may be used to communicate with the patient about his or her health.)
      */
-    public List<CodeableConcept> getCommunication() { 
+    public List<PatientCommunicationComponent> getCommunication() { 
       if (this.communication == null)
-        this.communication = new ArrayList<CodeableConcept>();
+        this.communication = new ArrayList<PatientCommunicationComponent>();
       return this.communication;
     }
 
     public boolean hasCommunication() { 
       if (this.communication == null)
         return false;
-      for (CodeableConcept item : this.communication)
+      for (PatientCommunicationComponent item : this.communication)
         if (!item.isEmpty())
           return true;
       return false;
@@ -1388,12 +1668,22 @@ public class Patient extends DomainResource {
      * @return {@link #communication} (Languages which may be used to communicate with the patient about his or her health.)
      */
     // syntactic sugar
-    public CodeableConcept addCommunication() { //3
-      CodeableConcept t = new CodeableConcept();
+    public PatientCommunicationComponent addCommunication() { //3
+      PatientCommunicationComponent t = new PatientCommunicationComponent();
       if (this.communication == null)
-        this.communication = new ArrayList<CodeableConcept>();
+        this.communication = new ArrayList<PatientCommunicationComponent>();
       this.communication.add(t);
       return t;
+    }
+
+    // syntactic sugar
+    public Patient addCommunication(PatientCommunicationComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.communication == null)
+        this.communication = new ArrayList<PatientCommunicationComponent>();
+      this.communication.add(t);
+      return this;
     }
 
     /**
@@ -1426,6 +1716,16 @@ public class Patient extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Patient addCareProvider(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.careProvider == null)
+        this.careProvider = new ArrayList<Reference>();
+      this.careProvider.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #careProvider} (The actual objects that are the target of the reference. The reference library doesn't populate this, but you can use this to hold the resources if you resolvethemt. Patient's nominated care provider.)
      */
@@ -1443,7 +1743,7 @@ public class Patient extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Patient.managingOrganization");
         else if (Configuration.doAutoCreate())
-          this.managingOrganization = new Reference();
+          this.managingOrganization = new Reference(); // cc
       return this.managingOrganization;
     }
 
@@ -1467,7 +1767,7 @@ public class Patient extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Patient.managingOrganization");
         else if (Configuration.doAutoCreate())
-          this.managingOrganizationTarget = new Organization();
+          this.managingOrganizationTarget = new Organization(); // aa
       return this.managingOrganizationTarget;
     }
 
@@ -1480,7 +1780,7 @@ public class Patient extends DomainResource {
     }
 
     /**
-     * @return {@link #link} (Link to another patient resource that concerns the same actual person.)
+     * @return {@link #link} (Link to another patient resource that concerns the same actual patient.)
      */
     public List<PatientLinkComponent> getLink() { 
       if (this.link == null)
@@ -1498,7 +1798,7 @@ public class Patient extends DomainResource {
     }
 
     /**
-     * @return {@link #link} (Link to another patient resource that concerns the same actual person.)
+     * @return {@link #link} (Link to another patient resource that concerns the same actual patient.)
      */
     // syntactic sugar
     public PatientLinkComponent addLink() { //3
@@ -1509,6 +1809,16 @@ public class Patient extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Patient addLink(PatientLinkComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.link == null)
+        this.link = new ArrayList<PatientLinkComponent>();
+      this.link.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #active} (Whether this patient record is in active use.). This is the underlying object with id, value and extensions. The accessor "getActive" gives direct access to the value
      */
@@ -1517,7 +1827,7 @@ public class Patient extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Patient.active");
         else if (Configuration.doAutoCreate())
-          this.active = new BooleanType();
+          this.active = new BooleanType(); // bb
       return this.active;
     }
 
@@ -1541,41 +1851,37 @@ public class Patient extends DomainResource {
      * @return Whether this patient record is in active use.
      */
     public boolean getActive() { 
-      return this.active == null ? false : this.active.getValue();
+      return this.active == null || this.active.isEmpty() ? false : this.active.getValue();
     }
 
     /**
      * @param value Whether this patient record is in active use.
      */
     public Patient setActive(boolean value) { 
-      if (value == false)
-        this.active = null;
-      else {
         if (this.active == null)
           this.active = new BooleanType();
         this.active.setValue(value);
-      }
       return this;
     }
 
       protected void listChildren(List<Property> childrenList) {
         super.listChildren(childrenList);
-        childrenList.add(new Property("identifier", "Identifier", "An identifier that applies to this person as a patient.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        childrenList.add(new Property("identifier", "Identifier", "An identifier for this patient.", 0, java.lang.Integer.MAX_VALUE, identifier));
         childrenList.add(new Property("name", "HumanName", "A name associated with the individual.", 0, java.lang.Integer.MAX_VALUE, name));
         childrenList.add(new Property("telecom", "ContactPoint", "A contact detail (e.g. a telephone number or an email address) by which the individual may be contacted.", 0, java.lang.Integer.MAX_VALUE, telecom));
         childrenList.add(new Property("gender", "code", "Administrative Gender - the gender that the patient is considered to have for administration and record keeping purposes.", 0, java.lang.Integer.MAX_VALUE, gender));
-        childrenList.add(new Property("birthDate", "date", "The date and time of birth for the individual.", 0, java.lang.Integer.MAX_VALUE, birthDate));
+        childrenList.add(new Property("birthDate", "date", "The date of birth for the individual.", 0, java.lang.Integer.MAX_VALUE, birthDate));
         childrenList.add(new Property("deceased[x]", "boolean|dateTime", "Indicates if the individual is deceased or not.", 0, java.lang.Integer.MAX_VALUE, deceased));
         childrenList.add(new Property("address", "Address", "Addresses for the individual.", 0, java.lang.Integer.MAX_VALUE, address));
         childrenList.add(new Property("maritalStatus", "CodeableConcept", "This field contains a patient's most recent marital (civil) status.", 0, java.lang.Integer.MAX_VALUE, maritalStatus));
         childrenList.add(new Property("multipleBirth[x]", "boolean|integer", "Indicates whether the patient is part of a multiple or indicates the actual birth order.", 0, java.lang.Integer.MAX_VALUE, multipleBirth));
-        childrenList.add(new Property("photo", "Attachment", "Image of the person.", 0, java.lang.Integer.MAX_VALUE, photo));
+        childrenList.add(new Property("photo", "Attachment", "Image of the patient.", 0, java.lang.Integer.MAX_VALUE, photo));
         childrenList.add(new Property("contact", "", "A contact party (e.g. guardian, partner, friend) for the patient.", 0, java.lang.Integer.MAX_VALUE, contact));
         childrenList.add(new Property("animal", "", "This element has a value if the patient is an animal.", 0, java.lang.Integer.MAX_VALUE, animal));
-        childrenList.add(new Property("communication", "CodeableConcept", "Languages which may be used to communicate with the patient about his or her health.", 0, java.lang.Integer.MAX_VALUE, communication));
+        childrenList.add(new Property("communication", "", "Languages which may be used to communicate with the patient about his or her health.", 0, java.lang.Integer.MAX_VALUE, communication));
         childrenList.add(new Property("careProvider", "Reference(Organization|Practitioner)", "Patient's nominated care provider.", 0, java.lang.Integer.MAX_VALUE, careProvider));
         childrenList.add(new Property("managingOrganization", "Reference(Organization)", "Organization that is the custodian of the patient record.", 0, java.lang.Integer.MAX_VALUE, managingOrganization));
-        childrenList.add(new Property("link", "", "Link to another patient resource that concerns the same actual person.", 0, java.lang.Integer.MAX_VALUE, link));
+        childrenList.add(new Property("link", "", "Link to another patient resource that concerns the same actual patient.", 0, java.lang.Integer.MAX_VALUE, link));
         childrenList.add(new Property("active", "boolean", "Whether this patient record is in active use.", 0, java.lang.Integer.MAX_VALUE, active));
       }
 
@@ -1619,8 +1925,8 @@ public class Patient extends DomainResource {
         };
         dst.animal = animal == null ? null : animal.copy();
         if (communication != null) {
-          dst.communication = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : communication)
+          dst.communication = new ArrayList<PatientCommunicationComponent>();
+          for (PatientCommunicationComponent i : communication)
             dst.communication.add(i.copy());
         };
         if (careProvider != null) {
@@ -1640,6 +1946,33 @@ public class Patient extends DomainResource {
 
       protected Patient typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Patient))
+          return false;
+        Patient o = (Patient) other;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(name, o.name, true) && compareDeep(telecom, o.telecom, true)
+           && compareDeep(gender, o.gender, true) && compareDeep(birthDate, o.birthDate, true) && compareDeep(deceased, o.deceased, true)
+           && compareDeep(address, o.address, true) && compareDeep(maritalStatus, o.maritalStatus, true) && compareDeep(multipleBirth, o.multipleBirth, true)
+           && compareDeep(photo, o.photo, true) && compareDeep(contact, o.contact, true) && compareDeep(animal, o.animal, true)
+           && compareDeep(communication, o.communication, true) && compareDeep(careProvider, o.careProvider, true)
+           && compareDeep(managingOrganization, o.managingOrganization, true) && compareDeep(link, o.link, true)
+           && compareDeep(active, o.active, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Patient))
+          return false;
+        Patient o = (Patient) other;
+        return compareValues(gender, o.gender, true) && compareValues(birthDate, o.birthDate, true) && compareValues(active, o.active, true)
+          ;
       }
 
       public boolean isEmpty() {
@@ -1665,6 +1998,8 @@ public class Patient extends DomainResource {
   public static final String SP_LINK = "link";
   @SearchParamDefinition(name="animal-species", path="Patient.animal.species", description="The species for animal patients", type="token" )
   public static final String SP_ANIMALSPECIES = "animal-species";
+  @SearchParamDefinition(name="deathdate", path="Patient.deceased[x]", description="The date of death has been provided and satisfies this search value", type="date" )
+  public static final String SP_DEATHDATE = "deathdate";
   @SearchParamDefinition(name="organization", path="Patient.managingOrganization", description="The organization at which this person is a patient", type="reference" )
   public static final String SP_ORGANIZATION = "organization";
   @SearchParamDefinition(name="given", path="Patient.name.given", description="A portion of the given name of the patient", type="string" )
@@ -1677,7 +2012,7 @@ public class Patient extends DomainResource {
   public static final String SP_FAMILY = "family";
   @SearchParamDefinition(name="name", path="Patient.name", description="A portion of either family or given name of the patient", type="string" )
   public static final String SP_NAME = "name";
-  @SearchParamDefinition(name="telecom", path="Patient.telecom", description="The value in any kind of telecom details of the patient", type="string" )
+  @SearchParamDefinition(name="telecom", path="Patient.telecom", description="The value in any kind of telecom details of the patient", type="token" )
   public static final String SP_TELECOM = "telecom";
   @SearchParamDefinition(name="birthdate", path="Patient.birthDate", description="The patient's date of birth", type="date" )
   public static final String SP_BIRTHDATE = "birthdate";
@@ -1685,7 +2020,9 @@ public class Patient extends DomainResource {
   public static final String SP_GENDER = "gender";
   @SearchParamDefinition(name="active", path="Patient.active", description="Whether the patient record is active", type="token" )
   public static final String SP_ACTIVE = "active";
-  @SearchParamDefinition(name="language", path="Patient.communication", description="Language code (irrespective of use value)", type="token" )
+  @SearchParamDefinition(name="deceased", path="Patient.deceased[x]", description="This patient has been marked as deceased, or as a death date entered", type="token" )
+  public static final String SP_DECEASED = "deceased";
+  @SearchParamDefinition(name="language", path="Patient.communication.language", description="Language code (irrespective of use value)", type="token" )
   public static final String SP_LANGUAGE = "language";
   @SearchParamDefinition(name="identifier", path="Patient.identifier", description="A patient identifier", type="token" )
   public static final String SP_IDENTIFIER = "identifier";

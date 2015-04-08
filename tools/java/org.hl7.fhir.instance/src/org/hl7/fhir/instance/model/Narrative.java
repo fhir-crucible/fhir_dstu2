@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -107,17 +107,17 @@ public class Narrative extends Element {
         }
         public String getDisplay() {
           switch (this) {
-            case GENERATED: return "generated";
-            case EXTENSIONS: return "extensions";
-            case ADDITIONAL: return "additional";
-            case EMPTY: return "empty";
+            case GENERATED: return "Generated";
+            case EXTENSIONS: return "Extensions";
+            case ADDITIONAL: return "Additional";
+            case EMPTY: return "Empty";
             default: return "?";
           }
         }
     }
 
-  public static class NarrativeStatusEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class NarrativeStatusEnumFactory implements EnumFactory<NarrativeStatus> {
+    public NarrativeStatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -129,9 +129,9 @@ public class Narrative extends Element {
           return NarrativeStatus.ADDITIONAL;
         if ("empty".equals(codeString))
           return NarrativeStatus.EMPTY;
-        throw new Exception("Unknown NarrativeStatus code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown NarrativeStatus code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(NarrativeStatus code) {
       if (code == NarrativeStatus.GENERATED)
         return "generated";
       if (code == NarrativeStatus.EXTENSIONS)
@@ -147,14 +147,14 @@ public class Narrative extends Element {
     /**
      * The status of the narrative - whether it's entirely generated (from just the defined data or the extensions too), or whether a human authored it and it may contain additional data.
      */
-    @Child(name="status", type={CodeType.class}, order=-1, min=1, max=1)
-    @Description(shortDefinition="generated | extensions | additional", formalDefinition="The status of the narrative - whether it's entirely generated (from just the defined data or the extensions too), or whether a human authored it and it may contain additional data." )
+    @Child(name ="status", type={CodeType.class}, order=0, min=1, max=1)
+    @Description(shortDefinition="generated | extensions | additional | empty", formalDefinition="The status of the narrative - whether it's entirely generated (from just the defined data or the extensions too), or whether a human authored it and it may contain additional data." )
     protected Enumeration<NarrativeStatus> status;
 
     /**
      * The actual narrative content, a stripped down version of XHTML.
      */
-    @Child(name="div", type={}, order=0, min=1, max=1)
+    @Child(name ="div", type={}, order=1, min=1, max=1)
     @Description(shortDefinition="Limited xhtml content", formalDefinition="The actual narrative content, a stripped down version of XHTML." )
     protected XhtmlNode div;
 
@@ -178,7 +178,7 @@ public class Narrative extends Element {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Narrative.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<NarrativeStatus>();
+          this.status = new Enumeration<NarrativeStatus>(new NarrativeStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -210,7 +210,7 @@ public class Narrative extends Element {
      */
     public Narrative setStatus(NarrativeStatus value) { 
         if (this.status == null)
-          this.status = new Enumeration<NarrativeStatus>();
+          this.status = new Enumeration<NarrativeStatus>(new NarrativeStatusEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -223,7 +223,7 @@ public class Narrative extends Element {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Narrative.div");
         else if (Configuration.doAutoCreate())
-          this.div = new XhtmlNode();
+          this.div = new XhtmlNode(); // cc
       return this.div;
     }
 
@@ -254,6 +254,26 @@ public class Narrative extends Element {
 
       protected Narrative typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Narrative))
+          return false;
+        Narrative o = (Narrative) other;
+        return compareDeep(status, o.status, true) && compareDeep(div, o.div, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Narrative))
+          return false;
+        Narrative o = (Narrative) other;
+        return compareValues(status, o.status, true);
       }
 
       public boolean isEmpty() {

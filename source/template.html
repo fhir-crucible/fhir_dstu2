@@ -13,7 +13,8 @@
 
 <%resheader%>
 <h1>Resource <%title%> - Content</h1>
-<!-- <p class="status">Status: <%status%></p> -->
+<%draft-note%>
+
 
 <%wg%>
 
@@ -75,8 +76,8 @@ Resource Content
 
 <div id="json">
 <p><b>JSON Template</b></p>
- <div id="xml-inner">
-  <p>todo</p>
+ <div id="json-inner">
+  <%json%>
  </div>
 </div>
 
@@ -111,8 +112,8 @@ Resource Content
 <div id="json">
 <a name="json"> </a>
 <p><b>JSON Template</b></p>
- <div id="xml-inner">
-  <p>to do</p>
+ <div id="json-inner">
+  <%json%>
  </div>
 </div>
   
@@ -121,8 +122,8 @@ Resource Content
   
 <p>&nbsp;</p>  
 <p>Alternate definitions: <a href="<%name%>.xsd">Schema</a>/<a href="<%name%>.sch">Schematron</a>, 
-Resource Profile (<a href="<%name%>.profile.xml.html">XML</a>, <a href="<%name%>.profile.json.html">JSON</a>), 
-<a href="<%name%>.questionnaire.html">Questionnaire</a></p>
+Resource Profile (<a href="<%name%>.profile.xml.html">XML</a>, <a href="<%name%>.profile.json.html">JSON</a>)<!--, 
+<a href="<%name%>.questionnaire.html">Questionnaire</a>--></p>
 
 
 <a name="tx"> </a>
@@ -149,8 +150,6 @@ try {
   var currentTabIndex = sessionStorage.getItem('fhir-resource-tab-index');
 }
 catch(exception){ 
-  if (navigator.userAgent.toLowerCase().indexof('msie') == -1)
-    alert(exception);
 }
 
 if (!currentTabIndex)
@@ -161,12 +160,11 @@ $( '#tabs' ).tabs({
          activate: function( event, ui ) {
              var active = $('.selector').tabs('option', 'active');
              currentTabIndex = ui.newTab.index();
+             document.activeElement.blur();
              try {
                sessionStorage.setItem('fhir-resource-tab-index', currentTabIndex);
              }
              catch(exception){ 
-              if (navigator.userAgent.toLowerCase().indexof('msie') == -1)
-                alert(exception);
              }
          }
      });

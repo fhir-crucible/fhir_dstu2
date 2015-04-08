@@ -3,8 +3,10 @@ package org.hl7.fhir.instance.utils;
 import java.util.List;
 
 import org.hl7.fhir.instance.model.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.instance.model.ValueSet;
 import org.hl7.fhir.instance.model.ValueSet.ConceptDefinitionComponent;
 import org.hl7.fhir.instance.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.instance.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.instance.model.ValueSet.ValueSetExpansionContainsComponent;
 
 
@@ -65,7 +67,8 @@ public interface ITerminologyServices {
    * might fail if the expansion is very large. If the expansion fails, then the 
    * checkVS will be called instead
    */
-  public List<ValueSetExpansionContainsComponent> expandVS(ConceptSetComponent inc) throws Exception;
+  public ValueSetExpansionComponent expandVS(ConceptSetComponent inc) throws Exception;
+  public ValueSet expandVS(ValueSet vs) throws Exception;
   
   /**
    * Test the value set fragment (system | codes | filters). 
@@ -73,5 +76,6 @@ public interface ITerminologyServices {
   public boolean checkVS(ConceptSetComponent vsi, String system, String code);
   
   public boolean verifiesSystem(String system);
+
 
 }

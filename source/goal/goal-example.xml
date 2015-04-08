@@ -7,7 +7,7 @@
 			<p> A simple care goal for a patient to lose weight due to obesity.</p>
 		</div>
 	</text>
-	<extension url="http://hl7.org/fhir/ExtensionDefinition/goal-common-target">
+	<extension url="http://hl7.org/fhir/StructureDefinition/goal-target">
 		<extension url="measure">
 			<valueCodeableConcept>
 				<coding>
@@ -39,7 +39,7 @@
 		<display value="Peter James Chalmers"/>
 	</patient>
 	<description value="Target weight is 160 to 180 lbs."/>
-	<status value="in progress"/>
+	<status value="in-progress"/>
 	<concern>
 		<reference value="Condition/12345"/>
 		<display value="obesity"/>

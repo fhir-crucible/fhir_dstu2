@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -50,21 +50,21 @@ public class Substance extends DomainResource {
         /**
          * Identifier associated with the package/container (usually a label affixed directly).
          */
-        @Child(name="identifier", type={Identifier.class}, order=1, min=0, max=1)
+        @Child(name ="identifier", type={Identifier.class}, order=1, min=0, max=1)
         @Description(shortDefinition="Identifier of the package/container", formalDefinition="Identifier associated with the package/container (usually a label affixed directly)." )
         protected Identifier identifier;
 
         /**
          * When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.
          */
-        @Child(name="expiry", type={DateTimeType.class}, order=2, min=0, max=1)
+        @Child(name ="expiry", type={DateTimeType.class}, order=2, min=0, max=1)
         @Description(shortDefinition="When no longer valid to use", formalDefinition="When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry." )
         protected DateTimeType expiry;
 
         /**
          * The amount of the substance.
          */
-        @Child(name="quantity", type={Quantity.class}, order=3, min=0, max=1)
+        @Child(name ="quantity", type={Quantity.class}, order=3, min=0, max=1)
         @Description(shortDefinition="Amount of substance in the package", formalDefinition="The amount of the substance." )
         protected Quantity quantity;
 
@@ -82,7 +82,7 @@ public class Substance extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SubstanceInstanceComponent.identifier");
             else if (Configuration.doAutoCreate())
-              this.identifier = new Identifier();
+              this.identifier = new Identifier(); // cc
           return this.identifier;
         }
 
@@ -106,7 +106,7 @@ public class Substance extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SubstanceInstanceComponent.expiry");
             else if (Configuration.doAutoCreate())
-              this.expiry = new DateTimeType();
+              this.expiry = new DateTimeType(); // bb
           return this.expiry;
         }
 
@@ -129,14 +129,14 @@ public class Substance extends DomainResource {
         /**
          * @return When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.
          */
-        public DateAndTime getExpiry() { 
+        public Date getExpiry() { 
           return this.expiry == null ? null : this.expiry.getValue();
         }
 
         /**
          * @param value When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.
          */
-        public SubstanceInstanceComponent setExpiry(DateAndTime value) { 
+        public SubstanceInstanceComponent setExpiry(Date value) { 
           if (value == null)
             this.expiry = null;
           else {
@@ -155,7 +155,7 @@ public class Substance extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SubstanceInstanceComponent.quantity");
             else if (Configuration.doAutoCreate())
-              this.quantity = new Quantity();
+              this.quantity = new Quantity(); // cc
           return this.quantity;
         }
 
@@ -187,6 +187,27 @@ public class Substance extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof SubstanceInstanceComponent))
+          return false;
+        SubstanceInstanceComponent o = (SubstanceInstanceComponent) other;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(expiry, o.expiry, true) && compareDeep(quantity, o.quantity, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof SubstanceInstanceComponent))
+          return false;
+        SubstanceInstanceComponent o = (SubstanceInstanceComponent) other;
+        return compareValues(expiry, o.expiry, true);
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (identifier == null || identifier.isEmpty()) && (expiry == null || expiry.isEmpty())
            && (quantity == null || quantity.isEmpty());
@@ -199,14 +220,14 @@ public class Substance extends DomainResource {
         /**
          * The amount of the ingredient in the substance - a concentration ratio.
          */
-        @Child(name="quantity", type={Ratio.class}, order=1, min=0, max=1)
+        @Child(name ="quantity", type={Ratio.class}, order=1, min=0, max=1)
         @Description(shortDefinition="Optional amount (concentration)", formalDefinition="The amount of the ingredient in the substance - a concentration ratio." )
         protected Ratio quantity;
 
         /**
          * Another substance that is a component of this substance.
          */
-        @Child(name="substance", type={Substance.class}, order=2, min=1, max=1)
+        @Child(name ="substance", type={Substance.class}, order=2, min=1, max=1)
         @Description(shortDefinition="A component of the substance", formalDefinition="Another substance that is a component of this substance." )
         protected Reference substance;
 
@@ -234,7 +255,7 @@ public class Substance extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SubstanceIngredientComponent.quantity");
             else if (Configuration.doAutoCreate())
-              this.quantity = new Ratio();
+              this.quantity = new Ratio(); // cc
           return this.quantity;
         }
 
@@ -258,7 +279,7 @@ public class Substance extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SubstanceIngredientComponent.substance");
             else if (Configuration.doAutoCreate())
-              this.substance = new Reference();
+              this.substance = new Reference(); // cc
           return this.substance;
         }
 
@@ -282,7 +303,7 @@ public class Substance extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SubstanceIngredientComponent.substance");
             else if (Configuration.doAutoCreate())
-              this.substanceTarget = new Substance();
+              this.substanceTarget = new Substance(); // aa
           return this.substanceTarget;
         }
 
@@ -308,6 +329,26 @@ public class Substance extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof SubstanceIngredientComponent))
+          return false;
+        SubstanceIngredientComponent o = (SubstanceIngredientComponent) other;
+        return compareDeep(quantity, o.quantity, true) && compareDeep(substance, o.substance, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof SubstanceIngredientComponent))
+          return false;
+        SubstanceIngredientComponent o = (SubstanceIngredientComponent) other;
+        return true;
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (quantity == null || quantity.isEmpty()) && (substance == null || substance.isEmpty())
           ;
@@ -318,28 +359,28 @@ public class Substance extends DomainResource {
     /**
      * A code (or set of codes) that identify this substance.
      */
-    @Child(name="type", type={CodeableConcept.class}, order=-1, min=1, max=1)
+    @Child(name ="type", type={CodeableConcept.class}, order=0, min=1, max=1)
     @Description(shortDefinition="What kind of substance this is", formalDefinition="A code (or set of codes) that identify this substance." )
     protected CodeableConcept type;
 
     /**
      * A description of the substance - its appearance, handling requirements, and other usage notes.
      */
-    @Child(name="description", type={StringType.class}, order=0, min=0, max=1)
+    @Child(name ="description", type={StringType.class}, order=1, min=0, max=1)
     @Description(shortDefinition="Textual description of the substance, comments", formalDefinition="A description of the substance - its appearance, handling requirements, and other usage notes." )
     protected StringType description;
 
     /**
      * Substance may be used to describe a kind of substance, or a specific package/container of the substance: an instance.
      */
-    @Child(name="instance", type={}, order=1, min=0, max=1)
+    @Child(name ="instance", type={}, order=2, min=0, max=1)
     @Description(shortDefinition="If this describes a specific package/container of the substance", formalDefinition="Substance may be used to describe a kind of substance, or a specific package/container of the substance: an instance." )
     protected SubstanceInstanceComponent instance;
 
     /**
      * A substance can be composed of other substances.
      */
-    @Child(name="ingredient", type={}, order=2, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="ingredient", type={}, order=3, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Composition information about the substance", formalDefinition="A substance can be composed of other substances." )
     protected List<SubstanceIngredientComponent> ingredient;
 
@@ -362,7 +403,7 @@ public class Substance extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Substance.type");
         else if (Configuration.doAutoCreate())
-          this.type = new CodeableConcept();
+          this.type = new CodeableConcept(); // cc
       return this.type;
     }
 
@@ -386,7 +427,7 @@ public class Substance extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Substance.description");
         else if (Configuration.doAutoCreate())
-          this.description = new StringType();
+          this.description = new StringType(); // bb
       return this.description;
     }
 
@@ -435,7 +476,7 @@ public class Substance extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Substance.instance");
         else if (Configuration.doAutoCreate())
-          this.instance = new SubstanceInstanceComponent();
+          this.instance = new SubstanceInstanceComponent(); // cc
       return this.instance;
     }
 
@@ -481,6 +522,16 @@ public class Substance extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Substance addIngredient(SubstanceIngredientComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.ingredient == null)
+        this.ingredient = new ArrayList<SubstanceIngredientComponent>();
+      this.ingredient.add(t);
+      return this;
+    }
+
       protected void listChildren(List<Property> childrenList) {
         super.listChildren(childrenList);
         childrenList.add(new Property("type", "CodeableConcept", "A code (or set of codes) that identify this substance.", 0, java.lang.Integer.MAX_VALUE, type));
@@ -505,6 +556,27 @@ public class Substance extends DomainResource {
 
       protected Substance typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Substance))
+          return false;
+        Substance o = (Substance) other;
+        return compareDeep(type, o.type, true) && compareDeep(description, o.description, true) && compareDeep(instance, o.instance, true)
+           && compareDeep(ingredient, o.ingredient, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Substance))
+          return false;
+        Substance o = (Substance) other;
+        return compareValues(description, o.description, true);
       }
 
       public boolean isEmpty() {

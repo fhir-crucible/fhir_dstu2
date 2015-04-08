@@ -4,10 +4,6 @@ import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.List;
 
-import org.hl7.fhir.instance.model.DateAndTime;
-import org.hl7.fhir.instance.model.ElementDefinition;
-import org.hl7.fhir.instance.model.Profile;
-import org.hl7.fhir.utilities.Utilities;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -19,10 +15,12 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.hl7.fhir.instance.model.ElementDefinition;
+import org.hl7.fhir.instance.model.StructureDefinition;
 
 public class ReviewSpreadsheetGenerator {
 
-  public void generate(String filename, String author, Calendar genDate, Profile profile) throws Exception {
+  public void generate(String filename, String author, Calendar genDate, StructureDefinition profile) throws Exception {
     HSSFWorkbook workbook = new HSSFWorkbook();
         
     HSSFPalette palette = workbook.getCustomPalette();
@@ -35,13 +33,13 @@ public class ReviewSpreadsheetGenerator {
     out.close();
   }
 
-  private void generateReviewSheet(HSSFWorkbook workbook, Profile profile) {
-    HSSFSheet sheet = workbook.createSheet(profile.getName());
+  private void generateReviewSheet(HSSFWorkbook workbook, StructureDefinition profile) {
+    HSSFSheet sheet = workbook.createSheet(sanitize(profile.getName()));
     sheet.setColumnWidth(0, 8000);
     sheet.setColumnWidth(3, 100);
     
     HSSFFont font = workbook.createFont();
-    font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    font.setBoldweight(Font.BOLDWEIGHT_BOLD);
     font.setFontName("Calibri");
     HSSFCellStyle style = workbook.createCellStyle();
     style.setFont(font);
@@ -50,7 +48,7 @@ public class ReviewSpreadsheetGenerator {
     style.setFillForegroundColor(new HSSFColor.LAVENDER().getIndex());
     style.setFillPattern(CellStyle.SOLID_FOREGROUND);
     
-    addRow(sheet, style, "Path", "Profile", "Value Set", "Definition", "Your Comments").setRowStyle(style);
+    addRow(sheet, style, "Path", "StructureDefinition", "Value Set", "Definition", "Your Comments").setRowStyle(style);
 
     font = workbook.createFont();
     font.setFontName("Calibri");
@@ -58,8 +56,18 @@ public class ReviewSpreadsheetGenerator {
     
     ElementDefinition ed = profile.getSnapshot().getElement().get(0);
     String path = ed.getPath();
-    addRow(sheet, style, path+" : "+profile.getType(), profile.getName(), "", ed.getFormal(), "");
+    addRow(sheet, style, path+" : "+profile.getType(), profile.getName(), "", ed.getDefinition(), "");
     processRows(workbook, path, profile.getSnapshot().getElement(), 1, sheet, "  ");
+  }
+
+  private String sanitize(String name) {
+    StringBuilder b = new StringBuilder();
+    for (char c : name.toCharArray())
+      if (Character.isAlphabetic(c) || Character.isDigit(c))
+        b.append(c);
+      else
+        b.append(' ');
+    return b.toString();
   }
 
   private int processRows(HSSFWorkbook workbook, String path, List<ElementDefinition> list, int i, HSSFSheet sheet, String indent) {
@@ -120,7 +128,6 @@ public class ReviewSpreadsheetGenerator {
       }
       cell = row.createCell(c++);
       cell.setCellStyle(style);
-      cell.setCellValue(ed.getFormal());
       cell = row.createCell(c++);
       cell.setCellStyle(style);
       cell.setCellValue("");
@@ -149,7 +156,7 @@ public class ReviewSpreadsheetGenerator {
   private void generateReviewHeader(HSSFWorkbook workbook) {
     HSSFSheet sheet = workbook.createSheet("Review Details");
     HSSFFont font = workbook.createFont();
-    font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    font.setBoldweight(Font.BOLDWEIGHT_BOLD);
     HSSFCellStyle style = workbook.createCellStyle();
     style.setFont(font);
     

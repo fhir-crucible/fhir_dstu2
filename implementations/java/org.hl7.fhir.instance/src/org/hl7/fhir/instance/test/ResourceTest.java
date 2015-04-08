@@ -32,9 +32,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-import org.hl7.fhir.instance.formats.JsonParser;
 import org.hl7.fhir.instance.formats.IParser;
 import org.hl7.fhir.instance.formats.IParser.OutputStyle;
+import org.hl7.fhir.instance.formats.JsonParser;
 import org.hl7.fhir.instance.formats.XmlParser;
 import org.hl7.fhir.instance.model.Resource;
 
@@ -70,6 +70,7 @@ public class ResourceTest {
     
     out = new FileOutputStream(source.getAbsoluteFile()+".out.xml");
     XmlParser atom = new XmlParser(); 
+    atom.setOutputStyle(OutputStyle.PRETTY);
     atom.compose(out, rf, true);
     
   }

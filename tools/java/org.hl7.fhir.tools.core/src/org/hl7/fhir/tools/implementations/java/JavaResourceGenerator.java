@@ -100,7 +100,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       boolean h = hasXhtml(root);
       boolean d = hasDecimal(root);
       boolean s = hasString(root);
-      if (l || h || d) {
+      boolean e = hasSharedEnums(root);
+      if (l || h || d || e) {
         if (l)
           write("import java.util.*;\r\n");
         if (h)
@@ -110,6 +111,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("import java.math.*;\r\n");
         if (s)
           write("import org.hl7.fhir.utilities.Utilities;\r\n");
+        if (e)
+          write("import org.hl7.fhir.instance.model.Enumerations.*;\r\n");
       }
       if (clss == JavaGenClass.Resource) {
         write("import org.hl7.fhir.instance.model.annotations.ResourceDef;\r\n");
@@ -161,7 +164,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 			}
 
       allfields = "";
-      int i = -1;
+      int i = 0;
 			for (ElementDefn e : root.getElements()) {
 				generateField(root, e, "    ", i++);
 			}
@@ -185,6 +188,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       write("    private static final long serialVersionUID = "+inheritedHash+"L;\r\n\r\n");
 
 		generateCopy(root, classname, false, isAbstract);
+		generateEquals(root, classname, false, isAbstract);
 		generateIsEmpty(root, classname, false, isAbstract);
 
 		if (clss == JavaGenClass.Resource && !isAbstract) {
@@ -296,7 +300,15 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     return false;
   }
 
-	private boolean hasXhtml(ElementDefn root) {
+  private boolean hasSharedEnums(ElementDefn root) {
+    for (ElementDefn e : root.getElements()) {
+      if (isSharedEnum(e.getBindingName()) || hasSharedEnums(e))
+        return true;
+    } 
+    return false;
+  }
+
+  private boolean hasXhtml(ElementDefn root) {
 		for (ElementDefn e : root.getElements()) {
 			if (e.isXhtmlElement() || hasXhtmlInner(e))
 				return true;
@@ -336,6 +348,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		String tns = tn.substring(tn.indexOf("<")+1);
 		tns = tns.substring(0, tns.length()-1);
 		BindingSpecification cd = getConceptDomain(conceptDomains, e.getBindingName());
+		if (isSharedEnum(cd.getName()))
+		  return;
 
 		write("    public enum "+tns+" {\r\n");
 		int l = cd.getCodes().size();
@@ -415,8 +429,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		write("\r\n");
 
 		
-		write("  public static class "+tns+"EnumFactory implements EnumFactory {\r\n");
-		write("    public Enum<?> fromCode(String codeString) throws Exception {\r\n");
+		write("  public static class "+tns+"EnumFactory implements EnumFactory<"+tns+"> {\r\n");
+		write("    public "+tns+" fromCode(String codeString) throws IllegalArgumentException {\r\n");
 		
 		write("      if (codeString == null || \"\".equals(codeString))\r\n");
     write("            if (codeString == null || \"\".equals(codeString))\r\n");
@@ -427,9 +441,9 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       write("        if (\""+c.getCode()+"\".equals(codeString))\r\n");
       write("          return "+tns+"."+cc+";\r\n");
     }   
-    write("        throw new Exception(\"Unknown "+tns+" code '\"+codeString+\"'\");\r\n");
+    write("        throw new IllegalArgumentException(\"Unknown "+tns+" code '\"+codeString+\"'\");\r\n");
     write("        }\r\n"); 
-    write("    public String toCode(Enum<?> code) throws Exception {\r\n");
+    write("    public String toCode("+tns+" code) {\r\n");
     for (DefinedCode c : cd.getCodes()) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
@@ -501,12 +515,81 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		}
     generateChildrenRegister(e, "      ", false);
     generateCopy(e, tn, true, false);
+    generateEquals(e, tn, true, false);
     generateIsEmpty(e, tn, true, false);
     write("  }\r\n");
 		write("\r\n");
 
 	}
 
+  
+  private void generateEquals(ElementDefn e, String tn, boolean owner, boolean isAbstract) throws IOException {
+    write("      @Override\r\n");
+    write("      public boolean equalsDeep(Base other) {\r\n");
+    write("        if (!super.equalsDeep(other))\r\n");
+    write("          return false;\r\n");
+    write("        if (!(other instanceof "+tn+"))\r\n");
+    write("          return false;\r\n");
+    write("        "+tn+" o = ("+tn+") other;\r\n");
+    write("        return ");
+    boolean first = true;
+    int col = 18;
+    for (ElementDefn c : e.getElements()) {
+      if (first)
+        first = false;
+      else {
+        write(" && ");
+        col = col+4;
+      }
+      String name = getElementName(c.getName(), true);
+      if (name.endsWith("[x]"))
+        name = name.substring(0, name.length()-3);
+      write("compareDeep("+name+", o."+name+", true)");
+      col = col+21 + name.length()*2;
+      if (col > 100) {
+        col = 10;
+        write("\r\n          ");
+      }
+    }
+    if (first)
+      write("true"); 
+    write(";\r\n");
+    write("      }\r\n\r\n");  
+    write("      @Override\r\n");
+    write("      public boolean equalsShallow(Base other) {\r\n");
+    write("        if (!super.equalsShallow(other))\r\n");
+    write("          return false;\r\n");
+    write("        if (!(other instanceof "+tn+"))\r\n");
+    write("          return false;\r\n");
+    write("        "+tn+" o = ("+tn+") other;\r\n");
+    write("        return ");
+    first = true;
+    col = 18;
+    for (ElementDefn c : e.getElements()) {
+      if (isJavaPrimitive(c)) {
+        if (first)
+          first = false;
+        else {
+          write(" && ");
+          col = col+4;
+        }
+        String name = getElementName(c.getName(), true);
+        if (name.endsWith("[x]"))
+          name = name.substring(0, name.length()-3);
+        write("compareValues("+name+", o."+name+", true)");
+        col = col+21 + name.length()*2;
+        if (col > 100) {
+          col = 10;
+          write("\r\n          ");
+        }
+      }
+    }
+    if (first)
+      write("true"); 
+    write(";\r\n");
+    write("      }\r\n\r\n");  
+  }
+  
 	private void generateCopy(ElementDefn e, String tn, boolean owner, boolean isAbstract) throws IOException {
 	  if (isAbstract) {
       write("      public abstract "+tn+" copy();\r\n\r\n");
@@ -706,6 +789,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 	        String rn = params.size() == 1 ? params.get(0) : "Resource";
 	        if (rn.equals("Any"))
 	          rn = "Resource";
+	        else if (rn.equals("List"))
+            rn = "List_";
 	        jdoc(indent, "The actual objects that are the target of the reference ("+e.getDefinition()+")");
 	        writeWithHash(indent+"protected List<"+rn+"> "+getElementName(e.getName(), true)+"Target;\r\n");
 	        write("\r\n");
@@ -722,6 +807,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         String rn = params.size() == 1 ? params.get(0) : "Resource";
         if (rn.equals("Any"))
           rn = "Resource";
+        else if (rn.equals("List"))
+          rn = "List_";
         jdoc(indent, "The actual object that is the target of the reference ("+e.getDefinition()+")");
         writeWithHash(indent+"protected "+rn+" "+getElementName(e.getName(), true)+"Target;\r\n");
         write("\r\n");
@@ -730,8 +817,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 	}
 
   private void writeAttributeAnnotation(String indent, ElementDefn e, int order, String tn) throws Exception {
-    write(indent+"@Child(name=\""+getElementName(e.getName(), true)+"\", type={"+getTypeClassList(e, tn)+
-        "}, order="+Integer.toString(order)+", min="+e.getMinCardinality().toString()+", max="+(e.getMaxCardinality() == null ?  "Child.MAX_UNLIMITED" : e.getMaxCardinality().toString())+")\r\n");
+    write(indent+"@Child(name =\""+getElementName(e.getName(), true)+"\", type={"+getTypeClassList(e, tn)+
+        "}, order="+Integer.toString(order)+", min="+e.getMinCardinality().toString()+", max="+(e.getMaxCardinality() == Integer.MAX_VALUE ?  "Child.MAX_UNLIMITED" : e.getMaxCardinality().toString())+")\r\n");
     write(indent+"@Description(shortDefinition=\""+Utilities.escapeJava(e.getShortDefn())+"\", formalDefinition=\""+Utilities.escapeJava(e.getDefinition())+"\" )\r\n");
   }
 
@@ -742,7 +829,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       if (tr.isResourceReference()) {
         for (String p : tr.getParams())
           if (!p.equalsIgnoreCase("Any"))
-            b.append(p+".class");
+            if (p.equals("List"))
+              b.append(p+"_.class");
+            else
+              b.append(p+".class");
       } else if (definitions.hasPrimitiveType(tr.getName())) {
         b.append(upFirst(tr.getName())+"Type.class");
       } else if (tr.getName().startsWith("@")){
@@ -772,20 +862,24 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       return "String";
     if (n.equals("IntegerType"))
       return "int";
+    if (n.equals("UnsignedIntType"))
+      return "int";
+    if (n.equals("PositiveIntType"))
+      return "int";
     if (n.equals("BooleanType"))
       return "boolean";
     if (n.equals("DecimalType"))
       return "BigDecimal";
     if (n.equals("DateTimeType"))
-      return "DateAndTime";
+      return "Date";
     if (n.equals("DateType"))
-      return "DateAndTime";
+      return "Date";
     if (n.equals("IdType"))
       return "String";
     if (n.equals("InstantType"))
-      return "DateAndTime";
+      return "Date";
     if (n.equals("TimeType"))
-      return "DateAndTime";
+      return "String";
     
     String tns = null;
     if (n.indexOf("<") > 0) {
@@ -828,7 +922,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       if (e.getTypes().size() == 1 && (definitions.getPrimitives().containsKey(e.typeCode()) || e.typeCode().equals("xml:lang"))) {
         write("    // syntactic sugar\r\n");
         write(indent+"public "+tn+" add"+getTitle(getElementName(e.getName(), false))+"Element() {//2 \r\n");
-        write(indent+"  "+tn+" t = new "+tn+"();\r\n");
+        write(indent+"  "+tn+" t = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
         write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
         write(indent+"    this."+getElementName(e.getName(), true)+" = new ArrayList<"+tn+">();\r\n");
         write(indent+"  this."+getElementName(e.getName(), true)+".add(t);\r\n");
@@ -837,7 +931,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         write("\r\n");
         jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+e.getDefinition()+")");
         write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+getSimpleType(tn)+" value) { //1\r\n");
-        write(indent+"  "+tn+" t = new "+tn+"();\r\n");
+        write(indent+"  "+tn+" t = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
         write(indent+"  t.setValue(value);\r\n");
         write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
         write(indent+"    this."+getElementName(e.getName(), true)+" = new ArrayList<"+tn+">();\r\n");
@@ -869,6 +963,16 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write(indent+"  return t;\r\n");
           write(indent+"}\r\n");
           write("\r\n");
+          write("    // syntactic sugar\r\n");
+          write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3\r\n");
+          write(indent+"  if (t == null)\r\n");
+          write(indent+"    return this;\r\n");
+          write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
+          write(indent+"    this."+getElementName(e.getName(), true)+" = new ArrayList<"+tn+">();\r\n");
+          write(indent+"  this."+getElementName(e.getName(), true)+".add(t);\r\n");
+          write(indent+"  return this;\r\n");
+          write(indent+"}\r\n");
+          write("\r\n");
         }
 
         if (e.getTypes().size() == 1 && e.typeCode().startsWith("Reference(")) {
@@ -877,6 +981,9 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           String rn = params.size() == 1 ? params.get(0) : "Resource";
           if (rn.equals("Any"))
             rn = "Resource";
+          else if (rn.equals("List"))
+            rn = "List_";
+          
 
           jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} (The actual objects that are the target of the reference. The reference library doesn't populate this, but you can use this to hold the resources if you resolvethemt. "+e.getDefinition()+")");
           write(indent+"public List<"+rn+"> get"+getTitle(getElementName(e.getName(), false))+"Target() { \r\n");
@@ -907,7 +1014,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         write(indent+"    if (Configuration.errorOnAutoCreate())\r\n");
         write(indent+"      throw new Error(\"Attempt to auto-create "+className+"."+getElementName(e.getName(), true)+"\");\r\n");
         write(indent+"    else if (Configuration.doAutoCreate())\r\n");
-        write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"();\r\n");
+        write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+"); // bb\r\n");
 	      write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
 	      write(indent+"}\r\n");
 	      write("\r\n");
@@ -927,17 +1034,18 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 	      write("\r\n");
 	      jdoc(indent, "@return "+e.getDefinition());
 	      write(indent+"public "+getSimpleType(tn)+" get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
-	      write(indent+"  return this."+getElementName(e.getName(), true)+" == null ? "+(e.typeCode().equals("boolean") ? "false" : "null")+" : this."+getElementName(e.getName(), true)+".getValue();\r\n");
+	      if (e.typeCode().equals("boolean"))
+          write(indent+"  return this."+getElementName(e.getName(), true)+" == null || this."+getElementName(e.getName(), true)+".isEmpty() ? false : this."+getElementName(e.getName(), true)+".getValue();\r\n");
+	      else if (e.typeCode().equals("integer") || e.typeCode().equals("unsignedInt") || e.typeCode().equals("positiveInt"))
+          write(indent+"  return this."+getElementName(e.getName(), true)+" == null || this."+getElementName(e.getName(), true)+".isEmpty() ? 0 : this."+getElementName(e.getName(), true)+".getValue();\r\n");
+	      else
+	        write(indent+"  return this."+getElementName(e.getName(), true)+" == null ? null : this."+getElementName(e.getName(), true)+".getValue();\r\n");
 	      write(indent+"}\r\n");
 	      write("\r\n");
 	      jdoc(indent, "@param value "+e.getDefinition());
 	      write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"("+getSimpleType(tn)+" value) { \r\n");
-	      if (e.getMinCardinality() == 0) {
-	        if (tn.equals("IntegerType"))
-	          write(indent+"  if (value == -1)\r\n");
-	        else if (tn.equals("BooleanType"))
-	          write(indent+"  if (value == false)\r\n");
-          else if (isString(tn))
+	      if (e.getMinCardinality() == 0 && !tn.equals("IntegerType") && !tn.equals("PositiveIntType") && !tn.equals("UnsignedIntType") && !tn.equals("BooleanType")) {
+          if (isString(tn))
             write(indent+"  if (Utilities.noString(value))\r\n");
 	        else
 	          write(indent+"  if (value == null)\r\n");
@@ -945,9 +1053,9 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 	        write(indent+"  else {\r\n");
 	      }
 	      write(indent+"    if (this."+getElementName(e.getName(), true)+" == null)\r\n");
-        write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"();\r\n");
+        write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
         write(indent+"    this."+getElementName(e.getName(), true)+".setValue(value);\r\n");
-        if (e.getMinCardinality() == 0) {
+        if (e.getMinCardinality() == 0 && !tn.equals("IntegerType") && !tn.equals("PositiveIntType") && !tn.equals("UnsignedIntType") && !tn.equals("BooleanType")) {
           write(indent+"  }\r\n");
         }
         write(indent+"  return this;\r\n");
@@ -962,7 +1070,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 	        write(indent+"    if (Configuration.errorOnAutoCreate())\r\n");
 	        write(indent+"      throw new Error(\"Attempt to auto-create "+className+"."+getElementName(e.getName(), true)+"\");\r\n");
 	        write(indent+"    else if (Configuration.doAutoCreate())\r\n");
-	        write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"();\r\n");
+	        write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"(); // cc\r\n");
 			  }
 			  write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
 			  write(indent+"}\r\n");
@@ -994,6 +1102,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 			    String rn = params.size() == 1 ? params.get(0) : "Resource";
 			    if (rn.equals("Any"))
 			      rn = "Resource";
+          else if (rn.equals("List"))
+            rn = "List_";
 			    jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. ("+e.getDefinition()+")");
 			    write(indent+"public "+rn+" get"+getTitle(getElementName(e.getName(), false))+"Target() { \r\n");
 			    if (!rn.equals("Resource")) {
@@ -1001,7 +1111,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		        write(indent+"    if (Configuration.errorOnAutoCreate())\r\n");
 		        write(indent+"      throw new Error(\"Attempt to auto-create "+className+"."+getElementName(e.getName(), true)+"\");\r\n");
 		        write(indent+"    else if (Configuration.doAutoCreate())\r\n");
-		        write(indent+"      this."+getElementName(e.getName(), true)+"Target = new "+rn+"();\r\n");
+		        write(indent+"      this."+getElementName(e.getName(), true)+"Target = new "+rn+"(); // aa\r\n");
 			    }
 			    write(indent+"  return this."+getElementName(e.getName(), true)+"Target;\r\n");
 			    write(indent+"}\r\n");

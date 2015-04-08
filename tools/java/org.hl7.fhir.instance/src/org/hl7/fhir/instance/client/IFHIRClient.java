@@ -31,12 +31,13 @@ POSSIBILITY OF SUCH DAMAGE.
 
 import java.net.URISyntaxException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import org.hl7.fhir.instance.model.Bundle;
 import org.hl7.fhir.instance.model.Conformance;
-import org.hl7.fhir.instance.model.DateAndTime;
 import org.hl7.fhir.instance.model.OperationOutcome;
+import org.hl7.fhir.instance.model.Parameters;
 import org.hl7.fhir.instance.model.Resource;
 import org.hl7.fhir.instance.model.ValueSet;
 
@@ -213,7 +214,7 @@ public interface IFHIRClient {
 	 * @return
 	 */
 	public <T extends Resource> Bundle history(Calendar lastUpdate, Class<T> resourceClass, String id);
-	public <T extends Resource> Bundle history(DateAndTime lastUpdate, Class<T> resourceClass, String id);
+	public <T extends Resource> Bundle history(Date lastUpdate, Class<T> resourceClass, String id);
 	
 	/**
 	 * Retrieve the entire update history for a resource with the given id.
@@ -236,7 +237,7 @@ public interface IFHIRClient {
 	 * @return
 	 */
 	public <T extends Resource> Bundle history(Calendar lastUpdate, Class<T> resourceClass);
-	public <T extends Resource> Bundle history(DateAndTime lastUpdate, Class<T> resourceClass);
+	public <T extends Resource> Bundle history(Date lastUpdate, Class<T> resourceClass);
 	public <T extends Resource> Bundle history(Class<T> resourceClass);
 	
 	/**
@@ -251,7 +252,7 @@ public interface IFHIRClient {
 	 * @return
 	 */
 	public <T extends Resource> Bundle history(Calendar lastUpdate);
-	public <T extends Resource> Bundle history(DateAndTime lastUpdate);
+	public <T extends Resource> Bundle history(Date lastUpdate);
 	
 	/**
 	 * Retrieve the update history for all resource types since the start of server records.
@@ -379,4 +380,15 @@ public interface IFHIRClient {
 	 * @throws Exception 
 	 */
   public ValueSet expandValueset(ValueSet source) throws Exception;
+
+
+  /**
+   * Invoke an operation at the type level
+   * 
+   * @param resourceClass - the type on which to perform the operation
+   * @param name - the name of the operation to invoke
+   * @param params - parameters to pass to the operation. If the parameters are all simple, a GET will be performed
+   * @return
+   */
+	public <T extends Resource> Parameters operateType(Class<T> resourceClass, String name, Parameters params);
 }

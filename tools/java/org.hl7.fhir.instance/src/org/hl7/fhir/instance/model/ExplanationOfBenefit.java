@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -90,15 +90,15 @@ public class ExplanationOfBenefit extends DomainResource {
         }
         public String getDisplay() {
           switch (this) {
-            case COMPLETE: return "complete";
-            case ERROR: return "error";
+            case COMPLETE: return "Complete";
+            case ERROR: return "Error";
             default: return "?";
           }
         }
     }
 
-  public static class RSLinkEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class RSLinkEnumFactory implements EnumFactory<RSLink> {
+    public RSLink fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -106,9 +106,9 @@ public class ExplanationOfBenefit extends DomainResource {
           return RSLink.COMPLETE;
         if ("error".equals(codeString))
           return RSLink.ERROR;
-        throw new Exception("Unknown RSLink code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown RSLink code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(RSLink code) {
       if (code == RSLink.COMPLETE)
         return "complete";
       if (code == RSLink.ERROR)
@@ -120,61 +120,61 @@ public class ExplanationOfBenefit extends DomainResource {
     /**
      * The Response Business Identifier.
      */
-    @Child(name="identifier", type={Identifier.class}, order=-1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Business Identifier", formalDefinition="The Response Business Identifier." )
     protected List<Identifier> identifier;
 
     /**
      * Original request resource reference.
      */
-    @Child(name="request", type={OralHealthClaim.class}, order=0, min=0, max=1)
+    @Child(name ="request", type={Claim.class}, order=1, min=0, max=1)
     @Description(shortDefinition="Claim reference", formalDefinition="Original request resource reference." )
     protected Reference request;
 
     /**
      * The actual object that is the target of the reference (Original request resource reference.)
      */
-    protected OralHealthClaim requestTarget;
+    protected Claim requestTarget;
 
     /**
      * Transaction status: error, complete.
      */
-    @Child(name="outcome", type={CodeType.class}, order=1, min=0, max=1)
+    @Child(name ="outcome", type={CodeType.class}, order=2, min=0, max=1)
     @Description(shortDefinition="complete | error", formalDefinition="Transaction status: error, complete." )
     protected Enumeration<RSLink> outcome;
 
     /**
      * A description of the status of the adjudication.
      */
-    @Child(name="disposition", type={StringType.class}, order=2, min=0, max=1)
+    @Child(name ="disposition", type={StringType.class}, order=3, min=0, max=1)
     @Description(shortDefinition="Disposition Message", formalDefinition="A description of the status of the adjudication." )
     protected StringType disposition;
 
     /**
      * The version of the style of resource contents. This should be mapped to the allowable profiles for this and supporting resources.
      */
-    @Child(name="ruleset", type={Coding.class}, order=3, min=0, max=1)
+    @Child(name ="ruleset", type={Coding.class}, order=4, min=0, max=1)
     @Description(shortDefinition="Resource version", formalDefinition="The version of the style of resource contents. This should be mapped to the allowable profiles for this and supporting resources." )
     protected Coding ruleset;
 
     /**
      * The style (standard) and version of the original material which was converted into this resource.
      */
-    @Child(name="originalRuleset", type={Coding.class}, order=4, min=0, max=1)
+    @Child(name ="originalRuleset", type={Coding.class}, order=5, min=0, max=1)
     @Description(shortDefinition="Original version", formalDefinition="The style (standard) and version of the original material which was converted into this resource." )
     protected Coding originalRuleset;
 
     /**
      * The date when the enclosed suite of services were performed or completed.
      */
-    @Child(name="created", type={DateTimeType.class}, order=5, min=0, max=1)
+    @Child(name ="created", type={DateTimeType.class}, order=6, min=0, max=1)
     @Description(shortDefinition="Creation date", formalDefinition="The date when the enclosed suite of services were performed or completed." )
     protected DateTimeType created;
 
     /**
      * The Insurer who produced this adjudicated response.
      */
-    @Child(name="organization", type={Organization.class}, order=6, min=0, max=1)
+    @Child(name ="organization", type={Organization.class}, order=7, min=0, max=1)
     @Description(shortDefinition="Insurer", formalDefinition="The Insurer who produced this adjudicated response." )
     protected Reference organization;
 
@@ -186,7 +186,7 @@ public class ExplanationOfBenefit extends DomainResource {
     /**
      * The practitioner who is responsible for the services rendered to the patient.
      */
-    @Child(name="requestProvider", type={Practitioner.class}, order=7, min=0, max=1)
+    @Child(name ="requestProvider", type={Practitioner.class}, order=8, min=0, max=1)
     @Description(shortDefinition="Responsible practitioner", formalDefinition="The practitioner who is responsible for the services rendered to the patient." )
     protected Reference requestProvider;
 
@@ -198,7 +198,7 @@ public class ExplanationOfBenefit extends DomainResource {
     /**
      * The organization which is responsible for the services rendered to the patient.
      */
-    @Child(name="requestOrganization", type={Organization.class}, order=8, min=0, max=1)
+    @Child(name ="requestOrganization", type={Organization.class}, order=9, min=0, max=1)
     @Description(shortDefinition="Responsible organization", formalDefinition="The organization which is responsible for the services rendered to the patient." )
     protected Reference requestOrganization;
 
@@ -207,7 +207,7 @@ public class ExplanationOfBenefit extends DomainResource {
      */
     protected Organization requestOrganizationTarget;
 
-    private static final long serialVersionUID = 1627363360L;
+    private static final long serialVersionUID = 2098041034L;
 
     public ExplanationOfBenefit() {
       super();
@@ -243,6 +243,16 @@ public class ExplanationOfBenefit extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public ExplanationOfBenefit addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #request} (Original request resource reference.)
      */
@@ -251,7 +261,7 @@ public class ExplanationOfBenefit extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ExplanationOfBenefit.request");
         else if (Configuration.doAutoCreate())
-          this.request = new Reference();
+          this.request = new Reference(); // cc
       return this.request;
     }
 
@@ -270,19 +280,19 @@ public class ExplanationOfBenefit extends DomainResource {
     /**
      * @return {@link #request} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Original request resource reference.)
      */
-    public OralHealthClaim getRequestTarget() { 
+    public Claim getRequestTarget() { 
       if (this.requestTarget == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ExplanationOfBenefit.request");
         else if (Configuration.doAutoCreate())
-          this.requestTarget = new OralHealthClaim();
+          this.requestTarget = new Claim(); // aa
       return this.requestTarget;
     }
 
     /**
      * @param value {@link #request} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Original request resource reference.)
      */
-    public ExplanationOfBenefit setRequestTarget(OralHealthClaim value) { 
+    public ExplanationOfBenefit setRequestTarget(Claim value) { 
       this.requestTarget = value;
       return this;
     }
@@ -295,7 +305,7 @@ public class ExplanationOfBenefit extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ExplanationOfBenefit.outcome");
         else if (Configuration.doAutoCreate())
-          this.outcome = new Enumeration<RSLink>();
+          this.outcome = new Enumeration<RSLink>(new RSLinkEnumFactory()); // bb
       return this.outcome;
     }
 
@@ -330,7 +340,7 @@ public class ExplanationOfBenefit extends DomainResource {
         this.outcome = null;
       else {
         if (this.outcome == null)
-          this.outcome = new Enumeration<RSLink>();
+          this.outcome = new Enumeration<RSLink>(new RSLinkEnumFactory());
         this.outcome.setValue(value);
       }
       return this;
@@ -344,7 +354,7 @@ public class ExplanationOfBenefit extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ExplanationOfBenefit.disposition");
         else if (Configuration.doAutoCreate())
-          this.disposition = new StringType();
+          this.disposition = new StringType(); // bb
       return this.disposition;
     }
 
@@ -393,7 +403,7 @@ public class ExplanationOfBenefit extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ExplanationOfBenefit.ruleset");
         else if (Configuration.doAutoCreate())
-          this.ruleset = new Coding();
+          this.ruleset = new Coding(); // cc
       return this.ruleset;
     }
 
@@ -417,7 +427,7 @@ public class ExplanationOfBenefit extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ExplanationOfBenefit.originalRuleset");
         else if (Configuration.doAutoCreate())
-          this.originalRuleset = new Coding();
+          this.originalRuleset = new Coding(); // cc
       return this.originalRuleset;
     }
 
@@ -441,7 +451,7 @@ public class ExplanationOfBenefit extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ExplanationOfBenefit.created");
         else if (Configuration.doAutoCreate())
-          this.created = new DateTimeType();
+          this.created = new DateTimeType(); // bb
       return this.created;
     }
 
@@ -464,14 +474,14 @@ public class ExplanationOfBenefit extends DomainResource {
     /**
      * @return The date when the enclosed suite of services were performed or completed.
      */
-    public DateAndTime getCreated() { 
+    public Date getCreated() { 
       return this.created == null ? null : this.created.getValue();
     }
 
     /**
      * @param value The date when the enclosed suite of services were performed or completed.
      */
-    public ExplanationOfBenefit setCreated(DateAndTime value) { 
+    public ExplanationOfBenefit setCreated(Date value) { 
       if (value == null)
         this.created = null;
       else {
@@ -490,7 +500,7 @@ public class ExplanationOfBenefit extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ExplanationOfBenefit.organization");
         else if (Configuration.doAutoCreate())
-          this.organization = new Reference();
+          this.organization = new Reference(); // cc
       return this.organization;
     }
 
@@ -514,7 +524,7 @@ public class ExplanationOfBenefit extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ExplanationOfBenefit.organization");
         else if (Configuration.doAutoCreate())
-          this.organizationTarget = new Organization();
+          this.organizationTarget = new Organization(); // aa
       return this.organizationTarget;
     }
 
@@ -534,7 +544,7 @@ public class ExplanationOfBenefit extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ExplanationOfBenefit.requestProvider");
         else if (Configuration.doAutoCreate())
-          this.requestProvider = new Reference();
+          this.requestProvider = new Reference(); // cc
       return this.requestProvider;
     }
 
@@ -558,7 +568,7 @@ public class ExplanationOfBenefit extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ExplanationOfBenefit.requestProvider");
         else if (Configuration.doAutoCreate())
-          this.requestProviderTarget = new Practitioner();
+          this.requestProviderTarget = new Practitioner(); // aa
       return this.requestProviderTarget;
     }
 
@@ -578,7 +588,7 @@ public class ExplanationOfBenefit extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ExplanationOfBenefit.requestOrganization");
         else if (Configuration.doAutoCreate())
-          this.requestOrganization = new Reference();
+          this.requestOrganization = new Reference(); // cc
       return this.requestOrganization;
     }
 
@@ -602,7 +612,7 @@ public class ExplanationOfBenefit extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ExplanationOfBenefit.requestOrganization");
         else if (Configuration.doAutoCreate())
-          this.requestOrganizationTarget = new Organization();
+          this.requestOrganizationTarget = new Organization(); // aa
       return this.requestOrganizationTarget;
     }
 
@@ -617,7 +627,7 @@ public class ExplanationOfBenefit extends DomainResource {
       protected void listChildren(List<Property> childrenList) {
         super.listChildren(childrenList);
         childrenList.add(new Property("identifier", "Identifier", "The Response Business Identifier.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        childrenList.add(new Property("request", "Reference(OralHealthClaim)", "Original request resource reference.", 0, java.lang.Integer.MAX_VALUE, request));
+        childrenList.add(new Property("request", "Reference(Claim)", "Original request resource reference.", 0, java.lang.Integer.MAX_VALUE, request));
         childrenList.add(new Property("outcome", "code", "Transaction status: error, complete.", 0, java.lang.Integer.MAX_VALUE, outcome));
         childrenList.add(new Property("disposition", "string", "A description of the status of the adjudication.", 0, java.lang.Integer.MAX_VALUE, disposition));
         childrenList.add(new Property("ruleset", "Coding", "The version of the style of resource contents. This should be mapped to the allowable profiles for this and supporting resources.", 0, java.lang.Integer.MAX_VALUE, ruleset));
@@ -650,6 +660,30 @@ public class ExplanationOfBenefit extends DomainResource {
 
       protected ExplanationOfBenefit typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof ExplanationOfBenefit))
+          return false;
+        ExplanationOfBenefit o = (ExplanationOfBenefit) other;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(request, o.request, true) && compareDeep(outcome, o.outcome, true)
+           && compareDeep(disposition, o.disposition, true) && compareDeep(ruleset, o.ruleset, true) && compareDeep(originalRuleset, o.originalRuleset, true)
+           && compareDeep(created, o.created, true) && compareDeep(organization, o.organization, true) && compareDeep(requestProvider, o.requestProvider, true)
+           && compareDeep(requestOrganization, o.requestOrganization, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof ExplanationOfBenefit))
+          return false;
+        ExplanationOfBenefit o = (ExplanationOfBenefit) other;
+        return compareValues(outcome, o.outcome, true) && compareValues(disposition, o.disposition, true) && compareValues(created, o.created, true)
+          ;
       }
 
       public boolean isEmpty() {

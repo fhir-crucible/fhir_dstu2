@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -46,23 +46,23 @@ import org.hl7.fhir.instance.model.annotations.Description;
 public class DeviceUseStatement extends DomainResource {
 
     /**
-     * Body site where the device was used.
+     * Indicates the site on the subject's body where the device was used ( i.e. the target site).
      */
-    @Child(name="bodySite", type={CodeableConcept.class}, order=-1, min=0, max=Child.MAX_UNLIMITED)
-    @Description(shortDefinition="", formalDefinition="Body site where the device was used." )
-    protected List<CodeableConcept> bodySite;
+    @Child(name ="bodySite", type={CodeableConcept.class, BodySite.class}, order=0, min=0, max=1)
+    @Description(shortDefinition="Target body site", formalDefinition="Indicates the site on the subject's body where the device was used ( i.e. the target site)." )
+    protected Type bodySite;
 
     /**
      * The time period over which the device was used.
      */
-    @Child(name="whenUsed", type={Period.class}, order=0, min=0, max=1)
+    @Child(name ="whenUsed", type={Period.class}, order=1, min=0, max=1)
     @Description(shortDefinition="", formalDefinition="The time period over which the device was used." )
     protected Period whenUsed;
 
     /**
      * The details of the device used.
      */
-    @Child(name="device", type={Device.class}, order=1, min=1, max=1)
+    @Child(name ="device", type={Device.class}, order=2, min=1, max=1)
     @Description(shortDefinition="", formalDefinition="The details of the device used." )
     protected Reference device;
 
@@ -74,35 +74,35 @@ public class DeviceUseStatement extends DomainResource {
     /**
      * An external identifier for this statement such as an IRI.
      */
-    @Child(name="identifier", type={Identifier.class}, order=2, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="identifier", type={Identifier.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="", formalDefinition="An external identifier for this statement such as an IRI." )
     protected List<Identifier> identifier;
 
     /**
      * Reason or justification for the use of the device.
      */
-    @Child(name="indication", type={CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="indication", type={CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="", formalDefinition="Reason or justification for the use of the device." )
     protected List<CodeableConcept> indication;
 
     /**
      * Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement.
      */
-    @Child(name="notes", type={StringType.class}, order=4, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="notes", type={StringType.class}, order=5, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="", formalDefinition="Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement." )
     protected List<StringType> notes;
 
     /**
      * The time at which the statement was made/recorded.
      */
-    @Child(name="recordedOn", type={DateTimeType.class}, order=5, min=0, max=1)
+    @Child(name ="recordedOn", type={DateTimeType.class}, order=6, min=0, max=1)
     @Description(shortDefinition="", formalDefinition="The time at which the statement was made/recorded." )
     protected DateTimeType recordedOn;
 
     /**
      * The patient who used the device.
      */
-    @Child(name="subject", type={Patient.class}, order=6, min=1, max=1)
+    @Child(name ="subject", type={Patient.class}, order=7, min=1, max=1)
     @Description(shortDefinition="", formalDefinition="The patient who used the device." )
     protected Reference subject;
 
@@ -114,11 +114,11 @@ public class DeviceUseStatement extends DomainResource {
     /**
      * How often the device was used.
      */
-    @Child(name="timing", type={Timing.class, Period.class, DateTimeType.class}, order=7, min=0, max=1)
+    @Child(name ="timing", type={Timing.class, Period.class, DateTimeType.class}, order=8, min=0, max=1)
     @Description(shortDefinition="", formalDefinition="How often the device was used." )
     protected Type timing;
 
-    private static final long serialVersionUID = 523119888L;
+    private static final long serialVersionUID = -1668571635L;
 
     public DeviceUseStatement() {
       super();
@@ -131,33 +131,40 @@ public class DeviceUseStatement extends DomainResource {
     }
 
     /**
-     * @return {@link #bodySite} (Body site where the device was used.)
+     * @return {@link #bodySite} (Indicates the site on the subject's body where the device was used ( i.e. the target site).)
      */
-    public List<CodeableConcept> getBodySite() { 
-      if (this.bodySite == null)
-        this.bodySite = new ArrayList<CodeableConcept>();
+    public Type getBodySite() { 
       return this.bodySite;
     }
 
-    public boolean hasBodySite() { 
-      if (this.bodySite == null)
-        return false;
-      for (CodeableConcept item : this.bodySite)
-        if (!item.isEmpty())
-          return true;
-      return false;
+    /**
+     * @return {@link #bodySite} (Indicates the site on the subject's body where the device was used ( i.e. the target site).)
+     */
+    public CodeableConcept getBodySiteCodeableConcept() throws Exception { 
+      if (!(this.bodySite instanceof CodeableConcept))
+        throw new Exception("Type mismatch: the type CodeableConcept was expected, but "+this.bodySite.getClass().getName()+" was encountered");
+      return (CodeableConcept) this.bodySite;
     }
 
     /**
-     * @return {@link #bodySite} (Body site where the device was used.)
+     * @return {@link #bodySite} (Indicates the site on the subject's body where the device was used ( i.e. the target site).)
      */
-    // syntactic sugar
-    public CodeableConcept addBodySite() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.bodySite == null)
-        this.bodySite = new ArrayList<CodeableConcept>();
-      this.bodySite.add(t);
-      return t;
+    public Reference getBodySiteReference() throws Exception { 
+      if (!(this.bodySite instanceof Reference))
+        throw new Exception("Type mismatch: the type Reference was expected, but "+this.bodySite.getClass().getName()+" was encountered");
+      return (Reference) this.bodySite;
+    }
+
+    public boolean hasBodySite() { 
+      return this.bodySite != null && !this.bodySite.isEmpty();
+    }
+
+    /**
+     * @param value {@link #bodySite} (Indicates the site on the subject's body where the device was used ( i.e. the target site).)
+     */
+    public DeviceUseStatement setBodySite(Type value) { 
+      this.bodySite = value;
+      return this;
     }
 
     /**
@@ -168,7 +175,7 @@ public class DeviceUseStatement extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceUseStatement.whenUsed");
         else if (Configuration.doAutoCreate())
-          this.whenUsed = new Period();
+          this.whenUsed = new Period(); // cc
       return this.whenUsed;
     }
 
@@ -192,7 +199,7 @@ public class DeviceUseStatement extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceUseStatement.device");
         else if (Configuration.doAutoCreate())
-          this.device = new Reference();
+          this.device = new Reference(); // cc
       return this.device;
     }
 
@@ -216,7 +223,7 @@ public class DeviceUseStatement extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceUseStatement.device");
         else if (Configuration.doAutoCreate())
-          this.deviceTarget = new Device();
+          this.deviceTarget = new Device(); // aa
       return this.deviceTarget;
     }
 
@@ -258,6 +265,16 @@ public class DeviceUseStatement extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public DeviceUseStatement addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #indication} (Reason or justification for the use of the device.)
      */
@@ -286,6 +303,16 @@ public class DeviceUseStatement extends DomainResource {
         this.indication = new ArrayList<CodeableConcept>();
       this.indication.add(t);
       return t;
+    }
+
+    // syntactic sugar
+    public DeviceUseStatement addIndication(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.indication == null)
+        this.indication = new ArrayList<CodeableConcept>();
+      this.indication.add(t);
+      return this;
     }
 
     /**
@@ -350,7 +377,7 @@ public class DeviceUseStatement extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceUseStatement.recordedOn");
         else if (Configuration.doAutoCreate())
-          this.recordedOn = new DateTimeType();
+          this.recordedOn = new DateTimeType(); // bb
       return this.recordedOn;
     }
 
@@ -373,14 +400,14 @@ public class DeviceUseStatement extends DomainResource {
     /**
      * @return The time at which the statement was made/recorded.
      */
-    public DateAndTime getRecordedOn() { 
+    public Date getRecordedOn() { 
       return this.recordedOn == null ? null : this.recordedOn.getValue();
     }
 
     /**
      * @param value The time at which the statement was made/recorded.
      */
-    public DeviceUseStatement setRecordedOn(DateAndTime value) { 
+    public DeviceUseStatement setRecordedOn(Date value) { 
       if (value == null)
         this.recordedOn = null;
       else {
@@ -399,7 +426,7 @@ public class DeviceUseStatement extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceUseStatement.subject");
         else if (Configuration.doAutoCreate())
-          this.subject = new Reference();
+          this.subject = new Reference(); // cc
       return this.subject;
     }
 
@@ -423,7 +450,7 @@ public class DeviceUseStatement extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceUseStatement.subject");
         else if (Configuration.doAutoCreate())
-          this.subjectTarget = new Patient();
+          this.subjectTarget = new Patient(); // aa
       return this.subjectTarget;
     }
 
@@ -483,7 +510,7 @@ public class DeviceUseStatement extends DomainResource {
 
       protected void listChildren(List<Property> childrenList) {
         super.listChildren(childrenList);
-        childrenList.add(new Property("bodySite", "CodeableConcept", "Body site where the device was used.", 0, java.lang.Integer.MAX_VALUE, bodySite));
+        childrenList.add(new Property("bodySite[x]", "CodeableConcept|Reference(BodySite)", "Indicates the site on the subject's body where the device was used ( i.e. the target site).", 0, java.lang.Integer.MAX_VALUE, bodySite));
         childrenList.add(new Property("whenUsed", "Period", "The time period over which the device was used.", 0, java.lang.Integer.MAX_VALUE, whenUsed));
         childrenList.add(new Property("device", "Reference(Device)", "The details of the device used.", 0, java.lang.Integer.MAX_VALUE, device));
         childrenList.add(new Property("identifier", "Identifier", "An external identifier for this statement such as an IRI.", 0, java.lang.Integer.MAX_VALUE, identifier));
@@ -497,11 +524,7 @@ public class DeviceUseStatement extends DomainResource {
       public DeviceUseStatement copy() {
         DeviceUseStatement dst = new DeviceUseStatement();
         copyValues(dst);
-        if (bodySite != null) {
-          dst.bodySite = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : bodySite)
-            dst.bodySite.add(i.copy());
-        };
+        dst.bodySite = bodySite == null ? null : bodySite.copy();
         dst.whenUsed = whenUsed == null ? null : whenUsed.copy();
         dst.device = device == null ? null : device.copy();
         if (identifier != null) {
@@ -529,6 +552,29 @@ public class DeviceUseStatement extends DomainResource {
         return copy();
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof DeviceUseStatement))
+          return false;
+        DeviceUseStatement o = (DeviceUseStatement) other;
+        return compareDeep(bodySite, o.bodySite, true) && compareDeep(whenUsed, o.whenUsed, true) && compareDeep(device, o.device, true)
+           && compareDeep(identifier, o.identifier, true) && compareDeep(indication, o.indication, true) && compareDeep(notes, o.notes, true)
+           && compareDeep(recordedOn, o.recordedOn, true) && compareDeep(subject, o.subject, true) && compareDeep(timing, o.timing, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof DeviceUseStatement))
+          return false;
+        DeviceUseStatement o = (DeviceUseStatement) other;
+        return compareValues(notes, o.notes, true) && compareValues(recordedOn, o.recordedOn, true);
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (bodySite == null || bodySite.isEmpty()) && (whenUsed == null || whenUsed.isEmpty())
            && (device == null || device.isEmpty()) && (identifier == null || identifier.isEmpty()) && (indication == null || indication.isEmpty())
@@ -541,10 +587,12 @@ public class DeviceUseStatement extends DomainResource {
     return ResourceType.DeviceUseStatement;
    }
 
-  @SearchParamDefinition(name="patient", path="", description="Search by subject - a patient", type="reference" )
+  @SearchParamDefinition(name="patient", path="DeviceUseStatement.subject", description="Search by subject - a patient", type="reference" )
   public static final String SP_PATIENT = "patient";
-  @SearchParamDefinition(name="subject", path="", description="Search by subject", type="reference" )
+  @SearchParamDefinition(name="subject", path="DeviceUseStatement.subject", description="Search by subject", type="reference" )
   public static final String SP_SUBJECT = "subject";
+  @SearchParamDefinition(name="device", path="DeviceUseStatement.device", description="Search by device", type="reference" )
+  public static final String SP_DEVICE = "device";
 
 }
 

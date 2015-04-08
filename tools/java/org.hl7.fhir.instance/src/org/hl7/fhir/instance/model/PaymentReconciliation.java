@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -90,15 +90,15 @@ public class PaymentReconciliation extends DomainResource {
         }
         public String getDisplay() {
           switch (this) {
-            case COMPLETE: return "complete";
-            case ERROR: return "error";
+            case COMPLETE: return "Complete";
+            case ERROR: return "Error";
             default: return "?";
           }
         }
     }
 
-  public static class RSLinkEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class RSLinkEnumFactory implements EnumFactory<RSLink> {
+    public RSLink fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -106,9 +106,9 @@ public class PaymentReconciliation extends DomainResource {
           return RSLink.COMPLETE;
         if ("error".equals(codeString))
           return RSLink.ERROR;
-        throw new Exception("Unknown RSLink code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown RSLink code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(RSLink code) {
       if (code == RSLink.COMPLETE)
         return "complete";
       if (code == RSLink.ERROR)
@@ -122,14 +122,14 @@ public class PaymentReconciliation extends DomainResource {
         /**
          * Code to indicate the nature of the payment, adjustment, funds advance, etc.
          */
-        @Child(name="type", type={Coding.class}, order=1, min=1, max=1)
+        @Child(name ="type", type={Coding.class}, order=1, min=1, max=1)
         @Description(shortDefinition="Type code", formalDefinition="Code to indicate the nature of the payment, adjustment, funds advance, etc." )
         protected Coding type;
 
         /**
          * The claim or financial resource.
          */
-        @Child(name="request", type={}, order=2, min=0, max=1)
+        @Child(name ="request", type={}, order=2, min=0, max=1)
         @Description(shortDefinition="Claim", formalDefinition="The claim or financial resource." )
         protected Reference request;
 
@@ -141,7 +141,7 @@ public class PaymentReconciliation extends DomainResource {
         /**
          * The claim response resource.
          */
-        @Child(name="responce", type={}, order=3, min=0, max=1)
+        @Child(name ="responce", type={}, order=3, min=0, max=1)
         @Description(shortDefinition="Claim Response", formalDefinition="The claim response resource." )
         protected Reference responce;
 
@@ -153,7 +153,7 @@ public class PaymentReconciliation extends DomainResource {
         /**
          * The Organization which submitted the invoice or financial transaction.
          */
-        @Child(name="submitter", type={Organization.class}, order=4, min=0, max=1)
+        @Child(name ="submitter", type={Organization.class}, order=4, min=0, max=1)
         @Description(shortDefinition="Submitter", formalDefinition="The Organization which submitted the invoice or financial transaction." )
         protected Reference submitter;
 
@@ -165,7 +165,7 @@ public class PaymentReconciliation extends DomainResource {
         /**
          * The organization which is receiving the payment.
          */
-        @Child(name="payee", type={Organization.class}, order=5, min=0, max=1)
+        @Child(name ="payee", type={Organization.class}, order=5, min=0, max=1)
         @Description(shortDefinition="Payee", formalDefinition="The organization which is receiving the payment." )
         protected Reference payee;
 
@@ -177,14 +177,14 @@ public class PaymentReconciliation extends DomainResource {
         /**
          * The date of the invoice or financial resource.
          */
-        @Child(name="date", type={DateType.class}, order=6, min=0, max=1)
+        @Child(name ="date", type={DateType.class}, order=6, min=0, max=1)
         @Description(shortDefinition="Invoice date", formalDefinition="The date of the invoice or financial resource." )
         protected DateType date;
 
         /**
          * Amount paid for this detail.
          */
-        @Child(name="amount", type={Money.class}, order=7, min=0, max=1)
+        @Child(name ="amount", type={Money.class}, order=7, min=0, max=1)
         @Description(shortDefinition="Detail amount", formalDefinition="Amount paid for this detail." )
         protected Money amount;
 
@@ -207,7 +207,7 @@ public class PaymentReconciliation extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DetailsComponent.type");
             else if (Configuration.doAutoCreate())
-              this.type = new Coding();
+              this.type = new Coding(); // cc
           return this.type;
         }
 
@@ -231,7 +231,7 @@ public class PaymentReconciliation extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DetailsComponent.request");
             else if (Configuration.doAutoCreate())
-              this.request = new Reference();
+              this.request = new Reference(); // cc
           return this.request;
         }
 
@@ -270,7 +270,7 @@ public class PaymentReconciliation extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DetailsComponent.responce");
             else if (Configuration.doAutoCreate())
-              this.responce = new Reference();
+              this.responce = new Reference(); // cc
           return this.responce;
         }
 
@@ -309,7 +309,7 @@ public class PaymentReconciliation extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DetailsComponent.submitter");
             else if (Configuration.doAutoCreate())
-              this.submitter = new Reference();
+              this.submitter = new Reference(); // cc
           return this.submitter;
         }
 
@@ -333,7 +333,7 @@ public class PaymentReconciliation extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DetailsComponent.submitter");
             else if (Configuration.doAutoCreate())
-              this.submitterTarget = new Organization();
+              this.submitterTarget = new Organization(); // aa
           return this.submitterTarget;
         }
 
@@ -353,7 +353,7 @@ public class PaymentReconciliation extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DetailsComponent.payee");
             else if (Configuration.doAutoCreate())
-              this.payee = new Reference();
+              this.payee = new Reference(); // cc
           return this.payee;
         }
 
@@ -377,7 +377,7 @@ public class PaymentReconciliation extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DetailsComponent.payee");
             else if (Configuration.doAutoCreate())
-              this.payeeTarget = new Organization();
+              this.payeeTarget = new Organization(); // aa
           return this.payeeTarget;
         }
 
@@ -397,7 +397,7 @@ public class PaymentReconciliation extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DetailsComponent.date");
             else if (Configuration.doAutoCreate())
-              this.date = new DateType();
+              this.date = new DateType(); // bb
           return this.date;
         }
 
@@ -420,14 +420,14 @@ public class PaymentReconciliation extends DomainResource {
         /**
          * @return The date of the invoice or financial resource.
          */
-        public DateAndTime getDate() { 
+        public Date getDate() { 
           return this.date == null ? null : this.date.getValue();
         }
 
         /**
          * @param value The date of the invoice or financial resource.
          */
-        public DetailsComponent setDate(DateAndTime value) { 
+        public DetailsComponent setDate(Date value) { 
           if (value == null)
             this.date = null;
           else {
@@ -446,7 +446,7 @@ public class PaymentReconciliation extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DetailsComponent.amount");
             else if (Configuration.doAutoCreate())
-              this.amount = new Money();
+              this.amount = new Money(); // cc
           return this.amount;
         }
 
@@ -486,6 +486,28 @@ public class PaymentReconciliation extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof DetailsComponent))
+          return false;
+        DetailsComponent o = (DetailsComponent) other;
+        return compareDeep(type, o.type, true) && compareDeep(request, o.request, true) && compareDeep(responce, o.responce, true)
+           && compareDeep(submitter, o.submitter, true) && compareDeep(payee, o.payee, true) && compareDeep(date, o.date, true)
+           && compareDeep(amount, o.amount, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof DetailsComponent))
+          return false;
+        DetailsComponent o = (DetailsComponent) other;
+        return compareValues(date, o.date, true);
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (type == null || type.isEmpty()) && (request == null || request.isEmpty())
            && (responce == null || responce.isEmpty()) && (submitter == null || submitter.isEmpty())
@@ -500,14 +522,14 @@ public class PaymentReconciliation extends DomainResource {
         /**
          * The note purpose: Print/Display.
          */
-        @Child(name="type", type={Coding.class}, order=1, min=0, max=1)
+        @Child(name ="type", type={Coding.class}, order=1, min=0, max=1)
         @Description(shortDefinition="display | print | printoper", formalDefinition="The note purpose: Print/Display." )
         protected Coding type;
 
         /**
          * The note text.
          */
-        @Child(name="text", type={StringType.class}, order=2, min=0, max=1)
+        @Child(name ="text", type={StringType.class}, order=2, min=0, max=1)
         @Description(shortDefinition="Notes text", formalDefinition="The note text." )
         protected StringType text;
 
@@ -525,7 +547,7 @@ public class PaymentReconciliation extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create NotesComponent.type");
             else if (Configuration.doAutoCreate())
-              this.type = new Coding();
+              this.type = new Coding(); // cc
           return this.type;
         }
 
@@ -549,7 +571,7 @@ public class PaymentReconciliation extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create NotesComponent.text");
             else if (Configuration.doAutoCreate())
-              this.text = new StringType();
+              this.text = new StringType(); // bb
           return this.text;
         }
 
@@ -604,6 +626,26 @@ public class PaymentReconciliation extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof NotesComponent))
+          return false;
+        NotesComponent o = (NotesComponent) other;
+        return compareDeep(type, o.type, true) && compareDeep(text, o.text, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof NotesComponent))
+          return false;
+        NotesComponent o = (NotesComponent) other;
+        return compareValues(text, o.text, true);
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (type == null || type.isEmpty()) && (text == null || text.isEmpty())
           ;
@@ -614,68 +656,68 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * The Response Business Identifier.
      */
-    @Child(name="identifier", type={Identifier.class}, order=-1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Business Identifier", formalDefinition="The Response Business Identifier." )
     protected List<Identifier> identifier;
 
     /**
      * Original request resource reference.
      */
-    @Child(name="request", type={PendedRequest.class}, order=0, min=0, max=1)
+    @Child(name ="request", type={ProcessRequest.class}, order=1, min=0, max=1)
     @Description(shortDefinition="Claim reference", formalDefinition="Original request resource reference." )
     protected Reference request;
 
     /**
      * The actual object that is the target of the reference (Original request resource reference.)
      */
-    protected PendedRequest requestTarget;
+    protected ProcessRequest requestTarget;
 
     /**
      * Transaction status: error, complete.
      */
-    @Child(name="outcome", type={CodeType.class}, order=1, min=0, max=1)
+    @Child(name ="outcome", type={CodeType.class}, order=2, min=0, max=1)
     @Description(shortDefinition="complete | error", formalDefinition="Transaction status: error, complete." )
     protected Enumeration<RSLink> outcome;
 
     /**
      * A description of the status of the adjudication.
      */
-    @Child(name="disposition", type={StringType.class}, order=2, min=0, max=1)
+    @Child(name ="disposition", type={StringType.class}, order=3, min=0, max=1)
     @Description(shortDefinition="Disposition Message", formalDefinition="A description of the status of the adjudication." )
     protected StringType disposition;
 
     /**
      * The version of the style of resource contents. This should be mapped to the allowable profiles for this and supporting resources.
      */
-    @Child(name="ruleset", type={Coding.class}, order=3, min=0, max=1)
+    @Child(name ="ruleset", type={Coding.class}, order=4, min=0, max=1)
     @Description(shortDefinition="Resource version", formalDefinition="The version of the style of resource contents. This should be mapped to the allowable profiles for this and supporting resources." )
     protected Coding ruleset;
 
     /**
      * The style (standard) and version of the original material which was converted into this resource.
      */
-    @Child(name="originalRuleset", type={Coding.class}, order=4, min=0, max=1)
+    @Child(name ="originalRuleset", type={Coding.class}, order=5, min=0, max=1)
     @Description(shortDefinition="Original version", formalDefinition="The style (standard) and version of the original material which was converted into this resource." )
     protected Coding originalRuleset;
 
     /**
      * The date when the enclosed suite of services were performed or completed.
      */
-    @Child(name="created", type={DateTimeType.class}, order=5, min=0, max=1)
+    @Child(name ="created", type={DateTimeType.class}, order=6, min=0, max=1)
     @Description(shortDefinition="Creation date", formalDefinition="The date when the enclosed suite of services were performed or completed." )
     protected DateTimeType created;
 
     /**
      * The period of time for which payments have been gathered into this bulk payment for settlement.
      */
-    @Child(name="period", type={Period.class}, order=6, min=0, max=1)
+    @Child(name ="period", type={Period.class}, order=7, min=0, max=1)
     @Description(shortDefinition="Period covered", formalDefinition="The period of time for which payments have been gathered into this bulk payment for settlement." )
     protected Period period;
 
     /**
      * The Insurer who produced this adjudicated response.
      */
-    @Child(name="organization", type={Organization.class}, order=7, min=0, max=1)
+    @Child(name ="organization", type={Organization.class}, order=8, min=0, max=1)
     @Description(shortDefinition="Insurer", formalDefinition="The Insurer who produced this adjudicated response." )
     protected Reference organization;
 
@@ -687,7 +729,7 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * The practitioner who is responsible for the services rendered to the patient.
      */
-    @Child(name="requestProvider", type={Practitioner.class}, order=8, min=0, max=1)
+    @Child(name ="requestProvider", type={Practitioner.class}, order=9, min=0, max=1)
     @Description(shortDefinition="Responsible practitioner", formalDefinition="The practitioner who is responsible for the services rendered to the patient." )
     protected Reference requestProvider;
 
@@ -699,7 +741,7 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * The organization which is responsible for the services rendered to the patient.
      */
-    @Child(name="requestOrganization", type={Organization.class}, order=9, min=0, max=1)
+    @Child(name ="requestOrganization", type={Organization.class}, order=10, min=0, max=1)
     @Description(shortDefinition="Responsible organization", formalDefinition="The organization which is responsible for the services rendered to the patient." )
     protected Reference requestOrganization;
 
@@ -711,32 +753,32 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * List of individual settlement amounts and the corresponding transaction.
      */
-    @Child(name="detail", type={}, order=10, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="detail", type={}, order=11, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Details", formalDefinition="List of individual settlement amounts and the corresponding transaction." )
     protected List<DetailsComponent> detail;
 
     /**
      * The form to be used for printing the content.
      */
-    @Child(name="form", type={Coding.class}, order=11, min=0, max=1)
+    @Child(name ="form", type={Coding.class}, order=12, min=0, max=1)
     @Description(shortDefinition="Printed Form Identifier", formalDefinition="The form to be used for printing the content." )
     protected Coding form;
 
     /**
      * Total payment amount.
      */
-    @Child(name="total", type={Money.class}, order=12, min=1, max=1)
+    @Child(name ="total", type={Money.class}, order=13, min=1, max=1)
     @Description(shortDefinition="Total amount of Payment", formalDefinition="Total payment amount." )
     protected Money total;
 
     /**
      * Suite of notes.
      */
-    @Child(name="note", type={}, order=13, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="note", type={}, order=14, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Note text", formalDefinition="Suite of notes." )
     protected List<NotesComponent> note;
 
-    private static final long serialVersionUID = 2043460985L;
+    private static final long serialVersionUID = 1602249640L;
 
     public PaymentReconciliation() {
       super();
@@ -777,6 +819,16 @@ public class PaymentReconciliation extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public PaymentReconciliation addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #request} (Original request resource reference.)
      */
@@ -785,7 +837,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.request");
         else if (Configuration.doAutoCreate())
-          this.request = new Reference();
+          this.request = new Reference(); // cc
       return this.request;
     }
 
@@ -804,19 +856,19 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * @return {@link #request} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Original request resource reference.)
      */
-    public PendedRequest getRequestTarget() { 
+    public ProcessRequest getRequestTarget() { 
       if (this.requestTarget == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.request");
         else if (Configuration.doAutoCreate())
-          this.requestTarget = new PendedRequest();
+          this.requestTarget = new ProcessRequest(); // aa
       return this.requestTarget;
     }
 
     /**
      * @param value {@link #request} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Original request resource reference.)
      */
-    public PaymentReconciliation setRequestTarget(PendedRequest value) { 
+    public PaymentReconciliation setRequestTarget(ProcessRequest value) { 
       this.requestTarget = value;
       return this;
     }
@@ -829,7 +881,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.outcome");
         else if (Configuration.doAutoCreate())
-          this.outcome = new Enumeration<RSLink>();
+          this.outcome = new Enumeration<RSLink>(new RSLinkEnumFactory()); // bb
       return this.outcome;
     }
 
@@ -864,7 +916,7 @@ public class PaymentReconciliation extends DomainResource {
         this.outcome = null;
       else {
         if (this.outcome == null)
-          this.outcome = new Enumeration<RSLink>();
+          this.outcome = new Enumeration<RSLink>(new RSLinkEnumFactory());
         this.outcome.setValue(value);
       }
       return this;
@@ -878,7 +930,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.disposition");
         else if (Configuration.doAutoCreate())
-          this.disposition = new StringType();
+          this.disposition = new StringType(); // bb
       return this.disposition;
     }
 
@@ -927,7 +979,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.ruleset");
         else if (Configuration.doAutoCreate())
-          this.ruleset = new Coding();
+          this.ruleset = new Coding(); // cc
       return this.ruleset;
     }
 
@@ -951,7 +1003,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.originalRuleset");
         else if (Configuration.doAutoCreate())
-          this.originalRuleset = new Coding();
+          this.originalRuleset = new Coding(); // cc
       return this.originalRuleset;
     }
 
@@ -975,7 +1027,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.created");
         else if (Configuration.doAutoCreate())
-          this.created = new DateTimeType();
+          this.created = new DateTimeType(); // bb
       return this.created;
     }
 
@@ -998,14 +1050,14 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * @return The date when the enclosed suite of services were performed or completed.
      */
-    public DateAndTime getCreated() { 
+    public Date getCreated() { 
       return this.created == null ? null : this.created.getValue();
     }
 
     /**
      * @param value The date when the enclosed suite of services were performed or completed.
      */
-    public PaymentReconciliation setCreated(DateAndTime value) { 
+    public PaymentReconciliation setCreated(Date value) { 
       if (value == null)
         this.created = null;
       else {
@@ -1024,7 +1076,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.period");
         else if (Configuration.doAutoCreate())
-          this.period = new Period();
+          this.period = new Period(); // cc
       return this.period;
     }
 
@@ -1048,7 +1100,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.organization");
         else if (Configuration.doAutoCreate())
-          this.organization = new Reference();
+          this.organization = new Reference(); // cc
       return this.organization;
     }
 
@@ -1072,7 +1124,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.organization");
         else if (Configuration.doAutoCreate())
-          this.organizationTarget = new Organization();
+          this.organizationTarget = new Organization(); // aa
       return this.organizationTarget;
     }
 
@@ -1092,7 +1144,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.requestProvider");
         else if (Configuration.doAutoCreate())
-          this.requestProvider = new Reference();
+          this.requestProvider = new Reference(); // cc
       return this.requestProvider;
     }
 
@@ -1116,7 +1168,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.requestProvider");
         else if (Configuration.doAutoCreate())
-          this.requestProviderTarget = new Practitioner();
+          this.requestProviderTarget = new Practitioner(); // aa
       return this.requestProviderTarget;
     }
 
@@ -1136,7 +1188,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.requestOrganization");
         else if (Configuration.doAutoCreate())
-          this.requestOrganization = new Reference();
+          this.requestOrganization = new Reference(); // cc
       return this.requestOrganization;
     }
 
@@ -1160,7 +1212,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.requestOrganization");
         else if (Configuration.doAutoCreate())
-          this.requestOrganizationTarget = new Organization();
+          this.requestOrganizationTarget = new Organization(); // aa
       return this.requestOrganizationTarget;
     }
 
@@ -1202,6 +1254,16 @@ public class PaymentReconciliation extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public PaymentReconciliation addDetail(DetailsComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.detail == null)
+        this.detail = new ArrayList<DetailsComponent>();
+      this.detail.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #form} (The form to be used for printing the content.)
      */
@@ -1210,7 +1272,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.form");
         else if (Configuration.doAutoCreate())
-          this.form = new Coding();
+          this.form = new Coding(); // cc
       return this.form;
     }
 
@@ -1234,7 +1296,7 @@ public class PaymentReconciliation extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.total");
         else if (Configuration.doAutoCreate())
-          this.total = new Money();
+          this.total = new Money(); // cc
       return this.total;
     }
 
@@ -1280,10 +1342,20 @@ public class PaymentReconciliation extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public PaymentReconciliation addNote(NotesComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.note == null)
+        this.note = new ArrayList<NotesComponent>();
+      this.note.add(t);
+      return this;
+    }
+
       protected void listChildren(List<Property> childrenList) {
         super.listChildren(childrenList);
         childrenList.add(new Property("identifier", "Identifier", "The Response Business Identifier.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        childrenList.add(new Property("request", "Reference(PendedRequest)", "Original request resource reference.", 0, java.lang.Integer.MAX_VALUE, request));
+        childrenList.add(new Property("request", "Reference(ProcessRequest)", "Original request resource reference.", 0, java.lang.Integer.MAX_VALUE, request));
         childrenList.add(new Property("outcome", "code", "Transaction status: error, complete.", 0, java.lang.Integer.MAX_VALUE, outcome));
         childrenList.add(new Property("disposition", "string", "A description of the status of the adjudication.", 0, java.lang.Integer.MAX_VALUE, disposition));
         childrenList.add(new Property("ruleset", "Coding", "The version of the style of resource contents. This should be mapped to the allowable profiles for this and supporting resources.", 0, java.lang.Integer.MAX_VALUE, ruleset));
@@ -1334,6 +1406,32 @@ public class PaymentReconciliation extends DomainResource {
 
       protected PaymentReconciliation typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof PaymentReconciliation))
+          return false;
+        PaymentReconciliation o = (PaymentReconciliation) other;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(request, o.request, true) && compareDeep(outcome, o.outcome, true)
+           && compareDeep(disposition, o.disposition, true) && compareDeep(ruleset, o.ruleset, true) && compareDeep(originalRuleset, o.originalRuleset, true)
+           && compareDeep(created, o.created, true) && compareDeep(period, o.period, true) && compareDeep(organization, o.organization, true)
+           && compareDeep(requestProvider, o.requestProvider, true) && compareDeep(requestOrganization, o.requestOrganization, true)
+           && compareDeep(detail, o.detail, true) && compareDeep(form, o.form, true) && compareDeep(total, o.total, true)
+           && compareDeep(note, o.note, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof PaymentReconciliation))
+          return false;
+        PaymentReconciliation o = (PaymentReconciliation) other;
+        return compareValues(outcome, o.outcome, true) && compareValues(disposition, o.disposition, true) && compareValues(created, o.created, true)
+          ;
       }
 
       public boolean isEmpty() {

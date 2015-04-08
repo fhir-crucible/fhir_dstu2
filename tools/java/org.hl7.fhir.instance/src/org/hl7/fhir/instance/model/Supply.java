@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -127,8 +127,8 @@ public class Supply extends DomainResource {
         }
     }
 
-  public static class ValuesetSupplyStatusEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class ValuesetSupplyStatusEnumFactory implements EnumFactory<ValuesetSupplyStatus> {
+    public ValuesetSupplyStatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -142,9 +142,9 @@ public class Supply extends DomainResource {
           return ValuesetSupplyStatus.FAILED;
         if ("cancelled".equals(codeString))
           return ValuesetSupplyStatus.CANCELLED;
-        throw new Exception("Unknown ValuesetSupplyStatus code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown ValuesetSupplyStatus code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(ValuesetSupplyStatus code) {
       if (code == ValuesetSupplyStatus.REQUESTED)
         return "requested";
       if (code == ValuesetSupplyStatus.DISPENSED)
@@ -179,7 +179,7 @@ public class Supply extends DomainResource {
         public static ValuesetSupplyDispenseStatus fromCode(String codeString) throws Exception {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("in progress".equals(codeString))
+        if ("in-progress".equals(codeString))
           return INPROGRESS;
         if ("dispensed".equals(codeString))
           return DISPENSED;
@@ -189,7 +189,7 @@ public class Supply extends DomainResource {
         }
         public String toCode() {
           switch (this) {
-            case INPROGRESS: return "in progress";
+            case INPROGRESS: return "in-progress";
             case DISPENSED: return "dispensed";
             case ABANDONED: return "abandoned";
             default: return "?";
@@ -221,22 +221,22 @@ public class Supply extends DomainResource {
         }
     }
 
-  public static class ValuesetSupplyDispenseStatusEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class ValuesetSupplyDispenseStatusEnumFactory implements EnumFactory<ValuesetSupplyDispenseStatus> {
+    public ValuesetSupplyDispenseStatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("in progress".equals(codeString))
+        if ("in-progress".equals(codeString))
           return ValuesetSupplyDispenseStatus.INPROGRESS;
         if ("dispensed".equals(codeString))
           return ValuesetSupplyDispenseStatus.DISPENSED;
         if ("abandoned".equals(codeString))
           return ValuesetSupplyDispenseStatus.ABANDONED;
-        throw new Exception("Unknown ValuesetSupplyDispenseStatus code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown ValuesetSupplyDispenseStatus code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(ValuesetSupplyDispenseStatus code) {
       if (code == ValuesetSupplyDispenseStatus.INPROGRESS)
-        return "in progress";
+        return "in-progress";
       if (code == ValuesetSupplyDispenseStatus.DISPENSED)
         return "dispensed";
       if (code == ValuesetSupplyDispenseStatus.ABANDONED)
@@ -250,35 +250,35 @@ public class Supply extends DomainResource {
         /**
          * Identifier assigned by the dispensing facility when the item(s) is dispensed.
          */
-        @Child(name="identifier", type={Identifier.class}, order=1, min=0, max=1)
+        @Child(name ="identifier", type={Identifier.class}, order=1, min=0, max=1)
         @Description(shortDefinition="External identifier", formalDefinition="Identifier assigned by the dispensing facility when the item(s) is dispensed." )
         protected Identifier identifier;
 
         /**
          * A code specifying the state of the dispense event.
          */
-        @Child(name="status", type={CodeType.class}, order=2, min=0, max=1)
-        @Description(shortDefinition="in progress | dispensed | abandoned", formalDefinition="A code specifying the state of the dispense event." )
+        @Child(name ="status", type={CodeType.class}, order=2, min=0, max=1)
+        @Description(shortDefinition="in-progress | dispensed | abandoned", formalDefinition="A code specifying the state of the dispense event." )
         protected Enumeration<ValuesetSupplyDispenseStatus> status;
 
         /**
          * Indicates the type of dispensing event that is performed. Examples include: Trial Fill, Completion of Trial, Partial Fill, Emergency Fill, Samples, etc.
          */
-        @Child(name="type", type={CodeableConcept.class}, order=3, min=0, max=1)
+        @Child(name ="type", type={CodeableConcept.class}, order=3, min=0, max=1)
         @Description(shortDefinition="Category of dispense event", formalDefinition="Indicates the type of dispensing event that is performed. Examples include: Trial Fill, Completion of Trial, Partial Fill, Emergency Fill, Samples, etc." )
         protected CodeableConcept type;
 
         /**
          * The amount of supply that has been dispensed. Includes unit of measure.
          */
-        @Child(name="quantity", type={Quantity.class}, order=4, min=0, max=1)
+        @Child(name ="quantity", type={Quantity.class}, order=4, min=0, max=1)
         @Description(shortDefinition="Amount dispensed", formalDefinition="The amount of supply that has been dispensed. Includes unit of measure." )
         protected Quantity quantity;
 
         /**
          * Identifies the medication or substance or device being dispensed. This is either a link to a resource representing the details of the item or a simple attribute carrying a code that identifies the item from a known list.
          */
-        @Child(name="suppliedItem", type={Medication.class, Substance.class, Device.class}, order=5, min=0, max=1)
+        @Child(name ="suppliedItem", type={Medication.class, Substance.class, Device.class}, order=5, min=0, max=1)
         @Description(shortDefinition="Medication, Substance, or Device supplied", formalDefinition="Identifies the medication or substance or device being dispensed. This is either a link to a resource representing the details of the item or a simple attribute carrying a code that identifies the item from a known list." )
         protected Reference suppliedItem;
 
@@ -290,7 +290,7 @@ public class Supply extends DomainResource {
         /**
          * The individual responsible for dispensing the medication, supplier or device.
          */
-        @Child(name="supplier", type={Practitioner.class}, order=6, min=0, max=1)
+        @Child(name ="supplier", type={Practitioner.class}, order=6, min=0, max=1)
         @Description(shortDefinition="Dispenser", formalDefinition="The individual responsible for dispensing the medication, supplier or device." )
         protected Reference supplier;
 
@@ -302,21 +302,21 @@ public class Supply extends DomainResource {
         /**
          * The time the dispense event occurred.
          */
-        @Child(name="whenPrepared", type={Period.class}, order=7, min=0, max=1)
+        @Child(name ="whenPrepared", type={Period.class}, order=7, min=0, max=1)
         @Description(shortDefinition="Dispensing time", formalDefinition="The time the dispense event occurred." )
         protected Period whenPrepared;
 
         /**
          * The time the dispensed item was sent or handed to the patient (or agent).
          */
-        @Child(name="whenHandedOver", type={Period.class}, order=8, min=0, max=1)
+        @Child(name ="whenHandedOver", type={DateTimeType.class}, order=8, min=0, max=1)
         @Description(shortDefinition="Handover time", formalDefinition="The time the dispensed item was sent or handed to the patient (or agent)." )
-        protected Period whenHandedOver;
+        protected DateTimeType whenHandedOver;
 
         /**
          * Identification of the facility/location where the Supply was shipped to, as part of the dispense event.
          */
-        @Child(name="destination", type={Location.class}, order=9, min=0, max=1)
+        @Child(name ="destination", type={Location.class}, order=9, min=0, max=1)
         @Description(shortDefinition="Where the Supply was sent", formalDefinition="Identification of the facility/location where the Supply was shipped to, as part of the dispense event." )
         protected Reference destination;
 
@@ -328,7 +328,7 @@ public class Supply extends DomainResource {
         /**
          * Identifies the person who picked up the Supply.
          */
-        @Child(name="receiver", type={Practitioner.class}, order=10, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name ="receiver", type={Practitioner.class}, order=10, min=0, max=Child.MAX_UNLIMITED)
         @Description(shortDefinition="Who collected the Supply", formalDefinition="Identifies the person who picked up the Supply." )
         protected List<Reference> receiver;
         /**
@@ -337,7 +337,7 @@ public class Supply extends DomainResource {
         protected List<Practitioner> receiverTarget;
 
 
-        private static final long serialVersionUID = 1089359939L;
+        private static final long serialVersionUID = -1941592649L;
 
       public SupplyDispenseComponent() {
         super();
@@ -351,7 +351,7 @@ public class Supply extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SupplyDispenseComponent.identifier");
             else if (Configuration.doAutoCreate())
-              this.identifier = new Identifier();
+              this.identifier = new Identifier(); // cc
           return this.identifier;
         }
 
@@ -375,7 +375,7 @@ public class Supply extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SupplyDispenseComponent.status");
             else if (Configuration.doAutoCreate())
-              this.status = new Enumeration<ValuesetSupplyDispenseStatus>();
+              this.status = new Enumeration<ValuesetSupplyDispenseStatus>(new ValuesetSupplyDispenseStatusEnumFactory()); // bb
           return this.status;
         }
 
@@ -410,7 +410,7 @@ public class Supply extends DomainResource {
             this.status = null;
           else {
             if (this.status == null)
-              this.status = new Enumeration<ValuesetSupplyDispenseStatus>();
+              this.status = new Enumeration<ValuesetSupplyDispenseStatus>(new ValuesetSupplyDispenseStatusEnumFactory());
             this.status.setValue(value);
           }
           return this;
@@ -424,7 +424,7 @@ public class Supply extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SupplyDispenseComponent.type");
             else if (Configuration.doAutoCreate())
-              this.type = new CodeableConcept();
+              this.type = new CodeableConcept(); // cc
           return this.type;
         }
 
@@ -448,7 +448,7 @@ public class Supply extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SupplyDispenseComponent.quantity");
             else if (Configuration.doAutoCreate())
-              this.quantity = new Quantity();
+              this.quantity = new Quantity(); // cc
           return this.quantity;
         }
 
@@ -472,7 +472,7 @@ public class Supply extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SupplyDispenseComponent.suppliedItem");
             else if (Configuration.doAutoCreate())
-              this.suppliedItem = new Reference();
+              this.suppliedItem = new Reference(); // cc
           return this.suppliedItem;
         }
 
@@ -511,7 +511,7 @@ public class Supply extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SupplyDispenseComponent.supplier");
             else if (Configuration.doAutoCreate())
-              this.supplier = new Reference();
+              this.supplier = new Reference(); // cc
           return this.supplier;
         }
 
@@ -535,7 +535,7 @@ public class Supply extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SupplyDispenseComponent.supplier");
             else if (Configuration.doAutoCreate())
-              this.supplierTarget = new Practitioner();
+              this.supplierTarget = new Practitioner(); // aa
           return this.supplierTarget;
         }
 
@@ -555,7 +555,7 @@ public class Supply extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SupplyDispenseComponent.whenPrepared");
             else if (Configuration.doAutoCreate())
-              this.whenPrepared = new Period();
+              this.whenPrepared = new Period(); // cc
           return this.whenPrepared;
         }
 
@@ -572,15 +572,19 @@ public class Supply extends DomainResource {
         }
 
         /**
-         * @return {@link #whenHandedOver} (The time the dispensed item was sent or handed to the patient (or agent).)
+         * @return {@link #whenHandedOver} (The time the dispensed item was sent or handed to the patient (or agent).). This is the underlying object with id, value and extensions. The accessor "getWhenHandedOver" gives direct access to the value
          */
-        public Period getWhenHandedOver() { 
+        public DateTimeType getWhenHandedOverElement() { 
           if (this.whenHandedOver == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SupplyDispenseComponent.whenHandedOver");
             else if (Configuration.doAutoCreate())
-              this.whenHandedOver = new Period();
+              this.whenHandedOver = new DateTimeType(); // bb
           return this.whenHandedOver;
+        }
+
+        public boolean hasWhenHandedOverElement() { 
+          return this.whenHandedOver != null && !this.whenHandedOver.isEmpty();
         }
 
         public boolean hasWhenHandedOver() { 
@@ -588,10 +592,31 @@ public class Supply extends DomainResource {
         }
 
         /**
-         * @param value {@link #whenHandedOver} (The time the dispensed item was sent or handed to the patient (or agent).)
+         * @param value {@link #whenHandedOver} (The time the dispensed item was sent or handed to the patient (or agent).). This is the underlying object with id, value and extensions. The accessor "getWhenHandedOver" gives direct access to the value
          */
-        public SupplyDispenseComponent setWhenHandedOver(Period value) { 
+        public SupplyDispenseComponent setWhenHandedOverElement(DateTimeType value) { 
           this.whenHandedOver = value;
+          return this;
+        }
+
+        /**
+         * @return The time the dispensed item was sent or handed to the patient (or agent).
+         */
+        public Date getWhenHandedOver() { 
+          return this.whenHandedOver == null ? null : this.whenHandedOver.getValue();
+        }
+
+        /**
+         * @param value The time the dispensed item was sent or handed to the patient (or agent).
+         */
+        public SupplyDispenseComponent setWhenHandedOver(Date value) { 
+          if (value == null)
+            this.whenHandedOver = null;
+          else {
+            if (this.whenHandedOver == null)
+              this.whenHandedOver = new DateTimeType();
+            this.whenHandedOver.setValue(value);
+          }
           return this;
         }
 
@@ -603,7 +628,7 @@ public class Supply extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SupplyDispenseComponent.destination");
             else if (Configuration.doAutoCreate())
-              this.destination = new Reference();
+              this.destination = new Reference(); // cc
           return this.destination;
         }
 
@@ -627,7 +652,7 @@ public class Supply extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SupplyDispenseComponent.destination");
             else if (Configuration.doAutoCreate())
-              this.destinationTarget = new Location();
+              this.destinationTarget = new Location(); // aa
           return this.destinationTarget;
         }
 
@@ -669,6 +694,16 @@ public class Supply extends DomainResource {
           return t;
         }
 
+    // syntactic sugar
+        public SupplyDispenseComponent addReceiver(Reference t) { //3
+          if (t == null)
+            return this;
+          if (this.receiver == null)
+            this.receiver = new ArrayList<Reference>();
+          this.receiver.add(t);
+          return this;
+        }
+
         /**
          * @return {@link #receiver} (The actual objects that are the target of the reference. The reference library doesn't populate this, but you can use this to hold the resources if you resolvethemt. Identifies the person who picked up the Supply.)
          */
@@ -699,7 +734,7 @@ public class Supply extends DomainResource {
           childrenList.add(new Property("suppliedItem", "Reference(Medication|Substance|Device)", "Identifies the medication or substance or device being dispensed. This is either a link to a resource representing the details of the item or a simple attribute carrying a code that identifies the item from a known list.", 0, java.lang.Integer.MAX_VALUE, suppliedItem));
           childrenList.add(new Property("supplier", "Reference(Practitioner)", "The individual responsible for dispensing the medication, supplier or device.", 0, java.lang.Integer.MAX_VALUE, supplier));
           childrenList.add(new Property("whenPrepared", "Period", "The time the dispense event occurred.", 0, java.lang.Integer.MAX_VALUE, whenPrepared));
-          childrenList.add(new Property("whenHandedOver", "Period", "The time the dispensed item was sent or handed to the patient (or agent).", 0, java.lang.Integer.MAX_VALUE, whenHandedOver));
+          childrenList.add(new Property("whenHandedOver", "dateTime", "The time the dispensed item was sent or handed to the patient (or agent).", 0, java.lang.Integer.MAX_VALUE, whenHandedOver));
           childrenList.add(new Property("destination", "Reference(Location)", "Identification of the facility/location where the Supply was shipped to, as part of the dispense event.", 0, java.lang.Integer.MAX_VALUE, destination));
           childrenList.add(new Property("receiver", "Reference(Practitioner)", "Identifies the person who picked up the Supply.", 0, java.lang.Integer.MAX_VALUE, receiver));
         }
@@ -724,6 +759,30 @@ public class Supply extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof SupplyDispenseComponent))
+          return false;
+        SupplyDispenseComponent o = (SupplyDispenseComponent) other;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(type, o.type, true)
+           && compareDeep(quantity, o.quantity, true) && compareDeep(suppliedItem, o.suppliedItem, true) && compareDeep(supplier, o.supplier, true)
+           && compareDeep(whenPrepared, o.whenPrepared, true) && compareDeep(whenHandedOver, o.whenHandedOver, true)
+           && compareDeep(destination, o.destination, true) && compareDeep(receiver, o.receiver, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof SupplyDispenseComponent))
+          return false;
+        SupplyDispenseComponent o = (SupplyDispenseComponent) other;
+        return compareValues(status, o.status, true) && compareValues(whenHandedOver, o.whenHandedOver, true)
+          ;
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (identifier == null || identifier.isEmpty()) && (status == null || status.isEmpty())
            && (type == null || type.isEmpty()) && (quantity == null || quantity.isEmpty()) && (suppliedItem == null || suppliedItem.isEmpty())
@@ -737,28 +796,28 @@ public class Supply extends DomainResource {
     /**
      * Category of supply, e.g.  central, non-stock, etc. This is used to support work flows associated with the supply process.
      */
-    @Child(name="kind", type={CodeableConcept.class}, order=-1, min=0, max=1)
+    @Child(name ="kind", type={CodeableConcept.class}, order=0, min=0, max=1)
     @Description(shortDefinition="The kind of supply (central, non-stock, etc)", formalDefinition="Category of supply, e.g.  central, non-stock, etc. This is used to support work flows associated with the supply process." )
     protected CodeableConcept kind;
 
     /**
      * Unique identifier for this supply request.
      */
-    @Child(name="identifier", type={Identifier.class}, order=0, min=0, max=1)
+    @Child(name ="identifier", type={Identifier.class}, order=1, min=0, max=1)
     @Description(shortDefinition="Unique identifier", formalDefinition="Unique identifier for this supply request." )
     protected Identifier identifier;
 
     /**
      * Status of the supply request.
      */
-    @Child(name="status", type={CodeType.class}, order=1, min=0, max=1)
+    @Child(name ="status", type={CodeType.class}, order=2, min=0, max=1)
     @Description(shortDefinition="requested | dispensed | received | failed | cancelled", formalDefinition="Status of the supply request." )
     protected Enumeration<ValuesetSupplyStatus> status;
 
     /**
      * The item that is requested to be supplied.
      */
-    @Child(name="orderedItem", type={Medication.class, Substance.class, Device.class}, order=2, min=0, max=1)
+    @Child(name ="orderedItem", type={Medication.class, Substance.class, Device.class}, order=3, min=0, max=1)
     @Description(shortDefinition="Medication, Substance, or Device requested to be supplied", formalDefinition="The item that is requested to be supplied." )
     protected Reference orderedItem;
 
@@ -770,7 +829,7 @@ public class Supply extends DomainResource {
     /**
      * A link to a resource representing the person whom the ordered item is for.
      */
-    @Child(name="patient", type={Patient.class}, order=3, min=0, max=1)
+    @Child(name ="patient", type={Patient.class}, order=4, min=0, max=1)
     @Description(shortDefinition="Patient for whom the item is supplied", formalDefinition="A link to a resource representing the person whom the ordered item is for." )
     protected Reference patient;
 
@@ -782,7 +841,7 @@ public class Supply extends DomainResource {
     /**
      * Indicates the details of the dispense event such as the days supply and quantity of a supply dispensed.
      */
-    @Child(name="dispense", type={}, order=4, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="dispense", type={}, order=5, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Supply details", formalDefinition="Indicates the details of the dispense event such as the days supply and quantity of a supply dispensed." )
     protected List<SupplyDispenseComponent> dispense;
 
@@ -800,7 +859,7 @@ public class Supply extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Supply.kind");
         else if (Configuration.doAutoCreate())
-          this.kind = new CodeableConcept();
+          this.kind = new CodeableConcept(); // cc
       return this.kind;
     }
 
@@ -824,7 +883,7 @@ public class Supply extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Supply.identifier");
         else if (Configuration.doAutoCreate())
-          this.identifier = new Identifier();
+          this.identifier = new Identifier(); // cc
       return this.identifier;
     }
 
@@ -848,7 +907,7 @@ public class Supply extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Supply.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<ValuesetSupplyStatus>();
+          this.status = new Enumeration<ValuesetSupplyStatus>(new ValuesetSupplyStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -883,7 +942,7 @@ public class Supply extends DomainResource {
         this.status = null;
       else {
         if (this.status == null)
-          this.status = new Enumeration<ValuesetSupplyStatus>();
+          this.status = new Enumeration<ValuesetSupplyStatus>(new ValuesetSupplyStatusEnumFactory());
         this.status.setValue(value);
       }
       return this;
@@ -897,7 +956,7 @@ public class Supply extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Supply.orderedItem");
         else if (Configuration.doAutoCreate())
-          this.orderedItem = new Reference();
+          this.orderedItem = new Reference(); // cc
       return this.orderedItem;
     }
 
@@ -936,7 +995,7 @@ public class Supply extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Supply.patient");
         else if (Configuration.doAutoCreate())
-          this.patient = new Reference();
+          this.patient = new Reference(); // cc
       return this.patient;
     }
 
@@ -960,7 +1019,7 @@ public class Supply extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Supply.patient");
         else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient();
+          this.patientTarget = new Patient(); // aa
       return this.patientTarget;
     }
 
@@ -1002,6 +1061,16 @@ public class Supply extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Supply addDispense(SupplyDispenseComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.dispense == null)
+        this.dispense = new ArrayList<SupplyDispenseComponent>();
+      this.dispense.add(t);
+      return this;
+    }
+
       protected void listChildren(List<Property> childrenList) {
         super.listChildren(childrenList);
         childrenList.add(new Property("kind", "CodeableConcept", "Category of supply, e.g.  central, non-stock, etc. This is used to support work flows associated with the supply process.", 0, java.lang.Integer.MAX_VALUE, kind));
@@ -1032,6 +1101,28 @@ public class Supply extends DomainResource {
         return copy();
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Supply))
+          return false;
+        Supply o = (Supply) other;
+        return compareDeep(kind, o.kind, true) && compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true)
+           && compareDeep(orderedItem, o.orderedItem, true) && compareDeep(patient, o.patient, true) && compareDeep(dispense, o.dispense, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Supply))
+          return false;
+        Supply o = (Supply) other;
+        return compareValues(status, o.status, true);
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (kind == null || kind.isEmpty()) && (identifier == null || identifier.isEmpty())
            && (status == null || status.isEmpty()) && (orderedItem == null || orderedItem.isEmpty())
@@ -1055,7 +1146,7 @@ public class Supply extends DomainResource {
   public static final String SP_SUPPLIER = "supplier";
   @SearchParamDefinition(name="kind", path="Supply.kind", description="The kind of supply (central, non-stock, etc)", type="token" )
   public static final String SP_KIND = "kind";
-  @SearchParamDefinition(name="dispensestatus", path="Supply.dispense.status", description="in progress | dispensed | abandoned", type="token" )
+  @SearchParamDefinition(name="dispensestatus", path="Supply.dispense.status", description="in-progress | dispensed | abandoned", type="token" )
   public static final String SP_DISPENSESTATUS = "dispensestatus";
 
 }

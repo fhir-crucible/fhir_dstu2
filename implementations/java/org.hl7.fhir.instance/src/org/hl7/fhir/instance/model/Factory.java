@@ -2,6 +2,7 @@ package org.hl7.fhir.instance.model;
 
 import java.net.URISyntaxException;
 import java.text.ParseException;
+import java.util.UUID;
 
 import org.hl7.fhir.instance.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.instance.model.Narrative.NarrativeStatus;
@@ -68,17 +69,13 @@ public class Factory {
   public static DateTimeType newDateTime(String value) throws ParseException {
     if (value == null)
       return null;
-    DateTimeType res = new DateTimeType();
-    res.setValue(new DateAndTime(value));
-    return res;
+    return new DateTimeType(value);
   }
 
   public static DateType newDate(String value) throws ParseException {
     if (value == null)
       return null;
-    DateType res = new DateType();
-    res.setValue(new DateAndTime(value));
-    return res;
+    return new DateType(value);
   }
 
   public static CodeType newCode(String value) {
@@ -139,40 +136,40 @@ public class Factory {
 	  Reference rr = new Reference();
 	  rr.setReference(url);
 	  return rr;
+	}
+
+	public static Narrative newNarrative(NarrativeStatus status, String html) throws Exception {
+		Narrative n = new Narrative();
+		n.setStatus(status);
+		n.setDiv(new XhtmlParser().parseFragment("<div>"+Utilities.escapeXml(html)+"</div>"));
+		return n;
+	}
+
+	public static Coding makeCoding(String code) throws Exception {
+		String[] parts = code.split("\\|");
+		Coding c = new Coding();
+		if (parts.length == 2) {
+			c.setSystem(parts[0]);
+			c.setCode(parts[1]);
+		} else if (parts.length == 3) {
+			c.setSystem(parts[0]);
+			c.setCode(parts[1]);
+			c.setDisplay(parts[2]);
+		} else 
+			throw new Exception("Unable to understand the code '"+code+"'. Use the format system|code(|display)");
+		return c;
+	}
+
+	public static Reference makeReference(String url, String text) {
+		Reference rr = new Reference();
+		rr.setReference(url);
+		if (!Utilities.noString(text))
+			rr.setDisplay(text);
+		return rr;
+	}
+
+  public static String createUUID() {
+    return "urn:uuid:"+UUID.randomUUID().toString().toLowerCase();
   }
-  
-  public static DateTimeType nowDateTime() {
-    DateTimeType dt = new DateTimeType();
-    dt.setValue(DateAndTime.now());
-    return dt;
-  }
 
- public static Narrative newNarrative(NarrativeStatus status, String html) throws Exception {
-    Narrative n = new Narrative();
-    n.setStatus(status);
-    n.setDiv(new XhtmlParser().parseFragment("<div>"+Utilities.escapeXml(html)+"</div>"));
-    return n;
- }
-
- public InstantType nowInstant() {
-	 InstantType instant = new InstantType();
-	 instant.setValue(DateAndTime.now());
-	 return instant;
- }
-
-public static Coding makeCoding(String code) throws Exception {
-  String[] parts = code.split("\\|");
-  Coding c = new Coding();
-  if (parts.length == 2) {
-    c.setSystem(parts[0]);
-    c.setCode(parts[1]);
-  } else if (parts.length == 3) {
-    c.setSystem(parts[0]);
-    c.setCode(parts[1]);
-    c.setDisplay(parts[2]);
-  } else 
-    throw new Exception("Unable to understand the code '"+code+"'. Use the format system|code(|display)");
-  return c;
-}
- 
 }

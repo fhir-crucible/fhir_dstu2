@@ -10,14 +10,17 @@
         <li>ISO 11615 - Identification of Medicinal Products</li>
      </ul>
       <p>SNOMED CT is being used here as the example terminology.</p>
+      <p>This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (IHTSDO), and distributed by agreement between IHTSDO and HL7. Implementer use of SNOMED CT is not covered by this agreement</p>  
     </div>
   </text>
   <name value="Snomed Medication Codes"/>
   <publisher value="FHIR Project team"/>
-  <telecom>  
+  <contact>
+    <telecom>  
     <system value="url"/>
     <value value="http://hl7.org/fhir"/>
   </telecom>
+  </contact>
   <description value="This value set includes all Medication codes from Snomed - provided as an exemplar"/>
   <copyright value="This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (IHTSDO), and distributed by agreement between IHTSDO and HL7. Implementer use of SNOMED CT is not covered by this agreement"/>  
   <status value="draft"/>

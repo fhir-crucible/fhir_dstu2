@@ -15,12 +15,14 @@
     In practice, the same codes could appear in multiple code systems and have a distinct meaning and name in
     each. -->
   <contained>
-    <ValueSet id="margin-status">
+    <ValueSet>
+      <id value="margin-status"/>
       <status value="active"/>
       <define>
         <!-- This looks like it should be SNOMED, but not sure what the codes are -->
         <!-- Not sure what the trailing text of {C:1} {Str} {Ch:4000}, etc. for various codes means -->
         <system value="http://cap.org/example/fhir/margin-status"/>
+    <caseSensitive value="true"/>  
         <concept>
           <code value="M1"/>
           <display value="Margins univolved by tumor"/>
@@ -41,7 +43,8 @@
     </ValueSet>
   </contained>
   <contained>
-    <ValueSet id="margin-distance">
+    <ValueSet>
+      <id value="margin-distance"/>
       <status value="active"/>
       <define>
         <system value="http://cap.org/example/fhir/margin-distance"/>
@@ -57,7 +60,8 @@
     </ValueSet>
   </contained>
   <contained>
-    <ValueSet id="margin">
+    <ValueSet>
+      <id value="margin"/>
       <status value="active"/>
       <define>
         <system value="http://cap.org/example/fhir/margin"/>
@@ -73,7 +77,8 @@
     </ValueSet>
   </contained>
   <contained>
-    <ValueSet id="involved-margins">
+    <ValueSet>
+      <id value="involved-margins"/>
       <status value="active"/>
       <define>
         <system value="http://cap.org/example/fhir/involved-margins"/>
@@ -89,7 +94,8 @@
     </ValueSet>
   </contained>
   <contained>
-    <ValueSet id="effect">
+    <ValueSet>
+      <id value="effect"/>
       <status value="active"/>
       <define>
         <system value="http://cap.org/example/fhir/treatment-effect"/>
@@ -109,7 +115,8 @@
     </ValueSet>
   </contained>
   <contained>
-    <ValueSet id="tumor">
+    <ValueSet>
+      <id value="tumor"/>
       <status value="active"/>
       <define>
         <system value="http://cap.org/example/fhir/tumor-description"/>
@@ -133,7 +140,8 @@
     </ValueSet>
   </contained>
   <contained>
-    <ValueSet id="invasion">
+    <ValueSet>
+      <id value="invasion"/>
       <status value="active"/>
       <define>
         <system value="http://cap.org/example/fhir/tumor-invasion"/>
@@ -174,7 +182,7 @@
           <reference value="#margin-status"/>
         </options>
         <group>
-          <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+          <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
             <extension url="#question">
               <valueString value="1.1"/>
             </extension>
@@ -198,7 +206,7 @@
               <reference value="#margin-distance"/>
             </options>
             <group>
-              <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+              <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
                 <extension url="#question">
                   <valueString value="1.1.1.1"/>
                 </extension>
@@ -214,18 +222,18 @@
               <repeats value="false"/>
               <question>
                 <!-- This *has* to be treated as a distinct question, not a characteristic of the code.
-                  - it has it's own properties and could map to its own data element.  That makes it
+                  - it has its own properties and could map to its own data element.  That makes it
                   a question in its own right.  It would be possible for display software to render
                   the question so that the question text doesn't display when it's the same as the text
                   of the corresponding answer.  Alternatively, we could petition to allow question.text
                   to be omitted, at least in some circumstances. -->
-                <extension url="http://hl7.org/fhir/ExtensionDefinition/element#minValue">
+                <extension url="http://hl7.org/fhir/StructureDefinition/element#minValue">
                   <valueDecimal value="0.01"/>
                 </extension>
-                <extension url="http://hl7.org/fhir/ExtensionDefinition/element#maxValue">
+                <extension url="http://hl7.org/fhir/StructureDefinition/element#maxValue">
                   <valueDecimal value="1000"/>
                 </extension>
-                <extension url="http://hl7.org/fhir/ExtensionDefinition/element#maxDecimalPlaces">
+                <extension url="http://hl7.org/fhir/StructureDefinition/element#maxDecimalPlaces">
                   <valueInteger value="2"/>
                 </extension>
                 <linkId value="1.1.1.1.1.1"/>
@@ -236,7 +244,7 @@
               </question>
             </group>
             <group>
-              <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+              <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
                 <extension url="#question">
                   <valueString value="1.1.1.1"/>
                 </extension>
@@ -251,7 +259,7 @@
               <required value="true"/>
               <repeats value="false"/>
               <question>
-                <extension url="http://hl7.org/fhir/ExtensionDefinition/element#maxLength">
+                <extension url="http://hl7.org/fhir/StructureDefinition/element#maxLength">
                   <valueInteger value="4000"/>
                 </extension>
                 <linkId value="1.1.1.1.2.1"/>
@@ -272,7 +280,7 @@
               <reference value="#margin"/>
             </options>
             <group>
-              <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+              <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
                 <extension url="#question">
                   <valueString value="1.1.1.2"/>
                 </extension>
@@ -287,7 +295,7 @@
               <required value="true"/>
               <repeats value="false"/>
               <question>
-                <extension url="http://hl7.org/fhir/ExtensionDefinition/element#maxLength">
+                <extension url="http://hl7.org/fhir/StructureDefinition/element#maxLength">
                   <valueInteger value="4000"/>
                 </extension>
                 <linkId value="1.1.1.2.1.1"/>
@@ -298,7 +306,7 @@
               </question>
             </group>
             <group>
-              <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+              <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
                 <extension url="#question">
                   <valueString value="1.1.1.2"/>
                 </extension>
@@ -313,7 +321,7 @@
               <required value="true"/>
               <repeats value="false"/>
               <question>
-                <extension url="http://hl7.org/fhir/ExtensionDefinition/element#maxLength">
+                <extension url="http://hl7.org/fhir/StructureDefinition/element#maxLength">
                   <valueInteger value="4000"/>
                 </extension>
                 <linkId value="1.1.1.2.2.1"/>
@@ -326,7 +334,7 @@
           </question>
         </group>
         <group>
-          <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+          <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
             <extension url="#question">
               <valueString value="1.1"/>
             </extension>
@@ -347,7 +355,7 @@
             <required value="true"/>
             <repeats value="false"/>
             <group>
-              <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+              <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
                 <extension url="#question">
                   <valueString value="1.1.2.1"/>
                 </extension>
@@ -362,7 +370,7 @@
               <required value="true"/>
               <repeats value="false"/>
               <question>
-                <extension url="http://hl7.org/fhir/ExtensionDefinition/element#maxLength">
+                <extension url="http://hl7.org/fhir/StructureDefinition/element#maxLength">
                   <valueInteger value="4000"/>
                 </extension>
                 <linkId value="1.1.2.1.1.1"/>
@@ -373,7 +381,7 @@
               </question>
             </group>
             <group>
-              <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+              <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
                 <extension url="#question">
                   <valueString value="1.1.2.1"/>
                 </extension>
@@ -388,7 +396,7 @@
               <required value="true"/>
               <repeats value="false"/>
               <question>
-                <extension url="http://hl7.org/fhir/ExtensionDefinition/element#maxLength">
+                <extension url="http://hl7.org/fhir/StructureDefinition/element#maxLength">
                   <valueInteger value="4000"/>
                 </extension>
                 <linkId value="1.1.2.1.2.1"/>
@@ -401,7 +409,7 @@
           </question>
         </group>
         <group>
-          <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+          <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
             <extension url="#question">
               <valueString value="1.1"/>
             </extension>
@@ -416,7 +424,7 @@
           <required value="true"/>
           <repeats value="false"/>
           <question>
-            <extension url="http://hl7.org/fhir/ExtensionDefinition/element#maxLength">
+            <extension url="http://hl7.org/fhir/StructureDefinition/element#maxLength">
               <valueInteger value="4000"/>
             </extension>
             <linkId value="1.1.3.1"/>
@@ -427,7 +435,7 @@
           </question>
         </group>
         <group>
-          <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+          <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
             <extension url="#question">
               <valueString value="1.1"/>
             </extension>
@@ -442,7 +450,7 @@
           <required value="true"/>
           <repeats value="false"/>
           <question>
-            <extension url="http://hl7.org/fhir/ExtensionDefinition/element#maxLength">
+            <extension url="http://hl7.org/fhir/StructureDefinition/element#maxLength">
               <valueInteger value="4000"/>
             </extension>
             <linkId value="1.1.4.1"/>
@@ -469,7 +477,7 @@
           <reference value="#effect"/>
         </options>
         <group>
-          <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+          <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
             <extension url="#question">
               <valueString value="2.1"/>
             </extension>
@@ -484,7 +492,7 @@
           <required value="true"/>
           <repeats value="false"/>
           <question>
-            <extension url="http://hl7.org/fhir/ExtensionDefinition/element#maxLength">
+            <extension url="http://hl7.org/fhir/StructureDefinition/element#maxLength">
               <valueInteger value="4000"/>
             </extension>
             <linkId value="2.1.1.1"/>
@@ -495,7 +503,7 @@
           </question>
         </group>
         <group>
-          <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+          <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
             <extension url="#question">
               <valueString value="2.1"/>
             </extension>
@@ -510,7 +518,7 @@
           <required value="true"/>
           <repeats value="false"/>
           <question>
-            <extension url="http://hl7.org/fhir/ExtensionDefinition/element#maxLength">
+            <extension url="http://hl7.org/fhir/StructureDefinition/element#maxLength">
               <valueInteger value="4000"/>
             </extension>
             <linkId value="2.1.2.1"/>
@@ -521,7 +529,7 @@
           </question>
         </group>
         <group>
-          <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+          <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
             <extension url="#question">
               <valueString value="2.1"/>
             </extension>
@@ -536,7 +544,7 @@
           <required value="true"/>
           <repeats value="false"/>
           <question>
-            <extension url="http://hl7.org/fhir/ExtensionDefinition/element#maxLength">
+            <extension url="http://hl7.org/fhir/StructureDefinition/element#maxLength">
               <valueInteger value="4000"/>
             </extension>
             <linkId value="2.1.3.1"/>
@@ -557,7 +565,7 @@
           <reference value="#tumor"/>
         </options>
         <group>
-          <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+          <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
             <extension url="#question">
               <valueString value="2.2"/>
             </extension>
@@ -582,7 +590,7 @@
               <reference value="#invasion"/>
             </options>
             <group>
-              <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+              <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
                 <extension url="#question">
                   <valueString value="2.2.1.1"/>
                 </extension>
@@ -597,7 +605,7 @@
               <required value="true"/>
               <repeats value="false"/>
               <question>
-                <extension url="http://hl7.org/fhir/ExtensionDefinition/element#maxLength">
+                <extension url="http://hl7.org/fhir/StructureDefinition/element#maxLength">
                   <valueInteger value="4000"/>
                 </extension>
                 <linkId value="2.2.1.1.1.1"/>
@@ -610,7 +618,7 @@
           </question>
         </group>
         <group>
-          <extension url="http://hl7.org/fhir/ExtensionDefinition/questionnaire#enableWhen">
+          <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire#enableWhen">
             <extension url="#question">
               <valueString value="2.2"/>
             </extension>
@@ -625,7 +633,7 @@
           <required value="true"/>
           <repeats value="false"/>
           <question>
-            <extension url="http://hl7.org/fhir/ExtensionDefinition/element#maxLength">
+            <extension url="http://hl7.org/fhir/StructureDefinition/element#maxLength">
               <valueInteger value="4000"/>
             </extension>
             <linkId value="2.2.2.1"/>

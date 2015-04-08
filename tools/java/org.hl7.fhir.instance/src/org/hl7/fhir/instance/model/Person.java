@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -108,17 +108,17 @@ public class Person extends DomainResource {
         }
         public String getDisplay() {
           switch (this) {
-            case MALE: return "male";
-            case FEMALE: return "female";
-            case OTHER: return "other";
-            case UNKNOWN: return "unknown";
+            case MALE: return "Male";
+            case FEMALE: return "Female";
+            case OTHER: return "Other";
+            case UNKNOWN: return "Unknown";
             default: return "?";
           }
         }
     }
 
-  public static class AdministrativeGenderEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class AdministrativeGenderEnumFactory implements EnumFactory<AdministrativeGender> {
+    public AdministrativeGender fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -130,9 +130,9 @@ public class Person extends DomainResource {
           return AdministrativeGender.OTHER;
         if ("unknown".equals(codeString))
           return AdministrativeGender.UNKNOWN;
-        throw new Exception("Unknown AdministrativeGender code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown AdministrativeGender code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(AdministrativeGender code) {
       if (code == AdministrativeGender.MALE)
         return "male";
       if (code == AdministrativeGender.FEMALE)
@@ -217,8 +217,8 @@ public class Person extends DomainResource {
         }
     }
 
-  public static class IdentityAssuranceLevelEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class IdentityAssuranceLevelEnumFactory implements EnumFactory<IdentityAssuranceLevel> {
+    public IdentityAssuranceLevel fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -230,9 +230,9 @@ public class Person extends DomainResource {
           return IdentityAssuranceLevel.LEVEL3;
         if ("level4".equals(codeString))
           return IdentityAssuranceLevel.LEVEL4;
-        throw new Exception("Unknown IdentityAssuranceLevel code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown IdentityAssuranceLevel code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(IdentityAssuranceLevel code) {
       if (code == IdentityAssuranceLevel.LEVEL1)
         return "level1";
       if (code == IdentityAssuranceLevel.LEVEL2)
@@ -250,81 +250,81 @@ public class Person extends DomainResource {
         /**
          * The resource to which this actual person is associated.
          */
-        @Child(name="other", type={Patient.class, Practitioner.class, RelatedPerson.class, Person.class}, order=1, min=1, max=1)
+        @Child(name ="target", type={Patient.class, Practitioner.class, RelatedPerson.class, Person.class}, order=1, min=1, max=1)
         @Description(shortDefinition="The resource to which this actual person is associated", formalDefinition="The resource to which this actual person is associated." )
-        protected Reference other;
+        protected Reference target;
 
         /**
          * The actual object that is the target of the reference (The resource to which this actual person is associated.)
          */
-        protected Resource otherTarget;
+        protected Resource targetTarget;
 
         /**
-         * Level of assurance that this link is actually associated with the referenced record.
+         * Level of assurance that this link is actually associated with the target resource.
          */
-        @Child(name="assurance", type={CodeType.class}, order=2, min=0, max=1)
-        @Description(shortDefinition="level1 | level2 | level3 | level4", formalDefinition="Level of assurance that this link is actually associated with the referenced record." )
+        @Child(name ="assurance", type={CodeType.class}, order=2, min=0, max=1)
+        @Description(shortDefinition="level1 | level2 | level3 | level4", formalDefinition="Level of assurance that this link is actually associated with the target resource." )
         protected Enumeration<IdentityAssuranceLevel> assurance;
 
-        private static final long serialVersionUID = -1417349007L;
+        private static final long serialVersionUID = 508763647L;
 
       public PersonLinkComponent() {
         super();
       }
 
-      public PersonLinkComponent(Reference other) {
+      public PersonLinkComponent(Reference target) {
         super();
-        this.other = other;
+        this.target = target;
       }
 
         /**
-         * @return {@link #other} (The resource to which this actual person is associated.)
+         * @return {@link #target} (The resource to which this actual person is associated.)
          */
-        public Reference getOther() { 
-          if (this.other == null)
+        public Reference getTarget() { 
+          if (this.target == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create PersonLinkComponent.other");
+              throw new Error("Attempt to auto-create PersonLinkComponent.target");
             else if (Configuration.doAutoCreate())
-              this.other = new Reference();
-          return this.other;
+              this.target = new Reference(); // cc
+          return this.target;
         }
 
-        public boolean hasOther() { 
-          return this.other != null && !this.other.isEmpty();
+        public boolean hasTarget() { 
+          return this.target != null && !this.target.isEmpty();
         }
 
         /**
-         * @param value {@link #other} (The resource to which this actual person is associated.)
+         * @param value {@link #target} (The resource to which this actual person is associated.)
          */
-        public PersonLinkComponent setOther(Reference value) { 
-          this.other = value;
+        public PersonLinkComponent setTarget(Reference value) { 
+          this.target = value;
           return this;
         }
 
         /**
-         * @return {@link #other} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The resource to which this actual person is associated.)
+         * @return {@link #target} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The resource to which this actual person is associated.)
          */
-        public Resource getOtherTarget() { 
-          return this.otherTarget;
+        public Resource getTargetTarget() { 
+          return this.targetTarget;
         }
 
         /**
-         * @param value {@link #other} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The resource to which this actual person is associated.)
+         * @param value {@link #target} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The resource to which this actual person is associated.)
          */
-        public PersonLinkComponent setOtherTarget(Resource value) { 
-          this.otherTarget = value;
+        public PersonLinkComponent setTargetTarget(Resource value) { 
+          this.targetTarget = value;
           return this;
         }
 
         /**
-         * @return {@link #assurance} (Level of assurance that this link is actually associated with the referenced record.). This is the underlying object with id, value and extensions. The accessor "getAssurance" gives direct access to the value
+         * @return {@link #assurance} (Level of assurance that this link is actually associated with the target resource.). This is the underlying object with id, value and extensions. The accessor "getAssurance" gives direct access to the value
          */
         public Enumeration<IdentityAssuranceLevel> getAssuranceElement() { 
           if (this.assurance == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create PersonLinkComponent.assurance");
             else if (Configuration.doAutoCreate())
-              this.assurance = new Enumeration<IdentityAssuranceLevel>();
+              this.assurance = new Enumeration<IdentityAssuranceLevel>(new IdentityAssuranceLevelEnumFactory()); // bb
           return this.assurance;
         }
 
@@ -337,7 +337,7 @@ public class Person extends DomainResource {
         }
 
         /**
-         * @param value {@link #assurance} (Level of assurance that this link is actually associated with the referenced record.). This is the underlying object with id, value and extensions. The accessor "getAssurance" gives direct access to the value
+         * @param value {@link #assurance} (Level of assurance that this link is actually associated with the target resource.). This is the underlying object with id, value and extensions. The accessor "getAssurance" gives direct access to the value
          */
         public PersonLinkComponent setAssuranceElement(Enumeration<IdentityAssuranceLevel> value) { 
           this.assurance = value;
@@ -345,21 +345,21 @@ public class Person extends DomainResource {
         }
 
         /**
-         * @return Level of assurance that this link is actually associated with the referenced record.
+         * @return Level of assurance that this link is actually associated with the target resource.
          */
         public IdentityAssuranceLevel getAssurance() { 
           return this.assurance == null ? null : this.assurance.getValue();
         }
 
         /**
-         * @param value Level of assurance that this link is actually associated with the referenced record.
+         * @param value Level of assurance that this link is actually associated with the target resource.
          */
         public PersonLinkComponent setAssurance(IdentityAssuranceLevel value) { 
           if (value == null)
             this.assurance = null;
           else {
             if (this.assurance == null)
-              this.assurance = new Enumeration<IdentityAssuranceLevel>();
+              this.assurance = new Enumeration<IdentityAssuranceLevel>(new IdentityAssuranceLevelEnumFactory());
             this.assurance.setValue(value);
           }
           return this;
@@ -367,20 +367,40 @@ public class Person extends DomainResource {
 
         protected void listChildren(List<Property> childrenList) {
           super.listChildren(childrenList);
-          childrenList.add(new Property("other", "Reference(Patient|Practitioner|RelatedPerson|Person)", "The resource to which this actual person is associated.", 0, java.lang.Integer.MAX_VALUE, other));
-          childrenList.add(new Property("assurance", "code", "Level of assurance that this link is actually associated with the referenced record.", 0, java.lang.Integer.MAX_VALUE, assurance));
+          childrenList.add(new Property("target", "Reference(Patient|Practitioner|RelatedPerson|Person)", "The resource to which this actual person is associated.", 0, java.lang.Integer.MAX_VALUE, target));
+          childrenList.add(new Property("assurance", "code", "Level of assurance that this link is actually associated with the target resource.", 0, java.lang.Integer.MAX_VALUE, assurance));
         }
 
       public PersonLinkComponent copy() {
         PersonLinkComponent dst = new PersonLinkComponent();
         copyValues(dst);
-        dst.other = other == null ? null : other.copy();
+        dst.target = target == null ? null : target.copy();
         dst.assurance = assurance == null ? null : assurance.copy();
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof PersonLinkComponent))
+          return false;
+        PersonLinkComponent o = (PersonLinkComponent) other;
+        return compareDeep(target, o.target, true) && compareDeep(assurance, o.assurance, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof PersonLinkComponent))
+          return false;
+        PersonLinkComponent o = (PersonLinkComponent) other;
+        return compareValues(assurance, o.assurance, true);
+      }
+
       public boolean isEmpty() {
-        return super.isEmpty() && (other == null || other.isEmpty()) && (assurance == null || assurance.isEmpty())
+        return super.isEmpty() && (target == null || target.isEmpty()) && (assurance == null || assurance.isEmpty())
           ;
       }
 
@@ -389,56 +409,56 @@ public class Person extends DomainResource {
     /**
      * Identifier for a person within a particular scope.
      */
-    @Child(name="identifier", type={Identifier.class}, order=-1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="A Human identifier for this person", formalDefinition="Identifier for a person within a particular scope." )
     protected List<Identifier> identifier;
 
     /**
      * A name associated with the person.
      */
-    @Child(name="name", type={HumanName.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="name", type={HumanName.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="A name associated with the person", formalDefinition="A name associated with the person." )
     protected List<HumanName> name;
 
     /**
      * A contact detail for the person, e.g. a telephone number or an email address.
      */
-    @Child(name="telecom", type={ContactPoint.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="telecom", type={ContactPoint.class}, order=2, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="A contact detail for the person", formalDefinition="A contact detail for the person, e.g. a telephone number or an email address." )
     protected List<ContactPoint> telecom;
 
     /**
      * Administrative Gender.
      */
-    @Child(name="gender", type={CodeType.class}, order=2, min=0, max=1)
+    @Child(name ="gender", type={CodeType.class}, order=3, min=0, max=1)
     @Description(shortDefinition="male | female | other | unknown", formalDefinition="Administrative Gender." )
     protected Enumeration<AdministrativeGender> gender;
 
     /**
      * The birth date for the person.
      */
-    @Child(name="birthDate", type={DateTimeType.class}, order=3, min=0, max=1)
+    @Child(name ="birthDate", type={DateTimeType.class}, order=4, min=0, max=1)
     @Description(shortDefinition="The birth date for the person", formalDefinition="The birth date for the person." )
     protected DateTimeType birthDate;
 
     /**
      * One or more addresses for the person.
      */
-    @Child(name="address", type={Address.class}, order=4, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="address", type={Address.class}, order=5, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="One or more addresses for the person", formalDefinition="One or more addresses for the person." )
     protected List<Address> address;
 
     /**
      * An image that can be displayed as a thumbnail of the person to enhance the identification of the individual.
      */
-    @Child(name="photo", type={Attachment.class}, order=5, min=0, max=1)
+    @Child(name ="photo", type={Attachment.class}, order=6, min=0, max=1)
     @Description(shortDefinition="Image of the Person", formalDefinition="An image that can be displayed as a thumbnail of the person to enhance the identification of the individual." )
     protected Attachment photo;
 
     /**
      * The Organization that is the custodian of the person record.
      */
-    @Child(name="managingOrganization", type={Organization.class}, order=6, min=0, max=1)
+    @Child(name ="managingOrganization", type={Organization.class}, order=7, min=0, max=1)
     @Description(shortDefinition="The Organization that is the custodian of the person record", formalDefinition="The Organization that is the custodian of the person record." )
     protected Reference managingOrganization;
 
@@ -450,15 +470,15 @@ public class Person extends DomainResource {
     /**
      * Whether this person's record is in active use.
      */
-    @Child(name="active", type={BooleanType.class}, order=7, min=0, max=1)
+    @Child(name ="active", type={BooleanType.class}, order=8, min=0, max=1)
     @Description(shortDefinition="This person's record is in active use", formalDefinition="Whether this person's record is in active use." )
     protected BooleanType active;
 
     /**
-     * Link to a resource that converns the same actual person.
+     * Link to a resource that concerns the same actual person.
      */
-    @Child(name="link", type={}, order=8, min=0, max=Child.MAX_UNLIMITED)
-    @Description(shortDefinition="Link to a resource that converns the same actual person", formalDefinition="Link to a resource that converns the same actual person." )
+    @Child(name ="link", type={}, order=9, min=0, max=Child.MAX_UNLIMITED)
+    @Description(shortDefinition="Link to a resource that concerns the same actual person", formalDefinition="Link to a resource that concerns the same actual person." )
     protected List<PersonLinkComponent> link;
 
     private static final long serialVersionUID = -2072707611L;
@@ -497,6 +517,16 @@ public class Person extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Person addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #name} (A name associated with the person.)
      */
@@ -525,6 +555,16 @@ public class Person extends DomainResource {
         this.name = new ArrayList<HumanName>();
       this.name.add(t);
       return t;
+    }
+
+    // syntactic sugar
+    public Person addName(HumanName t) { //3
+      if (t == null)
+        return this;
+      if (this.name == null)
+        this.name = new ArrayList<HumanName>();
+      this.name.add(t);
+      return this;
     }
 
     /**
@@ -557,6 +597,16 @@ public class Person extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Person addTelecom(ContactPoint t) { //3
+      if (t == null)
+        return this;
+      if (this.telecom == null)
+        this.telecom = new ArrayList<ContactPoint>();
+      this.telecom.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #gender} (Administrative Gender.). This is the underlying object with id, value and extensions. The accessor "getGender" gives direct access to the value
      */
@@ -565,7 +615,7 @@ public class Person extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Person.gender");
         else if (Configuration.doAutoCreate())
-          this.gender = new Enumeration<AdministrativeGender>();
+          this.gender = new Enumeration<AdministrativeGender>(new AdministrativeGenderEnumFactory()); // bb
       return this.gender;
     }
 
@@ -600,7 +650,7 @@ public class Person extends DomainResource {
         this.gender = null;
       else {
         if (this.gender == null)
-          this.gender = new Enumeration<AdministrativeGender>();
+          this.gender = new Enumeration<AdministrativeGender>(new AdministrativeGenderEnumFactory());
         this.gender.setValue(value);
       }
       return this;
@@ -614,7 +664,7 @@ public class Person extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Person.birthDate");
         else if (Configuration.doAutoCreate())
-          this.birthDate = new DateTimeType();
+          this.birthDate = new DateTimeType(); // bb
       return this.birthDate;
     }
 
@@ -637,14 +687,14 @@ public class Person extends DomainResource {
     /**
      * @return The birth date for the person.
      */
-    public DateAndTime getBirthDate() { 
+    public Date getBirthDate() { 
       return this.birthDate == null ? null : this.birthDate.getValue();
     }
 
     /**
      * @param value The birth date for the person.
      */
-    public Person setBirthDate(DateAndTime value) { 
+    public Person setBirthDate(Date value) { 
       if (value == null)
         this.birthDate = null;
       else {
@@ -685,6 +735,16 @@ public class Person extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Person addAddress(Address t) { //3
+      if (t == null)
+        return this;
+      if (this.address == null)
+        this.address = new ArrayList<Address>();
+      this.address.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #photo} (An image that can be displayed as a thumbnail of the person to enhance the identification of the individual.)
      */
@@ -693,7 +753,7 @@ public class Person extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Person.photo");
         else if (Configuration.doAutoCreate())
-          this.photo = new Attachment();
+          this.photo = new Attachment(); // cc
       return this.photo;
     }
 
@@ -717,7 +777,7 @@ public class Person extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Person.managingOrganization");
         else if (Configuration.doAutoCreate())
-          this.managingOrganization = new Reference();
+          this.managingOrganization = new Reference(); // cc
       return this.managingOrganization;
     }
 
@@ -741,7 +801,7 @@ public class Person extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Person.managingOrganization");
         else if (Configuration.doAutoCreate())
-          this.managingOrganizationTarget = new Organization();
+          this.managingOrganizationTarget = new Organization(); // aa
       return this.managingOrganizationTarget;
     }
 
@@ -761,7 +821,7 @@ public class Person extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Person.active");
         else if (Configuration.doAutoCreate())
-          this.active = new BooleanType();
+          this.active = new BooleanType(); // bb
       return this.active;
     }
 
@@ -785,25 +845,21 @@ public class Person extends DomainResource {
      * @return Whether this person's record is in active use.
      */
     public boolean getActive() { 
-      return this.active == null ? false : this.active.getValue();
+      return this.active == null || this.active.isEmpty() ? false : this.active.getValue();
     }
 
     /**
      * @param value Whether this person's record is in active use.
      */
     public Person setActive(boolean value) { 
-      if (value == false)
-        this.active = null;
-      else {
         if (this.active == null)
           this.active = new BooleanType();
         this.active.setValue(value);
-      }
       return this;
     }
 
     /**
-     * @return {@link #link} (Link to a resource that converns the same actual person.)
+     * @return {@link #link} (Link to a resource that concerns the same actual person.)
      */
     public List<PersonLinkComponent> getLink() { 
       if (this.link == null)
@@ -821,7 +877,7 @@ public class Person extends DomainResource {
     }
 
     /**
-     * @return {@link #link} (Link to a resource that converns the same actual person.)
+     * @return {@link #link} (Link to a resource that concerns the same actual person.)
      */
     // syntactic sugar
     public PersonLinkComponent addLink() { //3
@@ -830,6 +886,16 @@ public class Person extends DomainResource {
         this.link = new ArrayList<PersonLinkComponent>();
       this.link.add(t);
       return t;
+    }
+
+    // syntactic sugar
+    public Person addLink(PersonLinkComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.link == null)
+        this.link = new ArrayList<PersonLinkComponent>();
+      this.link.add(t);
+      return this;
     }
 
       protected void listChildren(List<Property> childrenList) {
@@ -843,7 +909,7 @@ public class Person extends DomainResource {
         childrenList.add(new Property("photo", "Attachment", "An image that can be displayed as a thumbnail of the person to enhance the identification of the individual.", 0, java.lang.Integer.MAX_VALUE, photo));
         childrenList.add(new Property("managingOrganization", "Reference(Organization)", "The Organization that is the custodian of the person record.", 0, java.lang.Integer.MAX_VALUE, managingOrganization));
         childrenList.add(new Property("active", "boolean", "Whether this person's record is in active use.", 0, java.lang.Integer.MAX_VALUE, active));
-        childrenList.add(new Property("link", "", "Link to a resource that converns the same actual person.", 0, java.lang.Integer.MAX_VALUE, link));
+        childrenList.add(new Property("link", "", "Link to a resource that concerns the same actual person.", 0, java.lang.Integer.MAX_VALUE, link));
       }
 
       public Person copy() {
@@ -886,6 +952,30 @@ public class Person extends DomainResource {
         return copy();
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Person))
+          return false;
+        Person o = (Person) other;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(name, o.name, true) && compareDeep(telecom, o.telecom, true)
+           && compareDeep(gender, o.gender, true) && compareDeep(birthDate, o.birthDate, true) && compareDeep(address, o.address, true)
+           && compareDeep(photo, o.photo, true) && compareDeep(managingOrganization, o.managingOrganization, true)
+           && compareDeep(active, o.active, true) && compareDeep(link, o.link, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Person))
+          return false;
+        Person o = (Person) other;
+        return compareValues(gender, o.gender, true) && compareValues(birthDate, o.birthDate, true) && compareValues(active, o.active, true)
+          ;
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (identifier == null || identifier.isEmpty()) && (name == null || name.isEmpty())
            && (telecom == null || telecom.isEmpty()) && (gender == null || gender.isEmpty()) && (birthDate == null || birthDate.isEmpty())
@@ -900,20 +990,28 @@ public class Person extends DomainResource {
 
   @SearchParamDefinition(name="organization", path="Person.managingOrganization", description="The organization at which this person record is being managed", type="reference" )
   public static final String SP_ORGANIZATION = "organization";
+  @SearchParamDefinition(name="patient", path="Person.link.target", description="The Person links to this Patient", type="reference" )
+  public static final String SP_PATIENT = "patient";
   @SearchParamDefinition(name="phonetic", path="", description="A portion of name using some kind of phonetic matching algorithm", type="string" )
   public static final String SP_PHONETIC = "phonetic";
+  @SearchParamDefinition(name="practitioner", path="Person.link.target", description="The Person links to this Practitioner", type="reference" )
+  public static final String SP_PRACTITIONER = "practitioner";
   @SearchParamDefinition(name="address", path="Person.address", description="An address in any kind of address/part", type="string" )
   public static final String SP_ADDRESS = "address";
+  @SearchParamDefinition(name="link", path="Person.link.target", description="Any link has this Patient, Person, RelatedPerson or Practitioner reference", type="reference" )
+  public static final String SP_LINK = "link";
   @SearchParamDefinition(name="name", path="Person.name", description="A portion of name in any name part", type="string" )
   public static final String SP_NAME = "name";
   @SearchParamDefinition(name="birthdate", path="Person.birthDate", description="The person's date of birth", type="date" )
   public static final String SP_BIRTHDATE = "birthdate";
-  @SearchParamDefinition(name="telecom", path="Person.telecom", description="The value in any kind of contact", type="string" )
+  @SearchParamDefinition(name="telecom", path="Person.telecom", description="The value in any kind of contact", type="token" )
   public static final String SP_TELECOM = "telecom";
   @SearchParamDefinition(name="gender", path="Person.gender", description="The gender of the person", type="token" )
   public static final String SP_GENDER = "gender";
   @SearchParamDefinition(name="identifier", path="Person.identifier", description="A person Identifier", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="relatedperson", path="Person.link.target", description="The Person links to this RelatedPerson", type="reference" )
+  public static final String SP_RELATEDPERSON = "relatedperson";
 
 }
 

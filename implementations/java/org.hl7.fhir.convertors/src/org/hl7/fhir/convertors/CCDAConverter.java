@@ -53,16 +53,18 @@ import org.hl7.fhir.instance.model.Composition.CompositionAttestationMode;
 import org.hl7.fhir.instance.model.Composition.CompositionAttesterComponent;
 import org.hl7.fhir.instance.model.Composition.SectionComponent;
 import org.hl7.fhir.instance.model.ContactPoint;
-import org.hl7.fhir.instance.model.DateAndTime;
+import org.hl7.fhir.instance.model.DateTimeType;
 import org.hl7.fhir.instance.model.Device;
 import org.hl7.fhir.instance.model.DomainResource;
 import org.hl7.fhir.instance.model.Encounter;
 import org.hl7.fhir.instance.model.Extension;
 import org.hl7.fhir.instance.model.Factory;
 import org.hl7.fhir.instance.model.Identifier;
+import org.hl7.fhir.instance.model.InstantType;
 import org.hl7.fhir.instance.model.List_;
 import org.hl7.fhir.instance.model.List_.ListEntryComponent;
 import org.hl7.fhir.instance.model.Location;
+import org.hl7.fhir.instance.model.Meta;
 import org.hl7.fhir.instance.model.Narrative;
 import org.hl7.fhir.instance.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.instance.model.Observation;
@@ -77,7 +79,6 @@ import org.hl7.fhir.instance.model.Practitioner;
 import org.hl7.fhir.instance.model.Procedure;
 import org.hl7.fhir.instance.model.Procedure.ProcedurePerformerComponent;
 import org.hl7.fhir.instance.model.Reference;
-import org.hl7.fhir.instance.model.Resource.ResourceMetaComponent;
 import org.hl7.fhir.instance.model.ResourceFactory;
 import org.hl7.fhir.instance.utils.NarrativeGenerator;
 import org.hl7.fhir.instance.utils.ToolingExtensions;
@@ -206,7 +207,7 @@ public class CCDAConverter {
 
 		// check it's a CDA/CCD
 		feed = new Bundle();
-		feed.setMeta(new ResourceMetaComponent().setLastUpdated(DateAndTime.now()));
+		feed.setMeta(new Meta().setLastUpdatedElement(InstantType.now()));
 		feed.setId(makeUUIDReference());
 		feed.getMeta().getTag().add(new Coding()); // todo-bundle  ("http://hl7.org/fhir/tag", "http://hl7.org/fhir/tag/document", "Document"));
 		
@@ -239,7 +240,7 @@ public class CCDAConverter {
 			r.getText().setStatus(NarrativeStatus.GENERATED);
 			new NarrativeGenerator("", context).generate(r);
 		}
-		r.setMeta(new ResourceMetaComponent().setLastUpdated(DateAndTime.now()));
+		r.setMeta(new Meta().setLastUpdatedElement(InstantType.now()));
 		r.setId(id);
 		feed.getEntry().add(new BundleEntryComponent().setResource(r));
 		return id;
@@ -300,8 +301,8 @@ public class CCDAConverter {
 		pat.setBirthDateElement(convert.makeDateFromTS(cda.getChild(p, "birthTime")));
 		pat.setMaritalStatus(convert.makeCodeableConceptFromCD(cda.getChild(p, "maritalStatusCode")));
 		pat.getExtension().add(Factory.newExtension(CcdaExtensions.NAME_RELIGION, convert.makeCodeableConceptFromCD(cda.getChild(p, "religiousAffiliationCode")), false));
-		pat.getExtension().add(Factory.newExtension(CcdaExtensions.NAME_RACE, convert.makeCodeableConceptFromCD(cda.getChild(p, "raceCode")), false));
-		pat.getExtension().add(Factory.newExtension(CcdaExtensions.NAME_ETHNICITY, convert.makeCodeableConceptFromCD(cda.getChild(p, "ethnicGroupCode")), false));
+		pat.getExtension().add(Factory.newExtension(CcdaExtensions.DAF_NAME_RACE, convert.makeCodeableConceptFromCD(cda.getChild(p, "raceCode")), false));
+		pat.getExtension().add(Factory.newExtension(CcdaExtensions.DAF_NAME_ETHNICITY, convert.makeCodeableConceptFromCD(cda.getChild(p, "ethnicGroupCode")), false));
 		pat.getExtension().add(Factory.newExtension(CcdaExtensions.NAME_BIRTHPLACE, convert.makeAddressFromAD(cda.getChild(p, new String[] {"birthplace", "place", "addr"})), false));
 		
 		Patient.ContactComponent guardian = new Patient.ContactComponent();
@@ -323,7 +324,7 @@ public class CCDAConverter {
 	  Coding c = new Coding();
 	  c.setCode(cda.getChild(l, "languageCode").getAttribute("code"));
 	  cc.getCoding().add(c);
-		pat.getCommunication().add(cc); 
+		pat.addCommunication().setLanguage(cc); 
 
 		// todo: this got broken.... lang.setMode(convert.makeCodeableConceptFromCD(cda.getChild(l, "modeCode")));
 		cc.getExtension().add(Factory.newExtension(CcdaExtensions.NAME_LANG_PROF, convert.makeCodeableConceptFromCD(cda.getChild(l, "modeCode")), false));
@@ -638,7 +639,7 @@ public class CCDAConverter {
 			}
 		}
 		// ref and p are both sorted. now we fill out p as much as we can (remembering it might already be populated)
-    addToCodeableList(p.getRole(), convert.makeCodeableConceptFromCD(cda.getChild(assignedEntity, "code")));
+    p.addPractitionerRole().setRole(convert.makeCodeableConceptFromCD(cda.getChild(assignedEntity, "code")));
 		for (Element e : cda.getChildren(assignedEntity, "id")) 
 		  addToIdList(p.getIdentifier(), convert.makeIdentifierFromII(e));
 		for (Element e : cda.getChildren(assignedEntity, "addr")) 
@@ -880,30 +881,27 @@ public class CCDAConverter {
 		case SocialHistory : 
 			cda.checkTemplateId(so, "2.16.840.1.113883.10.20.22.4.38");
 			// SHALL contain exactly one [1..1] code (CONF:8558/).
-			obs.setName(convert.makeCodeableConceptFromCD(cda.getChild(so, "code")));
+			obs.setCode(convert.makeCodeableConceptFromCD(cda.getChild(so, "code")));
 			break;		
 		case Pregnancy: 
 			cda.checkTemplateId(so, "2.16.840.1.113883.10.20.15.3.8");
 			// SHALL contain exactly one [1..1] code (CONF:8558/), which SHALL be an assertion
-			obs.setName(Factory.newCodeableConcept("11449-6", "http://loinc.org", "Pregnancy Status"));
+			obs.setCode(Factory.newCodeableConcept("11449-6", "http://loinc.org", "Pregnancy Status"));
   		break;		
 		case SmokingStatus: 
 		  cda.checkTemplateId(so, "2.16.840.1.113883.10.20.22.4.78");
 			// SHALL contain exactly one [1..1] code (CONF:8558/), which SHALL be an assertion
-			obs.setName(Factory.newCodeableConcept("72166-2", "http://loinc.org", "Tobacco Smoking Status"));
+			obs.setCode(Factory.newCodeableConcept("72166-2", "http://loinc.org", "Tobacco Smoking Status"));
   		break;		
 		case TobaccoUse: 
 		  cda.checkTemplateId(so, "2.16.840.1.113883.10.20.22.4.12");
 			// SHALL contain exactly one [1..1] code (CONF:8558/), which SHALL be an assertion
-			obs.setName(Factory.newCodeableConcept("11367-0", "http://loinc.org", "History of Tobacco Use"));
+			obs.setCode(Factory.newCodeableConcept("11367-0", "http://loinc.org", "History of Tobacco Use"));
 		}
 		  
 		// SHALL contain at least one [1..*] id (8551).
 		for (Element e : cda.getChildren(so, "id"))
-			if (obs.getIdentifier() == null) // only one in FHIR
-			  obs.setIdentifier(convert.makeIdentifierFromII(e));
-			else 
-			  obs.getExtension().add(Factory.newExtension("http://www.healthintersections.com.au/fhir/extensions/additional-id", convert.makeIdentifierFromII(e), false));
+			obs.getIdentifier().add(convert.makeIdentifierFromII(e));
 
 		
 		// SHALL contain exactly one [1..1] statusCode (CONF:8553/455/14809).
@@ -956,7 +954,7 @@ public class CCDAConverter {
 				obs.getRelated().add(or);
 				or.setType(ObservationRelationshiptypes.HASCOMPONENT);
 				or.setTarget(Factory.makeReference("#"+id));
-				co.setName(Factory.newCodeableConcept("11778-8", "http://loinc.org", "Delivery date Estimated"));
+				co.setCode(Factory.newCodeableConcept("11778-8", "http://loinc.org", "Delivery date Estimated"));
 				co.setValue(convert.makeDateTimeFromTS(cda.getChild(dd, "value"))); // not legal, see gForge http://gforge.hl7.org/gf/project/fhir/tracker/?action=TrackerItemEdit&tracker_item_id=3125&start=0 
 			}
 		}
@@ -1063,12 +1061,11 @@ public class CCDAConverter {
 
 		// SHALL contain at least one [1..*] id (CONF:7282).
 		for (Element e : cda.getChildren(organizer, "id")) 
-	  	if (obs.getIdentifier() == null) 
-	  	  obs.setIdentifier(convert.makeIdentifierFromII(e));
+	  	obs.getIdentifier().add(convert.makeIdentifierFromII(e));
 		
 		// SHALL contain exactly one [1..1] code (CONF:19176).
 		//  This code SHALL contain exactly one [1..1] @code="46680005" Vital signs (CodeSystem: SNOMED-CT 2.16.840.1.113883.6.96 STATIC) (CONF:19177).
-		obs.setName(convert.makeCodeableConceptFromCD(cda.getChild(organizer, "code"))); 
+		obs.setCode(convert.makeCodeableConceptFromCD(cda.getChild(organizer, "code"))); 
 
 		// SHALL contain exactly one [1..1] effectiveTime (CONF:7288).
 		obs.setApplies(convert.makeMatchingTypeFromIVL(cda.getChild(organizer, "effectiveTime")));
@@ -1093,11 +1090,10 @@ public class CCDAConverter {
 
 		//	SHALL contain at least one [1..*] id (CONF:7300).
 		for (Element e : cda.getChildren(observation, "id")) 
-	  	if (obs.getIdentifier() == null) 
-	  	  obs.setIdentifier(convert.makeIdentifierFromII(e));
+	  	obs.getIdentifier().add(convert.makeIdentifierFromII(e));
 		
 		// SHALL contain exactly one [1..1] code, which SHOULD be selected from ValueSet Vital Sign Result Value Set 2.16.840.1.113883.3.88.12.80.62 DYNAMIC (CONF:7301).
-		obs.setName(convert.makeCodeableConceptFromCD(cda.getChild(observation, "code"))); // all loinc codes 
+		obs.setCode(convert.makeCodeableConceptFromCD(cda.getChild(observation, "code"))); // all loinc codes 
 		
 		// SHOULD contain zero or one [0..1] text (CONF:7302).
 		// The text, if present, SHOULD contain zero or one [0..1] reference (CONF:15943).

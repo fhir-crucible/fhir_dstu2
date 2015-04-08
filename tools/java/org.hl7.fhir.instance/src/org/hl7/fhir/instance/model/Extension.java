@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -46,14 +46,14 @@ public class Extension extends Element {
     /**
      * Source of the definition for the extension code - a logical name or a URL.
      */
-    @Child(name="url", type={UriType.class}, order=-1, min=1, max=1)
+    @Child(name ="url", type={UriType.class}, order=0, min=1, max=1)
     @Description(shortDefinition="identifies the meaning of the extension", formalDefinition="Source of the definition for the extension code - a logical name or a URL." )
     protected UriType url;
 
     /**
      * Value of extension - may be a resource or one of a constrained set of the data types (see Extensibility in the spec for list).
      */
-    @Child(name="value", type={}, order=0, min=0, max=1)
+    @Child(name ="value", type={}, order=1, min=0, max=1)
     @Description(shortDefinition="Value of extension", formalDefinition="Value of extension - may be a resource or one of a constrained set of the data types (see Extensibility in the spec for list)." )
     protected org.hl7.fhir.instance.model.Type value;
 
@@ -76,7 +76,7 @@ public class Extension extends Element {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Extension.url");
         else if (Configuration.doAutoCreate())
-          this.url = new UriType();
+          this.url = new UriType(); // bb
       return this.url;
     }
 
@@ -148,6 +148,26 @@ public class Extension extends Element {
 
       protected Extension typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Extension))
+          return false;
+        Extension o = (Extension) other;
+        return compareDeep(url, o.url, true) && compareDeep(value, o.value, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Extension))
+          return false;
+        Extension o = (Extension) other;
+        return compareValues(url, o.url, true);
       }
 
       public boolean isEmpty() {

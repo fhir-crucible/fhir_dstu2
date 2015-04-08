@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -73,7 +73,7 @@ public class Communication extends DomainResource {
         public static CommunicationStatus fromCode(String codeString) throws Exception {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("in progress".equals(codeString))
+        if ("in-progress".equals(codeString))
           return INPROGRESS;
         if ("completed".equals(codeString))
           return COMPLETED;
@@ -87,7 +87,7 @@ public class Communication extends DomainResource {
         }
         public String toCode() {
           switch (this) {
-            case INPROGRESS: return "in progress";
+            case INPROGRESS: return "in-progress";
             case COMPLETED: return "completed";
             case SUSPENDED: return "suspended";
             case REJECTED: return "rejected";
@@ -117,22 +117,22 @@ public class Communication extends DomainResource {
         }
         public String getDisplay() {
           switch (this) {
-            case INPROGRESS: return "in progress";
-            case COMPLETED: return "completed";
-            case SUSPENDED: return "suspended";
-            case REJECTED: return "rejected";
-            case FAILED: return "failed";
+            case INPROGRESS: return "In Progress";
+            case COMPLETED: return "Completed";
+            case SUSPENDED: return "Suspended";
+            case REJECTED: return "Rejected";
+            case FAILED: return "Failed";
             default: return "?";
           }
         }
     }
 
-  public static class CommunicationStatusEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class CommunicationStatusEnumFactory implements EnumFactory<CommunicationStatus> {
+    public CommunicationStatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("in progress".equals(codeString))
+        if ("in-progress".equals(codeString))
           return CommunicationStatus.INPROGRESS;
         if ("completed".equals(codeString))
           return CommunicationStatus.COMPLETED;
@@ -142,11 +142,11 @@ public class Communication extends DomainResource {
           return CommunicationStatus.REJECTED;
         if ("failed".equals(codeString))
           return CommunicationStatus.FAILED;
-        throw new Exception("Unknown CommunicationStatus code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown CommunicationStatus code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(CommunicationStatus code) {
       if (code == CommunicationStatus.INPROGRESS)
-        return "in progress";
+        return "in-progress";
       if (code == CommunicationStatus.COMPLETED)
         return "completed";
       if (code == CommunicationStatus.SUSPENDED)
@@ -164,7 +164,7 @@ public class Communication extends DomainResource {
         /**
          * An individual message part for multi-part messages.
          */
-        @Child(name="content", type={StringType.class, Attachment.class}, order=1, min=1, max=1)
+        @Child(name ="content", type={StringType.class, Attachment.class}, order=1, min=1, max=1)
         @Description(shortDefinition="Message part content", formalDefinition="An individual message part for multi-part messages." )
         protected Type content;
 
@@ -237,6 +237,26 @@ public class Communication extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof CommunicationPayloadComponent))
+          return false;
+        CommunicationPayloadComponent o = (CommunicationPayloadComponent) other;
+        return compareDeep(content, o.content, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof CommunicationPayloadComponent))
+          return false;
+        CommunicationPayloadComponent o = (CommunicationPayloadComponent) other;
+        return true;
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (content == null || content.isEmpty());
       }
@@ -246,66 +266,66 @@ public class Communication extends DomainResource {
     /**
      * Identifiers associated with this Communication that are defined by business processes and/ or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).
      */
-    @Child(name="identifier", type={Identifier.class}, order=-1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Unique identifier", formalDefinition="Identifiers associated with this Communication that are defined by business processes and/ or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation)." )
     protected List<Identifier> identifier;
 
     /**
-     * The type of message such as alert, notification, reminder, instruction, etc.
+     * The type of message conveyed such as alert, notification, reminder, instruction, etc.
      */
-    @Child(name="category", type={CodeableConcept.class}, order=0, min=0, max=1)
-    @Description(shortDefinition="Message category", formalDefinition="The type of message such as alert, notification, reminder, instruction, etc." )
+    @Child(name ="category", type={CodeableConcept.class}, order=1, min=0, max=1)
+    @Description(shortDefinition="Message category", formalDefinition="The type of message conveyed such as alert, notification, reminder, instruction, etc." )
     protected CodeableConcept category;
 
     /**
-     * The entity (e.g., person, organization, clinical information system, or device) which is the source of the communication.
+     * The entity (e.g., person, organization, clinical information system, or device) which was the source of the communication.
      */
-    @Child(name="sender", type={Patient.class, Practitioner.class, Device.class, RelatedPerson.class, Organization.class}, order=1, min=0, max=1)
-    @Description(shortDefinition="Message sender", formalDefinition="The entity (e.g., person, organization, clinical information system, or device) which is the source of the communication." )
+    @Child(name ="sender", type={Device.class, Organization.class, Patient.class, Practitioner.class, RelatedPerson.class}, order=2, min=0, max=1)
+    @Description(shortDefinition="Message sender", formalDefinition="The entity (e.g., person, organization, clinical information system, or device) which was the source of the communication." )
     protected Reference sender;
 
     /**
-     * The actual object that is the target of the reference (The entity (e.g., person, organization, clinical information system, or device) which is the source of the communication.)
+     * The actual object that is the target of the reference (The entity (e.g., person, organization, clinical information system, or device) which was the source of the communication.)
      */
     protected Resource senderTarget;
 
     /**
-     * The entity (e.g., person, organization, clinical information system, or device) which is the target of the communication.
+     * The entity (e.g., person, organization, clinical information system, or device) which was the target of the communication.
      */
-    @Child(name="recipient", type={Patient.class, Device.class, RelatedPerson.class, Practitioner.class}, order=2, min=0, max=Child.MAX_UNLIMITED)
-    @Description(shortDefinition="Message recipient", formalDefinition="The entity (e.g., person, organization, clinical information system, or device) which is the target of the communication." )
+    @Child(name ="recipient", type={Device.class, Organization.class, Patient.class, Practitioner.class, RelatedPerson.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
+    @Description(shortDefinition="Message recipient", formalDefinition="The entity (e.g., person, organization, clinical information system, or device) which was the target of the communication." )
     protected List<Reference> recipient;
     /**
-     * The actual objects that are the target of the reference (The entity (e.g., person, organization, clinical information system, or device) which is the target of the communication.)
+     * The actual objects that are the target of the reference (The entity (e.g., person, organization, clinical information system, or device) which was the target of the communication.)
      */
     protected List<Resource> recipientTarget;
 
 
     /**
-     * Text, attachment(s), or resource(s) to be communicated to the recipient.
+     * Text, attachment(s), or resource(s) that was communicated to the recipient.
      */
-    @Child(name="payload", type={}, order=3, min=0, max=Child.MAX_UNLIMITED)
-    @Description(shortDefinition="Message payload", formalDefinition="Text, attachment(s), or resource(s) to be communicated to the recipient." )
+    @Child(name ="payload", type={}, order=4, min=0, max=Child.MAX_UNLIMITED)
+    @Description(shortDefinition="Message payload", formalDefinition="Text, attachment(s), or resource(s) that was communicated to the recipient." )
     protected List<CommunicationPayloadComponent> payload;
 
     /**
      * The communication medium, e.g., email, fax.
      */
-    @Child(name="medium", type={CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="medium", type={CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Communication medium", formalDefinition="The communication medium, e.g., email, fax." )
     protected List<CodeableConcept> medium;
 
     /**
      * The status of the transmission.
      */
-    @Child(name="status", type={CodeType.class}, order=5, min=0, max=1)
-    @Description(shortDefinition="in progress | completed | suspended | rejected | failed", formalDefinition="The status of the transmission." )
+    @Child(name ="status", type={CodeType.class}, order=6, min=0, max=1)
+    @Description(shortDefinition="in-progress | completed | suspended | rejected | failed", formalDefinition="The status of the transmission." )
     protected Enumeration<CommunicationStatus> status;
 
     /**
      * The encounter within which the communication was sent.
      */
-    @Child(name="encounter", type={Encounter.class}, order=6, min=0, max=1)
+    @Child(name ="encounter", type={Encounter.class}, order=7, min=0, max=1)
     @Description(shortDefinition="Encounter leading to message", formalDefinition="The encounter within which the communication was sent." )
     protected Reference encounter;
 
@@ -317,33 +337,33 @@ public class Communication extends DomainResource {
     /**
      * The time when this communication was sent.
      */
-    @Child(name="sent", type={DateTimeType.class}, order=7, min=0, max=1)
+    @Child(name ="sent", type={DateTimeType.class}, order=8, min=0, max=1)
     @Description(shortDefinition="When sent", formalDefinition="The time when this communication was sent." )
     protected DateTimeType sent;
 
     /**
      * The time when this communication arrived at the destination.
      */
-    @Child(name="received", type={DateTimeType.class}, order=8, min=0, max=1)
+    @Child(name ="received", type={DateTimeType.class}, order=9, min=0, max=1)
     @Description(shortDefinition="When received", formalDefinition="The time when this communication arrived at the destination." )
     protected DateTimeType received;
 
     /**
      * The reason or justification for the communication.
      */
-    @Child(name="reason", type={CodeableConcept.class}, order=9, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="reason", type={CodeableConcept.class}, order=10, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Indication for message", formalDefinition="The reason or justification for the communication." )
     protected List<CodeableConcept> reason;
 
     /**
-     * The patient who is the focus of this communication.
+     * The patient who was the focus of this communication.
      */
-    @Child(name="subject", type={Patient.class}, order=10, min=0, max=1)
-    @Description(shortDefinition="Focus of message", formalDefinition="The patient who is the focus of this communication." )
+    @Child(name ="subject", type={Patient.class}, order=11, min=0, max=1)
+    @Description(shortDefinition="Focus of message", formalDefinition="The patient who was the focus of this communication." )
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (The patient who is the focus of this communication.)
+     * The actual object that is the target of the reference (The patient who was the focus of this communication.)
      */
     protected Patient subjectTarget;
 
@@ -383,15 +403,25 @@ public class Communication extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Communication addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
+    }
+
     /**
-     * @return {@link #category} (The type of message such as alert, notification, reminder, instruction, etc.)
+     * @return {@link #category} (The type of message conveyed such as alert, notification, reminder, instruction, etc.)
      */
     public CodeableConcept getCategory() { 
       if (this.category == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Communication.category");
         else if (Configuration.doAutoCreate())
-          this.category = new CodeableConcept();
+          this.category = new CodeableConcept(); // cc
       return this.category;
     }
 
@@ -400,7 +430,7 @@ public class Communication extends DomainResource {
     }
 
     /**
-     * @param value {@link #category} (The type of message such as alert, notification, reminder, instruction, etc.)
+     * @param value {@link #category} (The type of message conveyed such as alert, notification, reminder, instruction, etc.)
      */
     public Communication setCategory(CodeableConcept value) { 
       this.category = value;
@@ -408,14 +438,14 @@ public class Communication extends DomainResource {
     }
 
     /**
-     * @return {@link #sender} (The entity (e.g., person, organization, clinical information system, or device) which is the source of the communication.)
+     * @return {@link #sender} (The entity (e.g., person, organization, clinical information system, or device) which was the source of the communication.)
      */
     public Reference getSender() { 
       if (this.sender == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Communication.sender");
         else if (Configuration.doAutoCreate())
-          this.sender = new Reference();
+          this.sender = new Reference(); // cc
       return this.sender;
     }
 
@@ -424,7 +454,7 @@ public class Communication extends DomainResource {
     }
 
     /**
-     * @param value {@link #sender} (The entity (e.g., person, organization, clinical information system, or device) which is the source of the communication.)
+     * @param value {@link #sender} (The entity (e.g., person, organization, clinical information system, or device) which was the source of the communication.)
      */
     public Communication setSender(Reference value) { 
       this.sender = value;
@@ -432,14 +462,14 @@ public class Communication extends DomainResource {
     }
 
     /**
-     * @return {@link #sender} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The entity (e.g., person, organization, clinical information system, or device) which is the source of the communication.)
+     * @return {@link #sender} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The entity (e.g., person, organization, clinical information system, or device) which was the source of the communication.)
      */
     public Resource getSenderTarget() { 
       return this.senderTarget;
     }
 
     /**
-     * @param value {@link #sender} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The entity (e.g., person, organization, clinical information system, or device) which is the source of the communication.)
+     * @param value {@link #sender} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The entity (e.g., person, organization, clinical information system, or device) which was the source of the communication.)
      */
     public Communication setSenderTarget(Resource value) { 
       this.senderTarget = value;
@@ -447,7 +477,7 @@ public class Communication extends DomainResource {
     }
 
     /**
-     * @return {@link #recipient} (The entity (e.g., person, organization, clinical information system, or device) which is the target of the communication.)
+     * @return {@link #recipient} (The entity (e.g., person, organization, clinical information system, or device) which was the target of the communication.)
      */
     public List<Reference> getRecipient() { 
       if (this.recipient == null)
@@ -465,7 +495,7 @@ public class Communication extends DomainResource {
     }
 
     /**
-     * @return {@link #recipient} (The entity (e.g., person, organization, clinical information system, or device) which is the target of the communication.)
+     * @return {@link #recipient} (The entity (e.g., person, organization, clinical information system, or device) which was the target of the communication.)
      */
     // syntactic sugar
     public Reference addRecipient() { //3
@@ -476,8 +506,18 @@ public class Communication extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Communication addRecipient(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.recipient == null)
+        this.recipient = new ArrayList<Reference>();
+      this.recipient.add(t);
+      return this;
+    }
+
     /**
-     * @return {@link #recipient} (The actual objects that are the target of the reference. The reference library doesn't populate this, but you can use this to hold the resources if you resolvethemt. The entity (e.g., person, organization, clinical information system, or device) which is the target of the communication.)
+     * @return {@link #recipient} (The actual objects that are the target of the reference. The reference library doesn't populate this, but you can use this to hold the resources if you resolvethemt. The entity (e.g., person, organization, clinical information system, or device) which was the target of the communication.)
      */
     public List<Resource> getRecipientTarget() { 
       if (this.recipientTarget == null)
@@ -486,7 +526,7 @@ public class Communication extends DomainResource {
     }
 
     /**
-     * @return {@link #payload} (Text, attachment(s), or resource(s) to be communicated to the recipient.)
+     * @return {@link #payload} (Text, attachment(s), or resource(s) that was communicated to the recipient.)
      */
     public List<CommunicationPayloadComponent> getPayload() { 
       if (this.payload == null)
@@ -504,7 +544,7 @@ public class Communication extends DomainResource {
     }
 
     /**
-     * @return {@link #payload} (Text, attachment(s), or resource(s) to be communicated to the recipient.)
+     * @return {@link #payload} (Text, attachment(s), or resource(s) that was communicated to the recipient.)
      */
     // syntactic sugar
     public CommunicationPayloadComponent addPayload() { //3
@@ -513,6 +553,16 @@ public class Communication extends DomainResource {
         this.payload = new ArrayList<CommunicationPayloadComponent>();
       this.payload.add(t);
       return t;
+    }
+
+    // syntactic sugar
+    public Communication addPayload(CommunicationPayloadComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.payload == null)
+        this.payload = new ArrayList<CommunicationPayloadComponent>();
+      this.payload.add(t);
+      return this;
     }
 
     /**
@@ -545,6 +595,16 @@ public class Communication extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Communication addMedium(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.medium == null)
+        this.medium = new ArrayList<CodeableConcept>();
+      this.medium.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #status} (The status of the transmission.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
@@ -553,7 +613,7 @@ public class Communication extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Communication.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<CommunicationStatus>();
+          this.status = new Enumeration<CommunicationStatus>(new CommunicationStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -588,7 +648,7 @@ public class Communication extends DomainResource {
         this.status = null;
       else {
         if (this.status == null)
-          this.status = new Enumeration<CommunicationStatus>();
+          this.status = new Enumeration<CommunicationStatus>(new CommunicationStatusEnumFactory());
         this.status.setValue(value);
       }
       return this;
@@ -602,7 +662,7 @@ public class Communication extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Communication.encounter");
         else if (Configuration.doAutoCreate())
-          this.encounter = new Reference();
+          this.encounter = new Reference(); // cc
       return this.encounter;
     }
 
@@ -626,7 +686,7 @@ public class Communication extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Communication.encounter");
         else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter();
+          this.encounterTarget = new Encounter(); // aa
       return this.encounterTarget;
     }
 
@@ -646,7 +706,7 @@ public class Communication extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Communication.sent");
         else if (Configuration.doAutoCreate())
-          this.sent = new DateTimeType();
+          this.sent = new DateTimeType(); // bb
       return this.sent;
     }
 
@@ -669,14 +729,14 @@ public class Communication extends DomainResource {
     /**
      * @return The time when this communication was sent.
      */
-    public DateAndTime getSent() { 
+    public Date getSent() { 
       return this.sent == null ? null : this.sent.getValue();
     }
 
     /**
      * @param value The time when this communication was sent.
      */
-    public Communication setSent(DateAndTime value) { 
+    public Communication setSent(Date value) { 
       if (value == null)
         this.sent = null;
       else {
@@ -695,7 +755,7 @@ public class Communication extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Communication.received");
         else if (Configuration.doAutoCreate())
-          this.received = new DateTimeType();
+          this.received = new DateTimeType(); // bb
       return this.received;
     }
 
@@ -718,14 +778,14 @@ public class Communication extends DomainResource {
     /**
      * @return The time when this communication arrived at the destination.
      */
-    public DateAndTime getReceived() { 
+    public Date getReceived() { 
       return this.received == null ? null : this.received.getValue();
     }
 
     /**
      * @param value The time when this communication arrived at the destination.
      */
-    public Communication setReceived(DateAndTime value) { 
+    public Communication setReceived(Date value) { 
       if (value == null)
         this.received = null;
       else {
@@ -766,15 +826,25 @@ public class Communication extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Communication addReason(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableConcept>();
+      this.reason.add(t);
+      return this;
+    }
+
     /**
-     * @return {@link #subject} (The patient who is the focus of this communication.)
+     * @return {@link #subject} (The patient who was the focus of this communication.)
      */
     public Reference getSubject() { 
       if (this.subject == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Communication.subject");
         else if (Configuration.doAutoCreate())
-          this.subject = new Reference();
+          this.subject = new Reference(); // cc
       return this.subject;
     }
 
@@ -783,7 +853,7 @@ public class Communication extends DomainResource {
     }
 
     /**
-     * @param value {@link #subject} (The patient who is the focus of this communication.)
+     * @param value {@link #subject} (The patient who was the focus of this communication.)
      */
     public Communication setSubject(Reference value) { 
       this.subject = value;
@@ -791,19 +861,19 @@ public class Communication extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient who is the focus of this communication.)
+     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient who was the focus of this communication.)
      */
     public Patient getSubjectTarget() { 
       if (this.subjectTarget == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Communication.subject");
         else if (Configuration.doAutoCreate())
-          this.subjectTarget = new Patient();
+          this.subjectTarget = new Patient(); // aa
       return this.subjectTarget;
     }
 
     /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient who is the focus of this communication.)
+     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient who was the focus of this communication.)
      */
     public Communication setSubjectTarget(Patient value) { 
       this.subjectTarget = value;
@@ -813,17 +883,17 @@ public class Communication extends DomainResource {
       protected void listChildren(List<Property> childrenList) {
         super.listChildren(childrenList);
         childrenList.add(new Property("identifier", "Identifier", "Identifiers associated with this Communication that are defined by business processes and/ or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).", 0, java.lang.Integer.MAX_VALUE, identifier));
-        childrenList.add(new Property("category", "CodeableConcept", "The type of message such as alert, notification, reminder, instruction, etc.", 0, java.lang.Integer.MAX_VALUE, category));
-        childrenList.add(new Property("sender", "Reference(Patient|Practitioner|Device|RelatedPerson|Organization)", "The entity (e.g., person, organization, clinical information system, or device) which is the source of the communication.", 0, java.lang.Integer.MAX_VALUE, sender));
-        childrenList.add(new Property("recipient", "Reference(Patient|Device|RelatedPerson|Practitioner)", "The entity (e.g., person, organization, clinical information system, or device) which is the target of the communication.", 0, java.lang.Integer.MAX_VALUE, recipient));
-        childrenList.add(new Property("payload", "", "Text, attachment(s), or resource(s) to be communicated to the recipient.", 0, java.lang.Integer.MAX_VALUE, payload));
+        childrenList.add(new Property("category", "CodeableConcept", "The type of message conveyed such as alert, notification, reminder, instruction, etc.", 0, java.lang.Integer.MAX_VALUE, category));
+        childrenList.add(new Property("sender", "Reference(Device|Organization|Patient|Practitioner|RelatedPerson)", "The entity (e.g., person, organization, clinical information system, or device) which was the source of the communication.", 0, java.lang.Integer.MAX_VALUE, sender));
+        childrenList.add(new Property("recipient", "Reference(Device|Organization|Patient|Practitioner|RelatedPerson)", "The entity (e.g., person, organization, clinical information system, or device) which was the target of the communication.", 0, java.lang.Integer.MAX_VALUE, recipient));
+        childrenList.add(new Property("payload", "", "Text, attachment(s), or resource(s) that was communicated to the recipient.", 0, java.lang.Integer.MAX_VALUE, payload));
         childrenList.add(new Property("medium", "CodeableConcept", "The communication medium, e.g., email, fax.", 0, java.lang.Integer.MAX_VALUE, medium));
         childrenList.add(new Property("status", "code", "The status of the transmission.", 0, java.lang.Integer.MAX_VALUE, status));
         childrenList.add(new Property("encounter", "Reference(Encounter)", "The encounter within which the communication was sent.", 0, java.lang.Integer.MAX_VALUE, encounter));
         childrenList.add(new Property("sent", "dateTime", "The time when this communication was sent.", 0, java.lang.Integer.MAX_VALUE, sent));
         childrenList.add(new Property("received", "dateTime", "The time when this communication arrived at the destination.", 0, java.lang.Integer.MAX_VALUE, received));
         childrenList.add(new Property("reason", "CodeableConcept", "The reason or justification for the communication.", 0, java.lang.Integer.MAX_VALUE, reason));
-        childrenList.add(new Property("subject", "Reference(Patient)", "The patient who is the focus of this communication.", 0, java.lang.Integer.MAX_VALUE, subject));
+        childrenList.add(new Property("subject", "Reference(Patient)", "The patient who was the focus of this communication.", 0, java.lang.Integer.MAX_VALUE, subject));
       }
 
       public Communication copy() {
@@ -868,6 +938,31 @@ public class Communication extends DomainResource {
         return copy();
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Communication))
+          return false;
+        Communication o = (Communication) other;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(category, o.category, true) && compareDeep(sender, o.sender, true)
+           && compareDeep(recipient, o.recipient, true) && compareDeep(payload, o.payload, true) && compareDeep(medium, o.medium, true)
+           && compareDeep(status, o.status, true) && compareDeep(encounter, o.encounter, true) && compareDeep(sent, o.sent, true)
+           && compareDeep(received, o.received, true) && compareDeep(reason, o.reason, true) && compareDeep(subject, o.subject, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Communication))
+          return false;
+        Communication o = (Communication) other;
+        return compareValues(status, o.status, true) && compareValues(sent, o.sent, true) && compareValues(received, o.received, true)
+          ;
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (identifier == null || identifier.isEmpty()) && (category == null || category.isEmpty())
            && (sender == null || sender.isEmpty()) && (recipient == null || recipient.isEmpty()) && (payload == null || payload.isEmpty())
@@ -889,7 +984,7 @@ public class Communication extends DomainResource {
   public static final String SP_CATEGORY = "category";
   @SearchParamDefinition(name="patient", path="Communication.subject", description="Focus of message", type="reference" )
   public static final String SP_PATIENT = "patient";
-  @SearchParamDefinition(name="status", path="Communication.status", description="in progress | completed | suspended | rejected | failed", type="token" )
+  @SearchParamDefinition(name="status", path="Communication.status", description="in-progress | completed | suspended | rejected | failed", type="token" )
   public static final String SP_STATUS = "status";
   @SearchParamDefinition(name="subject", path="Communication.subject", description="Focus of message", type="reference" )
   public static final String SP_SUBJECT = "subject";

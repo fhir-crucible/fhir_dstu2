@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -47,35 +47,35 @@ public class EnrollmentRequest extends DomainResource {
     /**
      * The Response Business Identifier.
      */
-    @Child(name="identifier", type={Identifier.class}, order=-1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Business Identifier", formalDefinition="The Response Business Identifier." )
     protected List<Identifier> identifier;
 
     /**
      * The version of the style of resource contents. This should be mapped to the allowable profiles for this and supporting resources.
      */
-    @Child(name="ruleset", type={Coding.class}, order=0, min=0, max=1)
+    @Child(name ="ruleset", type={Coding.class}, order=1, min=0, max=1)
     @Description(shortDefinition="Resource version", formalDefinition="The version of the style of resource contents. This should be mapped to the allowable profiles for this and supporting resources." )
     protected Coding ruleset;
 
     /**
      * The style (standard) and version of the original material which was converted into this resource.
      */
-    @Child(name="originalRuleset", type={Coding.class}, order=1, min=0, max=1)
+    @Child(name ="originalRuleset", type={Coding.class}, order=2, min=0, max=1)
     @Description(shortDefinition="Original version", formalDefinition="The style (standard) and version of the original material which was converted into this resource." )
     protected Coding originalRuleset;
 
     /**
      * The date when this resource was created.
      */
-    @Child(name="created", type={DateTimeType.class}, order=2, min=0, max=1)
+    @Child(name ="created", type={DateTimeType.class}, order=3, min=0, max=1)
     @Description(shortDefinition="Creation date", formalDefinition="The date when this resource was created." )
     protected DateTimeType created;
 
     /**
      * The Insurer who is target  of the request.
      */
-    @Child(name="target", type={Organization.class}, order=3, min=0, max=1)
+    @Child(name ="target", type={Organization.class}, order=4, min=0, max=1)
     @Description(shortDefinition="Insurer", formalDefinition="The Insurer who is target  of the request." )
     protected Reference target;
 
@@ -87,7 +87,7 @@ public class EnrollmentRequest extends DomainResource {
     /**
      * The practitioner who is responsible for the services rendered to the patient.
      */
-    @Child(name="provider", type={Practitioner.class}, order=4, min=0, max=1)
+    @Child(name ="provider", type={Practitioner.class}, order=5, min=0, max=1)
     @Description(shortDefinition="Responsible practitioner", formalDefinition="The practitioner who is responsible for the services rendered to the patient." )
     protected Reference provider;
 
@@ -99,7 +99,7 @@ public class EnrollmentRequest extends DomainResource {
     /**
      * The organization which is responsible for the services rendered to the patient.
      */
-    @Child(name="organization", type={Organization.class}, order=5, min=0, max=1)
+    @Child(name ="organization", type={Organization.class}, order=6, min=0, max=1)
     @Description(shortDefinition="Responsible organization", formalDefinition="The organization which is responsible for the services rendered to the patient." )
     protected Reference organization;
 
@@ -111,7 +111,7 @@ public class EnrollmentRequest extends DomainResource {
     /**
      * Patient Resource.
      */
-    @Child(name="subject", type={Patient.class}, order=6, min=1, max=1)
+    @Child(name ="subject", type={Patient.class}, order=7, min=1, max=1)
     @Description(shortDefinition="The subject of the Products and Services", formalDefinition="Patient Resource." )
     protected Reference subject;
 
@@ -123,7 +123,7 @@ public class EnrollmentRequest extends DomainResource {
     /**
      * Reference to the program or plan identification, underwriter or payor.
      */
-    @Child(name="coverage", type={Coverage.class}, order=7, min=1, max=1)
+    @Child(name ="coverage", type={Coverage.class}, order=8, min=1, max=1)
     @Description(shortDefinition="Insurance information", formalDefinition="Reference to the program or plan identification, underwriter or payor." )
     protected Reference coverage;
 
@@ -135,7 +135,7 @@ public class EnrollmentRequest extends DomainResource {
     /**
      * The relationship of the patient to the subscriber.
      */
-    @Child(name="relationship", type={Coding.class}, order=8, min=1, max=1)
+    @Child(name ="relationship", type={Coding.class}, order=9, min=1, max=1)
     @Description(shortDefinition="Patient relationship to subscriber", formalDefinition="The relationship of the patient to the subscriber." )
     protected Coding relationship;
 
@@ -182,6 +182,16 @@ public class EnrollmentRequest extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public EnrollmentRequest addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #ruleset} (The version of the style of resource contents. This should be mapped to the allowable profiles for this and supporting resources.)
      */
@@ -190,7 +200,7 @@ public class EnrollmentRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentRequest.ruleset");
         else if (Configuration.doAutoCreate())
-          this.ruleset = new Coding();
+          this.ruleset = new Coding(); // cc
       return this.ruleset;
     }
 
@@ -214,7 +224,7 @@ public class EnrollmentRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentRequest.originalRuleset");
         else if (Configuration.doAutoCreate())
-          this.originalRuleset = new Coding();
+          this.originalRuleset = new Coding(); // cc
       return this.originalRuleset;
     }
 
@@ -238,7 +248,7 @@ public class EnrollmentRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentRequest.created");
         else if (Configuration.doAutoCreate())
-          this.created = new DateTimeType();
+          this.created = new DateTimeType(); // bb
       return this.created;
     }
 
@@ -261,14 +271,14 @@ public class EnrollmentRequest extends DomainResource {
     /**
      * @return The date when this resource was created.
      */
-    public DateAndTime getCreated() { 
+    public Date getCreated() { 
       return this.created == null ? null : this.created.getValue();
     }
 
     /**
      * @param value The date when this resource was created.
      */
-    public EnrollmentRequest setCreated(DateAndTime value) { 
+    public EnrollmentRequest setCreated(Date value) { 
       if (value == null)
         this.created = null;
       else {
@@ -287,7 +297,7 @@ public class EnrollmentRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentRequest.target");
         else if (Configuration.doAutoCreate())
-          this.target = new Reference();
+          this.target = new Reference(); // cc
       return this.target;
     }
 
@@ -311,7 +321,7 @@ public class EnrollmentRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentRequest.target");
         else if (Configuration.doAutoCreate())
-          this.targetTarget = new Organization();
+          this.targetTarget = new Organization(); // aa
       return this.targetTarget;
     }
 
@@ -331,7 +341,7 @@ public class EnrollmentRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentRequest.provider");
         else if (Configuration.doAutoCreate())
-          this.provider = new Reference();
+          this.provider = new Reference(); // cc
       return this.provider;
     }
 
@@ -355,7 +365,7 @@ public class EnrollmentRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentRequest.provider");
         else if (Configuration.doAutoCreate())
-          this.providerTarget = new Practitioner();
+          this.providerTarget = new Practitioner(); // aa
       return this.providerTarget;
     }
 
@@ -375,7 +385,7 @@ public class EnrollmentRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentRequest.organization");
         else if (Configuration.doAutoCreate())
-          this.organization = new Reference();
+          this.organization = new Reference(); // cc
       return this.organization;
     }
 
@@ -399,7 +409,7 @@ public class EnrollmentRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentRequest.organization");
         else if (Configuration.doAutoCreate())
-          this.organizationTarget = new Organization();
+          this.organizationTarget = new Organization(); // aa
       return this.organizationTarget;
     }
 
@@ -419,7 +429,7 @@ public class EnrollmentRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentRequest.subject");
         else if (Configuration.doAutoCreate())
-          this.subject = new Reference();
+          this.subject = new Reference(); // cc
       return this.subject;
     }
 
@@ -443,7 +453,7 @@ public class EnrollmentRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentRequest.subject");
         else if (Configuration.doAutoCreate())
-          this.subjectTarget = new Patient();
+          this.subjectTarget = new Patient(); // aa
       return this.subjectTarget;
     }
 
@@ -463,7 +473,7 @@ public class EnrollmentRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentRequest.coverage");
         else if (Configuration.doAutoCreate())
-          this.coverage = new Reference();
+          this.coverage = new Reference(); // cc
       return this.coverage;
     }
 
@@ -487,7 +497,7 @@ public class EnrollmentRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentRequest.coverage");
         else if (Configuration.doAutoCreate())
-          this.coverageTarget = new Coverage();
+          this.coverageTarget = new Coverage(); // aa
       return this.coverageTarget;
     }
 
@@ -507,7 +517,7 @@ public class EnrollmentRequest extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentRequest.relationship");
         else if (Configuration.doAutoCreate())
-          this.relationship = new Coding();
+          this.relationship = new Coding(); // cc
       return this.relationship;
     }
 
@@ -559,6 +569,29 @@ public class EnrollmentRequest extends DomainResource {
 
       protected EnrollmentRequest typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof EnrollmentRequest))
+          return false;
+        EnrollmentRequest o = (EnrollmentRequest) other;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(ruleset, o.ruleset, true) && compareDeep(originalRuleset, o.originalRuleset, true)
+           && compareDeep(created, o.created, true) && compareDeep(target, o.target, true) && compareDeep(provider, o.provider, true)
+           && compareDeep(organization, o.organization, true) && compareDeep(subject, o.subject, true) && compareDeep(coverage, o.coverage, true)
+           && compareDeep(relationship, o.relationship, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof EnrollmentRequest))
+          return false;
+        EnrollmentRequest o = (EnrollmentRequest) other;
+        return compareValues(created, o.created, true);
       }
 
       public boolean isEmpty() {

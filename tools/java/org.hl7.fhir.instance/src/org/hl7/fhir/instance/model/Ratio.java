@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -45,14 +45,14 @@ public class Ratio extends Type {
     /**
      * The value of the numerator.
      */
-    @Child(name="numerator", type={Quantity.class}, order=-1, min=0, max=1)
+    @Child(name ="numerator", type={Quantity.class}, order=0, min=0, max=1)
     @Description(shortDefinition="Numerator value", formalDefinition="The value of the numerator." )
     protected Quantity numerator;
 
     /**
      * The value of the denominator.
      */
-    @Child(name="denominator", type={Quantity.class}, order=0, min=0, max=1)
+    @Child(name ="denominator", type={Quantity.class}, order=1, min=0, max=1)
     @Description(shortDefinition="Denominator value", formalDefinition="The value of the denominator." )
     protected Quantity denominator;
 
@@ -70,7 +70,7 @@ public class Ratio extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Ratio.numerator");
         else if (Configuration.doAutoCreate())
-          this.numerator = new Quantity();
+          this.numerator = new Quantity(); // cc
       return this.numerator;
     }
 
@@ -94,7 +94,7 @@ public class Ratio extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Ratio.denominator");
         else if (Configuration.doAutoCreate())
-          this.denominator = new Quantity();
+          this.denominator = new Quantity(); // cc
       return this.denominator;
     }
 
@@ -126,6 +126,27 @@ public class Ratio extends Type {
 
       protected Ratio typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Ratio))
+          return false;
+        Ratio o = (Ratio) other;
+        return compareDeep(numerator, o.numerator, true) && compareDeep(denominator, o.denominator, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Ratio))
+          return false;
+        Ratio o = (Ratio) other;
+        return true;
       }
 
       public boolean isEmpty() {

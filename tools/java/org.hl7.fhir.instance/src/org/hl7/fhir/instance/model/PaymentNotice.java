@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -47,35 +47,35 @@ public class PaymentNotice extends DomainResource {
     /**
      * The Response Business Identifier.
      */
-    @Child(name="identifier", type={Identifier.class}, order=-1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Business Identifier", formalDefinition="The Response Business Identifier." )
     protected List<Identifier> identifier;
 
     /**
      * The version of the style of resource contents. This should be mapped to the allowable profiles for this and supporting resources.
      */
-    @Child(name="ruleset", type={Coding.class}, order=0, min=0, max=1)
+    @Child(name ="ruleset", type={Coding.class}, order=1, min=0, max=1)
     @Description(shortDefinition="Resource version", formalDefinition="The version of the style of resource contents. This should be mapped to the allowable profiles for this and supporting resources." )
     protected Coding ruleset;
 
     /**
      * The style (standard) and version of the original material which was converted into this resource.
      */
-    @Child(name="originalRuleset", type={Coding.class}, order=1, min=0, max=1)
+    @Child(name ="originalRuleset", type={Coding.class}, order=2, min=0, max=1)
     @Description(shortDefinition="Original version", formalDefinition="The style (standard) and version of the original material which was converted into this resource." )
     protected Coding originalRuleset;
 
     /**
      * The date when this resource was created.
      */
-    @Child(name="created", type={DateTimeType.class}, order=2, min=0, max=1)
+    @Child(name ="created", type={DateTimeType.class}, order=3, min=0, max=1)
     @Description(shortDefinition="Creation date", formalDefinition="The date when this resource was created." )
     protected DateTimeType created;
 
     /**
      * The Insurer who is target  of the request.
      */
-    @Child(name="target", type={Organization.class}, order=3, min=0, max=1)
+    @Child(name ="target", type={Organization.class}, order=4, min=0, max=1)
     @Description(shortDefinition="Insurer or Regulatory body", formalDefinition="The Insurer who is target  of the request." )
     protected Reference target;
 
@@ -87,7 +87,7 @@ public class PaymentNotice extends DomainResource {
     /**
      * The practitioner who is responsible for the services rendered to the patient.
      */
-    @Child(name="provider", type={Practitioner.class}, order=4, min=0, max=1)
+    @Child(name ="provider", type={Practitioner.class}, order=5, min=0, max=1)
     @Description(shortDefinition="Responsible practitioner", formalDefinition="The practitioner who is responsible for the services rendered to the patient." )
     protected Reference provider;
 
@@ -99,7 +99,7 @@ public class PaymentNotice extends DomainResource {
     /**
      * The organization which is responsible for the services rendered to the patient.
      */
-    @Child(name="organization", type={Organization.class}, order=5, min=0, max=1)
+    @Child(name ="organization", type={Organization.class}, order=6, min=0, max=1)
     @Description(shortDefinition="Responsible organization", formalDefinition="The organization which is responsible for the services rendered to the patient." )
     protected Reference organization;
 
@@ -111,7 +111,7 @@ public class PaymentNotice extends DomainResource {
     /**
      * Reference of resource to reverse.
      */
-    @Child(name="request", type={}, order=6, min=0, max=1)
+    @Child(name ="request", type={}, order=7, min=0, max=1)
     @Description(shortDefinition="Request reference", formalDefinition="Reference of resource to reverse." )
     protected Reference request;
 
@@ -123,7 +123,7 @@ public class PaymentNotice extends DomainResource {
     /**
      * Reference of response to resource to reverse.
      */
-    @Child(name="response", type={}, order=7, min=0, max=1)
+    @Child(name ="response", type={}, order=8, min=0, max=1)
     @Description(shortDefinition="Response reference", formalDefinition="Reference of response to resource to reverse." )
     protected Reference response;
 
@@ -135,7 +135,7 @@ public class PaymentNotice extends DomainResource {
     /**
      * The payment status, typically paid: payment sent, cleared: payment received.
      */
-    @Child(name="paymentStatus", type={Coding.class}, order=8, min=1, max=1)
+    @Child(name ="paymentStatus", type={Coding.class}, order=9, min=1, max=1)
     @Description(shortDefinition="Status of the payment", formalDefinition="The payment status, typically paid: payment sent, cleared: payment received." )
     protected Coding paymentStatus;
 
@@ -180,6 +180,16 @@ public class PaymentNotice extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public PaymentNotice addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #ruleset} (The version of the style of resource contents. This should be mapped to the allowable profiles for this and supporting resources.)
      */
@@ -188,7 +198,7 @@ public class PaymentNotice extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentNotice.ruleset");
         else if (Configuration.doAutoCreate())
-          this.ruleset = new Coding();
+          this.ruleset = new Coding(); // cc
       return this.ruleset;
     }
 
@@ -212,7 +222,7 @@ public class PaymentNotice extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentNotice.originalRuleset");
         else if (Configuration.doAutoCreate())
-          this.originalRuleset = new Coding();
+          this.originalRuleset = new Coding(); // cc
       return this.originalRuleset;
     }
 
@@ -236,7 +246,7 @@ public class PaymentNotice extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentNotice.created");
         else if (Configuration.doAutoCreate())
-          this.created = new DateTimeType();
+          this.created = new DateTimeType(); // bb
       return this.created;
     }
 
@@ -259,14 +269,14 @@ public class PaymentNotice extends DomainResource {
     /**
      * @return The date when this resource was created.
      */
-    public DateAndTime getCreated() { 
+    public Date getCreated() { 
       return this.created == null ? null : this.created.getValue();
     }
 
     /**
      * @param value The date when this resource was created.
      */
-    public PaymentNotice setCreated(DateAndTime value) { 
+    public PaymentNotice setCreated(Date value) { 
       if (value == null)
         this.created = null;
       else {
@@ -285,7 +295,7 @@ public class PaymentNotice extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentNotice.target");
         else if (Configuration.doAutoCreate())
-          this.target = new Reference();
+          this.target = new Reference(); // cc
       return this.target;
     }
 
@@ -309,7 +319,7 @@ public class PaymentNotice extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentNotice.target");
         else if (Configuration.doAutoCreate())
-          this.targetTarget = new Organization();
+          this.targetTarget = new Organization(); // aa
       return this.targetTarget;
     }
 
@@ -329,7 +339,7 @@ public class PaymentNotice extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentNotice.provider");
         else if (Configuration.doAutoCreate())
-          this.provider = new Reference();
+          this.provider = new Reference(); // cc
       return this.provider;
     }
 
@@ -353,7 +363,7 @@ public class PaymentNotice extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentNotice.provider");
         else if (Configuration.doAutoCreate())
-          this.providerTarget = new Practitioner();
+          this.providerTarget = new Practitioner(); // aa
       return this.providerTarget;
     }
 
@@ -373,7 +383,7 @@ public class PaymentNotice extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentNotice.organization");
         else if (Configuration.doAutoCreate())
-          this.organization = new Reference();
+          this.organization = new Reference(); // cc
       return this.organization;
     }
 
@@ -397,7 +407,7 @@ public class PaymentNotice extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentNotice.organization");
         else if (Configuration.doAutoCreate())
-          this.organizationTarget = new Organization();
+          this.organizationTarget = new Organization(); // aa
       return this.organizationTarget;
     }
 
@@ -417,7 +427,7 @@ public class PaymentNotice extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentNotice.request");
         else if (Configuration.doAutoCreate())
-          this.request = new Reference();
+          this.request = new Reference(); // cc
       return this.request;
     }
 
@@ -456,7 +466,7 @@ public class PaymentNotice extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentNotice.response");
         else if (Configuration.doAutoCreate())
-          this.response = new Reference();
+          this.response = new Reference(); // cc
       return this.response;
     }
 
@@ -495,7 +505,7 @@ public class PaymentNotice extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentNotice.paymentStatus");
         else if (Configuration.doAutoCreate())
-          this.paymentStatus = new Coding();
+          this.paymentStatus = new Coding(); // cc
       return this.paymentStatus;
     }
 
@@ -547,6 +557,29 @@ public class PaymentNotice extends DomainResource {
 
       protected PaymentNotice typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof PaymentNotice))
+          return false;
+        PaymentNotice o = (PaymentNotice) other;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(ruleset, o.ruleset, true) && compareDeep(originalRuleset, o.originalRuleset, true)
+           && compareDeep(created, o.created, true) && compareDeep(target, o.target, true) && compareDeep(provider, o.provider, true)
+           && compareDeep(organization, o.organization, true) && compareDeep(request, o.request, true) && compareDeep(response, o.response, true)
+           && compareDeep(paymentStatus, o.paymentStatus, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof PaymentNotice))
+          return false;
+        PaymentNotice o = (PaymentNotice) other;
+        return compareValues(created, o.created, true);
       }
 
       public boolean isEmpty() {

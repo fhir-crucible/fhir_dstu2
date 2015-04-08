@@ -36,11 +36,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.instance.model.DateAndTime;
 import org.hl7.fhir.instance.model.DomainResource;
 import org.hl7.fhir.instance.model.Element;
 import org.hl7.fhir.instance.model.Resource;
-import org.hl7.fhir.instance.model.Resource.ResourceMetaComponent;
 import org.hl7.fhir.instance.model.Type;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -67,8 +65,6 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
   // -- in descendent generated code --------------------------------------
   
 	abstract protected Resource parseResource(XmlPullParser xpp) throws Exception;
-  abstract protected ResourceMetaComponent parseResourceResourceMetaComponent(XmlPullParser xpp, Resource owner) throws Exception;
-  abstract protected void composeResourceResourceMetaComponent(String name, Resource.ResourceMetaComponent element) throws Exception;
   abstract protected Type parseType(XmlPullParser xml, String type) throws Exception;
   abstract protected void composeType(String prefix, Type type) throws Exception;
  
@@ -93,18 +89,6 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
     if (!xpp.getNamespace().equals(FHIR_NS))
       throw new Exception("This does not appear to be a FHIR resource (wrong namespace '"+xpp.getNamespace()+"') (@ /)");
     return parseResource(xpp);
-  }
-
-  @Override
-  public ResourceMetaComponent parseMeta(InputStream input) throws Exception {
-    XmlPullParser xpp = loadXml(input);
-    if (xpp.getNamespace() == null)
-      throw new Exception("This does not appear to be a FHIR meta (no namespace '"+xpp.getNamespace()+"') (@ /) "+Integer.toString(xpp.getEventType()));
-    if (!xpp.getNamespace().equals(FHIR_NS))
-      throw new Exception("This does not appear to be a FHIR meta (wrong namespace '"+xpp.getNamespace()+"') (@ /)");
-    if (!xpp.getName().equals("meta")) 
-      throw new Exception("This does not appear to be a FHIR meta (wrong namespace '"+xpp.getNamespace()+"') (@ /)");
-    return parseResourceResourceMetaComponent(xpp, null);
   }
 
   @Override
@@ -137,19 +121,6 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
     writer.close();
   }
 
-  /**
-   * Compose a bundle to a stream, possibly using pretty presentation for a human reader (used in the spec, for example, but not normally in production)
-   */
-  @Override
-  public void compose(OutputStream stream, ResourceMetaComponent meta) throws Exception {
-    xml = new XMLWriter(stream, "UTF-8");
-    xml.setPretty(style == OutputStyle.PRETTY);
-    xml.start();
-    xml.setDefaultNamespace(FHIR_NS);
-    composeResourceResourceMetaComponent("meta", meta);
-    xml.close();
-  }
-  
   
   /**
    * Compose a type to a stream (used in the spec, for example, but not normally in production)
@@ -294,16 +265,12 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
     return res;
   }
   
-  private DateAndTime parseDate(XmlPullParser xpp) throws Exception {
-    return new DateAndTime(parseString(xpp));    
-  }
-
   protected DomainResource parseDomainResourceContained(XmlPullParser xpp) throws Exception {
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
     if (eventType == XmlPullParser.START_TAG) { 
       DomainResource dr = (DomainResource) parseResource(xpp);
-      next(xpp);
+      nextNoWhitespace(xpp);
       next(xpp);
       return dr;
     } else {
@@ -316,7 +283,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
     int eventType = nextNoWhitespace(xpp);
     if (eventType == XmlPullParser.START_TAG) { 
       Resource r = (Resource) parseResource(xpp);
-      next(xpp);
+      nextNoWhitespace(xpp);
       next(xpp);
       return r;
     } else {

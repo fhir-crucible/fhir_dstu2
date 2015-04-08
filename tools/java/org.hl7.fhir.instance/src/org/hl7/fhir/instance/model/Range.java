@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -45,14 +45,14 @@ public class Range extends Type {
     /**
      * The low limit. The boundary is inclusive.
      */
-    @Child(name="low", type={Quantity.class}, order=-1, min=0, max=1)
+    @Child(name ="low", type={Quantity.class}, order=0, min=0, max=1)
     @Description(shortDefinition="Low limit", formalDefinition="The low limit. The boundary is inclusive." )
     protected Quantity low;
 
     /**
      * The high limit. The boundary is inclusive.
      */
-    @Child(name="high", type={Quantity.class}, order=0, min=0, max=1)
+    @Child(name ="high", type={Quantity.class}, order=1, min=0, max=1)
     @Description(shortDefinition="High limit", formalDefinition="The high limit. The boundary is inclusive." )
     protected Quantity high;
 
@@ -70,7 +70,7 @@ public class Range extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Range.low");
         else if (Configuration.doAutoCreate())
-          this.low = new Quantity();
+          this.low = new Quantity(); // cc
       return this.low;
     }
 
@@ -94,7 +94,7 @@ public class Range extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Range.high");
         else if (Configuration.doAutoCreate())
-          this.high = new Quantity();
+          this.high = new Quantity(); // cc
       return this.high;
     }
 
@@ -126,6 +126,26 @@ public class Range extends Type {
 
       protected Range typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Range))
+          return false;
+        Range o = (Range) other;
+        return compareDeep(low, o.low, true) && compareDeep(high, o.high, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Range))
+          return false;
+        Range o = (Range) other;
+        return true;
       }
 
       public boolean isEmpty() {

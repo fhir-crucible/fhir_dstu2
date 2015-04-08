@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -46,14 +46,14 @@ public class CodeableConcept extends Type {
     /**
      * A reference to a code defined by a terminology system.
      */
-    @Child(name="coding", type={Coding.class}, order=-1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="coding", type={Coding.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Code defined by a terminology system", formalDefinition="A reference to a code defined by a terminology system." )
     protected List<Coding> coding;
 
     /**
      * A human language representation of the concept as seen/selected/uttered by the user who entered the data and/or which represents the intended meaning of the user.
      */
-    @Child(name="text", type={StringType.class}, order=0, min=0, max=1)
+    @Child(name ="text", type={StringType.class}, order=1, min=0, max=1)
     @Description(shortDefinition="Plain text representation of the concept", formalDefinition="A human language representation of the concept as seen/selected/uttered by the user who entered the data and/or which represents the intended meaning of the user." )
     protected StringType text;
 
@@ -93,6 +93,16 @@ public class CodeableConcept extends Type {
       return t;
     }
 
+    // syntactic sugar
+    public CodeableConcept addCoding(Coding t) { //3
+      if (t == null)
+        return this;
+      if (this.coding == null)
+        this.coding = new ArrayList<Coding>();
+      this.coding.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #text} (A human language representation of the concept as seen/selected/uttered by the user who entered the data and/or which represents the intended meaning of the user.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
      */
@@ -101,7 +111,7 @@ public class CodeableConcept extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create CodeableConcept.text");
         else if (Configuration.doAutoCreate())
-          this.text = new StringType();
+          this.text = new StringType(); // bb
       return this.text;
     }
 
@@ -162,6 +172,26 @@ public class CodeableConcept extends Type {
 
       protected CodeableConcept typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof CodeableConcept))
+          return false;
+        CodeableConcept o = (CodeableConcept) other;
+        return compareDeep(coding, o.coding, true) && compareDeep(text, o.text, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof CodeableConcept))
+          return false;
+        CodeableConcept o = (CodeableConcept) other;
+        return compareValues(text, o.text, true);
       }
 
       public boolean isEmpty() {

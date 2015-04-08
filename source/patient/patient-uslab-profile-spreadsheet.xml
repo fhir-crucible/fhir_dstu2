@@ -7,19 +7,22 @@
  xmlns:html="http://www.w3.org/TR/REC-html40">
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
   <Author>Grahame</Author>
-  <LastAuthor>Eric Haas</LastAuthor>
+  <LastAuthor>Grahame</LastAuthor>
   <Created>2012-03-19T11:12:07Z</Created>
-  <LastSaved>2014-12-06T21:38:20Z</LastSaved>
+  <LastSaved>2015-03-16T05:46:25Z</LastSaved>
   <Version>12.00</Version>
  </DocumentProperties>
+ <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+  <AllowPNG/>
+ </OfficeDocumentSettings>
  <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
-  <WindowHeight>6555</WindowHeight>
-  <WindowWidth>19260</WindowWidth>
-  <WindowTopX>4335</WindowTopX>
-  <WindowTopY>1695</WindowTopY>
+  <WindowHeight>3885</WindowHeight>
+  <WindowWidth>25260</WindowWidth>
+  <WindowTopX>-1215</WindowTopX>
+  <WindowTopY>7140</WindowTopY>
   <TabRatio>888</TabRatio>
-  <ActiveSheet>1</ActiveSheet>
-  <FirstVisibleSheet>1</FirstVisibleSheet>
+  <ActiveSheet>3</ActiveSheet>
+  <RefModeR1C1/>
   <ProtectStructure>False</ProtectStructure>
   <ProtectWindows>False</ProtectWindows>
  </ExcelWorkbook>
@@ -1037,7 +1040,7 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s76"><Data ss:Type="String">extension.uri</Data></Cell>
-    <Cell ss:StyleID="s82"><Data ss:Type="String">http://hl7.org/fhir/ExtensionDefinition/</Data></Cell>
+    <Cell ss:StyleID="s82"><Data ss:Type="String">http://hl7.org/fhir/StructureDefinition/</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s83"><Data ss:Type="String">introduction</Data></Cell>
@@ -1061,7 +1064,6 @@
     <HorizontalResolution>600</HorizontalResolution>
     <VerticalResolution>600</VerticalResolution>
    </Print>
-   <Selected/>
    <FreezePanes/>
    <FrozenNoSplit/>
    <SplitHorizontal>1</SplitHorizontal>
@@ -1243,7 +1245,7 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..*</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/ExtensionDefinition/us-core-race}</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/StructureDefinition/us-core-race}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -1332,7 +1334,7 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/ExtensionDefinition/us-core-ethnicity}</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/StructureDefinition/us-core-ethnicity}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -1414,7 +1416,7 @@
     <Cell ss:StyleID="s107"><Data ss:Type="String">determine (psuedo)code for generation.</Data></Cell>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.text</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.text</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
@@ -1443,7 +1445,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.text.status</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.text.status</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
@@ -2105,7 +2107,7 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/ExtensionDefinition/us-core-county}</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/StructureDefinition/us-core-county}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -2137,7 +2139,7 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/ExtensionDefinition/iso21090-SC-coding}</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/StructureDefinition/iso21090-SC-coding}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -2313,8 +2315,7 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">code</Data><NamedCell
-      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">USPSState</Data><NamedCell
@@ -2338,7 +2339,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"><Data ss:Type="String">Zip or Postal Code SHALL be formatted as 99999[-9999] for US Zip or ZIP +4 codes. &#10;</Data></Cell>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.address.zip</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.address.postalCode</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
@@ -2375,11 +2376,10 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">code</Data><NamedCell
-      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">USLabCountry</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">USCountry</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -2546,7 +2546,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.contact.family</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.contact.name.family</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
@@ -2575,7 +2575,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.contact.given</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.contact.name.given</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..2</Data><NamedCell
@@ -2604,7 +2604,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.contact.suffix</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.contact.name.suffix</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
@@ -2785,7 +2785,7 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/ExtensionDefinition/us-core-county}</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/StructureDefinition/us-core-county}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -2817,7 +2817,7 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/ExtensionDefinition/iso21090-SC-coding}</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/StructureDefinition/iso21090-SC-coding}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -3016,7 +3016,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.contact.address.zip</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.contact.address.postalCode</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
@@ -3968,11 +3968,10 @@
     <VerticalResolution>600</VerticalResolution>
    </Print>
    <TabColorIndex>10</TabColorIndex>
-   <LeftColumnVisible>2</LeftColumnVisible>
    <FreezePanes/>
    <FrozenNoSplit/>
    <SplitHorizontal>1</SplitHorizontal>
-   <TopRowBottomPane>1</TopRowBottomPane>
+   <TopRowBottomPane>40</TopRowBottomPane>
    <ActivePane>2</ActivePane>
    <Panes>
     <Pane>
@@ -3980,7 +3979,8 @@
     </Pane>
     <Pane>
      <Number>2</Number>
-     <ActiveCol>18</ActiveCol>
+     <ActiveRow>55</ActiveRow>
+     <ActiveCol>10</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>
@@ -4039,14 +4039,14 @@
  </Worksheet>
  <Worksheet ss:Name="USLabPHPatient">
   <Names>
-   <NamedRange ss:Name="_FilterDatabase" ss:RefersTo="=USLabPHPatient!R1C4:R99C24"
+   <NamedRange ss:Name="_FilterDatabase" ss:RefersTo="=USLabPHPatient!R1C4:R101C24"
     ss:Hidden="1"/>
   </Names>
-  <Table ss:ExpandedColumnCount="24" ss:ExpandedRowCount="100" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="24" ss:ExpandedRowCount="102" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s87" ss:DefaultColumnWidth="46.5"
    ss:DefaultRowHeight="31.5">
    <Column ss:StyleID="s87" ss:AutoFitWidth="0" ss:Width="182.25"/>
-   <Column ss:Index="5" ss:StyleID="s88" ss:AutoFitWidth="0" ss:Width="220.5"/>
+   <Column ss:Index="5" ss:StyleID="s88" ss:AutoFitWidth="0" ss:Width="273.75"/>
    <Column ss:Index="9" ss:StyleID="s87" ss:AutoFitWidth="0" ss:Width="129.75"/>
    <Column ss:Index="16" ss:StyleID="s88" ss:AutoFitWidth="0" ss:Span="1"/>
    <Row ss:AutoFitHeight="0" ss:StyleID="s89">
@@ -4180,7 +4180,7 @@
     <Cell ss:StyleID="s106"><Data ss:Type="String">11/19/2014 EH:need these use extension for US,PID.10[1]:Race:CWE_CR1:RE:RE::[0..*]:HL70005</Data></Cell>
     <Cell ss:StyleID="s107"><Data ss:Type="String"> comment on binding too big make 5 an 2  and add &quot;question not answered&quot; as choice to satisfy OMB</Data></Cell>
     <Cell ss:StyleID="s107"/>
-    <Cell ss:StyleID="s108"><Data ss:Type="String">race</Data><NamedCell
+    <Cell ss:StyleID="s108"><Data ss:Type="String">DAFRace</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.extension</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -4188,11 +4188,12 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..*</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/ExtensionDefinition/us-core-race}</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/StructureDefinition/us-core-race}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><Data ss:Type="String">DAFRace</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -4209,7 +4210,7 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s106"/>
-    <Cell ss:StyleID="s107"><Data ss:Type="String">need to see if needs to an extension on extension</Data></Cell>
+    <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.extension.coding</Data><NamedCell
@@ -4238,7 +4239,36 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s106"/>
-    <Cell ss:StyleID="s107"><Data ss:Type="String">need to see if needs to an extension on extension</Data></Cell>
+    <Cell ss:StyleID="s107"/>
+    <Cell ss:StyleID="s107"/>
+    <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.extension.coding.system</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s111"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s111"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s112"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s112"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s113"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s113"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s113"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s113"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s106"/>
+    <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.extension.coding.code</Data><NamedCell
@@ -4266,10 +4296,10 @@
     <Cell ss:StyleID="s113"><NamedCell ss:Name="_FilterDatabase"/></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s106"><Data ss:Type="String">11/19/2014 EH:need these use extension . Questions on codeable concept use valueset seems to make more sense than system and version discuss. PID.22:Ethnic Group:CWE_CRE:RE::[0..*]:::HL70189</Data></Cell>
+    <Cell ss:StyleID="s106"><Data ss:Type="String">11/19/2014 EH:need these use extension .\PID.22:Ethnic Group:CWE_CRE:RE::[0..*]:::HL70189</Data></Cell>
     <Cell ss:StyleID="s107"><Data ss:Type="String"> comment on binding too big make 5 an 2  and add &quot;question not answered&quot; as choice to satisfy OMB</Data></Cell>
     <Cell ss:StyleID="s107"/>
-    <Cell ss:StyleID="s108"><Data ss:Type="String">ethnicity</Data><NamedCell
+    <Cell ss:StyleID="s108"><Data ss:Type="String">DAFethnicity</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.extension</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -4277,11 +4307,12 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/ExtensionDefinition/us-core-ethnicity}</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/StructureDefinition/us-core-ethnicity}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><Data ss:Type="String">DAFEthnicity</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -4298,7 +4329,7 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s106"/>
-    <Cell ss:StyleID="s107"><Data ss:Type="String">need to see if needs to an extension on extension</Data></Cell>
+    <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.extension.coding</Data><NamedCell
@@ -4327,7 +4358,36 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s106"/>
-    <Cell ss:StyleID="s107"><Data ss:Type="String">need to see if needs to an extension on extension</Data></Cell>
+    <Cell ss:StyleID="s107"/>
+    <Cell ss:StyleID="s107"/>
+    <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.extension.coding.system</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s111"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s111"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s112"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s112"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s113"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s113"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s113"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s113"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s106"/>
+    <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.extension.coding.code</Data><NamedCell
@@ -4359,7 +4419,7 @@
     <Cell ss:StyleID="s107"><Data ss:Type="String">determine (psuedo)code for generation.</Data></Cell>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.text</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.text</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
@@ -4388,7 +4448,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.text.status</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.text.status</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
@@ -4425,8 +4485,7 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..*</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">Identifier</Data><NamedCell
-      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -5067,21 +5126,23 @@
     <Cell ss:StyleID="s113"><NamedCell ss:Name="_FilterDatabase"/></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s106"><Data ss:Type="String">11/18/2014 EH: must support</Data></Cell>
+    <Cell ss:StyleID="s106"><Data ss:Type="String">11/18/2014 EH: must support 3/11/2015 eh: flatten out structure and force string to code</Data></Cell>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"><Data ss:Type="String">County/Parish Code SHALL use FIPS 6-4  ( INCITS 31:2009).</Data></Cell>
-    <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s108"><Data ss:Type="String">USLabPHCountry</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.address.extension</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/ExtensionDefinition/us-core-county}</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/StructureDefinition/us-core-county}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><Data ss:Type="String">USFIPSCounty</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -5102,13 +5163,13 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.address.extension.extension</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.address.extension.extension</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/ExtensionDefinition/iso21090-SC-coding}</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/StructureDefinition/iso21090-SC-coding}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -5133,7 +5194,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.address.extension.extension.system</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.address.extension.system</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
@@ -5142,7 +5203,8 @@
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><Data ss:Type="String">USFIPSCounty</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -5162,7 +5224,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.address.extension.extension.code</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.address.extension.code</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
@@ -5284,8 +5346,7 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">code</Data><NamedCell
-      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">USPSState</Data><NamedCell
@@ -5309,7 +5370,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"><Data ss:Type="String">Zip or Postal Code SHALL be formatted as 99999[-9999] for US Zip or ZIP +4 codes. &#10;</Data></Cell>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.address.zip</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.address.postalCode</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
@@ -5346,11 +5407,10 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">code</Data><NamedCell
-      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">USLabCountry</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">USCountry</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -5517,7 +5577,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.contact.family</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.contact.name.family</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
@@ -5546,7 +5606,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.contact.given</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.contact.name.given</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..2</Data><NamedCell
@@ -5575,7 +5635,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.contact.suffix</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.contact.name.suffix</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
@@ -5716,10 +5776,9 @@
     <Cell ss:StyleID="s113"><NamedCell ss:Name="_FilterDatabase"/></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s106"><Data ss:Type="String">11/19/2014 EH:NK1.4:Address:XAD:RE:[0..*]:::</Data></Cell>
+    <Cell ss:StyleID="s106"><Data ss:Type="String">11/19/2014 EH:NK1.4:Address:XAD:RE:[0..*]::: 3/11/2015 eh: flatten out structure and force string to code</Data></Cell>
     <Cell ss:StyleID="s107"/>
-    <Cell ss:StyleID="s107"/>
-    <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:Index="4" ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.contact.address</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -5748,18 +5807,20 @@
     <Cell ss:StyleID="s106"><Data ss:Type="String">NK1.32.9:County/Parish Code:IS:RE::1..20:=:PHVS_County_FIPS_6-4</Data></Cell>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"><Data ss:Type="String">County/Parish Code SHALL use FIPS 6-4  ( INCITS 31:2009).</Data></Cell>
-    <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s108"><Data ss:Type="String">CountyCountact</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.contact.address.extension</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/ExtensionDefinition/us-core-county}</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/StructureDefinition/us-core-county}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><Data ss:Type="String">USFIPSCounty</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -5780,13 +5841,13 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.contact.address.extension.extension</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.contact.address.extension.extension</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/ExtensionDefinition/iso21090-SC-coding}</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">Extension{http://hl7.org/fhir/StructureDefinition/iso21090-SC-coding}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -5811,7 +5872,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.contact.address.extension.extension.system</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.contact.address.extension.system</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
@@ -5820,8 +5881,7 @@
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:Index="12" ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -5840,7 +5900,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.contact.address.extension.extension.code</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">!Patient.contact.address.extension.code</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">1..1</Data><NamedCell
@@ -5962,8 +6022,7 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">code</Data><NamedCell
-      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">USPSState</Data><NamedCell
@@ -5987,7 +6046,7 @@
     <Cell ss:StyleID="s107"/>
     <Cell ss:StyleID="s107"><Data ss:Type="String">Zip or Postal Code SHALL be formatted as 99999[-9999] for US Zip or ZIP +4 codes. &#10;</Data></Cell>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.contact.address.zip</Data><NamedCell
+    <Cell ss:StyleID="s109"><Data ss:Type="String">Patient.contact.address.postalCode</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
@@ -6024,11 +6083,10 @@
     <Cell ss:StyleID="s110"><Data ss:Type="String">0..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">code</Data><NamedCell
-      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s110"><Data ss:Type="String">USLabCountry</Data><NamedCell
+    <Cell ss:StyleID="s110"><Data ss:Type="String">USCountry</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -6944,11 +7002,11 @@
     <VerticalResolution>600</VerticalResolution>
    </Print>
    <TabColorIndex>50</TabColorIndex>
-   <LeftColumnVisible>1</LeftColumnVisible>
+   <Selected/>
    <FreezePanes/>
    <FrozenNoSplit/>
    <SplitHorizontal>1</SplitHorizontal>
-   <TopRowBottomPane>1</TopRowBottomPane>
+   <TopRowBottomPane>53</TopRowBottomPane>
    <ActivePane>2</ActivePane>
    <Panes>
     <Pane>
@@ -6956,41 +7014,42 @@
     </Pane>
     <Pane>
      <Number>2</Number>
-     <ActiveCol>3</ActiveCol>
+     <ActiveRow>66</ActiveRow>
+     <ActiveCol>4</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C21:R99C23</Range>
+   <Range>R2C21:R101C23</Range>
    <Type>List</Type>
    <CellRangeList/>
    <Value>&quot;N/A&quot;</Value>
    <ErrorHide/>
   </DataValidation>
   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C7:R99C7</Range>
+   <Range>R2C7:R101C7</Range>
    <Type>List</Type>
    <CellRangeList/>
    <Value>&quot;0..0,0..1,1..1,0..*,1..*,[n]..[m]&quot;</Value>
    <ErrorHide/>
   </DataValidation>
   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R3C9:R99C9</Range>
+   <Range>R3C9:R101C9</Range>
    <Type>List</Type>
    <CellRangeList/>
    <Value>&quot;*,Reference(A|B),boolean,string,code,id,oid,uuid,integer,decimal,date,dateTime,time,instant,uri,base64Binary,CodeableConcept,Coding,Identifier,Period,Timing,Range,Quantity,Age,Distance,Duration,Count,Money,Ratio,HumanName,Address,ContactPoint,SampledData&quot;</Value>
    <ErrorHide/>
   </DataValidation>
   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R3C10:R99C10</Range>
+   <Range>R3C10:R101C10</Range>
    <Type>List</Type>
    <CellRangeList/>
    <Value>&quot;Y,N&quot;</Value>
   </DataValidation>
   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C11:R99C11</Range>
+   <Range>R61C11:R101C11,R2C11:R59C11</Range>
    <Type>List</Type>
    <CellRangeList/>
    <Value>&quot;Bindings!A2..A30&quot;</Value>
@@ -7002,11 +7061,11 @@
    <CellRangeList/>
    <Value>&quot;DomainResource,Type,Resource,Structure&quot;</Value>
   </DataValidation>
-  <AutoFilter x:Range="R1C4:R99C24"
+  <AutoFilter x:Range="R1C4:R101C24"
    xmlns="urn:schemas-microsoft-com:office:excel">
   </AutoFilter>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C5:R65C5</Range>
+   <Range>R2C5:R67C5</Range>
    <Condition>
     <Value1>NOT(ISERROR(SEARCH(&quot;!&quot;,RC)))</Value1>
     <Format Style='color:#9C0006;background:#FFC7CE'/>
@@ -7063,7 +7122,7 @@
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><Data ss:Type="String">error</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s103"><Data ss:Type="String">Patient.address.zip</Data><NamedCell
+    <Cell ss:StyleID="s103"><Data ss:Type="String">Patient.address.postalCode</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><Data ss:Type="String">(Zip or Postal Code) SHALL be formatted as 99999[-9999] for US Zip or ZIP +4 codes or as A9A9A9 for Canadian postal codes. &#10;</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -7537,8 +7596,8 @@
     </Pane>
     <Pane>
      <Number>0</Number>
-     <ActiveCol>0</ActiveCol>
-     <RangeSelection>R2C1:R2C7</RangeSelection>
+     <ActiveRow>5</ActiveRow>
+     <ActiveCol>4</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>
@@ -7589,7 +7648,7 @@
     <Cell ss:StyleID="s129"><Data ss:Type="Number">1</Data></Cell>
     <Cell ss:StyleID="s104"><Data ss:Type="String">Regex for Zip</Data></Cell>
     <Cell ss:StyleID="s104"><Data ss:Type="String">error</Data></Cell>
-    <Cell ss:StyleID="s135"><Data ss:Type="String">Patient.address.zip</Data></Cell>
+    <Cell ss:StyleID="s135"><Data ss:Type="String">Patient.address.postalCode</Data></Cell>
     <Cell ss:StyleID="s104"><Data ss:Type="String">(Zip or Postal Code) SHALL be formatted as 99999[-9999] for US Zip or ZIP +4 codes or as A9A9A9 for Canadian postal codes. &#10;</Data></Cell>
     <Cell ss:StyleID="s104"/>
     <Cell ss:StyleID="s130"><Data ss:Type="String">f:matches(issued,[0-9]{5}(-[0-9]{4}){0,1} )</Data></Cell>
@@ -7598,7 +7657,7 @@
     <Cell ss:StyleID="s131"><Data ss:Type="Number">2</Data></Cell>
     <Cell ss:StyleID="s113"><Data ss:Type="String">Regex for Zip</Data></Cell>
     <Cell ss:StyleID="s113"><Data ss:Type="String">error</Data></Cell>
-    <Cell ss:StyleID="s135"><Data ss:Type="String">Patient.contact.address.zip</Data></Cell>
+    <Cell ss:StyleID="s135"><Data ss:Type="String">Patient.contact.address.postalCode</Data></Cell>
     <Cell ss:StyleID="s113"><Data ss:Type="String">(Zip or Postal Code) SHALL be formatted as 99999[-9999] for US Zip or ZIP +4 codes or as A9A9A9 for Canadian postal codes. &#10;</Data></Cell>
     <Cell ss:StyleID="s113"/>
     <Cell ss:StyleID="s132"><Data ss:Type="String">f:matches(issued,[0-9]{5}(-[0-9]{4}){0,1} )</Data></Cell>
@@ -8047,8 +8106,9 @@
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>8</ActiveRow>
-     <ActiveCol>3</ActiveCol>
+     <ActiveRow>20</ActiveRow>
+     <ActiveCol>4</ActiveCol>
+     <RangeSelection>R20C5:R21C5</RangeSelection>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>
@@ -11965,7 +12025,7 @@
    <FreezePanes/>
    <FrozenNoSplit/>
    <SplitHorizontal>1</SplitHorizontal>
-   <TopRowBottomPane>1</TopRowBottomPane>
+   <TopRowBottomPane>7</TopRowBottomPane>
    <SplitVertical>1</SplitVertical>
    <LeftColumnRightPane>1</LeftColumnRightPane>
    <ActivePane>0</ActivePane>
@@ -11978,6 +12038,7 @@
     </Pane>
     <Pane>
      <Number>2</Number>
+     <ActiveRow>1</ActiveRow>
     </Pane>
     <Pane>
      <Number>0</Number>
@@ -13536,9 +13597,8 @@
     </Pane>
     <Pane>
      <Number>0</Number>
-     <ActiveRow>3</ActiveRow>
+     <ActiveRow>2</ActiveRow>
      <ActiveCol>0</ActiveCol>
-     <RangeSelection>R4C1:R4C6</RangeSelection>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

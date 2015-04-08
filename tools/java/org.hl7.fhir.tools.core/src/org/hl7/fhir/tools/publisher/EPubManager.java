@@ -12,7 +12,6 @@ import java.util.UUID;
 
 import org.hl7.fhir.tools.publisher.BreadCrumbManager.Page;
 import org.hl7.fhir.utilities.FileNotifier;
-import org.hl7.fhir.utilities.Logger.LogMessageType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.ZipGenerator;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -287,8 +286,23 @@ public class EPubManager implements FileNotifier {
   }
 
   private void reportError(String msg) {
-    page.log(msg, LogMessageType.Error);
-    page.getQa().brokenlink(msg);
+    if (!ok(msg)) {
+      page.getQa().brokenlink(msg);
+    }
+  }
+
+  private boolean ok(String msg) {
+    if (msg.contains("hspc"))
+      return true;
+    if (msg.contains("cda"))
+      return true;
+    if (msg.contains("quick\\"))
+      return true;
+    if (msg.contains("-examples.html"))
+      return true;
+    if (msg.contains("'??"))
+      return true;
+    return false;
   }
 
   private void checkLinks(XhtmlNode node, Entry e) throws FileNotFoundException, Exception {
@@ -305,6 +319,8 @@ public class EPubManager implements FileNotifier {
   }
 
   private void check(XhtmlNode node, String href, String base) throws FileNotFoundException, Exception {
+    if (href == null)
+      throw new Exception("no ref at "+node.allText());
     if (href.startsWith("http:") || href.startsWith("https:") || href.startsWith("ftp:") || href.startsWith("mailto:"))
       return;
     String path = href;
@@ -317,10 +333,12 @@ public class EPubManager implements FileNotifier {
     if (!Utilities.noString(path)) {
       if (href.endsWith("qa.html") || href.endsWith(".epub.zip")) 
         return;
+      if ("self-link".equals(node.getAttribute("class")))
+        return; 
       String target = collapse(base, path);
       if (target.endsWith(".xml") || target.endsWith(".json") || target.endsWith(".xsd") || target.endsWith(".zip") || target.endsWith(".xls") || target.endsWith(".txt") || target.endsWith(".sch") || target.endsWith(".pdf") || target.endsWith(".epub")) {
         if (!(new File(Utilities.path(page.getFolders().dstDir, target)).exists()))
-          reportError("Broken Link in "+base+": '"+href+"' not found at \""+Utilities.path(page.getFolders().dstDir, target)+"\" ("+node.allText()+")");
+          reportError("Broken Link (1) in "+base+": '"+href+"' not found at \""+Utilities.path(page.getFolders().dstDir, target)+"\" ("+node.allText()+")");
         node.setAttribute("href", "http://hl7.org/fhir/"+target.replace(File.separatorChar, '/'));
         e = null;
       } else if (externals.contains(target)) {
@@ -331,7 +349,7 @@ public class EPubManager implements FileNotifier {
         if (e == null) {
           if (href.startsWith("v2/") || href.startsWith("v3/")) // we can't check those links
             return;
-          reportError("Broken Link in "+base+": '"+href+"' not found at \""+target+"\"("+node.allText()+")");
+          reportError("Broken Link (2) in "+base+": '"+href+"' not found at \""+target+"\"("+node.allText()+")");
           return;
         }
       }

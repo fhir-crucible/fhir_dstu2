@@ -22,11 +22,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.hl7.fhir.instance.client.EFhirClientException;
-import org.hl7.fhir.instance.client.IFHIRClient;
 import org.hl7.fhir.instance.client.FHIRSimpleClient;
+import org.hl7.fhir.instance.client.IFHIRClient;
 import org.hl7.fhir.instance.formats.JsonParser;
-import org.hl7.fhir.instance.formats.JsonParser;
-import org.hl7.fhir.instance.formats.ResourceOrFeed;
 import org.hl7.fhir.instance.model.Bundle;
 import org.hl7.fhir.instance.model.OperationOutcome;
 import org.hl7.fhir.instance.model.OperationOutcome.IssueSeverity;
@@ -45,11 +43,12 @@ import org.hl7.fhir.utilities.xml.XMLWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class SpecificationConceptLocator  implements ConceptLocator {
+public class SpecificationConceptLocator implements ConceptLocator {
 
-  public class Concept {
+  public static class Concept {
     private String display; // preferred
     private List<String> displays = new ArrayList<String>();
+
     public boolean has(String d) {
       if (display.equalsIgnoreCase(d))
         return true;
@@ -58,6 +57,7 @@ public class SpecificationConceptLocator  implements ConceptLocator {
           return true;
       return false;
     }
+
     public String summary() {
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
       b.append(display);
@@ -66,17 +66,19 @@ public class SpecificationConceptLocator  implements ConceptLocator {
           b.append(s);
       return b.toString();
     }
-    
   }
+
   private Map<String, Concept> snomedCodes = new HashMap<String, Concept>();
   private Map<String, Concept> loincCodes = new HashMap<String, Concept>();
   private boolean triedServer = false;
   private boolean serverOk = false;
   private String cache;
+  private String tsServer;
   
-  public SpecificationConceptLocator(String cache) {
+  public SpecificationConceptLocator(String cache, String server) {
     super();
     this.cache = cache;
+    this.tsServer = server;
   }
 
   @Override
@@ -123,7 +125,7 @@ public class SpecificationConceptLocator  implements ConceptLocator {
       return new ValidationResult(IssueSeverity.WARNING, "Unknown Snomed Code "+code);
   }
 
-  private class SnomedServerResponse  {
+  private static class SnomedServerResponse  {
     String correctExpression;
     String display;
   }
@@ -133,8 +135,8 @@ public class SpecificationConceptLocator  implements ConceptLocator {
       triedServer = true;
       serverOk = false;
       HttpClient httpclient = new DefaultHttpClient();
-      HttpGet httpget = new HttpGet("http://fhir.healthintersections.com.au/snomed/tool/"+URLEncoder.encode(code, "UTF-8").replace("+", "%20"));
-//      HttpGet httpget = new HttpGet("http://localhost:960/snomed/tool/"+URLEncoder.encode(code, "UTF-8").replace("+", "%20")); // don't like the url encoded this way
+      //HttpGet httpget = new HttpGet("http://fhir.healthintersections.com.au/snomed/tool/"+URLEncoder.encode(code, "UTF-8").replace("+", "%20"));
+      HttpGet httpget = new HttpGet(tsServer+"/snomed/tool/"+URLEncoder.encode(code, "UTF-8").replace("+", "%20")); // don't like the url encoded this way
       HttpResponse response = httpclient.execute(httpget);
       HttpEntity entity = response.getEntity();
       InputStream instream = entity.getContent();
@@ -265,7 +267,6 @@ public class SpecificationConceptLocator  implements ConceptLocator {
     }
     xml.close("snomed");
     xml.close();
-    
   }
   
   public void loadLoinc(String filename) throws Exception {
@@ -300,17 +301,15 @@ public class SpecificationConceptLocator  implements ConceptLocator {
       else
         return ((ValueSet) ((Bundle)r).getEntry().get(0).getResource()).getExpansion().getContains();
     }
-    vs.setIdentifier("urn:uuid:"+UUID.randomUUID().toString().toLowerCase()); // that's all we're going to set
-    
-        
+    vs.setUrl("urn:uuid:"+UUID.randomUUID().toString().toLowerCase()); // that's all we're going to set
+
     if (!triedServer || serverOk) {
       try {
         triedServer = true;
         serverOk = false;
         // for this, we use the FHIR client
         IFHIRClient client = new FHIRSimpleClient();
-        //client.initialize("http://fhir.healthintersections.com.au/open");
-        client.initialize("http://localhost:960/open");
+        client.initialize(tsServer);
         Map<String, String> params = new HashMap<String, String>();
         params.put("_query", "expand");
         params.put("limit", "500");

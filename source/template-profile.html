@@ -12,7 +12,7 @@
 <div class="col-9">
 
 <%profileheader base%>
-<h1><%title%></h1>
+<h3><%title%></h3>
 <p>
 The official URL for this profile is:
 </p>
@@ -24,32 +24,41 @@ The official URL for this profile is:
 </p>
 <p>
 This profile was published on <%date%> <%status%> by <%author%>.
-<!-- Use the <a href="<%profile.review%>">Review Spreadsheet</a> to comment on this profile. -->
+<%profile.review%>
 </p>
 
-<%summary%>
+<%profile.datadictionary%>
 
 <a name="profile"> </a>
-<h2>
+<h4>
 Formal Views of Profile Content
-</h2>
+</h4>
 
 <p>
-<a href="about-profiles.html">Description of Profiles, Differentials, Snapshots, and how the XML and JSON presentations work</a>.
+<a href="profiling.html">Description of Profiles, Differentials, Snapshots, and how the XML and JSON presentations work</a>.
 </p>
 
 <div id="tabs">
  <ul>
+  <li><a href="#tabs-summ">Text Summary</a></li>
   <li><a href="#tabs-diff">Differential Table</a></li>
   <li><a href="#tabs-snap">Snapshot Table</a></li>
-  <li><a href="#tabs-xml">XML</a></li>
-  <li><a href="#tabs-json">JSON</a></li>
+  <li><a href="#tabs-xml">XML Template</a></li>
+  <li><a href="#tabs-json">JSON Template</a></li>
   <li><a href="#tabs-all">All</a></li>
  </ul>
  
+ <div id="tabs-summ">
+  <div id="tbl-summ">
+   <p>This structure is derived from <%base-link%>.</p>
+   <div id="tbl-diff-inner">
+     <%summary%> 
+   </div>
+  </div>
+ </div>
+  
  <div id="tabs-diff">
   <div id="tbl-diff">
-   <p><b>Differential View</b></p>
    <p>This structure is derived from <%base-link%>.</p>
    <div id="tbl-diff-inner">
      <%profile-structure-table-diff%> 
@@ -59,7 +68,6 @@ Formal Views of Profile Content
   
  <div id="tabs-snap">
   <div id="tbl-snap">
-   <p><b>Snapshot View</b></p>
    <div id="tbl-snap-inner">
     <%profile-structure-table%>
    </div>
@@ -68,7 +76,6 @@ Formal Views of Profile Content
   
  <div id="tabs-xml">
   <div id="xml">
-   <p><b>XML Template</b></p>
    <div id="xml-inner">
     <%xml%>
    </div>
@@ -77,7 +84,6 @@ Formal Views of Profile Content
  
  <div id="tabs-json">
   <div id="json">
-   <p><b>JSON Template</b></p>
    <div id="json-inner">
     <p>todo</p>
    </div>
@@ -85,7 +91,14 @@ Formal Views of Profile Content
  </div>
 
  <div id="tabs-all">
-  <div id="all-tbl-diff">
+  <div id="tbl-summ">
+   <p>This structure is derived from <%base-link%>.</p>
+   <div id="tbl-diff-inner">
+     <%summary%> 
+   </div>
+  </div>
+
+ <div id="all-tbl-diff">
    <p><b>Differential View</b></p>
    <p>This structure is derived from <%base-link%>.</p>
    <div id="all-tbl-diff-inner">
@@ -114,7 +127,7 @@ Formal Views of Profile Content
 </div>
   
 <p>&nbsp;</p>  
-<p>Other definitions: <!-- <a href="<%name%>.sch">Schematron</a> (todo), <a href="<%name%>.questionnaire.html">Questionnaire</a>--> (todo)</p>
+<p>Other representations of profile: <!-- <a href="<%name%>.sch">Schematron</a> (todo), <a href="<%name%>.questionnaire.html">Questionnaire</a>--> (todo)</p>
 
 
 <a name="tx"> </a>
@@ -136,8 +149,6 @@ try {
   var currentTabIndex = sessionStorage.getItem('fhir-resource-tab-index');
 }
 catch(exception){ 
-  if (navigator.userAgent.toLowerCase().indexof('msie') == -1)
-    alert(exception);
 }
 
 if (!currentTabIndex)
@@ -148,12 +159,11 @@ $( '#tabs' ).tabs({
          activate: function( event, ui ) {
              var active = $('.selector').tabs('option', 'active');
              currentTabIndex = ui.newTab.index();
+             document.activeElement.blur();
              try {
                sessionStorage.setItem('fhir-resource-tab-index', currentTabIndex);
              }
              catch(exception){ 
-              if (navigator.userAgent.toLowerCase().indexof('msie') == -1)
-                alert(exception);
              }
          }
      });

@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -133,20 +133,20 @@ public class HumanName extends Type {
         }
         public String getDisplay() {
           switch (this) {
-            case USUAL: return "usual";
-            case OFFICIAL: return "official";
-            case TEMP: return "temp";
-            case NICKNAME: return "nickname";
-            case ANONYMOUS: return "anonymous";
-            case OLD: return "old";
-            case MAIDEN: return "maiden";
+            case USUAL: return "Usual";
+            case OFFICIAL: return "Official";
+            case TEMP: return "Temp";
+            case NICKNAME: return "Nickname";
+            case ANONYMOUS: return "Anonymous";
+            case OLD: return "Old";
+            case MAIDEN: return "Maiden";
             default: return "?";
           }
         }
     }
 
-  public static class NameUseEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class NameUseEnumFactory implements EnumFactory<NameUse> {
+    public NameUse fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -164,9 +164,9 @@ public class HumanName extends Type {
           return NameUse.OLD;
         if ("maiden".equals(codeString))
           return NameUse.MAIDEN;
-        throw new Exception("Unknown NameUse code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown NameUse code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(NameUse code) {
       if (code == NameUse.USUAL)
         return "usual";
       if (code == NameUse.OFFICIAL)
@@ -188,49 +188,49 @@ public class HumanName extends Type {
     /**
      * Identifies the purpose for this name.
      */
-    @Child(name="use", type={CodeType.class}, order=-1, min=0, max=1)
+    @Child(name ="use", type={CodeType.class}, order=0, min=0, max=1)
     @Description(shortDefinition="usual | official | temp | nickname | anonymous | old | maiden", formalDefinition="Identifies the purpose for this name." )
     protected Enumeration<NameUse> use;
 
     /**
      * A full text representation of the name.
      */
-    @Child(name="text", type={StringType.class}, order=0, min=0, max=1)
+    @Child(name ="text", type={StringType.class}, order=1, min=0, max=1)
     @Description(shortDefinition="Text representation of the full name", formalDefinition="A full text representation of the name." )
     protected StringType text;
 
     /**
      * The part of a name that links to the genealogy. In some cultures (e.g. Eritrea) the family name of a son is the first name of his father.
      */
-    @Child(name="family", type={StringType.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="family", type={StringType.class}, order=2, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Family name (often called 'Surname')", formalDefinition="The part of a name that links to the genealogy. In some cultures (e.g. Eritrea) the family name of a son is the first name of his father." )
     protected List<StringType> family;
 
     /**
      * Given name.
      */
-    @Child(name="given", type={StringType.class}, order=2, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="given", type={StringType.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Given names (not always 'first'). Includes middle names", formalDefinition="Given name." )
     protected List<StringType> given;
 
     /**
      * Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the start of the name.
      */
-    @Child(name="prefix", type={StringType.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="prefix", type={StringType.class}, order=4, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Parts that come before the name", formalDefinition="Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the start of the name." )
     protected List<StringType> prefix;
 
     /**
      * Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name.
      */
-    @Child(name="suffix", type={StringType.class}, order=4, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="suffix", type={StringType.class}, order=5, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Parts that come after the name", formalDefinition="Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name." )
     protected List<StringType> suffix;
 
     /**
      * Indicates the period of time when this name was valid for the named person.
      */
-    @Child(name="period", type={Period.class}, order=5, min=0, max=1)
+    @Child(name ="period", type={Period.class}, order=6, min=0, max=1)
     @Description(shortDefinition="Time period when name was/is in use", formalDefinition="Indicates the period of time when this name was valid for the named person." )
     protected Period period;
 
@@ -248,7 +248,7 @@ public class HumanName extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create HumanName.use");
         else if (Configuration.doAutoCreate())
-          this.use = new Enumeration<NameUse>();
+          this.use = new Enumeration<NameUse>(new NameUseEnumFactory()); // bb
       return this.use;
     }
 
@@ -283,7 +283,7 @@ public class HumanName extends Type {
         this.use = null;
       else {
         if (this.use == null)
-          this.use = new Enumeration<NameUse>();
+          this.use = new Enumeration<NameUse>(new NameUseEnumFactory());
         this.use.setValue(value);
       }
       return this;
@@ -297,7 +297,7 @@ public class HumanName extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create HumanName.text");
         else if (Configuration.doAutoCreate())
-          this.text = new StringType();
+          this.text = new StringType(); // bb
       return this.text;
     }
 
@@ -562,7 +562,7 @@ public class HumanName extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create HumanName.period");
         else if (Configuration.doAutoCreate())
-          this.period = new Period();
+          this.period = new Period(); // cc
       return this.period;
     }
 
@@ -620,6 +620,30 @@ public class HumanName extends Type {
 
       protected HumanName typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof HumanName))
+          return false;
+        HumanName o = (HumanName) other;
+        return compareDeep(use, o.use, true) && compareDeep(text, o.text, true) && compareDeep(family, o.family, true)
+           && compareDeep(given, o.given, true) && compareDeep(prefix, o.prefix, true) && compareDeep(suffix, o.suffix, true)
+           && compareDeep(period, o.period, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof HumanName))
+          return false;
+        HumanName o = (HumanName) other;
+        return compareValues(use, o.use, true) && compareValues(text, o.text, true) && compareValues(family, o.family, true)
+           && compareValues(given, o.given, true) && compareValues(prefix, o.prefix, true) && compareValues(suffix, o.suffix, true)
+          ;
       }
 
       public boolean isEmpty() {

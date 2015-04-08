@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -45,7 +45,7 @@ public abstract class BackboneElement extends Element {
     /**
      * May be used to represent additional information that is not part of the basic definition of the element, and that modifies the understanding of the element that contains it. Usually modifier elements provide negation or qualification. In order to make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.
      */
-    @Child(name="modifierExtension", type={Extension.class}, order=-1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="modifierExtension", type={Extension.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Extensions that cannot be ignored", formalDefinition="May be used to represent additional information that is not part of the basic definition of the element, and that modifies the understanding of the element that contains it. Usually modifier elements provide negation or qualification. In order to make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions." )
     protected List<Extension> modifierExtension;
 
@@ -85,6 +85,16 @@ public abstract class BackboneElement extends Element {
       return t;
     }
 
+    // syntactic sugar
+    public BackboneElement addModifierExtension(Extension t) { //3
+      if (t == null)
+        return this;
+      if (this.modifierExtension == null)
+        this.modifierExtension = new ArrayList<Extension>();
+      this.modifierExtension.add(t);
+      return this;
+    }
+
       protected void listChildren(List<Property> childrenList) {
         childrenList.add(new Property("modifierExtension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element, and that modifies the understanding of the element that contains it. Usually modifier elements provide negation or qualification. In order to make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.", 0, java.lang.Integer.MAX_VALUE, modifierExtension));
       }
@@ -97,6 +107,26 @@ public abstract class BackboneElement extends Element {
           for (Extension i : modifierExtension)
             dst.modifierExtension.add(i.copy());
         };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof BackboneElement))
+          return false;
+        BackboneElement o = (BackboneElement) other;
+        return compareDeep(modifierExtension, o.modifierExtension, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof BackboneElement))
+          return false;
+        BackboneElement o = (BackboneElement) other;
+        return true;
       }
 
       public boolean isEmpty() {

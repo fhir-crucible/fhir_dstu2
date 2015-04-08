@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -90,15 +90,15 @@ public class Medication extends DomainResource {
         }
         public String getDisplay() {
           switch (this) {
-            case PRODUCT: return "product";
-            case PACKAGE: return "package";
+            case PRODUCT: return "Product";
+            case PACKAGE: return "Package";
             default: return "?";
           }
         }
     }
 
-  public static class MedicationKindEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class MedicationKindEnumFactory implements EnumFactory<MedicationKind> {
+    public MedicationKind fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -106,9 +106,9 @@ public class Medication extends DomainResource {
           return MedicationKind.PRODUCT;
         if ("package".equals(codeString))
           return MedicationKind.PACKAGE;
-        throw new Exception("Unknown MedicationKind code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown MedicationKind code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(MedicationKind code) {
       if (code == MedicationKind.PRODUCT)
         return "product";
       if (code == MedicationKind.PACKAGE)
@@ -122,18 +122,25 @@ public class Medication extends DomainResource {
         /**
          * Describes the form of the item.  Powder; tables; carton.
          */
-        @Child(name="form", type={CodeableConcept.class}, order=1, min=0, max=1)
+        @Child(name ="form", type={CodeableConcept.class}, order=1, min=0, max=1)
         @Description(shortDefinition="powder | tablets | carton +", formalDefinition="Describes the form of the item.  Powder; tables; carton." )
         protected CodeableConcept form;
 
         /**
          * Identifies a particular constituent of interest in the product.
          */
-        @Child(name="ingredient", type={}, order=2, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name ="ingredient", type={}, order=2, min=0, max=Child.MAX_UNLIMITED)
         @Description(shortDefinition="Active or inactive ingredient", formalDefinition="Identifies a particular constituent of interest in the product." )
         protected List<MedicationProductIngredientComponent> ingredient;
 
-        private static final long serialVersionUID = -506109200L;
+        /**
+         * Information about a group of medication produced or packaged from one production run.
+         */
+        @Child(name ="batch", type={}, order=3, min=0, max=Child.MAX_UNLIMITED)
+        @Description(shortDefinition="", formalDefinition="Information about a group of medication produced or packaged from one production run." )
+        protected List<MedicationProductBatchComponent> batch;
+
+        private static final long serialVersionUID = 1132853671L;
 
       public MedicationProductComponent() {
         super();
@@ -147,7 +154,7 @@ public class Medication extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create MedicationProductComponent.form");
             else if (Configuration.doAutoCreate())
-              this.form = new CodeableConcept();
+              this.form = new CodeableConcept(); // cc
           return this.form;
         }
 
@@ -193,10 +200,61 @@ public class Medication extends DomainResource {
           return t;
         }
 
+    // syntactic sugar
+        public MedicationProductComponent addIngredient(MedicationProductIngredientComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.ingredient == null)
+            this.ingredient = new ArrayList<MedicationProductIngredientComponent>();
+          this.ingredient.add(t);
+          return this;
+        }
+
+        /**
+         * @return {@link #batch} (Information about a group of medication produced or packaged from one production run.)
+         */
+        public List<MedicationProductBatchComponent> getBatch() { 
+          if (this.batch == null)
+            this.batch = new ArrayList<MedicationProductBatchComponent>();
+          return this.batch;
+        }
+
+        public boolean hasBatch() { 
+          if (this.batch == null)
+            return false;
+          for (MedicationProductBatchComponent item : this.batch)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        /**
+         * @return {@link #batch} (Information about a group of medication produced or packaged from one production run.)
+         */
+    // syntactic sugar
+        public MedicationProductBatchComponent addBatch() { //3
+          MedicationProductBatchComponent t = new MedicationProductBatchComponent();
+          if (this.batch == null)
+            this.batch = new ArrayList<MedicationProductBatchComponent>();
+          this.batch.add(t);
+          return t;
+        }
+
+    // syntactic sugar
+        public MedicationProductComponent addBatch(MedicationProductBatchComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.batch == null)
+            this.batch = new ArrayList<MedicationProductBatchComponent>();
+          this.batch.add(t);
+          return this;
+        }
+
         protected void listChildren(List<Property> childrenList) {
           super.listChildren(childrenList);
           childrenList.add(new Property("form", "CodeableConcept", "Describes the form of the item.  Powder; tables; carton.", 0, java.lang.Integer.MAX_VALUE, form));
           childrenList.add(new Property("ingredient", "", "Identifies a particular constituent of interest in the product.", 0, java.lang.Integer.MAX_VALUE, ingredient));
+          childrenList.add(new Property("batch", "", "Information about a group of medication produced or packaged from one production run.", 0, java.lang.Integer.MAX_VALUE, batch));
         }
 
       public MedicationProductComponent copy() {
@@ -208,12 +266,38 @@ public class Medication extends DomainResource {
           for (MedicationProductIngredientComponent i : ingredient)
             dst.ingredient.add(i.copy());
         };
+        if (batch != null) {
+          dst.batch = new ArrayList<MedicationProductBatchComponent>();
+          for (MedicationProductBatchComponent i : batch)
+            dst.batch.add(i.copy());
+        };
         return dst;
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof MedicationProductComponent))
+          return false;
+        MedicationProductComponent o = (MedicationProductComponent) other;
+        return compareDeep(form, o.form, true) && compareDeep(ingredient, o.ingredient, true) && compareDeep(batch, o.batch, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof MedicationProductComponent))
+          return false;
+        MedicationProductComponent o = (MedicationProductComponent) other;
+        return true;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && (form == null || form.isEmpty()) && (ingredient == null || ingredient.isEmpty())
-          ;
+           && (batch == null || batch.isEmpty());
       }
 
   }
@@ -223,7 +307,7 @@ public class Medication extends DomainResource {
         /**
          * The actual ingredient - either a substance (simple ingredient) or another medication.
          */
-        @Child(name="item", type={Substance.class, Medication.class}, order=1, min=1, max=1)
+        @Child(name ="item", type={Substance.class, Medication.class}, order=1, min=1, max=1)
         @Description(shortDefinition="The product contained", formalDefinition="The actual ingredient - either a substance (simple ingredient) or another medication." )
         protected Reference item;
 
@@ -235,7 +319,7 @@ public class Medication extends DomainResource {
         /**
          * Specifies how many (or how much) of the items there are in this Medication.  E.g. 250 mg per tablet.
          */
-        @Child(name="amount", type={Ratio.class}, order=2, min=0, max=1)
+        @Child(name ="amount", type={Ratio.class}, order=2, min=0, max=1)
         @Description(shortDefinition="How much ingredient in product", formalDefinition="Specifies how many (or how much) of the items there are in this Medication.  E.g. 250 mg per tablet." )
         protected Ratio amount;
 
@@ -258,7 +342,7 @@ public class Medication extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create MedicationProductIngredientComponent.item");
             else if (Configuration.doAutoCreate())
-              this.item = new Reference();
+              this.item = new Reference(); // cc
           return this.item;
         }
 
@@ -297,7 +381,7 @@ public class Medication extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create MedicationProductIngredientComponent.amount");
             else if (Configuration.doAutoCreate())
-              this.amount = new Ratio();
+              this.amount = new Ratio(); // cc
           return this.amount;
         }
 
@@ -327,8 +411,191 @@ public class Medication extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof MedicationProductIngredientComponent))
+          return false;
+        MedicationProductIngredientComponent o = (MedicationProductIngredientComponent) other;
+        return compareDeep(item, o.item, true) && compareDeep(amount, o.amount, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof MedicationProductIngredientComponent))
+          return false;
+        MedicationProductIngredientComponent o = (MedicationProductIngredientComponent) other;
+        return true;
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (item == null || item.isEmpty()) && (amount == null || amount.isEmpty())
+          ;
+      }
+
+  }
+
+    @Block()
+    public static class MedicationProductBatchComponent extends BackboneElement {
+        /**
+         * The assigned lot number of a batch of the specified product.
+         */
+        @Child(name ="lotNumber", type={StringType.class}, order=1, min=0, max=1)
+        @Description(shortDefinition="", formalDefinition="The assigned lot number of a batch of the specified product." )
+        protected StringType lotNumber;
+
+        /**
+         * When this specific batch of product will expire.
+         */
+        @Child(name ="expirationDate", type={DateTimeType.class}, order=2, min=0, max=1)
+        @Description(shortDefinition="", formalDefinition="When this specific batch of product will expire." )
+        protected DateTimeType expirationDate;
+
+        private static final long serialVersionUID = 1982738755L;
+
+      public MedicationProductBatchComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #lotNumber} (The assigned lot number of a batch of the specified product.). This is the underlying object with id, value and extensions. The accessor "getLotNumber" gives direct access to the value
+         */
+        public StringType getLotNumberElement() { 
+          if (this.lotNumber == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MedicationProductBatchComponent.lotNumber");
+            else if (Configuration.doAutoCreate())
+              this.lotNumber = new StringType(); // bb
+          return this.lotNumber;
+        }
+
+        public boolean hasLotNumberElement() { 
+          return this.lotNumber != null && !this.lotNumber.isEmpty();
+        }
+
+        public boolean hasLotNumber() { 
+          return this.lotNumber != null && !this.lotNumber.isEmpty();
+        }
+
+        /**
+         * @param value {@link #lotNumber} (The assigned lot number of a batch of the specified product.). This is the underlying object with id, value and extensions. The accessor "getLotNumber" gives direct access to the value
+         */
+        public MedicationProductBatchComponent setLotNumberElement(StringType value) { 
+          this.lotNumber = value;
+          return this;
+        }
+
+        /**
+         * @return The assigned lot number of a batch of the specified product.
+         */
+        public String getLotNumber() { 
+          return this.lotNumber == null ? null : this.lotNumber.getValue();
+        }
+
+        /**
+         * @param value The assigned lot number of a batch of the specified product.
+         */
+        public MedicationProductBatchComponent setLotNumber(String value) { 
+          if (Utilities.noString(value))
+            this.lotNumber = null;
+          else {
+            if (this.lotNumber == null)
+              this.lotNumber = new StringType();
+            this.lotNumber.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #expirationDate} (When this specific batch of product will expire.). This is the underlying object with id, value and extensions. The accessor "getExpirationDate" gives direct access to the value
+         */
+        public DateTimeType getExpirationDateElement() { 
+          if (this.expirationDate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MedicationProductBatchComponent.expirationDate");
+            else if (Configuration.doAutoCreate())
+              this.expirationDate = new DateTimeType(); // bb
+          return this.expirationDate;
+        }
+
+        public boolean hasExpirationDateElement() { 
+          return this.expirationDate != null && !this.expirationDate.isEmpty();
+        }
+
+        public boolean hasExpirationDate() { 
+          return this.expirationDate != null && !this.expirationDate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #expirationDate} (When this specific batch of product will expire.). This is the underlying object with id, value and extensions. The accessor "getExpirationDate" gives direct access to the value
+         */
+        public MedicationProductBatchComponent setExpirationDateElement(DateTimeType value) { 
+          this.expirationDate = value;
+          return this;
+        }
+
+        /**
+         * @return When this specific batch of product will expire.
+         */
+        public Date getExpirationDate() { 
+          return this.expirationDate == null ? null : this.expirationDate.getValue();
+        }
+
+        /**
+         * @param value When this specific batch of product will expire.
+         */
+        public MedicationProductBatchComponent setExpirationDate(Date value) { 
+          if (value == null)
+            this.expirationDate = null;
+          else {
+            if (this.expirationDate == null)
+              this.expirationDate = new DateTimeType();
+            this.expirationDate.setValue(value);
+          }
+          return this;
+        }
+
+        protected void listChildren(List<Property> childrenList) {
+          super.listChildren(childrenList);
+          childrenList.add(new Property("lotNumber", "string", "The assigned lot number of a batch of the specified product.", 0, java.lang.Integer.MAX_VALUE, lotNumber));
+          childrenList.add(new Property("expirationDate", "dateTime", "When this specific batch of product will expire.", 0, java.lang.Integer.MAX_VALUE, expirationDate));
+        }
+
+      public MedicationProductBatchComponent copy() {
+        MedicationProductBatchComponent dst = new MedicationProductBatchComponent();
+        copyValues(dst);
+        dst.lotNumber = lotNumber == null ? null : lotNumber.copy();
+        dst.expirationDate = expirationDate == null ? null : expirationDate.copy();
+        return dst;
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof MedicationProductBatchComponent))
+          return false;
+        MedicationProductBatchComponent o = (MedicationProductBatchComponent) other;
+        return compareDeep(lotNumber, o.lotNumber, true) && compareDeep(expirationDate, o.expirationDate, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof MedicationProductBatchComponent))
+          return false;
+        MedicationProductBatchComponent o = (MedicationProductBatchComponent) other;
+        return compareValues(lotNumber, o.lotNumber, true) && compareValues(expirationDate, o.expirationDate, true)
+          ;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && (lotNumber == null || lotNumber.isEmpty()) && (expirationDate == null || expirationDate.isEmpty())
           ;
       }
 
@@ -339,14 +606,14 @@ public class Medication extends DomainResource {
         /**
          * The kind of container that this package comes as.
          */
-        @Child(name="container", type={CodeableConcept.class}, order=1, min=0, max=1)
+        @Child(name ="container", type={CodeableConcept.class}, order=1, min=0, max=1)
         @Description(shortDefinition="E.g. box, vial, blister-pack", formalDefinition="The kind of container that this package comes as." )
         protected CodeableConcept container;
 
         /**
          * A set of components that go to make up the described item.
          */
-        @Child(name="content", type={}, order=2, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name ="content", type={}, order=2, min=0, max=Child.MAX_UNLIMITED)
         @Description(shortDefinition="What is  in the package?", formalDefinition="A set of components that go to make up the described item." )
         protected List<MedicationPackageContentComponent> content;
 
@@ -364,7 +631,7 @@ public class Medication extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create MedicationPackageComponent.container");
             else if (Configuration.doAutoCreate())
-              this.container = new CodeableConcept();
+              this.container = new CodeableConcept(); // cc
           return this.container;
         }
 
@@ -410,6 +677,16 @@ public class Medication extends DomainResource {
           return t;
         }
 
+    // syntactic sugar
+        public MedicationPackageComponent addContent(MedicationPackageContentComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.content == null)
+            this.content = new ArrayList<MedicationPackageContentComponent>();
+          this.content.add(t);
+          return this;
+        }
+
         protected void listChildren(List<Property> childrenList) {
           super.listChildren(childrenList);
           childrenList.add(new Property("container", "CodeableConcept", "The kind of container that this package comes as.", 0, java.lang.Integer.MAX_VALUE, container));
@@ -428,6 +705,26 @@ public class Medication extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof MedicationPackageComponent))
+          return false;
+        MedicationPackageComponent o = (MedicationPackageComponent) other;
+        return compareDeep(container, o.container, true) && compareDeep(content, o.content, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof MedicationPackageComponent))
+          return false;
+        MedicationPackageComponent o = (MedicationPackageComponent) other;
+        return true;
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (container == null || container.isEmpty()) && (content == null || content.isEmpty())
           ;
@@ -440,7 +737,7 @@ public class Medication extends DomainResource {
         /**
          * Identifies one of the items in the package.
          */
-        @Child(name="item", type={Medication.class}, order=1, min=1, max=1)
+        @Child(name ="item", type={Medication.class}, order=1, min=1, max=1)
         @Description(shortDefinition="A product in the package", formalDefinition="Identifies one of the items in the package." )
         protected Reference item;
 
@@ -452,7 +749,7 @@ public class Medication extends DomainResource {
         /**
          * The amount of the product that is in the package.
          */
-        @Child(name="amount", type={Quantity.class}, order=2, min=0, max=1)
+        @Child(name ="amount", type={Quantity.class}, order=2, min=0, max=1)
         @Description(shortDefinition="How many are in the package?", formalDefinition="The amount of the product that is in the package." )
         protected Quantity amount;
 
@@ -475,7 +772,7 @@ public class Medication extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create MedicationPackageContentComponent.item");
             else if (Configuration.doAutoCreate())
-              this.item = new Reference();
+              this.item = new Reference(); // cc
           return this.item;
         }
 
@@ -499,7 +796,7 @@ public class Medication extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create MedicationPackageContentComponent.item");
             else if (Configuration.doAutoCreate())
-              this.itemTarget = new Medication();
+              this.itemTarget = new Medication(); // aa
           return this.itemTarget;
         }
 
@@ -519,7 +816,7 @@ public class Medication extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create MedicationPackageContentComponent.amount");
             else if (Configuration.doAutoCreate())
-              this.amount = new Quantity();
+              this.amount = new Quantity(); // cc
           return this.amount;
         }
 
@@ -549,6 +846,26 @@ public class Medication extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof MedicationPackageContentComponent))
+          return false;
+        MedicationPackageContentComponent o = (MedicationPackageContentComponent) other;
+        return compareDeep(item, o.item, true) && compareDeep(amount, o.amount, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof MedicationPackageContentComponent))
+          return false;
+        MedicationPackageContentComponent o = (MedicationPackageContentComponent) other;
+        return true;
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (item == null || item.isEmpty()) && (amount == null || amount.isEmpty())
           ;
@@ -559,28 +876,28 @@ public class Medication extends DomainResource {
     /**
      * The common/commercial name of the medication absent information such as strength, form, etc.  E.g. Acetaminophen, Tylenol 3, etc.  The fully coordinated name is communicated as the display of Medication.code.
      */
-    @Child(name="name", type={StringType.class}, order=-1, min=0, max=1)
+    @Child(name ="name", type={StringType.class}, order=0, min=0, max=1)
     @Description(shortDefinition="Common / Commercial name", formalDefinition="The common/commercial name of the medication absent information such as strength, form, etc.  E.g. Acetaminophen, Tylenol 3, etc.  The fully coordinated name is communicated as the display of Medication.code." )
     protected StringType name;
 
     /**
      * A code (or set of codes) that identify this medication.   Usage note: This could be a standard drug code such as a drug regulator code, RxNorm code, SNOMED CT code, etc. It could also be a local formulary code, optionally with translations to the standard drug codes.
      */
-    @Child(name="code", type={CodeableConcept.class}, order=0, min=0, max=1)
+    @Child(name ="code", type={CodeableConcept.class}, order=1, min=0, max=1)
     @Description(shortDefinition="Codes that identify this medication", formalDefinition="A code (or set of codes) that identify this medication.   Usage note: This could be a standard drug code such as a drug regulator code, RxNorm code, SNOMED CT code, etc. It could also be a local formulary code, optionally with translations to the standard drug codes." )
     protected CodeableConcept code;
 
     /**
      * Set to true if the item is attributable to a specific manufacturer (even if we don't know who that is).
      */
-    @Child(name="isBrand", type={BooleanType.class}, order=1, min=0, max=1)
+    @Child(name ="isBrand", type={BooleanType.class}, order=2, min=0, max=1)
     @Description(shortDefinition="True if a brand", formalDefinition="Set to true if the item is attributable to a specific manufacturer (even if we don't know who that is)." )
     protected BooleanType isBrand;
 
     /**
      * Describes the details of the manufacturer.
      */
-    @Child(name="manufacturer", type={Organization.class}, order=2, min=0, max=1)
+    @Child(name ="manufacturer", type={Organization.class}, order=3, min=0, max=1)
     @Description(shortDefinition="Manufacturer of the item", formalDefinition="Describes the details of the manufacturer." )
     protected Reference manufacturer;
 
@@ -592,21 +909,21 @@ public class Medication extends DomainResource {
     /**
      * Medications are either a single administrable product or a package that contains one or more products.
      */
-    @Child(name="kind", type={CodeType.class}, order=3, min=0, max=1)
+    @Child(name ="kind", type={CodeType.class}, order=4, min=0, max=1)
     @Description(shortDefinition="product | package", formalDefinition="Medications are either a single administrable product or a package that contains one or more products." )
     protected Enumeration<MedicationKind> kind;
 
     /**
      * Information that only applies to products (not packages).
      */
-    @Child(name="product", type={}, order=4, min=0, max=1)
+    @Child(name ="product", type={}, order=5, min=0, max=1)
     @Description(shortDefinition="Administrable medication details", formalDefinition="Information that only applies to products (not packages)." )
     protected MedicationProductComponent product;
 
     /**
      * Information that only applies to packages (not products).
      */
-    @Child(name="package_", type={}, order=5, min=0, max=1)
+    @Child(name ="package_", type={}, order=6, min=0, max=1)
     @Description(shortDefinition="Details about packaged medications", formalDefinition="Information that only applies to packages (not products)." )
     protected MedicationPackageComponent package_;
 
@@ -624,7 +941,7 @@ public class Medication extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Medication.name");
         else if (Configuration.doAutoCreate())
-          this.name = new StringType();
+          this.name = new StringType(); // bb
       return this.name;
     }
 
@@ -673,7 +990,7 @@ public class Medication extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Medication.code");
         else if (Configuration.doAutoCreate())
-          this.code = new CodeableConcept();
+          this.code = new CodeableConcept(); // cc
       return this.code;
     }
 
@@ -697,7 +1014,7 @@ public class Medication extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Medication.isBrand");
         else if (Configuration.doAutoCreate())
-          this.isBrand = new BooleanType();
+          this.isBrand = new BooleanType(); // bb
       return this.isBrand;
     }
 
@@ -721,20 +1038,16 @@ public class Medication extends DomainResource {
      * @return Set to true if the item is attributable to a specific manufacturer (even if we don't know who that is).
      */
     public boolean getIsBrand() { 
-      return this.isBrand == null ? false : this.isBrand.getValue();
+      return this.isBrand == null || this.isBrand.isEmpty() ? false : this.isBrand.getValue();
     }
 
     /**
      * @param value Set to true if the item is attributable to a specific manufacturer (even if we don't know who that is).
      */
     public Medication setIsBrand(boolean value) { 
-      if (value == false)
-        this.isBrand = null;
-      else {
         if (this.isBrand == null)
           this.isBrand = new BooleanType();
         this.isBrand.setValue(value);
-      }
       return this;
     }
 
@@ -746,7 +1059,7 @@ public class Medication extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Medication.manufacturer");
         else if (Configuration.doAutoCreate())
-          this.manufacturer = new Reference();
+          this.manufacturer = new Reference(); // cc
       return this.manufacturer;
     }
 
@@ -770,7 +1083,7 @@ public class Medication extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Medication.manufacturer");
         else if (Configuration.doAutoCreate())
-          this.manufacturerTarget = new Organization();
+          this.manufacturerTarget = new Organization(); // aa
       return this.manufacturerTarget;
     }
 
@@ -790,7 +1103,7 @@ public class Medication extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Medication.kind");
         else if (Configuration.doAutoCreate())
-          this.kind = new Enumeration<MedicationKind>();
+          this.kind = new Enumeration<MedicationKind>(new MedicationKindEnumFactory()); // bb
       return this.kind;
     }
 
@@ -825,7 +1138,7 @@ public class Medication extends DomainResource {
         this.kind = null;
       else {
         if (this.kind == null)
-          this.kind = new Enumeration<MedicationKind>();
+          this.kind = new Enumeration<MedicationKind>(new MedicationKindEnumFactory());
         this.kind.setValue(value);
       }
       return this;
@@ -839,7 +1152,7 @@ public class Medication extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Medication.product");
         else if (Configuration.doAutoCreate())
-          this.product = new MedicationProductComponent();
+          this.product = new MedicationProductComponent(); // cc
       return this.product;
     }
 
@@ -863,7 +1176,7 @@ public class Medication extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Medication.package_");
         else if (Configuration.doAutoCreate())
-          this.package_ = new MedicationPackageComponent();
+          this.package_ = new MedicationPackageComponent(); // cc
       return this.package_;
     }
 
@@ -905,6 +1218,29 @@ public class Medication extends DomainResource {
 
       protected Medication typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Medication))
+          return false;
+        Medication o = (Medication) other;
+        return compareDeep(name, o.name, true) && compareDeep(code, o.code, true) && compareDeep(isBrand, o.isBrand, true)
+           && compareDeep(manufacturer, o.manufacturer, true) && compareDeep(kind, o.kind, true) && compareDeep(product, o.product, true)
+           && compareDeep(package_, o.package_, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Medication))
+          return false;
+        Medication o = (Medication) other;
+        return compareValues(name, o.name, true) && compareValues(isBrand, o.isBrand, true) && compareValues(kind, o.kind, true)
+          ;
       }
 
       public boolean isEmpty() {

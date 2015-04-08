@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -63,10 +63,6 @@ public class DiagnosticReport extends DomainResource {
          */
         CORRECTED, 
         /**
-         * The report has been modified subsequent to being Final, and is complete and verified by an authorized person, and data has been changed.
-         */
-        AMENDED, 
-        /**
          * The report has been modified subsequent to being Final, and is complete and verified by an authorized person. New content has been added, but existing content hasn't changed.
          */
         APPENDED, 
@@ -93,13 +89,11 @@ public class DiagnosticReport extends DomainResource {
           return FINAL;
         if ("corrected".equals(codeString))
           return CORRECTED;
-        if ("amended".equals(codeString))
-          return AMENDED;
         if ("appended".equals(codeString))
           return APPENDED;
         if ("cancelled".equals(codeString))
           return CANCELLED;
-        if ("entered in error".equals(codeString))
+        if ("entered-in-error".equals(codeString))
           return ENTEREDINERROR;
         throw new Exception("Unknown DiagnosticReportStatus code '"+codeString+"'");
         }
@@ -109,10 +103,9 @@ public class DiagnosticReport extends DomainResource {
             case PARTIAL: return "partial";
             case FINAL: return "final";
             case CORRECTED: return "corrected";
-            case AMENDED: return "amended";
             case APPENDED: return "appended";
             case CANCELLED: return "cancelled";
-            case ENTEREDINERROR: return "entered in error";
+            case ENTEREDINERROR: return "entered-in-error";
             default: return "?";
           }
         }
@@ -122,7 +115,6 @@ public class DiagnosticReport extends DomainResource {
             case PARTIAL: return "";
             case FINAL: return "";
             case CORRECTED: return "";
-            case AMENDED: return "";
             case APPENDED: return "";
             case CANCELLED: return "";
             case ENTEREDINERROR: return "";
@@ -135,7 +127,6 @@ public class DiagnosticReport extends DomainResource {
             case PARTIAL: return "This is a partial (e.g. initial, interim or preliminary) report: data in the report may be incomplete or unverified.";
             case FINAL: return "The report is complete and verified by an authorized person.";
             case CORRECTED: return "The report has been modified subsequent to being Final, and is complete and verified by an authorized person.";
-            case AMENDED: return "The report has been modified subsequent to being Final, and is complete and verified by an authorized person, and data has been changed.";
             case APPENDED: return "The report has been modified subsequent to being Final, and is complete and verified by an authorized person. New content has been added, but existing content hasn't changed.";
             case CANCELLED: return "The report is unavailable because the measurement was not started or not completed (also sometimes called 'aborted').";
             case ENTEREDINERROR: return "The report has been withdrawn following previous Final release.";
@@ -144,21 +135,20 @@ public class DiagnosticReport extends DomainResource {
         }
         public String getDisplay() {
           switch (this) {
-            case REGISTERED: return "registered";
-            case PARTIAL: return "partial";
-            case FINAL: return "final";
-            case CORRECTED: return "corrected";
-            case AMENDED: return "amended";
-            case APPENDED: return "appended";
-            case CANCELLED: return "cancelled";
-            case ENTEREDINERROR: return "entered in error";
+            case REGISTERED: return "Registered";
+            case PARTIAL: return "Partial";
+            case FINAL: return "Final";
+            case CORRECTED: return "Corrected";
+            case APPENDED: return "Appended";
+            case CANCELLED: return "Cancelled";
+            case ENTEREDINERROR: return "Entered In Error";
             default: return "?";
           }
         }
     }
 
-  public static class DiagnosticReportStatusEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class DiagnosticReportStatusEnumFactory implements EnumFactory<DiagnosticReportStatus> {
+    public DiagnosticReportStatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -170,17 +160,15 @@ public class DiagnosticReport extends DomainResource {
           return DiagnosticReportStatus.FINAL;
         if ("corrected".equals(codeString))
           return DiagnosticReportStatus.CORRECTED;
-        if ("amended".equals(codeString))
-          return DiagnosticReportStatus.AMENDED;
         if ("appended".equals(codeString))
           return DiagnosticReportStatus.APPENDED;
         if ("cancelled".equals(codeString))
           return DiagnosticReportStatus.CANCELLED;
-        if ("entered in error".equals(codeString))
+        if ("entered-in-error".equals(codeString))
           return DiagnosticReportStatus.ENTEREDINERROR;
-        throw new Exception("Unknown DiagnosticReportStatus code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown DiagnosticReportStatus code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(DiagnosticReportStatus code) {
       if (code == DiagnosticReportStatus.REGISTERED)
         return "registered";
       if (code == DiagnosticReportStatus.PARTIAL)
@@ -189,14 +177,12 @@ public class DiagnosticReport extends DomainResource {
         return "final";
       if (code == DiagnosticReportStatus.CORRECTED)
         return "corrected";
-      if (code == DiagnosticReportStatus.AMENDED)
-        return "amended";
       if (code == DiagnosticReportStatus.APPENDED)
         return "appended";
       if (code == DiagnosticReportStatus.CANCELLED)
         return "cancelled";
       if (code == DiagnosticReportStatus.ENTEREDINERROR)
-        return "entered in error";
+        return "entered-in-error";
       return "?";
       }
     }
@@ -206,14 +192,14 @@ public class DiagnosticReport extends DomainResource {
         /**
          * A comment about the image. Typically, this is used to provide an explanation for why the image is included, or to draw the viewer's attention to important features.
          */
-        @Child(name="comment", type={StringType.class}, order=1, min=0, max=1)
+        @Child(name ="comment", type={StringType.class}, order=1, min=0, max=1)
         @Description(shortDefinition="Comment about the image (e.g. explanation)", formalDefinition="A comment about the image. Typically, this is used to provide an explanation for why the image is included, or to draw the viewer's attention to important features." )
         protected StringType comment;
 
         /**
          * Reference to the image source.
          */
-        @Child(name="link", type={Media.class}, order=2, min=1, max=1)
+        @Child(name ="link", type={Media.class}, order=2, min=1, max=1)
         @Description(shortDefinition="Reference to the image source", formalDefinition="Reference to the image source." )
         protected Reference link;
 
@@ -241,7 +227,7 @@ public class DiagnosticReport extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DiagnosticReportImageComponent.comment");
             else if (Configuration.doAutoCreate())
-              this.comment = new StringType();
+              this.comment = new StringType(); // bb
           return this.comment;
         }
 
@@ -290,7 +276,7 @@ public class DiagnosticReport extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DiagnosticReportImageComponent.link");
             else if (Configuration.doAutoCreate())
-              this.link = new Reference();
+              this.link = new Reference(); // cc
           return this.link;
         }
 
@@ -314,7 +300,7 @@ public class DiagnosticReport extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DiagnosticReportImageComponent.link");
             else if (Configuration.doAutoCreate())
-              this.linkTarget = new Media();
+              this.linkTarget = new Media(); // aa
           return this.linkTarget;
         }
 
@@ -340,6 +326,26 @@ public class DiagnosticReport extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof DiagnosticReportImageComponent))
+          return false;
+        DiagnosticReportImageComponent o = (DiagnosticReportImageComponent) other;
+        return compareDeep(comment, o.comment, true) && compareDeep(link, o.link, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof DiagnosticReportImageComponent))
+          return false;
+        DiagnosticReportImageComponent o = (DiagnosticReportImageComponent) other;
+        return compareValues(comment, o.comment, true);
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (comment == null || comment.isEmpty()) && (link == null || link.isEmpty())
           ;
@@ -350,28 +356,28 @@ public class DiagnosticReport extends DomainResource {
     /**
      * A code or name that describes this diagnostic report.
      */
-    @Child(name="name", type={CodeableConcept.class}, order=-1, min=1, max=1)
+    @Child(name ="name", type={CodeableConcept.class}, order=0, min=1, max=1)
     @Description(shortDefinition="Name/Code for this diagnostic report", formalDefinition="A code or name that describes this diagnostic report." )
     protected CodeableConcept name;
 
     /**
      * The status of the diagnostic report as a whole.
      */
-    @Child(name="status", type={CodeType.class}, order=0, min=1, max=1)
-    @Description(shortDefinition="registered | partial | final | corrected +", formalDefinition="The status of the diagnostic report as a whole." )
+    @Child(name ="status", type={CodeType.class}, order=1, min=1, max=1)
+    @Description(shortDefinition="registered | partial | final | corrected | appended | cancelled | entered-in-error", formalDefinition="The status of the diagnostic report as a whole." )
     protected Enumeration<DiagnosticReportStatus> status;
 
     /**
      * The date and/or time that this version of the report was released from the source diagnostic service.
      */
-    @Child(name="issued", type={DateTimeType.class}, order=1, min=1, max=1)
+    @Child(name ="issued", type={DateTimeType.class}, order=2, min=1, max=1)
     @Description(shortDefinition="Date this version was released", formalDefinition="The date and/or time that this version of the report was released from the source diagnostic service." )
     protected DateTimeType issued;
 
     /**
      * The subject of the report. Usually, but not always, this is a patient. However diagnostic services also perform analyses on specimens collected from a variety of other sources.
      */
-    @Child(name="subject", type={Patient.class, Group.class, Device.class, Location.class}, order=2, min=1, max=1)
+    @Child(name ="subject", type={Patient.class, Group.class, Device.class, Location.class}, order=3, min=1, max=1)
     @Description(shortDefinition="The subject of the report, usually, but not always, the patient", formalDefinition="The subject of the report. Usually, but not always, this is a patient. However diagnostic services also perform analyses on specimens collected from a variety of other sources." )
     protected Reference subject;
 
@@ -383,7 +389,7 @@ public class DiagnosticReport extends DomainResource {
     /**
      * The diagnostic service that is responsible for issuing the report.
      */
-    @Child(name="performer", type={Practitioner.class, Organization.class}, order=3, min=1, max=1)
+    @Child(name ="performer", type={Practitioner.class, Organization.class}, order=4, min=1, max=1)
     @Description(shortDefinition="Responsible Diagnostic Service", formalDefinition="The diagnostic service that is responsible for issuing the report." )
     protected Reference performer;
 
@@ -393,16 +399,28 @@ public class DiagnosticReport extends DomainResource {
     protected Resource performerTarget;
 
     /**
+     * The link to the health care event (encounter) when the order was made.
+     */
+    @Child(name ="encounter", type={Encounter.class}, order=5, min=0, max=1)
+    @Description(shortDefinition="Health care event when test ordered", formalDefinition="The link to the health care event (encounter) when the order was made." )
+    protected Reference encounter;
+
+    /**
+     * The actual object that is the target of the reference (The link to the health care event (encounter) when the order was made.)
+     */
+    protected Encounter encounterTarget;
+
+    /**
      * The local ID assigned to the report by the order filler, usually by the Information System of the diagnostic service provider.
      */
-    @Child(name="identifier", type={Identifier.class}, order=4, min=0, max=1)
+    @Child(name ="identifier", type={Identifier.class}, order=6, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Id for external references to this report", formalDefinition="The local ID assigned to the report by the order filler, usually by the Information System of the diagnostic service provider." )
-    protected Identifier identifier;
+    protected List<Identifier> identifier;
 
     /**
      * Details concerning a test requested.
      */
-    @Child(name="requestDetail", type={DiagnosticOrder.class}, order=5, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="requestDetail", type={DiagnosticOrder.class}, order=7, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="What was requested", formalDefinition="Details concerning a test requested." )
     protected List<Reference> requestDetail;
     /**
@@ -414,21 +432,21 @@ public class DiagnosticReport extends DomainResource {
     /**
      * The section of the diagnostic service that performs the examination e.g. biochemistry, hematology, MRI.
      */
-    @Child(name="serviceCategory", type={CodeableConcept.class}, order=6, min=0, max=1)
+    @Child(name ="serviceCategory", type={CodeableConcept.class}, order=8, min=0, max=1)
     @Description(shortDefinition="Biochemistry, Hematology etc.", formalDefinition="The section of the diagnostic service that performs the examination e.g. biochemistry, hematology, MRI." )
     protected CodeableConcept serviceCategory;
 
     /**
      * The time or time-period the observed values are related to. This is usually either the time of the procedure or of specimen collection(s), but very often the source of the date/time is not known, only the date/time itself.
      */
-    @Child(name="diagnostic", type={DateTimeType.class, Period.class}, order=7, min=1, max=1)
+    @Child(name ="diagnostic", type={DateTimeType.class, Period.class}, order=9, min=1, max=1)
     @Description(shortDefinition="Physiologically Relevant time/time-period for report", formalDefinition="The time or time-period the observed values are related to. This is usually either the time of the procedure or of specimen collection(s), but very often the source of the date/time is not known, only the date/time itself." )
     protected Type diagnostic;
 
     /**
      * Details about the specimens on which this diagnostic report is based.
      */
-    @Child(name="specimen", type={Specimen.class}, order=8, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="specimen", type={Specimen.class}, order=10, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Specimens this report is based on", formalDefinition="Details about the specimens on which this diagnostic report is based." )
     protected List<Reference> specimen;
     /**
@@ -440,7 +458,7 @@ public class DiagnosticReport extends DomainResource {
     /**
      * Observations that are part of this diagnostic report. Observations can be simple name/value pairs (e.g. "atomic" results), or they can be grouping observations that include references to other members of the group (e.g. "panels").
      */
-    @Child(name="result", type={Observation.class}, order=9, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="result", type={Observation.class}, order=11, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Observations - simple, or complex nested groups", formalDefinition="Observations that are part of this diagnostic report. Observations can be simple name/value pairs (e.g. 'atomic' results), or they can be grouping observations that include references to other members of the group (e.g. 'panels')." )
     protected List<Reference> result;
     /**
@@ -452,7 +470,7 @@ public class DiagnosticReport extends DomainResource {
     /**
      * One or more links to full details of any imaging performed during the diagnostic investigation. Typically, this is imaging performed by DICOM enabled modalities, but this is not required. A fully enabled PACS viewer can use this information to provide views of the source images.
      */
-    @Child(name="imagingStudy", type={ImagingStudy.class}, order=10, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="imagingStudy", type={ImagingStudy.class}, order=12, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Reference to full details of imaging associated with the diagnostic report", formalDefinition="One or more links to full details of any imaging performed during the diagnostic investigation. Typically, this is imaging performed by DICOM enabled modalities, but this is not required. A fully enabled PACS viewer can use this information to provide views of the source images." )
     protected List<Reference> imagingStudy;
     /**
@@ -464,32 +482,32 @@ public class DiagnosticReport extends DomainResource {
     /**
      * A list of key images associated with this report. The images are generally created during the diagnostic process, and may be directly of the patient, or of treated specimens (i.e. slides of interest).
      */
-    @Child(name="image", type={}, order=11, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="image", type={}, order=13, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Key images associated with this report", formalDefinition="A list of key images associated with this report. The images are generally created during the diagnostic process, and may be directly of the patient, or of treated specimens (i.e. slides of interest)." )
     protected List<DiagnosticReportImageComponent> image;
 
     /**
      * Concise and clinically contextualized narrative interpretation of the diagnostic report.
      */
-    @Child(name="conclusion", type={StringType.class}, order=12, min=0, max=1)
+    @Child(name ="conclusion", type={StringType.class}, order=14, min=0, max=1)
     @Description(shortDefinition="Clinical Interpretation of test results", formalDefinition="Concise and clinically contextualized narrative interpretation of the diagnostic report." )
     protected StringType conclusion;
 
     /**
      * Codes for the conclusion.
      */
-    @Child(name="codedDiagnosis", type={CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="codedDiagnosis", type={CodeableConcept.class}, order=15, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Codes for the conclusion", formalDefinition="Codes for the conclusion." )
     protected List<CodeableConcept> codedDiagnosis;
 
     /**
      * Rich text representation of the entire result as issued by the diagnostic service. Multiple formats are allowed but they SHALL be semantically equivalent.
      */
-    @Child(name="presentedForm", type={Attachment.class}, order=14, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="presentedForm", type={Attachment.class}, order=16, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Entire Report as issued", formalDefinition="Rich text representation of the entire result as issued by the diagnostic service. Multiple formats are allowed but they SHALL be semantically equivalent." )
     protected List<Attachment> presentedForm;
 
-    private static final long serialVersionUID = -1414376119L;
+    private static final long serialVersionUID = 140402748L;
 
     public DiagnosticReport() {
       super();
@@ -513,7 +531,7 @@ public class DiagnosticReport extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DiagnosticReport.name");
         else if (Configuration.doAutoCreate())
-          this.name = new CodeableConcept();
+          this.name = new CodeableConcept(); // cc
       return this.name;
     }
 
@@ -537,7 +555,7 @@ public class DiagnosticReport extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DiagnosticReport.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<DiagnosticReportStatus>();
+          this.status = new Enumeration<DiagnosticReportStatus>(new DiagnosticReportStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -569,7 +587,7 @@ public class DiagnosticReport extends DomainResource {
      */
     public DiagnosticReport setStatus(DiagnosticReportStatus value) { 
         if (this.status == null)
-          this.status = new Enumeration<DiagnosticReportStatus>();
+          this.status = new Enumeration<DiagnosticReportStatus>(new DiagnosticReportStatusEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -582,7 +600,7 @@ public class DiagnosticReport extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DiagnosticReport.issued");
         else if (Configuration.doAutoCreate())
-          this.issued = new DateTimeType();
+          this.issued = new DateTimeType(); // bb
       return this.issued;
     }
 
@@ -605,14 +623,14 @@ public class DiagnosticReport extends DomainResource {
     /**
      * @return The date and/or time that this version of the report was released from the source diagnostic service.
      */
-    public DateAndTime getIssued() { 
+    public Date getIssued() { 
       return this.issued == null ? null : this.issued.getValue();
     }
 
     /**
      * @param value The date and/or time that this version of the report was released from the source diagnostic service.
      */
-    public DiagnosticReport setIssued(DateAndTime value) { 
+    public DiagnosticReport setIssued(Date value) { 
         if (this.issued == null)
           this.issued = new DateTimeType();
         this.issued.setValue(value);
@@ -627,7 +645,7 @@ public class DiagnosticReport extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DiagnosticReport.subject");
         else if (Configuration.doAutoCreate())
-          this.subject = new Reference();
+          this.subject = new Reference(); // cc
       return this.subject;
     }
 
@@ -666,7 +684,7 @@ public class DiagnosticReport extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DiagnosticReport.performer");
         else if (Configuration.doAutoCreate())
-          this.performer = new Reference();
+          this.performer = new Reference(); // cc
       return this.performer;
     }
 
@@ -698,26 +716,86 @@ public class DiagnosticReport extends DomainResource {
     }
 
     /**
+     * @return {@link #encounter} (The link to the health care event (encounter) when the order was made.)
+     */
+    public Reference getEncounter() { 
+      if (this.encounter == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create DiagnosticReport.encounter");
+        else if (Configuration.doAutoCreate())
+          this.encounter = new Reference(); // cc
+      return this.encounter;
+    }
+
+    public boolean hasEncounter() { 
+      return this.encounter != null && !this.encounter.isEmpty();
+    }
+
+    /**
+     * @param value {@link #encounter} (The link to the health care event (encounter) when the order was made.)
+     */
+    public DiagnosticReport setEncounter(Reference value) { 
+      this.encounter = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The link to the health care event (encounter) when the order was made.)
+     */
+    public Encounter getEncounterTarget() { 
+      if (this.encounterTarget == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create DiagnosticReport.encounter");
+        else if (Configuration.doAutoCreate())
+          this.encounterTarget = new Encounter(); // aa
+      return this.encounterTarget;
+    }
+
+    /**
+     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The link to the health care event (encounter) when the order was made.)
+     */
+    public DiagnosticReport setEncounterTarget(Encounter value) { 
+      this.encounterTarget = value;
+      return this;
+    }
+
+    /**
      * @return {@link #identifier} (The local ID assigned to the report by the order filler, usually by the Information System of the diagnostic service provider.)
      */
-    public Identifier getIdentifier() { 
+    public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create DiagnosticReport.identifier");
-        else if (Configuration.doAutoCreate())
-          this.identifier = new Identifier();
+        this.identifier = new ArrayList<Identifier>();
       return this.identifier;
     }
 
     public boolean hasIdentifier() { 
-      return this.identifier != null && !this.identifier.isEmpty();
+      if (this.identifier == null)
+        return false;
+      for (Identifier item : this.identifier)
+        if (!item.isEmpty())
+          return true;
+      return false;
     }
 
     /**
-     * @param value {@link #identifier} (The local ID assigned to the report by the order filler, usually by the Information System of the diagnostic service provider.)
+     * @return {@link #identifier} (The local ID assigned to the report by the order filler, usually by the Information System of the diagnostic service provider.)
      */
-    public DiagnosticReport setIdentifier(Identifier value) { 
-      this.identifier = value;
+    // syntactic sugar
+    public Identifier addIdentifier() { //3
+      Identifier t = new Identifier();
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return t;
+    }
+
+    // syntactic sugar
+    public DiagnosticReport addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
       return this;
     }
 
@@ -751,6 +829,16 @@ public class DiagnosticReport extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public DiagnosticReport addRequestDetail(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.requestDetail == null)
+        this.requestDetail = new ArrayList<Reference>();
+      this.requestDetail.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #requestDetail} (The actual objects that are the target of the reference. The reference library doesn't populate this, but you can use this to hold the resources if you resolvethemt. Details concerning a test requested.)
      */
@@ -780,7 +868,7 @@ public class DiagnosticReport extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DiagnosticReport.serviceCategory");
         else if (Configuration.doAutoCreate())
-          this.serviceCategory = new CodeableConcept();
+          this.serviceCategory = new CodeableConcept(); // cc
       return this.serviceCategory;
     }
 
@@ -863,6 +951,16 @@ public class DiagnosticReport extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public DiagnosticReport addSpecimen(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.specimen == null)
+        this.specimen = new ArrayList<Reference>();
+      this.specimen.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #specimen} (The actual objects that are the target of the reference. The reference library doesn't populate this, but you can use this to hold the resources if you resolvethemt. Details about the specimens on which this diagnostic report is based.)
      */
@@ -912,6 +1010,16 @@ public class DiagnosticReport extends DomainResource {
         this.result = new ArrayList<Reference>();
       this.result.add(t);
       return t;
+    }
+
+    // syntactic sugar
+    public DiagnosticReport addResult(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.result == null)
+        this.result = new ArrayList<Reference>();
+      this.result.add(t);
+      return this;
     }
 
     /**
@@ -965,6 +1073,16 @@ public class DiagnosticReport extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public DiagnosticReport addImagingStudy(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.imagingStudy == null)
+        this.imagingStudy = new ArrayList<Reference>();
+      this.imagingStudy.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #imagingStudy} (The actual objects that are the target of the reference. The reference library doesn't populate this, but you can use this to hold the resources if you resolvethemt. One or more links to full details of any imaging performed during the diagnostic investigation. Typically, this is imaging performed by DICOM enabled modalities, but this is not required. A fully enabled PACS viewer can use this information to provide views of the source images.)
      */
@@ -1016,6 +1134,16 @@ public class DiagnosticReport extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public DiagnosticReport addImage(DiagnosticReportImageComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.image == null)
+        this.image = new ArrayList<DiagnosticReportImageComponent>();
+      this.image.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #conclusion} (Concise and clinically contextualized narrative interpretation of the diagnostic report.). This is the underlying object with id, value and extensions. The accessor "getConclusion" gives direct access to the value
      */
@@ -1024,7 +1152,7 @@ public class DiagnosticReport extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DiagnosticReport.conclusion");
         else if (Configuration.doAutoCreate())
-          this.conclusion = new StringType();
+          this.conclusion = new StringType(); // bb
       return this.conclusion;
     }
 
@@ -1095,6 +1223,16 @@ public class DiagnosticReport extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public DiagnosticReport addCodedDiagnosis(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.codedDiagnosis == null)
+        this.codedDiagnosis = new ArrayList<CodeableConcept>();
+      this.codedDiagnosis.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #presentedForm} (Rich text representation of the entire result as issued by the diagnostic service. Multiple formats are allowed but they SHALL be semantically equivalent.)
      */
@@ -1125,6 +1263,16 @@ public class DiagnosticReport extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public DiagnosticReport addPresentedForm(Attachment t) { //3
+      if (t == null)
+        return this;
+      if (this.presentedForm == null)
+        this.presentedForm = new ArrayList<Attachment>();
+      this.presentedForm.add(t);
+      return this;
+    }
+
       protected void listChildren(List<Property> childrenList) {
         super.listChildren(childrenList);
         childrenList.add(new Property("name", "CodeableConcept", "A code or name that describes this diagnostic report.", 0, java.lang.Integer.MAX_VALUE, name));
@@ -1132,6 +1280,7 @@ public class DiagnosticReport extends DomainResource {
         childrenList.add(new Property("issued", "dateTime", "The date and/or time that this version of the report was released from the source diagnostic service.", 0, java.lang.Integer.MAX_VALUE, issued));
         childrenList.add(new Property("subject", "Reference(Patient|Group|Device|Location)", "The subject of the report. Usually, but not always, this is a patient. However diagnostic services also perform analyses on specimens collected from a variety of other sources.", 0, java.lang.Integer.MAX_VALUE, subject));
         childrenList.add(new Property("performer", "Reference(Practitioner|Organization)", "The diagnostic service that is responsible for issuing the report.", 0, java.lang.Integer.MAX_VALUE, performer));
+        childrenList.add(new Property("encounter", "Reference(Encounter)", "The link to the health care event (encounter) when the order was made.", 0, java.lang.Integer.MAX_VALUE, encounter));
         childrenList.add(new Property("identifier", "Identifier", "The local ID assigned to the report by the order filler, usually by the Information System of the diagnostic service provider.", 0, java.lang.Integer.MAX_VALUE, identifier));
         childrenList.add(new Property("requestDetail", "Reference(DiagnosticOrder)", "Details concerning a test requested.", 0, java.lang.Integer.MAX_VALUE, requestDetail));
         childrenList.add(new Property("serviceCategory", "CodeableConcept", "The section of the diagnostic service that performs the examination e.g. biochemistry, hematology, MRI.", 0, java.lang.Integer.MAX_VALUE, serviceCategory));
@@ -1153,7 +1302,12 @@ public class DiagnosticReport extends DomainResource {
         dst.issued = issued == null ? null : issued.copy();
         dst.subject = subject == null ? null : subject.copy();
         dst.performer = performer == null ? null : performer.copy();
-        dst.identifier = identifier == null ? null : identifier.copy();
+        dst.encounter = encounter == null ? null : encounter.copy();
+        if (identifier != null) {
+          dst.identifier = new ArrayList<Identifier>();
+          for (Identifier i : identifier)
+            dst.identifier.add(i.copy());
+        };
         if (requestDetail != null) {
           dst.requestDetail = new ArrayList<Reference>();
           for (Reference i : requestDetail)
@@ -1199,12 +1353,40 @@ public class DiagnosticReport extends DomainResource {
         return copy();
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof DiagnosticReport))
+          return false;
+        DiagnosticReport o = (DiagnosticReport) other;
+        return compareDeep(name, o.name, true) && compareDeep(status, o.status, true) && compareDeep(issued, o.issued, true)
+           && compareDeep(subject, o.subject, true) && compareDeep(performer, o.performer, true) && compareDeep(encounter, o.encounter, true)
+           && compareDeep(identifier, o.identifier, true) && compareDeep(requestDetail, o.requestDetail, true)
+           && compareDeep(serviceCategory, o.serviceCategory, true) && compareDeep(diagnostic, o.diagnostic, true)
+           && compareDeep(specimen, o.specimen, true) && compareDeep(result, o.result, true) && compareDeep(imagingStudy, o.imagingStudy, true)
+           && compareDeep(image, o.image, true) && compareDeep(conclusion, o.conclusion, true) && compareDeep(codedDiagnosis, o.codedDiagnosis, true)
+           && compareDeep(presentedForm, o.presentedForm, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof DiagnosticReport))
+          return false;
+        DiagnosticReport o = (DiagnosticReport) other;
+        return compareValues(status, o.status, true) && compareValues(issued, o.issued, true) && compareValues(conclusion, o.conclusion, true)
+          ;
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (name == null || name.isEmpty()) && (status == null || status.isEmpty())
            && (issued == null || issued.isEmpty()) && (subject == null || subject.isEmpty()) && (performer == null || performer.isEmpty())
-           && (identifier == null || identifier.isEmpty()) && (requestDetail == null || requestDetail.isEmpty())
-           && (serviceCategory == null || serviceCategory.isEmpty()) && (diagnostic == null || diagnostic.isEmpty())
-           && (specimen == null || specimen.isEmpty()) && (result == null || result.isEmpty()) && (imagingStudy == null || imagingStudy.isEmpty())
+           && (encounter == null || encounter.isEmpty()) && (identifier == null || identifier.isEmpty())
+           && (requestDetail == null || requestDetail.isEmpty()) && (serviceCategory == null || serviceCategory.isEmpty())
+           && (diagnostic == null || diagnostic.isEmpty()) && (specimen == null || specimen.isEmpty())
+           && (result == null || result.isEmpty()) && (imagingStudy == null || imagingStudy.isEmpty())
            && (image == null || image.isEmpty()) && (conclusion == null || conclusion.isEmpty()) && (codedDiagnosis == null || codedDiagnosis.isEmpty())
            && (presentedForm == null || presentedForm.isEmpty());
       }
@@ -1226,6 +1408,8 @@ public class DiagnosticReport extends DomainResource {
   public static final String SP_DIAGNOSIS = "diagnosis";
   @SearchParamDefinition(name="image", path="DiagnosticReport.image.link", description="Reference to the image source", type="reference" )
   public static final String SP_IMAGE = "image";
+  @SearchParamDefinition(name="encounter", path="DiagnosticReport.encounter", description="The Encounter when the order was made", type="reference" )
+  public static final String SP_ENCOUNTER = "encounter";
   @SearchParamDefinition(name="date", path="DiagnosticReport.diagnostic[x]", description="The clinically relevant time of the report", type="date" )
   public static final String SP_DATE = "date";
   @SearchParamDefinition(name="patient", path="DiagnosticReport.subject", description="The subject of the report if a patient", type="reference" )

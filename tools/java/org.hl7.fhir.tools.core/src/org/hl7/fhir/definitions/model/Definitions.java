@@ -35,7 +35,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.instance.model.ConceptMap;
-import org.hl7.fhir.instance.model.Profile;
+import org.hl7.fhir.instance.model.StructureDefinition;
+import org.hl7.fhir.instance.model.StructureDefinition.ExtensionContext;
 import org.hl7.fhir.instance.model.ValueSet;
 
 /**
@@ -71,8 +72,9 @@ public class Definitions {
   private Map<String, ResourceDefn> resources = new HashMap<String, ResourceDefn>();
   private Map<String, WorkGroup> workgroups = new HashMap<String, WorkGroup>();
 
-	// conformance packages not owned by a particular resource
-  private Map<String, ConformancePackage> packs = new HashMap<String, ConformancePackage>();
+	// profiles not owned by a particular resource
+  private Map<String, Profile> packs = new HashMap<String, Profile>();
+  private Map<String, Dictionary> dictionaries = new HashMap<String, Dictionary>();
 
   // indexes of above
   private Map<String, DefinedCode> knownResources = new HashMap<String, DefinedCode>();
@@ -94,7 +96,13 @@ public class Definitions {
   private Map<String, MappingSpace> mapTypes = new HashMap<String, MappingSpace>();
   private List<Compartment> compartments = new ArrayList<Compartment>();
   private List<String> pastVersions = new ArrayList<String>();
+  private Map<String, String> TLAs = new HashMap<String, String>();
 
+  private Map<String, W5Entry> w5s = new HashMap<String, W5Entry>();
+  private Map<String, String> typePages = new HashMap<String, String>();
+  private Map<String, ImplementationGuide> igs = new HashMap<String, ImplementationGuide>();
+  private List<ImplementationGuide> sortedIgs = new ArrayList<ImplementationGuide>();
+  private Map<String, String> pageTitles = new HashMap<String, String>();
 
   
   // Returns the root TypeDefn of a CompositeType or Resource,
@@ -232,7 +240,7 @@ public class Definitions {
 
 	// Returns all defined Profiles, which are the profiles found
 	// under [profiles] in fhir.ini
-	public Map<String, ConformancePackage> getConformancePackages() {
+	public Map<String, Profile> getConformancePackages() {
 		return packs;
 	}
 
@@ -282,6 +290,7 @@ public class Definitions {
   }
 
   private List<String> sortedNames;
+  private boolean publishAll;
   
   public List<String> sortedResourceNames() {
     if (sortedNames == null) {
@@ -335,13 +344,55 @@ public class Definitions {
     return mapTypes;
   }
 
-  public Profile getSnapShotForType(String type) throws Exception {
+  public StructureDefinition getSnapShotForType(String type) throws Exception {
+    ElementDefn e = getElementDefn(type); 
+    if (e != null && e instanceof TypeDefn) {
+      TypeDefn t = (TypeDefn) e;
+      if (t.getProfile().getSnapshot() != null)
+        return t.getProfile();
+      throw new Exception("unable to find snapshot for "+type);
+      
+    }
     ResourceDefn r = getResourceByName(type);
-    if (r == null)
-      throw new Exception("unable to find base definition for "+type);
-    if (r.getProfile().getSnapshot() != null)
-      return r.getProfile();
-    throw new Exception("unable to find snapshot for "+type);
+    if (r != null) {
+      if (r.getProfile().getSnapshot() != null)
+        return r.getProfile();
+      throw new Exception("unable to find snapshot for "+type);
+    }
+    throw new Exception("unable to find base definition for "+type);
+  }
+
+  public StructureDefinition getSnapShotForBase(String base) throws Exception {
+    StructureDefinition p = getProfileByURL(base);
+    if (p == null)
+      throw new Exception("unable to find base definition "+base);
+    if (p.getSnapshot() != null)
+      return p;
+    throw new Exception("unable to find snapshot for "+base);
+  }
+
+  private StructureDefinition getProfileByURL(String base) throws Exception {
+    for (ResourceDefn r : resources.values()) {
+      if (r.getProfile().getUrl().equals(base))
+        return r.getProfile();
+      for (Profile cp : r.getConformancePackages()) {
+        for (ConstraintStructure p : cp.getProfiles()) {
+          if (p.getResource() != null && base.equals(p.getResource().getUrl()))
+            return p.getResource();
+        }
+      }
+    }
+    for (Profile cp : packs.values()) {
+      for (ConstraintStructure p : cp.getProfiles()) {
+        if (p.getResource() != null && base.equals(p.getResource().getUrl()))
+          return p.getResource();
+      }      
+    }
+    if (base.startsWith("http://hl7.org/fhir/StructureDefinition/") && hasType(base.substring(40))) {
+      TypeDefn t = getElementDefn(base.substring(40));
+      return t.getProfile();
+    }
+    return null;
   }
 
   public String getSourceFile(String type) {
@@ -352,33 +403,126 @@ public class Definitions {
     return workgroups;
   }
 
-//  public Profile getProfileByURL(String url) {
-//    if (url.contains("#"))
-//      url = url.substring(0, url.indexOf('#'));
-//    for (ProfileDefn p : profiles.values())
-//      if (p.getSource() != null && p.getSource().getUrl().equals(url))
-//        return p.getSource();
-//    for (ResourceDefn rd : resources.values()) {
-//      for (RegisteredProfile p : rd.getProfiles()) {
-//        if (p.getProfile().getSource().getUrl().equals(url)) {
-//          return p.getProfile().getSource();
-//        }
-//      }
-//    }
-//    return null;
-//  }
-//
-//  public Profile getSnapShotForProfile(String base) throws Exception {
-//    String[] parts = base.split("#");
-//    if (parts[0].startsWith("http://hl7.org/fhir/Profile/") && parts.length == 1) {
-//      String name = base.substring(28);
-//      if (hasType(name) || hasResource(name)) 
-//        return getSnapShotForType(name);
-//    }
-//    Profile p = getProfileByURL(parts[0]);
-//    if (p == null)
-//      throw new Exception("unable to find base definition for "+base);
-//    return p;
-//  }
-//
+  public Map<String, String> getTLAs() {
+    return TLAs;
+  }
+
+  public Map<String, W5Entry> getW5s() {
+    return w5s;
+  }
+
+  public String getSrcFile(String name) throws Exception {
+    if (name == null)
+      throw new Exception("unknown null type");
+    String lname = name.toLowerCase();
+    if (typePages.containsKey(lname))
+      return typePages.get(lname);
+    if (hasType(name))
+      return "datatypes";
+    return lname;
+  }
+
+  public Map<String, String> getTypePages() {
+    return typePages;
+  }
+
+  public Map<String, ImplementationGuide> getIgs() {
+    return igs;
+  }
+
+  public Map<String, Dictionary> getDictionaries() {
+    return dictionaries;
+  }
+
+  public List<ImplementationGuide> getSortedIgs() {
+    return sortedIgs;
+  }
+
+  public ImplementationGuide getUsageIG(String usage, String context) throws Exception {
+    if (!igs.containsKey(usage))
+      throw new Exception("Attempt to use an undefined implementation guide '"+usage+"' @ "+context);
+    return igs.get(usage);
+  }
+
+  public void checkContextValid(ExtensionContext contextType, String value, String context) throws Exception {
+    if (contextType == ExtensionContext.DATATYPE) {
+      if (value.equals("*") || value.equals("Any"))
+        return;
+      if (primitives.containsKey(value))
+        return;
+      String[] parts = value.split("\\.");
+      if (hasType(parts[0]) && getElementByPath(parts) != null)
+        return;
+      
+      throw new Error("The data type context '"+value+"' is not valid @ "+context);
+      
+    } else if (contextType == ExtensionContext.RESOURCE) {
+      if (value.startsWith("@"))
+        value = value.substring(1);
+      if (value.equals("*") || value.equals("Any"))
+        return;
+      String[] parts = value.split("\\.");
+      if (sortedResourceNames().contains(value))
+        return;
+      if (getElementByPath(parts) != null)
+        return;
+      
+      throw new Error("The resource context '"+value+"' is not valid @ "+context);
+    } else
+    throw new Error("not checked yet @ "+context);
+    
+  }
+
+  private Object getElementByPath(String[] parts) throws Exception {
+    ElementDefn e;
+    try {
+      e = getElementDefn(parts[0]);
+    } catch (Exception e1) {
+     return null;
+    }
+    int i = 1;
+    while (e != null && i < parts.length) {
+      if (e.getAcceptableGenericTypes().isEmpty() && hasType(e.typeCode()))
+        e = getElementDefn(e.typeCode());
+      e = e.getElementByName(parts[i], true);
+      i++;
+    }
+    return e;
+  }
+
+  public Map<String, String> getPageTitles() {
+    return pageTitles;
+  }
+
+  public boolean noPublish(String category)  {
+    return !doPublish(category);
+  }
+
+  public boolean noPublish(ImplementationGuide ig)  {
+    return !doPublish(ig);
+  }
+
+  public boolean isPublishAll() {
+    return publishAll;
+  }
+
+  public void setPublishAll(boolean publishAll) {
+    this.publishAll = publishAll;
+  }
+
+  public boolean doPublish(String category) {
+    ImplementationGuide ig = igs.get(category);
+    if (ig == null)
+      throw new Error("No known IG for "+category);
+    if (publishAll)
+      return true;
+    return ig.isBallot();
+  }
+
+  public boolean doPublish(ImplementationGuide ig) {
+    if (publishAll)
+      return true;
+    return ig.isBallot();
+  }
+
 }

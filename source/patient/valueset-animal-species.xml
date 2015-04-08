@@ -3,14 +3,17 @@
  <name value="AnimalSpecies"/>
  
   <publisher value="FHIR Project team"/>
-  <telecom>  
+  <contact>
+    <telecom>  
     <system value="url"/>
     <value value="http://hl7.org/fhir"/>
   </telecom>
+  </contact>
   <description value="This example value set defines a set of codes that can be used to indicate species of animal patients."/>
   <status value="draft"/>
   <define>
     <system value="http://hl7.org/fhir/animal-species"/>
+    <caseSensitive value="true"/>      
     <concept>
       <code value="canislf"/>
       <display value="Dog"/>

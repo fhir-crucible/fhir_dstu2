@@ -7,20 +7,21 @@
  xmlns:html="http://www.w3.org/TR/REC-html40">
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
   <Author>Grahame</Author>
-  <LastAuthor>nbashyam</LastAuthor>
+  <LastAuthor>Brett A Marquard</LastAuthor>
   <Created>2012-03-19T11:12:07Z</Created>
-  <LastSaved>2014-12-05T19:05:06Z</LastSaved>
-  <Version>14.00</Version>
+  <LastSaved>2015-03-30T18:34:13Z</LastSaved>
+  <Version>15.00</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
   <AllowPNG/>
  </OfficeDocumentSettings>
  <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
-  <WindowHeight>7755</WindowHeight>
-  <WindowWidth>17280</WindowWidth>
+  <WindowHeight>9885</WindowHeight>
+  <WindowWidth>24000</WindowWidth>
   <WindowTopX>0</WindowTopX>
-  <WindowTopY>60</WindowTopY>
+  <WindowTopY>0</WindowTopY>
   <ActiveSheet>2</ActiveSheet>
+  <FirstVisibleSheet>2</FirstVisibleSheet>
   <RefModeR1C1/>
   <ProtectStructure>False</ProtectStructure>
   <ProtectWindows>False</ProtectWindows>
@@ -808,19 +809,13 @@
    <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11" ss:Color="#333399"/>
    <Interior/>
   </Style>
-  <Style ss:ID="s153" ss:Parent="s62">
-   <Alignment ss:Vertical="Top" ss:WrapText="1"/>
-   <Borders>
-    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
-   </Borders>
-   <Interior/>
+  <Style ss:ID="s153">
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="9" ss:Color="#333333"/>
   </Style>
   <Style ss:ID="s154" ss:Parent="s62">
-   <Alignment ss:Vertical="Center" ss:WrapText="1"/>
-   <Borders>
-    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
-     ss:Color="#7E7E7E"/>
-   </Borders>
+   <Alignment ss:Vertical="Top" ss:WrapText="1"/>
+   <Borders/>
+   <Interior/>
   </Style>
   <Style ss:ID="s155">
    <Alignment ss:Horizontal="Left" ss:Vertical="Top" ss:WrapText="1"/>
@@ -932,7 +927,7 @@
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>1</ActiveRow>
+     <ActiveRow>4</ActiveRow>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>
@@ -990,8 +985,8 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s74"><Data ss:Type="String">extension.uri</Data></Cell>
-    <Cell ss:StyleID="s79" ss:HRef="http://hl7.org/fhir/Profile/allergyintolerance-daf"><Data
-      ss:Type="String">http://hl7.org/fhir/Profile/allergyintolerance-daf</Data></Cell>
+    <Cell ss:StyleID="s79" ss:HRef="http://hl7.org/fhir/StructureDefinition/allergyintolerance-daf"><Data
+      ss:Type="String">http://hl7.org/fhir/StructureDefinition/allergyintolerance-daf</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s80"><Data ss:Type="String">introduction</Data></Cell>
@@ -1071,9 +1066,9 @@
  <Worksheet ss:Name="DAFAllergyIntolerance">
   <Names>
    <NamedRange ss:Name="_FilterDatabase"
-    ss:RefersTo="=DAFAllergyIntolerance!R1C1:R100C25" ss:Hidden="1"/>
+    ss:RefersTo="=DAFAllergyIntolerance!R1C1:R101C25" ss:Hidden="1"/>
   </Names>
-  <Table ss:ExpandedColumnCount="25" ss:ExpandedRowCount="101" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="25" ss:ExpandedRowCount="102" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s84" ss:DefaultRowHeight="15">
    <Column ss:StyleID="s84" ss:AutoFitWidth="0" ss:Width="121.5"/>
    <Column ss:StyleID="s85" ss:Width="67.5"/>
@@ -1084,7 +1079,7 @@
    <Column ss:StyleID="s84" ss:Width="34.5"/>
    <Column ss:StyleID="s84" ss:AutoFitWidth="0" ss:Width="119.25"/>
    <Column ss:StyleID="s84" ss:AutoFitWidth="0" ss:Width="29.25"/>
-   <Column ss:StyleID="s84" ss:AutoFitWidth="0" ss:Width="106.5"/>
+   <Column ss:StyleID="s84" ss:AutoFitWidth="0" ss:Width="141.75"/>
    <Column ss:StyleID="s84" ss:AutoFitWidth="0" ss:Width="60" ss:Span="1"/>
    <Column ss:Index="13" ss:StyleID="s84" ss:AutoFitWidth="0" ss:Width="81"/>
    <Column ss:StyleID="s84" ss:AutoFitWidth="0" ss:Width="36.75"/>
@@ -1237,12 +1232,13 @@
     <Cell ss:StyleID="s105"><Data ss:Type="String">AllergyIntolerance.identifier</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><Data ss:Type="String">0..*</Data><NamedCell
+    <Cell ss:StyleID="s106"><Data ss:Type="String">1..*</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><Data ss:Type="String">Identifier</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><Data ss:Type="String">Y</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -1301,9 +1297,10 @@
     <Cell ss:StyleID="s106"><Data ss:Type="String">0..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><Data ss:Type="String">Reference(Practitioner|Patient)</Data><NamedCell
+    <Cell ss:StyleID="s106"><Data ss:Type="String">Reference(Practitioner){http://hl7.org/fhir/StructureDefinition/pract-daf-dafpract}|Reference(Patient){http://hl7.org/fhir/StructureDefinition/patient-daf-dafpatient}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><Data ss:Type="String">Y</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -1325,13 +1322,44 @@
     <Cell ss:StyleID="s103"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s105"><Data ss:Type="String">AllergyIntolerance.subject</Data><NamedCell
+    <Cell ss:StyleID="s105"><Data ss:Type="String">AllergyIntolerance.patient</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><Data ss:Type="String">1..1</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><Data ss:Type="String">Reference(Patient){http://hl7.org/fhir/Profile/patient-daf-dafpatient}</Data><NamedCell
+    <Cell ss:StyleID="s106"><Data ss:Type="String">Reference(Patient){http://hl7.org/fhir/StructureDefinition/patient-daf-dafpatient}</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><Data ss:Type="String">Y</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s107"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s107"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s109"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s109"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s109"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s109"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s109"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s110"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="54">
+    <Cell ss:StyleID="s103"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s105"><Data ss:Type="String">AllergyIntolerance.reporter</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><Data ss:Type="String">0..1</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><Data ss:Type="String">Reference(Practitioner){http://hl7.org/fhir/StructureDefinition/pract-daf-dafpract}|Reference(Patient){http://hl7.org/fhir/StructureDefinition/patient-daf-dafpatient}|Reference(RelatedPerson){http://hl7.org/fhir/StructureDefinition/relatedperson-daf-dafrelatedperson}</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
@@ -1397,14 +1425,13 @@
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><Data ss:Type="String">DAFAllergyIntoleranceStatusPresentValueset</Data><NamedCell
+    <Cell ss:StyleID="s106"><Data ss:Type="String">DAFAllergyIntoleranceStatus</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><Data ss:Type="String">unconfirmed | confirmed | resolved</Data><NamedCell
-      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s108"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s107"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -1451,7 +1478,7 @@
     <Cell ss:StyleID="s103"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s105"><Data ss:Type="String">AllergyIntolerance.type</Data><NamedCell
+    <Cell ss:StyleID="s105"><Data ss:Type="String">!AllergyIntolerance.type</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><Data ss:Type="String">0..1</Data><NamedCell
@@ -1512,7 +1539,7 @@
     <Cell ss:StyleID="s103"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s105"><Data ss:Type="String">AllergyIntolerance.lastOccurence</Data><NamedCell
+    <Cell ss:StyleID="s105"><Data ss:Type="String">!AllergyIntolerance.lastOccurence</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><Data ss:Type="String">0..1</Data><NamedCell
@@ -1542,7 +1569,7 @@
     <Cell ss:StyleID="s103"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s105"><Data ss:Type="String">AllergyIntolerance.comment</Data><NamedCell
+    <Cell ss:StyleID="s105"><Data ss:Type="String">!AllergyIntolerance.comment</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><Data ss:Type="String">0..1</Data><NamedCell
@@ -1612,7 +1639,8 @@
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><Data ss:Type="String">DAFAllergySubstance</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -1633,7 +1661,7 @@
     <Cell ss:StyleID="s103"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s105"><Data ss:Type="String">AllergyIntolerance.event.certainty</Data><NamedCell
+    <Cell ss:StyleID="s105"><Data ss:Type="String">!AllergyIntolerance.event.certainty</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><Data ss:Type="String">0..1</Data><NamedCell
@@ -1673,7 +1701,8 @@
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><Data ss:Type="String">Y</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s106"><Data ss:Type="String">DAFManifestation</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -1694,7 +1723,7 @@
     <Cell ss:StyleID="s103"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s105"><Data ss:Type="String">AllergyIntolerance.event.description</Data><NamedCell
+    <Cell ss:StyleID="s105"><Data ss:Type="String">!AllergyIntolerance.event.description</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><Data ss:Type="String">0..1</Data><NamedCell
@@ -1817,7 +1846,7 @@
     <Cell ss:StyleID="s103"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s105"><Data ss:Type="String">AllergyIntolerance.event.exposureRoute</Data><NamedCell
+    <Cell ss:StyleID="s105"><Data ss:Type="String">!AllergyIntolerance.event.exposureRoute</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><Data ss:Type="String">0..1</Data><NamedCell
@@ -1847,7 +1876,7 @@
     <Cell ss:StyleID="s103"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s104"><NamedCell ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s105"><Data ss:Type="String">AllergyIntolerance.event.comment</Data><NamedCell
+    <Cell ss:StyleID="s105"><Data ss:Type="String">!AllergyIntolerance.event.comment</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><NamedCell ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s106"><Data ss:Type="String">0..1</Data><NamedCell
@@ -3972,7 +4001,7 @@
    <SplitHorizontal>1</SplitHorizontal>
    <TopRowBottomPane>1</TopRowBottomPane>
    <SplitVertical>4</SplitVertical>
-   <LeftColumnRightPane>4</LeftColumnRightPane>
+   <LeftColumnRightPane>6</LeftColumnRightPane>
    <ActivePane>0</ActivePane>
    <Panes>
     <Pane>
@@ -3987,7 +4016,7 @@
     </Pane>
     <Pane>
      <Number>0</Number>
-     <ActiveRow>7</ActiveRow>
+     <ActiveRow>6</ActiveRow>
      <ActiveCol>7</ActiveCol>
     </Pane>
    </Panes>
@@ -3995,14 +4024,14 @@
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C6:R100C6</Range>
+   <Range>R2C6:R101C6</Range>
    <Type>List</Type>
    <CellRangeList/>
    <Value>&quot;0..0,0..1,1..1,0..*,1..*,[n]..[m]&quot;</Value>
    <ErrorHide/>
   </DataValidation>
   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R3C8:R100C8</Range>
+   <Range>R3C8:R101C8</Range>
    <Type>List</Type>
    <CellRangeList/>
    <Value>&quot;*,Reference(A|B),boolean,string,code,id,oid,uuid,integer,decimal,date,dateTime,time,instant,uri,base64Binary,CodeableConcept,Coding,Identifier,Period,Timing,Range,Quantity,Age,Distance,Duration,Count,Money,Ratio,HumanName,Address,ContactPoint,SampledData&quot;</Value>
@@ -4015,30 +4044,30 @@
    <Value>&quot;DomainResource,Type,Resource,Structure&quot;</Value>
   </DataValidation>
   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R3C9:R100C9</Range>
+   <Range>R3C9:R101C9</Range>
    <Type>List</Type>
    <CellRangeList/>
    <Value>&quot;Y,N&quot;</Value>
   </DataValidation>
   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C10:R100C10</Range>
+   <Range>R2C10:R101C10</Range>
    <Type>List</Type>
    <CellRangeList/>
    <Value>&quot;Bindings!A2..A30&quot;</Value>
    <ErrorHide/>
   </DataValidation>
   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C20:R100C23</Range>
+   <Range>R2C20:R101C23</Range>
    <Type>List</Type>
    <CellRangeList/>
    <Value>&quot;N/A&quot;</Value>
    <ErrorHide/>
   </DataValidation>
-  <AutoFilter x:Range="R1C1:R100C25"
+  <AutoFilter x:Range="R1C1:R101C25"
    xmlns="urn:schemas-microsoft-com:office:excel">
   </AutoFilter>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C1:R100C25</Range>
+   <Range>R2C1:R101C25</Range>
    <Condition>
     <Value1>RC6=&quot;0..0&quot;</Value1>
     <Format Style='border:.5pt solid #D8D8D8;background:#F2F2F2'/>
@@ -4049,7 +4078,7 @@
    </Condition>
   </ConditionalFormatting>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C4:R100C4</Range>
+   <Range>R9C4:R101C4,R2C4:R7C4</Range>
    <Condition>
     <Value1>AND(RC&lt;&gt;&quot;&quot;,R[-1]C=&quot;&quot;)</Value1>
     <Format Style='border:.5pt solid #D8D8D8;background:red'/>
@@ -4063,38 +4092,45 @@
    </Condition>
   </ConditionalFormatting>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C2:R100C3</Range>
+   <Range>R2C2:R101C3</Range>
    <Condition>
     <Value1>AND(RC1=&quot;&quot;,RC&lt;&gt;&quot;&quot;)</Value1>
     <Format Style='border:.5pt solid #D8D8D8;background:red'/>
    </Condition>
   </ConditionalFormatting>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C11:R100C14</Range>
+   <Range>R2C11:R101C14</Range>
    <Condition>
     <Value1>AND(SEARCH(&quot;|&quot;,RC8)&lt;&gt;0,RC&lt;&gt;&quot;&quot;)</Value1>
     <Format Style='border:.5pt solid #D8D8D8;background:red'/>
    </Condition>
   </ConditionalFormatting>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C14:R100C14</Range>
+   <Range>R2C14:R101C14</Range>
    <Condition>
     <Value1>AND(RC&lt;&gt;&quot;&quot;,NOT(EXACT(LEFT(RC8,1),LOWER(LEFT(RC8,1)))))</Value1>
     <Format Style='border:.5pt solid #D8D8D8;background:red'/>
    </Condition>
   </ConditionalFormatting>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C15:R100C16</Range>
+   <Range>R2C15:R101C16</Range>
    <Condition>
     <Value1>AND(RC15&lt;&gt;&quot;&quot;,RC15=RC16)</Value1>
     <Format Style='border:.5pt solid #D8D8D8;background:red'/>
    </Condition>
   </ConditionalFormatting>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C1:R100C25</Range>
+   <Range>R2C1:R101C25</Range>
    <Condition>
     <Value1>LEFT(RC4,1)=&quot;!&quot;</Value1>
     <Format Style='border:.5pt solid #D8D8D8;background:#A5A5A5'/>
+   </Condition>
+  </ConditionalFormatting>
+  <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
+   <Range>R8C4</Range>
+   <Condition>
+    <Value1>AND(RC&lt;&gt;&quot;&quot;,R[-2]C=&quot;&quot;)</Value1>
+    <Format Style='border:.5pt solid #D8D8D8;background:red'/>
    </Condition>
   </ConditionalFormatting>
  </Worksheet>
@@ -9833,14 +9869,14 @@
    <NamedRange ss:Name="_FilterDatabase" ss:RefersTo="=Bindings!R1C1:R1C14"
     ss:Hidden="1"/>
   </Names>
-  <Table ss:ExpandedColumnCount="14" ss:ExpandedRowCount="31" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="14" ss:ExpandedRowCount="27" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s129" ss:DefaultRowHeight="15">
-   <Column ss:StyleID="s129" ss:Width="114.75"/>
+   <Column ss:StyleID="s129" ss:AutoFitWidth="0" ss:Width="186.75"/>
    <Column ss:StyleID="s129" ss:AutoFitWidth="0" ss:Width="274.5"/>
    <Column ss:StyleID="s129" ss:Width="51"/>
    <Column ss:StyleID="s129" ss:Width="67.5"/>
    <Column ss:StyleID="s129" ss:Width="54"/>
-   <Column ss:StyleID="s129" ss:Width="146.25"/>
+   <Column ss:StyleID="s129" ss:AutoFitWidth="0" ss:Width="244.5"/>
    <Column ss:StyleID="s129" ss:Width="172.5"/>
    <Column ss:StyleID="s129" ss:AutoFitWidth="0" ss:Width="97.5"/>
    <Column ss:StyleID="s129" ss:AutoFitWidth="0" ss:Width="173.25"/>
@@ -9907,17 +9943,15 @@
       ss:Name="_FilterDatabase"/></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="30">
-    <Cell ss:StyleID="s92"><Data ss:Type="String">DAFAllergyIntoleranceStatusPresentValueset</Data></Cell>
-    <Cell ss:StyleID="s95"><Data ss:Type="String">Value set for AllergyIntolerance Status for non-refuted values.</Data></Cell>
+    <Cell ss:StyleID="s92"><Data ss:Type="String">DAFAllergyIntoleranceStatus</Data></Cell>
+    <Cell ss:StyleID="s95"><Data ss:Type="String">Value set for AllergyIntolerance Status.</Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="String">value set</Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="String">required</Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="String">N</Data></Cell>
-    <Cell ss:StyleID="s153" ss:HRef="http://hl7.org/fhir/vs/allergyintolerance-status-present"><Data
-      ss:Type="String">http://hl7.org/fhir/vs/allergyintolerance-status-present</Data></Cell>
+    <Cell ss:StyleID="s153"><Data ss:Type="String">http://hl7.org/fhir/vs/allergy-intolerance-status</Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="String">Values for specifying the status of an allergy that is present.</Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="String">2.16.840.1.113883.4.642.2.503</Data></Cell>
-    <Cell ss:StyleID="s154" ss:HRef="http://hl7.org/fhir/vs/allergyintolerance-status-present"><Data
-      ss:Type="String">http://hl7.org/fhir/vs/allergyintolerance-status-present </Data></Cell>
+    <Cell ss:StyleID="s153"><Data ss:Type="String">http://hl7.org/fhir/vs/allergy-intolerance-status</Data></Cell>
     <Cell ss:StyleID="s132"/>
     <Cell ss:StyleID="s132"/>
     <Cell ss:StyleID="s132"/>
@@ -9925,31 +9959,15 @@
     <Cell ss:StyleID="s133"/>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s103"/>
-    <Cell ss:StyleID="s106"/>
+    <Cell ss:StyleID="s103"><Data ss:Type="String">DAFManifestation</Data></Cell>
+    <Cell ss:StyleID="s106"><Data ss:Type="String">Clinical symptoms and/or signs that are observed or associated with an Adverse Reaction Event</Data></Cell>
+    <Cell ss:StyleID="s135"><Data ss:Type="String">value set</Data></Cell>
+    <Cell ss:StyleID="s135"><Data ss:Type="String">preferred</Data></Cell>
+    <Cell ss:StyleID="s135"><Data ss:Type="String">Y</Data></Cell>
+    <Cell ss:StyleID="s132"><Data ss:Type="String">valueset-manifestation-c-cda-codes</Data></Cell>
     <Cell ss:StyleID="s135"/>
     <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s136"/>
-   </Row>
-   <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s103"/>
-    <Cell ss:StyleID="s106"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
+    <Cell ss:StyleID="s154"/>
     <Cell ss:StyleID="s135"/>
     <Cell ss:StyleID="s135"/>
     <Cell ss:StyleID="s135"/>
@@ -9957,61 +9975,13 @@
     <Cell ss:StyleID="s136"/>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s103"/>
+    <Cell ss:StyleID="s103"><Data ss:Type="String">DAFAllergySubstance</Data></Cell>
     <Cell ss:StyleID="s106"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s136"/>
-   </Row>
-   <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s103"/>
-    <Cell ss:StyleID="s106"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s136"/>
-   </Row>
-   <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s103"/>
-    <Cell ss:StyleID="s106"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s136"/>
-   </Row>
-   <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s103"/>
-    <Cell ss:StyleID="s106"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
-    <Cell ss:StyleID="s135"/>
+    <Cell ss:StyleID="s135"><Data ss:Type="String">value set</Data></Cell>
+    <Cell ss:StyleID="s135"><Data ss:Type="String">preferred</Data></Cell>
+    <Cell ss:StyleID="s135"><Data ss:Type="String">Y</Data></Cell>
+    <Cell ss:StyleID="s132"><Data ss:Type="String">valueset-daf-substance</Data></Cell>
+    <Cell ss:StyleID="s135"><Data ss:Type="String">Type of substance responsible for reaction.</Data></Cell>
     <Cell ss:StyleID="s135"/>
     <Cell ss:StyleID="s135"/>
     <Cell ss:StyleID="s135"/>
@@ -10391,7 +10361,7 @@
    <SplitHorizontal>1</SplitHorizontal>
    <TopRowBottomPane>1</TopRowBottomPane>
    <SplitVertical>1</SplitVertical>
-   <LeftColumnRightPane>1</LeftColumnRightPane>
+   <LeftColumnRightPane>2</LeftColumnRightPane>
    <ActivePane>0</ActivePane>
    <Panes>
     <Pane>
@@ -10399,12 +10369,14 @@
     </Pane>
     <Pane>
      <Number>1</Number>
+     <ActiveCol>1</ActiveCol>
     </Pane>
     <Pane>
      <Number>2</Number>
     </Pane>
     <Pane>
      <Number>0</Number>
+     <ActiveRow>3</ActiveRow>
      <ActiveCol>0</ActiveCol>
     </Pane>
    </Panes>
@@ -10412,19 +10384,19 @@
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C5:R30C5</Range>
+   <Range>R2C5:R26C5</Range>
    <Type>List</Type>
    <CellRangeList/>
    <Value>&quot;Y,N&quot;</Value>
   </DataValidation>
   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C4:R30C4</Range>
+   <Range>R2C4:R26C4</Range>
    <Type>List</Type>
    <CellRangeList/>
    <Value>&quot;required,preferred,example&quot;</Value>
   </DataValidation>
   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C3:R30C3</Range>
+   <Range>R2C3:R26C3</Range>
    <Type>List</Type>
    <CellRangeList/>
    <Value>&quot;code list,value set,reference,special,unbound&quot;</Value>
@@ -10433,52 +10405,87 @@
    xmlns="urn:schemas-microsoft-com:office:excel">
   </AutoFilter>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R3C1:R30C14,R2C1:R2C8,R2C10:R2C14</Range>
+   <Range>R3C3:R3C14,R2C1:R2C5,R2C7:R2C8,R2C10:R2C14,R4C1:R26C14</Range>
    <Condition>
     <Value1>AND(RC1=&quot;&quot;,RC&lt;&gt;&quot;&quot;)</Value1>
     <Format Style='border:.5pt solid #D8D8D8;background:red'/>
    </Condition>
   </ConditionalFormatting>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C1:R30C1</Range>
+   <Range>R2C1,R15C1:R26C1,R5C1:R13C1</Range>
    <Condition>
     <Value1>AND(RC&lt;&gt;&quot;&quot;,R[-1]C=&quot;&quot;)</Value1>
     <Format Style='border:.5pt solid #D8D8D8;background:red'/>
    </Condition>
   </ConditionalFormatting>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C2:R30C5</Range>
+   <Range>R3C3:R3C5,R2C2:R2C5,R4C2:R26C5</Range>
    <Condition>
     <Value1>AND(RC1&lt;&gt;&quot;&quot;,RC=&quot;&quot;)</Value1>
     <Format Style='border:.5pt solid #D8D8D8;background:red'/>
    </Condition>
   </ConditionalFormatting>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C6:R30C6</Range>
+   <Range>R3C6:R26C6</Range>
    <Condition>
     <Value1>AND(RC1&lt;&gt;&quot;&quot;,(RC3=&quot;unbound&quot;)&lt;&gt;(RC=&quot;&quot;))</Value1>
     <Format Style='border:.5pt solid #D8D8D8;background:red'/>
    </Condition>
   </ConditionalFormatting>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R2C7:R30C7</Range>
+   <Range>R2C7:R26C7</Range>
    <Condition>
     <Value1>AND(RC1&lt;&gt;&quot;&quot;,(RC&lt;&gt;&quot;&quot;)&lt;&gt;(RC3=&quot;reference&quot;))</Value1>
     <Format Style='border:.5pt solid #D8D8D8;background:red'/>
    </Condition>
   </ConditionalFormatting>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R3C8:R30C11,R2C8,R2C10:R2C11</Range>
+   <Range>R2C8,R2C10:R2C11,R3C8:R26C11</Range>
    <Condition>
     <Value1>AND(RC&lt;&gt;&quot;&quot;,RC3&lt;&gt;&quot;code list&quot;)</Value1>
     <Format Style='border:.5pt solid #D8D8D8;background:red'/>
    </Condition>
   </ConditionalFormatting>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R3C1:R30C14,R2C1:R2C8,R2C10:R2C14</Range>
+   <Range>R3C3:R3C14,R2C1:R2C5,R2C7:R2C8,R2C10:R2C14,R4C1:R26C14</Range>
    <Condition>
     <Value1>LEFT(RC1,1)=&quot;!&quot;</Value1>
     <Format Style='border:.5pt solid #D8D8D8;background:#A5A5A5'/>
+   </Condition>
+  </ConditionalFormatting>
+  <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
+   <Range>R3C1:R3C2</Range>
+   <Condition>
+    <Value1>LEFT(R[-1]C1,1)=&quot;!&quot;</Value1>
+    <Format Style='border:.5pt solid #D8D8D8;background:#A5A5A5'/>
+   </Condition>
+  </ConditionalFormatting>
+  <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
+   <Range>R3C1:R3C2</Range>
+   <Condition>
+    <Value1>AND(R[-1]C1=&quot;&quot;,R[-1]C&lt;&gt;&quot;&quot;)</Value1>
+    <Format Style='border:.5pt solid #D8D8D8;background:red'/>
+   </Condition>
+  </ConditionalFormatting>
+  <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
+   <Range>R3C1</Range>
+   <Condition>
+    <Value1>AND(R[-1]C&lt;&gt;&quot;&quot;,R[-2]C=&quot;&quot;)</Value1>
+    <Format Style='border:.5pt solid #D8D8D8;background:red'/>
+   </Condition>
+  </ConditionalFormatting>
+  <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
+   <Range>R3C2</Range>
+   <Condition>
+    <Value1>AND(R[-1]C1&lt;&gt;&quot;&quot;,R[-1]C[16382]=&quot;&quot;)</Value1>
+    <Format Style='border:.5pt solid #D8D8D8;background:red'/>
+   </Condition>
+  </ConditionalFormatting>
+  <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
+   <Range>R14C1,R4C1</Range>
+   <Condition>
+    <Value1>AND(RC&lt;&gt;&quot;&quot;,#REF!=&quot;&quot;)</Value1>
+    <Format Style='border:.5pt solid #D8D8D8;background:red'/>
    </Condition>
   </ConditionalFormatting>
  </Worksheet>

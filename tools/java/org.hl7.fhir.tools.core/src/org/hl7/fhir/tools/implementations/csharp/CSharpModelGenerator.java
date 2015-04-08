@@ -229,8 +229,9 @@ public class CSharpModelGenerator extends GenBlock
 			//generateValidationMethod(composite);
 
 			// Put in the NotifyPropertyChanged bits
-			String derivation = composite.getName();
-			if(	derivation.compareTo("Element") == 0 || derivation.compareTo("Resource") == 0 )
+			//String derivation = composite.getName();
+			
+			if( composite.getBaseType() == null )
 			{
 				ln("public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;");
 				ln("protected void OnPropertyChanged(String property)");
@@ -263,15 +264,18 @@ public class CSharpModelGenerator extends GenBlock
 
 
   private void generateMembers(CompositeTypeDefn composite) throws Exception {
-    // Start ordering the elements at 10 (increase by 10)
-    // If there's a base class, start numbering after base class elements
-    int order = 10;
-    if(composite.getBaseType() != null)
+    int numChildren = 0;
+    CompositeTypeDefn baseScan = composite;
+    while(baseScan.getBaseType() != null)
     {
-      CompositeTypeDefn base = (CompositeTypeDefnImpl)composite.resolve(composite.getBaseType());
-      order = (base.getElement().size()+1)*10;
+      baseScan = (CompositeTypeDefnImpl)composite.resolve(baseScan.getBaseType());
+      numChildren += baseScan.getElement().size();
     }
-   
+
+    // Start ordering the elements at 10 (increase by 10), but start after the
+    // numbers used in our baseclasses 
+    int order = numChildren*10 + 10;
+    
     // Make sure elements that need to be serialized as attributes in Xml
     // are sorted and generated first, since the streaming Xml writer api
     // will need to have them before the elements come in.
@@ -282,6 +286,7 @@ public class CSharpModelGenerator extends GenBlock
     
     Collections.sort(sortedElements, new Comparator<ElementDefn>()
       {
+        @Override
         public int compare(ElementDefn e1, ElementDefn e2)
         {
           if(e1.getXmlFormatHint() == XmlFormatHint.ATTRIBUTE) 
@@ -385,7 +390,7 @@ public class CSharpModelGenerator extends GenBlock
 	
 	private void generateMemberProperty(CompositeTypeDefn context, ElementDefn member, int order)
 			throws Exception {
-
+ 
     // Determine the most appropriate FHIR type to use for this
     // (possibly polymorphic) element.
     TypeRef tref = GeneratorUtils.getMemberTypeForElement(getDefinitions(),member);
@@ -395,8 +400,26 @@ public class CSharpModelGenerator extends GenBlock
     boolean hasBothPrimitiveAndElementProperty = isFhirPrimitive && !needsNativeProperty;
     
     String choiceType = null;
-    String choices = "";
-        
+    String choices = "";       
+    String memberCsType;
+    
+    if( GeneratorUtils.isCodeWithCodeList( getDefinitions(), tref ) )
+      // Strongly typed enums use a special Code<T> type
+      memberCsType = "Code<" + GeneratorUtils.buildFullyScopedTypeName(tref.getFullBindingRef()) + ">"; 
+    else if( needsNativeProperty )
+      // Primitive elements' value property maps directly to a C# type
+      memberCsType = GeneratorUtils.mapPrimitiveToCSharpType(tref.getName());
+    else 
+      memberCsType = GeneratorUtils.buildFullyScopedTypeName(tref);
+
+    String singleElementCsType = memberCsType;
+    
+    // Surround with List<T> if it is a repeating element
+    if( member.getMaxCardinality() == -1 )
+      memberCsType = "List<" + memberCsType + ">";
+    
+    member.getGeneratorAnnotations().put(CLASSGEN_MEMBER_CSTYPE, memberCsType);
+       
     if(member.isPolymorph())
     {     
       for(TypeRef choiceTRef : member.getType())
@@ -475,24 +498,7 @@ public class CSharpModelGenerator extends GenBlock
 
 		ln("[DataMember]");
 		ln("public ");
-			
-		String memberCsType;
-		
-		if( GeneratorUtils.isCodeWithCodeList( getDefinitions(), tref ) )
-		  // Strongly typed enums use a special Code<T> type
-		  memberCsType = "Code<" + GeneratorUtils.buildFullyScopedTypeName(tref.getFullBindingRef()) + ">";	
-		else if( needsNativeProperty )
-	    // Primitive elements' value property maps directly to a C# type
-		  memberCsType = GeneratorUtils.mapPrimitiveToCSharpType(tref.getName());
-		else 
-			memberCsType = GeneratorUtils.buildFullyScopedTypeName(tref);
-
-		String singleElementCsType = memberCsType;
-		
-		// Surround with List<T> if it is a repeating element
-		if( member.getMaxCardinality() == -1 )
-		  memberCsType = "List<" + memberCsType + ">";
-	
+				
 		String memberName = GeneratorUtils.generateCSharpMemberName(member);
 		
 		if(hasBothPrimitiveAndElementProperty)
@@ -501,25 +507,40 @@ public class CSharpModelGenerator extends GenBlock
 		}
 		
 		member.getGeneratorAnnotations().put(CLASSGEN_MEMBER_NAME, memberName);
-		member.getGeneratorAnnotations().put(CLASSGEN_MEMBER_CSTYPE, memberCsType);
 	
 		nl( memberCsType + " " + memberName  );
 		
 		bs("{");
+
+		String memberField = null;
+		if(!member.isPrimitiveValueElement()) 
+		  memberField = "_" + memberName;
+		else
+		  memberField = "ObjectValue";
 		
 		if(member.getMaxCardinality() == -1)
 		{
-		  ln("get { if(_" + memberName + "==null) _" + memberName + " = new " + memberCsType + "();");
-		  nl(" return _"+memberName+"; }");		  
-		  //get { if (_Relationship == null) _Relationship = new List<Hl7.Fhir.Model.CodeableConcept>(); return _Relationship; }
+		  ln("get { if(" + memberField + "==null) " + memberField + " = new " + memberCsType + "();");
+		  nl(" return "+memberField+"; }");		  
 		}
 		else
-		  ln("get { return _"+memberName+"; }");
+		{
+		  if(!member.isPrimitiveValueElement())
+		    ln("get { return "+memberField+"; }");
+		  else
+		    ln("get { return ("+memberCsType+")"+ memberField+"; }");
+		}
 		
-		ln("set { _"+memberName+" = value; OnPropertyChanged(\""+memberName+"\"); }");
+		ln("set { "+memberField+" = value; OnPropertyChanged(\""+memberName+"\"); }");
 		es("}");
-		ln( "private " + memberCsType + " _" + memberName + ";" );
 		ln();
+		
+		if(!member.isPrimitiveValueElement())
+		{
+		  // Primitives have this value as a protected member in their base, Primitive<T>
+  		ln( "private " + memberCsType + " " + memberField + ";" );
+  		ln();
+		}
 		
 		if(hasBothPrimitiveAndElementProperty)
 	    // If this element is of a type that is a FHIR primitive, generate extra helper
@@ -655,7 +676,18 @@ public class CSharpModelGenerator extends GenBlock
 		if( composite.getBaseType() != null ) 
 		{
 			nl( " : " ); 						
-		  nl(GeneratorUtils.buildFullyScopedTypeName(composite.getBaseType()));
+			
+			String baseName = composite.getBaseType().getFullName();
+			
+	    boolean isFhirPrimitive = Character.isLowerCase(composite.getName().charAt(0));
+	    
+	    if(isFhirPrimitive)
+	    {
+	      String memberCsType = GeneratorUtils.mapPrimitiveToCSharpType(composite.getName());	
+			  baseName = "Primitive<" + memberCsType + ">";
+	    }
+	    
+		  nl(GeneratorUtils.buildFullyScopedTypeName(baseName));
 			nl(", System.ComponentModel.INotifyPropertyChanged");
 		}
 		else

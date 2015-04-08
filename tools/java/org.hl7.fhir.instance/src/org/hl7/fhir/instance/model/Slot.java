@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -108,17 +108,17 @@ public class Slot extends DomainResource {
         }
         public String getDisplay() {
           switch (this) {
-            case BUSY: return "BUSY";
-            case FREE: return "FREE";
-            case BUSYUNAVAILABLE: return "BUSY-UNAVAILABLE";
-            case BUSYTENTATIVE: return "BUSY-TENTATIVE";
+            case BUSY: return "B U S Y";
+            case FREE: return "F R E E";
+            case BUSYUNAVAILABLE: return "B U S Y U N A V A I L A B L E";
+            case BUSYTENTATIVE: return "B U S Y T E N T A T I V E";
             default: return "?";
           }
         }
     }
 
-  public static class SlotstatusEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class SlotstatusEnumFactory implements EnumFactory<Slotstatus> {
+    public Slotstatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -130,9 +130,9 @@ public class Slot extends DomainResource {
           return Slotstatus.BUSYUNAVAILABLE;
         if ("BUSY-TENTATIVE".equals(codeString))
           return Slotstatus.BUSYTENTATIVE;
-        throw new Exception("Unknown Slotstatus code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown Slotstatus code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(Slotstatus code) {
       if (code == Slotstatus.BUSY)
         return "BUSY";
       if (code == Slotstatus.FREE)
@@ -148,21 +148,21 @@ public class Slot extends DomainResource {
     /**
      * External Ids for this item.
      */
-    @Child(name="identifier", type={Identifier.class}, order=-1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="External Ids for this item", formalDefinition="External Ids for this item." )
     protected List<Identifier> identifier;
 
     /**
      * The type of appointments that can be booked into this slot (ideally this would be an identifiable service - which is at a location, rather than the location itself). If provided then this overrides the value provided on the availability resource.
      */
-    @Child(name="type", type={CodeableConcept.class}, order=0, min=0, max=1)
+    @Child(name ="type", type={CodeableConcept.class}, order=1, min=0, max=1)
     @Description(shortDefinition="The type of appointments that can be booked into this slot (ideally this would be an identifiable service - which is at a location, rather than the location itself). If provided then this overrides the value provided on the availability resource", formalDefinition="The type of appointments that can be booked into this slot (ideally this would be an identifiable service - which is at a location, rather than the location itself). If provided then this overrides the value provided on the availability resource." )
     protected CodeableConcept type;
 
     /**
      * The schedule resource that this slot defines an interval of status information.
      */
-    @Child(name="schedule", type={Schedule.class}, order=1, min=1, max=1)
+    @Child(name ="schedule", type={Schedule.class}, order=2, min=1, max=1)
     @Description(shortDefinition="The schedule resource that this slot defines an interval of status information", formalDefinition="The schedule resource that this slot defines an interval of status information." )
     protected Reference schedule;
 
@@ -174,46 +174,39 @@ public class Slot extends DomainResource {
     /**
      * BUSY | FREE | BUSY-UNAVAILABLE | BUSY-TENTATIVE.
      */
-    @Child(name="freeBusyType", type={CodeType.class}, order=2, min=1, max=1)
+    @Child(name ="freeBusyType", type={CodeType.class}, order=3, min=1, max=1)
     @Description(shortDefinition="BUSY | FREE | BUSY-UNAVAILABLE | BUSY-TENTATIVE", formalDefinition="BUSY | FREE | BUSY-UNAVAILABLE | BUSY-TENTATIVE." )
     protected Enumeration<Slotstatus> freeBusyType;
 
     /**
      * Date/Time that the slot is to begin.
      */
-    @Child(name="start", type={InstantType.class}, order=3, min=1, max=1)
+    @Child(name ="start", type={InstantType.class}, order=4, min=1, max=1)
     @Description(shortDefinition="Date/Time that the slot is to begin", formalDefinition="Date/Time that the slot is to begin." )
     protected InstantType start;
 
     /**
      * Date/Time that the slot is to conclude.
      */
-    @Child(name="end", type={InstantType.class}, order=4, min=1, max=1)
+    @Child(name ="end", type={InstantType.class}, order=5, min=1, max=1)
     @Description(shortDefinition="Date/Time that the slot is to conclude", formalDefinition="Date/Time that the slot is to conclude." )
     protected InstantType end;
 
     /**
      * This slot has already been overbooked, appointments are unlikely to be accepted for this time.
      */
-    @Child(name="overbooked", type={BooleanType.class}, order=5, min=0, max=1)
+    @Child(name ="overbooked", type={BooleanType.class}, order=6, min=0, max=1)
     @Description(shortDefinition="This slot has already been overbooked, appointments are unlikely to be accepted for this time", formalDefinition="This slot has already been overbooked, appointments are unlikely to be accepted for this time." )
     protected BooleanType overbooked;
 
     /**
      * Comments on the slot to describe any extended information. Such as custom constraints on the slot.
      */
-    @Child(name="comment", type={StringType.class}, order=6, min=0, max=1)
+    @Child(name ="comment", type={StringType.class}, order=7, min=0, max=1)
     @Description(shortDefinition="Comments on the slot to describe any extended information. Such as custom constraints on the slot", formalDefinition="Comments on the slot to describe any extended information. Such as custom constraints on the slot." )
     protected StringType comment;
 
-    /**
-     * When this slot was created, or last revised.
-     */
-    @Child(name="lastModified", type={DateTimeType.class}, order=7, min=0, max=1)
-    @Description(shortDefinition="When this slot was created, or last revised", formalDefinition="When this slot was created, or last revised." )
-    protected DateTimeType lastModified;
-
-    private static final long serialVersionUID = 738744883L;
+    private static final long serialVersionUID = 1371243539L;
 
     public Slot() {
       super();
@@ -257,6 +250,16 @@ public class Slot extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public Slot addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #type} (The type of appointments that can be booked into this slot (ideally this would be an identifiable service - which is at a location, rather than the location itself). If provided then this overrides the value provided on the availability resource.)
      */
@@ -265,7 +268,7 @@ public class Slot extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Slot.type");
         else if (Configuration.doAutoCreate())
-          this.type = new CodeableConcept();
+          this.type = new CodeableConcept(); // cc
       return this.type;
     }
 
@@ -289,7 +292,7 @@ public class Slot extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Slot.schedule");
         else if (Configuration.doAutoCreate())
-          this.schedule = new Reference();
+          this.schedule = new Reference(); // cc
       return this.schedule;
     }
 
@@ -313,7 +316,7 @@ public class Slot extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Slot.schedule");
         else if (Configuration.doAutoCreate())
-          this.scheduleTarget = new Schedule();
+          this.scheduleTarget = new Schedule(); // aa
       return this.scheduleTarget;
     }
 
@@ -333,7 +336,7 @@ public class Slot extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Slot.freeBusyType");
         else if (Configuration.doAutoCreate())
-          this.freeBusyType = new Enumeration<Slotstatus>();
+          this.freeBusyType = new Enumeration<Slotstatus>(new SlotstatusEnumFactory()); // bb
       return this.freeBusyType;
     }
 
@@ -365,7 +368,7 @@ public class Slot extends DomainResource {
      */
     public Slot setFreeBusyType(Slotstatus value) { 
         if (this.freeBusyType == null)
-          this.freeBusyType = new Enumeration<Slotstatus>();
+          this.freeBusyType = new Enumeration<Slotstatus>(new SlotstatusEnumFactory());
         this.freeBusyType.setValue(value);
       return this;
     }
@@ -378,7 +381,7 @@ public class Slot extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Slot.start");
         else if (Configuration.doAutoCreate())
-          this.start = new InstantType();
+          this.start = new InstantType(); // bb
       return this.start;
     }
 
@@ -401,14 +404,14 @@ public class Slot extends DomainResource {
     /**
      * @return Date/Time that the slot is to begin.
      */
-    public DateAndTime getStart() { 
+    public Date getStart() { 
       return this.start == null ? null : this.start.getValue();
     }
 
     /**
      * @param value Date/Time that the slot is to begin.
      */
-    public Slot setStart(DateAndTime value) { 
+    public Slot setStart(Date value) { 
         if (this.start == null)
           this.start = new InstantType();
         this.start.setValue(value);
@@ -423,7 +426,7 @@ public class Slot extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Slot.end");
         else if (Configuration.doAutoCreate())
-          this.end = new InstantType();
+          this.end = new InstantType(); // bb
       return this.end;
     }
 
@@ -446,14 +449,14 @@ public class Slot extends DomainResource {
     /**
      * @return Date/Time that the slot is to conclude.
      */
-    public DateAndTime getEnd() { 
+    public Date getEnd() { 
       return this.end == null ? null : this.end.getValue();
     }
 
     /**
      * @param value Date/Time that the slot is to conclude.
      */
-    public Slot setEnd(DateAndTime value) { 
+    public Slot setEnd(Date value) { 
         if (this.end == null)
           this.end = new InstantType();
         this.end.setValue(value);
@@ -468,7 +471,7 @@ public class Slot extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Slot.overbooked");
         else if (Configuration.doAutoCreate())
-          this.overbooked = new BooleanType();
+          this.overbooked = new BooleanType(); // bb
       return this.overbooked;
     }
 
@@ -492,20 +495,16 @@ public class Slot extends DomainResource {
      * @return This slot has already been overbooked, appointments are unlikely to be accepted for this time.
      */
     public boolean getOverbooked() { 
-      return this.overbooked == null ? false : this.overbooked.getValue();
+      return this.overbooked == null || this.overbooked.isEmpty() ? false : this.overbooked.getValue();
     }
 
     /**
      * @param value This slot has already been overbooked, appointments are unlikely to be accepted for this time.
      */
     public Slot setOverbooked(boolean value) { 
-      if (value == false)
-        this.overbooked = null;
-      else {
         if (this.overbooked == null)
           this.overbooked = new BooleanType();
         this.overbooked.setValue(value);
-      }
       return this;
     }
 
@@ -517,7 +516,7 @@ public class Slot extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Slot.comment");
         else if (Configuration.doAutoCreate())
-          this.comment = new StringType();
+          this.comment = new StringType(); // bb
       return this.comment;
     }
 
@@ -558,55 +557,6 @@ public class Slot extends DomainResource {
       return this;
     }
 
-    /**
-     * @return {@link #lastModified} (When this slot was created, or last revised.). This is the underlying object with id, value and extensions. The accessor "getLastModified" gives direct access to the value
-     */
-    public DateTimeType getLastModifiedElement() { 
-      if (this.lastModified == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Slot.lastModified");
-        else if (Configuration.doAutoCreate())
-          this.lastModified = new DateTimeType();
-      return this.lastModified;
-    }
-
-    public boolean hasLastModifiedElement() { 
-      return this.lastModified != null && !this.lastModified.isEmpty();
-    }
-
-    public boolean hasLastModified() { 
-      return this.lastModified != null && !this.lastModified.isEmpty();
-    }
-
-    /**
-     * @param value {@link #lastModified} (When this slot was created, or last revised.). This is the underlying object with id, value and extensions. The accessor "getLastModified" gives direct access to the value
-     */
-    public Slot setLastModifiedElement(DateTimeType value) { 
-      this.lastModified = value;
-      return this;
-    }
-
-    /**
-     * @return When this slot was created, or last revised.
-     */
-    public DateAndTime getLastModified() { 
-      return this.lastModified == null ? null : this.lastModified.getValue();
-    }
-
-    /**
-     * @param value When this slot was created, or last revised.
-     */
-    public Slot setLastModified(DateAndTime value) { 
-      if (value == null)
-        this.lastModified = null;
-      else {
-        if (this.lastModified == null)
-          this.lastModified = new DateTimeType();
-        this.lastModified.setValue(value);
-      }
-      return this;
-    }
-
       protected void listChildren(List<Property> childrenList) {
         super.listChildren(childrenList);
         childrenList.add(new Property("identifier", "Identifier", "External Ids for this item.", 0, java.lang.Integer.MAX_VALUE, identifier));
@@ -617,7 +567,6 @@ public class Slot extends DomainResource {
         childrenList.add(new Property("end", "instant", "Date/Time that the slot is to conclude.", 0, java.lang.Integer.MAX_VALUE, end));
         childrenList.add(new Property("overbooked", "boolean", "This slot has already been overbooked, appointments are unlikely to be accepted for this time.", 0, java.lang.Integer.MAX_VALUE, overbooked));
         childrenList.add(new Property("comment", "string", "Comments on the slot to describe any extended information. Such as custom constraints on the slot.", 0, java.lang.Integer.MAX_VALUE, comment));
-        childrenList.add(new Property("lastModified", "dateTime", "When this slot was created, or last revised.", 0, java.lang.Integer.MAX_VALUE, lastModified));
       }
 
       public Slot copy() {
@@ -635,7 +584,6 @@ public class Slot extends DomainResource {
         dst.end = end == null ? null : end.copy();
         dst.overbooked = overbooked == null ? null : overbooked.copy();
         dst.comment = comment == null ? null : comment.copy();
-        dst.lastModified = lastModified == null ? null : lastModified.copy();
         return dst;
       }
 
@@ -643,12 +591,34 @@ public class Slot extends DomainResource {
         return copy();
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Slot))
+          return false;
+        Slot o = (Slot) other;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(type, o.type, true) && compareDeep(schedule, o.schedule, true)
+           && compareDeep(freeBusyType, o.freeBusyType, true) && compareDeep(start, o.start, true) && compareDeep(end, o.end, true)
+           && compareDeep(overbooked, o.overbooked, true) && compareDeep(comment, o.comment, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Slot))
+          return false;
+        Slot o = (Slot) other;
+        return compareValues(freeBusyType, o.freeBusyType, true) && compareValues(start, o.start, true) && compareValues(end, o.end, true)
+           && compareValues(overbooked, o.overbooked, true) && compareValues(comment, o.comment, true);
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (identifier == null || identifier.isEmpty()) && (type == null || type.isEmpty())
            && (schedule == null || schedule.isEmpty()) && (freeBusyType == null || freeBusyType.isEmpty())
            && (start == null || start.isEmpty()) && (end == null || end.isEmpty()) && (overbooked == null || overbooked.isEmpty())
-           && (comment == null || comment.isEmpty()) && (lastModified == null || lastModified.isEmpty())
-          ;
+           && (comment == null || comment.isEmpty());
       }
 
   @Override

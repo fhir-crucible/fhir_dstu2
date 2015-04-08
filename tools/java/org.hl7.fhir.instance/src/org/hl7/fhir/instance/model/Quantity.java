@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -107,17 +107,17 @@ public class Quantity extends Type {
         }
         public String getDisplay() {
           switch (this) {
-            case LESS_THAN: return "<";
-            case LESS_OR_EQUAL: return "<=";
-            case GREATER_OR_EQUAL: return ">=";
-            case GREATER_THAN: return ">";
+            case LESS_THAN: return " ";
+            case LESS_OR_EQUAL: return "  ";
+            case GREATER_OR_EQUAL: return "  ";
+            case GREATER_THAN: return " ";
             default: return "?";
           }
         }
     }
 
-  public static class QuantityComparatorEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class QuantityComparatorEnumFactory implements EnumFactory<QuantityComparator> {
+    public QuantityComparator fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -129,9 +129,9 @@ public class Quantity extends Type {
           return QuantityComparator.GREATER_OR_EQUAL;
         if (">".equals(codeString))
           return QuantityComparator.GREATER_THAN;
-        throw new Exception("Unknown QuantityComparator code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown QuantityComparator code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(QuantityComparator code) {
       if (code == QuantityComparator.LESS_THAN)
         return "<";
       if (code == QuantityComparator.LESS_OR_EQUAL)
@@ -147,35 +147,35 @@ public class Quantity extends Type {
     /**
      * The value of the measured amount. The value includes an implicit precision in the presentation of the value.
      */
-    @Child(name="value", type={DecimalType.class}, order=-1, min=0, max=1)
+    @Child(name ="value", type={DecimalType.class}, order=0, min=0, max=1)
     @Description(shortDefinition="Numerical value (with implicit precision)", formalDefinition="The value of the measured amount. The value includes an implicit precision in the presentation of the value." )
     protected DecimalType value;
 
     /**
      * How the value should be understood and represented - whether the actual value is greater or less than the stated value due to measurement issues. E.g. if the comparator is "<" , then the real value is < stated value.
      */
-    @Child(name="comparator", type={CodeType.class}, order=0, min=0, max=1)
+    @Child(name ="comparator", type={CodeType.class}, order=1, min=0, max=1)
     @Description(shortDefinition="< | <= | >= | > - how to understand the value", formalDefinition="How the value should be understood and represented - whether the actual value is greater or less than the stated value due to measurement issues. E.g. if the comparator is '<' , then the real value is < stated value." )
     protected Enumeration<QuantityComparator> comparator;
 
     /**
      * A human-readable form of the units.
      */
-    @Child(name="units", type={StringType.class}, order=1, min=0, max=1)
+    @Child(name ="units", type={StringType.class}, order=2, min=0, max=1)
     @Description(shortDefinition="Unit representation", formalDefinition="A human-readable form of the units." )
     protected StringType units;
 
     /**
      * The identification of the system that provides the coded form of the unit.
      */
-    @Child(name="system", type={UriType.class}, order=2, min=0, max=1)
+    @Child(name ="system", type={UriType.class}, order=3, min=0, max=1)
     @Description(shortDefinition="System that defines coded unit form", formalDefinition="The identification of the system that provides the coded form of the unit." )
     protected UriType system;
 
     /**
      * A computer processable form of the units in some unit representation system.
      */
-    @Child(name="code", type={CodeType.class}, order=3, min=0, max=1)
+    @Child(name ="code", type={CodeType.class}, order=4, min=0, max=1)
     @Description(shortDefinition="Coded form of the unit", formalDefinition="A computer processable form of the units in some unit representation system." )
     protected CodeType code;
 
@@ -193,7 +193,7 @@ public class Quantity extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Quantity.value");
         else if (Configuration.doAutoCreate())
-          this.value = new DecimalType();
+          this.value = new DecimalType(); // bb
       return this.value;
     }
 
@@ -242,7 +242,7 @@ public class Quantity extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Quantity.comparator");
         else if (Configuration.doAutoCreate())
-          this.comparator = new Enumeration<QuantityComparator>();
+          this.comparator = new Enumeration<QuantityComparator>(new QuantityComparatorEnumFactory()); // bb
       return this.comparator;
     }
 
@@ -277,7 +277,7 @@ public class Quantity extends Type {
         this.comparator = null;
       else {
         if (this.comparator == null)
-          this.comparator = new Enumeration<QuantityComparator>();
+          this.comparator = new Enumeration<QuantityComparator>(new QuantityComparatorEnumFactory());
         this.comparator.setValue(value);
       }
       return this;
@@ -291,7 +291,7 @@ public class Quantity extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Quantity.units");
         else if (Configuration.doAutoCreate())
-          this.units = new StringType();
+          this.units = new StringType(); // bb
       return this.units;
     }
 
@@ -340,7 +340,7 @@ public class Quantity extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Quantity.system");
         else if (Configuration.doAutoCreate())
-          this.system = new UriType();
+          this.system = new UriType(); // bb
       return this.system;
     }
 
@@ -389,7 +389,7 @@ public class Quantity extends Type {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Quantity.code");
         else if (Configuration.doAutoCreate())
-          this.code = new CodeType();
+          this.code = new CodeType(); // bb
       return this.code;
     }
 
@@ -452,6 +452,28 @@ public class Quantity extends Type {
 
       protected Quantity typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Quantity))
+          return false;
+        Quantity o = (Quantity) other;
+        return compareDeep(value, o.value, true) && compareDeep(comparator, o.comparator, true) && compareDeep(units, o.units, true)
+           && compareDeep(system, o.system, true) && compareDeep(code, o.code, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Quantity))
+          return false;
+        Quantity o = (Quantity) other;
+        return compareValues(value, o.value, true) && compareValues(comparator, o.comparator, true) && compareValues(units, o.units, true)
+           && compareValues(system, o.system, true) && compareValues(code, o.code, true);
       }
 
       public boolean isEmpty() {

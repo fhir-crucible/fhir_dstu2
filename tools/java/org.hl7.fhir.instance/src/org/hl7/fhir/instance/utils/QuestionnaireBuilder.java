@@ -8,20 +8,20 @@ import java.util.Map;
 import org.hl7.fhir.instance.model.Base;
 import org.hl7.fhir.instance.model.BooleanType;
 import org.hl7.fhir.instance.model.Coding;
-import org.hl7.fhir.instance.model.DateAndTime;
 import org.hl7.fhir.instance.model.DateTimeType;
 import org.hl7.fhir.instance.model.DateType;
 import org.hl7.fhir.instance.model.DecimalType;
 import org.hl7.fhir.instance.model.Element;
+import org.hl7.fhir.instance.model.Enumerations.*;
 import org.hl7.fhir.instance.model.ElementDefinition;
+import org.hl7.fhir.instance.model.ElementDefinition.BindingStrength;
 import org.hl7.fhir.instance.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.instance.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.instance.model.Enumeration;
 import org.hl7.fhir.instance.model.Factory;
 import org.hl7.fhir.instance.model.InstantType;
 import org.hl7.fhir.instance.model.IntegerType;
-import org.hl7.fhir.instance.model.Profile;
-import org.hl7.fhir.instance.model.Profile.ResourceProfileStatus;
+import org.hl7.fhir.instance.model.StructureDefinition;
 import org.hl7.fhir.instance.model.Quantity;
 import org.hl7.fhir.instance.model.Questionnaire;
 import org.hl7.fhir.instance.model.Questionnaire.AnswerFormat;
@@ -39,8 +39,6 @@ import org.hl7.fhir.instance.model.UriType;
 import org.hl7.fhir.instance.model.ValueSet;
 import org.hl7.fhir.instance.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.instance.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.instance.model.ValueSet.ValuesetStatus;
-import org.hl7.fhir.instance.utils.WorkerContext.ExtensionDefinitionResult;
 import org.hl7.fhir.utilities.Utilities;
 
 
@@ -97,7 +95,7 @@ public class QuestionnaireBuilder {
   private WorkerContext context;
   private int lastid = 0;
   private Resource resource;
-  private Profile profile;
+  private StructureDefinition profile;
   private Questionnaire questionnaire;
   private QuestionnaireAnswers answers;
   private String questionnaireId;
@@ -123,11 +121,11 @@ public class QuestionnaireBuilder {
     this.resource = resource;
   }
 
-  public Profile getProfile() {
+  public StructureDefinition getProfile() {
     return profile;
   }
 
-  public void setProfile(Profile profile) {
+  public void setProfile(StructureDefinition profile) {
     this.profile = profile;
   }
 
@@ -231,7 +229,7 @@ public class QuestionnaireBuilder {
 
   }
 
-  private QuestionnaireStatus convertStatus(ResourceProfileStatus status) {
+  private QuestionnaireStatus convertStatus(ConformanceResourceStatus status) {
     switch (status) {
 		case ACTIVE: return QuestionnaireStatus.PUBLISHED;
 		case DRAFT: return QuestionnaireStatus.DRAFT;
@@ -246,12 +244,12 @@ public class QuestionnaireBuilder {
     return prefix+Integer.toString(lastid);
   }
 
-  private void buildGroup(GroupComponent group, Profile profile, ElementDefinition element,
+  private void buildGroup(GroupComponent group, StructureDefinition profile, ElementDefinition element,
       List<ElementDefinition> parents, List<QuestionnaireAnswers.GroupComponent> answerGroups) throws Exception {
 	  group.setLinkId(element.getPath()); // todo: this will be wrong when we start slicing
 	  group.setTitle(element.getShort()); // todo - may need to prepend the name tail... 
 	  group.setText(element.getComments());
-	  ToolingExtensions.addFlyOver(group, element.getFormal());
+	  ToolingExtensions.addFlyOver(group, element.getDefinition());
     group.setRequired(element.getMin() > 0);
     group.setRepeats(!element.getMax().equals("1"));
 
@@ -320,7 +318,7 @@ public class QuestionnaireBuilder {
     }
   }
 
-  private void buildQuestion(GroupComponent group, Profile profile, ElementDefinition element, String path, List<QuestionnaireAnswers.GroupComponent> answerGroups) throws Exception {
+  private void buildQuestion(GroupComponent group, StructureDefinition profile, ElementDefinition element, String path, List<QuestionnaireAnswers.GroupComponent> answerGroups) throws Exception {
       group.setLinkId(path);
 
       // in this context, we don't have any concepts to mark...
@@ -335,9 +333,9 @@ public class QuestionnaireBuilder {
       }
 
       if (!Utilities.noString(element.getComments())) 
-        ToolingExtensions.addFlyOver(group, element.getFormal()+" "+element.getComments());
+        ToolingExtensions.addFlyOver(group, element.getDefinition()+" "+element.getComments());
       else
-        ToolingExtensions.addFlyOver(group, element.getFormal());
+        ToolingExtensions.addFlyOver(group, element.getDefinition());
 
       if (element.getType().size() > 1 || element.getType().get(0).getCode().equals("*")) {
         List<TypeRefComponent> types = expandTypeList(element.getType());
@@ -392,29 +390,30 @@ public class QuestionnaireBuilder {
     return result;
   }
 
-  private ValueSet makeTypeList(Profile profile, List<TypeRefComponent> types, String path) throws Exception {
+  private ValueSet makeTypeList(StructureDefinition profile, List<TypeRefComponent> types, String path) throws Exception {
     ValueSet vs = new ValueSet();
-    vs.setIdentifier(Utilities.makeUuidUrn());
+    vs.setUrl(Utilities.makeUuidUrn());
     vs.setName("Type options for "+path);
     vs.setDescription(vs.getName());
-	  vs.setStatus(ValuesetStatus.ACTIVE);
+	  vs.setStatus(ConformanceResourceStatus.ACTIVE);
     vs.setExpansion(new ValueSetExpansionComponent());
-    vs.getExpansion().setTimestamp(DateAndTime.now());
+    vs.getExpansion().setIdentifier(Factory.createUUID());
+    vs.getExpansion().setTimestampElement(DateTimeType.now());
     for (TypeRefComponent t : types) {
       ValueSetExpansionContainsComponent cc = vs.getExpansion().addContains();
-	    if (t.getCode().equals("Reference") && (t.hasProfile() && t.getProfile().startsWith("http://hl7.org/fhir/Profile/"))) { 
-	      cc.setCode(t.getProfile().substring(28));
+	    if (t.getCode().equals("Reference") && (t.hasProfile() && t.getProfile().startsWith("http://hl7.org/fhir/StructureDefinition/"))) { 
+	      cc.setCode(t.getProfile().substring(40));
         cc.setSystem("http://hl7.org/fhir/resource-types");
 	      cc.setDisplay(cc.getCode());
       } else {
         ProfileUtilities pu = new ProfileUtilities(context);
-        Profile ps = null;
+        StructureDefinition ps = null;
 	      if (!Utilities.noString(t.getProfile())) 
           ps = pu.getProfile(profile, t.getProfile());
         
         if (ps != null) {
 	        cc.setCode(t.getProfile());
-          cc.setDisplay(ps.getType());
+          cc.setDisplay(ps.getSnapshot().getElement().get(0).getType().get(0).getCode());
           cc.setSystem("http://hl7.org/fhir/resource-types");
         } else {
 	        cc.setCode(t.getCode());
@@ -428,7 +427,7 @@ public class QuestionnaireBuilder {
     return vs;
   }
 
-  private void selectTypes(Profile profile, GroupComponent sub, TypeRefComponent t, List<QuestionnaireAnswers.GroupComponent> source, List<QuestionnaireAnswers.GroupComponent> dest) throws Exception {
+  private void selectTypes(StructureDefinition profile, GroupComponent sub, TypeRefComponent t, List<QuestionnaireAnswers.GroupComponent> source, List<QuestionnaireAnswers.GroupComponent> dest) throws Exception {
     List<QuestionnaireAnswers.GroupComponent> temp = new ArrayList<QuestionnaireAnswers.GroupComponent>();
 
     for (QuestionnaireAnswers.GroupComponent g : source)
@@ -445,12 +444,12 @@ public class QuestionnaireBuilder {
 
       Coding cc = new Coding();
       q.addAnswer().setValue(cc);
-      if (t.getCode().equals("Reference") && t.getProfile().startsWith("http://hl7.org/fhir/Profile/")) {
-        cc.setCode(t.getProfile().substring(28));
+      if (t.getCode().equals("Reference") && t.getProfile().startsWith("http://hl7.org/fhir/StructureDefinition/")) {
+        cc.setCode(t.getProfile().substring(40));
         cc.setSystem("http://hl7.org/fhir/resource-types");
       } else {
         ProfileUtilities pu = new ProfileUtilities(context);
-        Profile ps = null;
+        StructureDefinition ps = null;
         if (!Utilities.noString(t.getProfile()))
           ps = pu.getProfile(profile, t.getProfile());
 
@@ -481,8 +480,8 @@ public class QuestionnaireBuilder {
         // there are several problems here around profile matching. This process is degenerative, and there's probably nothing we can do to solve it
         if (url.startsWith("http:") || url.startsWith("https:"))
             return true;
-        else if (t.getProfile().startsWith("http://hl7.org/fhir/Profile/")) 
-          return url.startsWith(t.getProfile().substring(28)+'/');
+        else if (t.getProfile().startsWith("http://hl7.org/fhir/StructureDefinition/")) 
+          return url.startsWith(t.getProfile().substring(40)+'/');
         else
           return true;
       }
@@ -501,18 +500,17 @@ public class QuestionnaireBuilder {
     if (vs != null) {
       result.setOptions(new Reference());
       if (vs.getExpansion() == null) {
-        result.getOptions().setReference(vs.getIdentifier());
+        result.getOptions().setReference(vs.getUrl());
         ToolingExtensions.addFilterOnly(result.getOptions(), true); 
       } else {
         if (Utilities.noString(vs.getId())) {
           vs.setId(nextId("vs"));
           questionnaire.getContained().add(vs);
-          vsCache.put(vs.getIdentifier(), vs.getId());
+          vsCache.put(vs.getUrl(), vs.getId());
           vs.setText(null);
           vs.setDefine(null);
           vs.setCompose(null);
-          vs.getTelecom().clear();
-          vs.setPurposeElement(null);
+          vs.getContact().clear();
           vs.setPublisherElement(null);
           vs.setCopyrightElement(null);
         }
@@ -625,7 +623,7 @@ public class QuestionnaireBuilder {
                   if (result == null)
                     result = c.getSystem();
                   else
-                    throw new Exception("Multiple matches in "+vs.getIdentifier()+" for code "+code+" at path = "+path);
+                    throw new Exception("Multiple matches in "+vs.getUrl()+" for code "+code+" at path = "+path);
               }
             }
           }
@@ -638,7 +636,7 @@ public class QuestionnaireBuilder {
         if (result == null)
           result = c.getSystem();
         else
-          throw new Exception("Multiple matches in "+vs.getIdentifier()+" for code "+code+" at path = "+path);
+          throw new Exception("Multiple matches in "+vs.getUrl()+" for code "+code+" at path = "+path);
       }
     }
     if (result != null)
@@ -648,12 +646,12 @@ public class QuestionnaireBuilder {
 
   private boolean isPrimitive(TypeRefComponent t) {
     return (t != null) && 
-          (t.getCode().equals("string") || t.getCode().equals("code") || t.getCode().equals("boolean") || t.getCode().equals("integer") || 
+          (t.getCode().equals("string") || t.getCode().equals("code") || t.getCode().equals("boolean") || t.getCode().equals("integer") || t.getCode().equals("unsignedInt") || t.getCode().equals("positiveInt") ||
               t.getCode().equals("decimal") || t.getCode().equals("date") || t.getCode().equals("dateTime") || 
               t.getCode().equals("instant") || t.getCode().equals("time") || t.getCode().equals("Reference"));
   }
 
-  private void processDataType(Profile profile, GroupComponent group, ElementDefinition element, String path, TypeRefComponent t, List<QuestionnaireAnswers.GroupComponent> answerGroups) throws Exception {
+  private void processDataType(StructureDefinition profile, GroupComponent group, ElementDefinition element, String path, TypeRefComponent t, List<QuestionnaireAnswers.GroupComponent> answerGroups) throws Exception {
     if (t.getCode().equals("code"))
       addCodeQuestions(group, element, path, answerGroups);
     else if (t.getCode().equals("string") || t.getCode().equals("id") || t.getCode().equals("oid"))
@@ -684,7 +682,7 @@ public class QuestionnaireBuilder {
       addContactPointQuestions(group, element, path, answerGroups);
     else if (t.getCode().equals("Identifier"))
       addIdentifierQuestions(group, element, path, answerGroups);
-    else if (t.getCode().equals("integer"))
+    else if (t.getCode().equals("integer") || t.getCode().equals("positiveInt") || t.getCode().equals("unsignedInt") )
       addIntegerQuestions(group, element, path, answerGroups);
     else if (t.getCode().equals("Coding"))
       addCodingQuestions(group, element, path, answerGroups);
@@ -710,7 +708,7 @@ public class QuestionnaireBuilder {
       addSampledDataQuestions(group, element, path, answerGroups);
     else if (t.getCode().equals("Extension"))
       addExtensionQuestions(profile, group, element, path, t.getProfile(), answerGroups);
-    else if (!t.getCode().equals("Narrative") && !t.getCode().equals("Resource") && !t.getCode().equals("ElementDefinition"))
+    else if (!t.getCode().equals("Narrative") && !t.getCode().equals("Resource") && !t.getCode().equals("ElementDefinition")&& !t.getCode().equals("Meta")&& !t.getCode().equals("Signature"))
       throw new Exception("Unhandled Data Type: "+t.getCode()+" on element "+element.getPath());
   }
 
@@ -808,7 +806,7 @@ public class QuestionnaireBuilder {
   private AnswerFormat answerTypeForBinding(ElementDefinitionBindingComponent binding) {
     if (binding == null) 
       return AnswerFormat.OPENCHOICE;
-    else if (binding.getIsExtensible()) 
+    else if (binding.getStrength() != BindingStrength.REQUIRED) 
       return AnswerFormat.OPENCHOICE;
     else
       return AnswerFormat.CHOICE;
@@ -938,8 +936,8 @@ public class QuestionnaireBuilder {
       QuestionComponent q = addQuestion(group, AnswerFormat.REFERENCE, path, "value", group.getText(), answerGroups);
       group.setText(null);
       String rn = null;
-      if (profileURL != null && profileURL.startsWith("http://hl7.org/fhir/Profile/"))
-        rn = profileURL.substring(28);
+      if (profileURL != null && profileURL.startsWith("http://hl7.org/fhir/StructureDefinition/"))
+        rn = profileURL.substring(40);
       else
         rn = "Any";
       if (rn.equals("Any"))
@@ -951,14 +949,14 @@ public class QuestionnaireBuilder {
     }
 
 
-    private void addExtensionQuestions(Profile profile, GroupComponent group, ElementDefinition element, String path, String url, List<QuestionnaireAnswers.GroupComponent> answerGroups) throws Exception { 
+    private void addExtensionQuestions(StructureDefinition profile, GroupComponent group, ElementDefinition element, String path, String url, List<QuestionnaireAnswers.GroupComponent> answerGroups) throws Exception { 
       // if this a  profiled extension, then we add it
     	if (!Utilities.noString(url)) {
-    		ExtensionDefinitionResult ed =  context.getExtensionDefinition(null, url);
+    		StructureDefinition ed =  context.getExtensionStructure(null, url);
     		if (ed != null) {
           if (answerGroups.size() > 0)
             throw new Exception("Debug this");
-    			buildQuestion(group, profile, ed.getElementDefinition(), path+".extension["+url+"]", answerGroups);
+    			buildQuestion(group, profile, ed.getSnapshot().getElement().get(0), path+".extension["+url+"]", answerGroups);
         }
       }
     }

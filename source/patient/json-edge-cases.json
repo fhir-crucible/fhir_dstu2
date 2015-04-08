@@ -1,18 +1,17 @@
 {
     "resourceType": "Patient",
     "identifier": [{
-        "label": "MRN",
         "period": {"start": "2001-05-06"},
-        "assigner": {"display": "Acme Healthcare"},
+        "assigner": {"display": "Acme\u202fHealthcare"},
         "use": "usual",
         "system": "urn:oid:1.2.36.146.595.217.0.1",
         "value": "12345"
     }],
     "managingOrganization": {"reference": "Organization/1"},
-    "_active": {
-      "http://hl7.org/fhir/example-do-not-use#recordStatus" : [
+    "_active": {"extension": [{
+        "url": "http://example.org/fhir/StructureDefinition/recordStatus",
         "valueCode": "archived"
-    ]},
+    }]},
     "name": [
         {
             "given": [
@@ -27,17 +26,52 @@
             "use": "usual"
         }
     ],
-    "http://hl7.org/fhir/example-do-not-use#Patient.avatar" : [
-            "valueResource": {
+    "extension": [
+        {
+            "url": "http://example.org/fhir/StructureDefinition/patientAvatar",
+            "valueReference": {
                 "reference": "#pic1",
                 "display": "Duck image"
             }
+        },
+        {
+            "url": "http://example.org/fhir/StructureDefinition/complexExtensionExample",
+            "extension": [
+                {
+                    "url": "nestedA",
+                    "valueCoding": {
+                        "system": "http://demo.org/id/4",
+                        "code": "AB45",
+                        "extension": [{
+                            "url": "http://example.org/fhir/StructureDefinition/extraforcoding",
+                            "extension": [{
+                                "url": "extra1",
+                                "valueString": "extra info"
+                            }],
+                            "valueInteger": 45
+                        }]
+                    }
+                },
+                {
+                    "url": "nestedB",
+                    "id": "q4",
+                    "extension": [{
+                        "url": "nestedB1",
+                        "valueString": "hello"
+                    }]
+                }
+            ]
+        }
     ],
-    "urn:example-do-not-use:pi" : [
+    "modifierExtension": [
+        {
+            "url": "http://example.org/fhir/StructureDefinition/pi",
             "valueDecimal": 3.141592653589793
-    ],
-    "urn:example-do-not-use:avogadro" : [
+        },
+        {
+            "url": "http://example.org/fhir/StructureDefinition/avogadro",
             "valueDecimal": 6.0221416246424E23
+        }
     ],
     "gender": "male",
     "birthDate": "1974-12",
@@ -47,13 +81,12 @@
         "line": ["534 Erewhon St"],
         "city": "PleasantVille",
         "state": "Vic",
-        "zip": "3999"
+        "postalCode": "3999"
     }],
-    "maritalStatus": {
-      "http://hl7.org/fhir/Profileiso-21090#nullFlavor" : [
+    "maritalStatus": {"extension": [{
+        "url": "http://example.org/fhir/StructureDefinition/nullFlavor",
         "valueCode": "ASKU"
-      ]
-    },
+    }]},
     "multipleBirthInteger": 3,
     "text": {
         "status": "generated",
@@ -90,34 +123,35 @@
                 null
             ],
             "_family": [
-                "http://hl7.org/fhir/Profileiso-21090#nullFlavor" : [
+                {"extension": [{
+                    "url": "http://example.org/fhir/StructureDefinition/nullFlavor",
                     "valueCode": "ASKU"
-                ],
+                }]},
                 {
                     "id": "a2",
-                    "http://hl7.org/fhir/Profileiso-21090#qualifier" : [
+                    "extension": [{
+                        "url": "http://example.org/fhir/StructureDefinition/qualifier",
                         "valueCode": "VV"
-                    ]
+                    }]
                 },
-                { 
-                  "http://hl7.org/fhir/Profileiso-21090#nullFlavor" : [
+                {"extension": [{
+                    "url": "http://hl7.org/fhir/StructureDefinitioniso-21090#nullFlavor",
                     "valueCode": "ASKU"
-                    ]
-                },
+                }]},
                 null,
-                { 
-                  "http://hl7.org/fhir/Profileiso-21090#nullFlavor" : [
+                {"extension": [{
+                    "url": "http://hl7.org/fhir/StructureDefinition/nullFlavor",
                     "valueCode": "ASKU"
-                  ]
-                }
+                }]}
             ],
             "_given": [
                 null,
                 {
                     "id": "a3",
-                    "http://hl7.org/fhir/Profileiso-21090#qualifier" : [
+                    "extension": [{
+                        "url": "http://hl7.org/fhir/StructureDefinition/qualifier",
                         "valueCode": "MID"
-                    ]
+                    }]
                 },
                 null
             ],

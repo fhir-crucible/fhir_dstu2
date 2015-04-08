@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -187,8 +187,8 @@ public class DeviceComponent extends DomainResource {
         }
     }
 
-  public static class MeasurementPrincipleEnumFactory implements EnumFactory {
-    public Enum<?> fromCode(String codeString) throws Exception {
+  public static class MeasurementPrincipleEnumFactory implements EnumFactory<MeasurementPrinciple> {
+    public MeasurementPrinciple fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -214,9 +214,9 @@ public class DeviceComponent extends DomainResource {
           return MeasurementPrinciple.ACOUSTICAL;
         if ("manual".equals(codeString))
           return MeasurementPrinciple.MANUAL;
-        throw new Exception("Unknown MeasurementPrinciple code '"+codeString+"'");
+        throw new IllegalArgumentException("Unknown MeasurementPrinciple code '"+codeString+"'");
         }
-    public String toCode(Enum<?> code) throws Exception {
+    public String toCode(MeasurementPrinciple code) {
       if (code == MeasurementPrinciple.OTHER)
         return "other";
       if (code == MeasurementPrinciple.CHEMICAL)
@@ -248,21 +248,21 @@ public class DeviceComponent extends DomainResource {
         /**
          * Describes the specification type, such as, serial number, part number, hardware revision, software revision, etc.
          */
-        @Child(name="specType", type={CodeableConcept.class}, order=1, min=0, max=1)
+        @Child(name ="specType", type={CodeableConcept.class}, order=1, min=0, max=1)
         @Description(shortDefinition="Specification type", formalDefinition="Describes the specification type, such as, serial number, part number, hardware revision, software revision, etc." )
         protected CodeableConcept specType;
 
         /**
          * Describes the internal component unique identification. This is a provision for manufacture specific standard components using a private OID. 11073-10101 has a partition for private OID semantic that the manufacture can make use of.
          */
-        @Child(name="componentId", type={Identifier.class}, order=2, min=0, max=1)
+        @Child(name ="componentId", type={Identifier.class}, order=2, min=0, max=1)
         @Description(shortDefinition="Internal component unique identification", formalDefinition="Describes the internal component unique identification. This is a provision for manufacture specific standard components using a private OID. 11073-10101 has a partition for private OID semantic that the manufacture can make use of." )
         protected Identifier componentId;
 
         /**
          * Describes the printable string defining the component.
          */
-        @Child(name="productionSpec", type={StringType.class}, order=3, min=0, max=1)
+        @Child(name ="productionSpec", type={StringType.class}, order=3, min=0, max=1)
         @Description(shortDefinition="A printable string defining the component", formalDefinition="Describes the printable string defining the component." )
         protected StringType productionSpec;
 
@@ -280,7 +280,7 @@ public class DeviceComponent extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DeviceComponentProductionSpecificationComponent.specType");
             else if (Configuration.doAutoCreate())
-              this.specType = new CodeableConcept();
+              this.specType = new CodeableConcept(); // cc
           return this.specType;
         }
 
@@ -304,7 +304,7 @@ public class DeviceComponent extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DeviceComponentProductionSpecificationComponent.componentId");
             else if (Configuration.doAutoCreate())
-              this.componentId = new Identifier();
+              this.componentId = new Identifier(); // cc
           return this.componentId;
         }
 
@@ -328,7 +328,7 @@ public class DeviceComponent extends DomainResource {
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DeviceComponentProductionSpecificationComponent.productionSpec");
             else if (Configuration.doAutoCreate())
-              this.productionSpec = new StringType();
+              this.productionSpec = new StringType(); // bb
           return this.productionSpec;
         }
 
@@ -385,6 +385,27 @@ public class DeviceComponent extends DomainResource {
         return dst;
       }
 
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof DeviceComponentProductionSpecificationComponent))
+          return false;
+        DeviceComponentProductionSpecificationComponent o = (DeviceComponentProductionSpecificationComponent) other;
+        return compareDeep(specType, o.specType, true) && compareDeep(componentId, o.componentId, true)
+           && compareDeep(productionSpec, o.productionSpec, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof DeviceComponentProductionSpecificationComponent))
+          return false;
+        DeviceComponentProductionSpecificationComponent o = (DeviceComponentProductionSpecificationComponent) other;
+        return compareValues(productionSpec, o.productionSpec, true);
+      }
+
       public boolean isEmpty() {
         return super.isEmpty() && (specType == null || specType.isEmpty()) && (componentId == null || componentId.isEmpty())
            && (productionSpec == null || productionSpec.isEmpty());
@@ -395,28 +416,28 @@ public class DeviceComponent extends DomainResource {
     /**
      * Describes the specific component type as defined in the object-oriented or metric nomenclature partition.
      */
-    @Child(name="type", type={CodeableConcept.class}, order=-1, min=1, max=1)
+    @Child(name ="type", type={CodeableConcept.class}, order=0, min=1, max=1)
     @Description(shortDefinition="What kind of component it is", formalDefinition="Describes the specific component type as defined in the object-oriented or metric nomenclature partition." )
     protected CodeableConcept type;
 
     /**
      * Describes the local assigned unique identification by the software. For example: handle ID.
      */
-    @Child(name="identifier", type={Identifier.class}, order=0, min=1, max=1)
+    @Child(name ="identifier", type={Identifier.class}, order=1, min=1, max=1)
     @Description(shortDefinition="Instance id assigned by the software stack", formalDefinition="Describes the local assigned unique identification by the software. For example: handle ID." )
     protected Identifier identifier;
 
     /**
      * Describes the timestamp for the most recent system change which includes device configuration or setting change.
      */
-    @Child(name="lastSystemChange", type={InstantType.class}, order=1, min=1, max=1)
+    @Child(name ="lastSystemChange", type={InstantType.class}, order=2, min=1, max=1)
     @Description(shortDefinition="Recent system change timestamp", formalDefinition="Describes the timestamp for the most recent system change which includes device configuration or setting change." )
     protected InstantType lastSystemChange;
 
     /**
      * Describes the link to the source Device that contains administrative device information such as manufacture, serial number, etc.
      */
-    @Child(name="source", type={Device.class}, order=2, min=0, max=1)
+    @Child(name ="source", type={Device.class}, order=3, min=0, max=1)
     @Description(shortDefinition="A source device of this component", formalDefinition="Describes the link to the source Device that contains administrative device information such as manufacture, serial number, etc." )
     protected Reference source;
 
@@ -428,7 +449,7 @@ public class DeviceComponent extends DomainResource {
     /**
      * Describes the link to the parent resource. For example: Channel is linked to its VMD parent.
      */
-    @Child(name="parent", type={DeviceComponent.class}, order=3, min=0, max=1)
+    @Child(name ="parent", type={DeviceComponent.class}, order=4, min=0, max=1)
     @Description(shortDefinition="Parent resource link", formalDefinition="Describes the link to the parent resource. For example: Channel is linked to its VMD parent." )
     protected Reference parent;
 
@@ -440,35 +461,35 @@ public class DeviceComponent extends DomainResource {
     /**
      * Indicates current operational status of the device. For example: On, Off, Standby, etc.
      */
-    @Child(name="operationalStatus", type={CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="operationalStatus", type={CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Component operational status", formalDefinition="Indicates current operational status of the device. For example: On, Off, Standby, etc." )
     protected List<CodeableConcept> operationalStatus;
 
     /**
      * Describes the parameter group supported by the current device component that is based on some nomenclature, e.g., cardiovascular.
      */
-    @Child(name="parameterGroup", type={CodeableConcept.class}, order=5, min=0, max=1)
+    @Child(name ="parameterGroup", type={CodeableConcept.class}, order=6, min=0, max=1)
     @Description(shortDefinition="Current supported parameter group", formalDefinition="Describes the parameter group supported by the current device component that is based on some nomenclature, e.g., cardiovascular." )
     protected CodeableConcept parameterGroup;
 
     /**
      * Describes the physical principle of the measurement. For example: thermal, chemical, acoustical, etc.
      */
-    @Child(name="measurementPrinciple", type={CodeType.class}, order=6, min=0, max=1)
+    @Child(name ="measurementPrinciple", type={CodeType.class}, order=7, min=0, max=1)
     @Description(shortDefinition="other | chemical | electrical | impedance | nuclear | optical | thermal | biological | mechanical | acoustical | manual+", formalDefinition="Describes the physical principle of the measurement. For example: thermal, chemical, acoustical, etc." )
     protected Enumeration<MeasurementPrinciple> measurementPrinciple;
 
     /**
      * Describes the production specification such as component revision, serial number, etc.
      */
-    @Child(name="productionSpecification", type={}, order=7, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="productionSpecification", type={}, order=8, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Production specification of the component", formalDefinition="Describes the production specification such as component revision, serial number, etc." )
     protected List<DeviceComponentProductionSpecificationComponent> productionSpecification;
 
     /**
      * Describes the language code for the human-readable text string produced by the device. This language code will follow the IETF language tag. Example: en-US.
      */
-    @Child(name="languageCode", type={CodeableConcept.class}, order=8, min=0, max=1)
+    @Child(name ="languageCode", type={CodeableConcept.class}, order=9, min=0, max=1)
     @Description(shortDefinition="Language code for the human-readable text strings produced by the device", formalDefinition="Describes the language code for the human-readable text string produced by the device. This language code will follow the IETF language tag. Example: en-US." )
     protected CodeableConcept languageCode;
 
@@ -493,7 +514,7 @@ public class DeviceComponent extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceComponent.type");
         else if (Configuration.doAutoCreate())
-          this.type = new CodeableConcept();
+          this.type = new CodeableConcept(); // cc
       return this.type;
     }
 
@@ -517,7 +538,7 @@ public class DeviceComponent extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceComponent.identifier");
         else if (Configuration.doAutoCreate())
-          this.identifier = new Identifier();
+          this.identifier = new Identifier(); // cc
       return this.identifier;
     }
 
@@ -541,7 +562,7 @@ public class DeviceComponent extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceComponent.lastSystemChange");
         else if (Configuration.doAutoCreate())
-          this.lastSystemChange = new InstantType();
+          this.lastSystemChange = new InstantType(); // bb
       return this.lastSystemChange;
     }
 
@@ -564,14 +585,14 @@ public class DeviceComponent extends DomainResource {
     /**
      * @return Describes the timestamp for the most recent system change which includes device configuration or setting change.
      */
-    public DateAndTime getLastSystemChange() { 
+    public Date getLastSystemChange() { 
       return this.lastSystemChange == null ? null : this.lastSystemChange.getValue();
     }
 
     /**
      * @param value Describes the timestamp for the most recent system change which includes device configuration or setting change.
      */
-    public DeviceComponent setLastSystemChange(DateAndTime value) { 
+    public DeviceComponent setLastSystemChange(Date value) { 
         if (this.lastSystemChange == null)
           this.lastSystemChange = new InstantType();
         this.lastSystemChange.setValue(value);
@@ -586,7 +607,7 @@ public class DeviceComponent extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceComponent.source");
         else if (Configuration.doAutoCreate())
-          this.source = new Reference();
+          this.source = new Reference(); // cc
       return this.source;
     }
 
@@ -610,7 +631,7 @@ public class DeviceComponent extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceComponent.source");
         else if (Configuration.doAutoCreate())
-          this.sourceTarget = new Device();
+          this.sourceTarget = new Device(); // aa
       return this.sourceTarget;
     }
 
@@ -630,7 +651,7 @@ public class DeviceComponent extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceComponent.parent");
         else if (Configuration.doAutoCreate())
-          this.parent = new Reference();
+          this.parent = new Reference(); // cc
       return this.parent;
     }
 
@@ -654,7 +675,7 @@ public class DeviceComponent extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceComponent.parent");
         else if (Configuration.doAutoCreate())
-          this.parentTarget = new DeviceComponent();
+          this.parentTarget = new DeviceComponent(); // aa
       return this.parentTarget;
     }
 
@@ -696,6 +717,16 @@ public class DeviceComponent extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public DeviceComponent addOperationalStatus(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.operationalStatus == null)
+        this.operationalStatus = new ArrayList<CodeableConcept>();
+      this.operationalStatus.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #parameterGroup} (Describes the parameter group supported by the current device component that is based on some nomenclature, e.g., cardiovascular.)
      */
@@ -704,7 +735,7 @@ public class DeviceComponent extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceComponent.parameterGroup");
         else if (Configuration.doAutoCreate())
-          this.parameterGroup = new CodeableConcept();
+          this.parameterGroup = new CodeableConcept(); // cc
       return this.parameterGroup;
     }
 
@@ -728,7 +759,7 @@ public class DeviceComponent extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceComponent.measurementPrinciple");
         else if (Configuration.doAutoCreate())
-          this.measurementPrinciple = new Enumeration<MeasurementPrinciple>();
+          this.measurementPrinciple = new Enumeration<MeasurementPrinciple>(new MeasurementPrincipleEnumFactory()); // bb
       return this.measurementPrinciple;
     }
 
@@ -763,7 +794,7 @@ public class DeviceComponent extends DomainResource {
         this.measurementPrinciple = null;
       else {
         if (this.measurementPrinciple == null)
-          this.measurementPrinciple = new Enumeration<MeasurementPrinciple>();
+          this.measurementPrinciple = new Enumeration<MeasurementPrinciple>(new MeasurementPrincipleEnumFactory());
         this.measurementPrinciple.setValue(value);
       }
       return this;
@@ -799,6 +830,16 @@ public class DeviceComponent extends DomainResource {
       return t;
     }
 
+    // syntactic sugar
+    public DeviceComponent addProductionSpecification(DeviceComponentProductionSpecificationComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.productionSpecification == null)
+        this.productionSpecification = new ArrayList<DeviceComponentProductionSpecificationComponent>();
+      this.productionSpecification.add(t);
+      return this;
+    }
+
     /**
      * @return {@link #languageCode} (Describes the language code for the human-readable text string produced by the device. This language code will follow the IETF language tag. Example: en-US.)
      */
@@ -807,7 +848,7 @@ public class DeviceComponent extends DomainResource {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceComponent.languageCode");
         else if (Configuration.doAutoCreate())
-          this.languageCode = new CodeableConcept();
+          this.languageCode = new CodeableConcept(); // cc
       return this.languageCode;
     }
 
@@ -863,6 +904,31 @@ public class DeviceComponent extends DomainResource {
 
       protected DeviceComponent typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof DeviceComponent))
+          return false;
+        DeviceComponent o = (DeviceComponent) other;
+        return compareDeep(type, o.type, true) && compareDeep(identifier, o.identifier, true) && compareDeep(lastSystemChange, o.lastSystemChange, true)
+           && compareDeep(source, o.source, true) && compareDeep(parent, o.parent, true) && compareDeep(operationalStatus, o.operationalStatus, true)
+           && compareDeep(parameterGroup, o.parameterGroup, true) && compareDeep(measurementPrinciple, o.measurementPrinciple, true)
+           && compareDeep(productionSpecification, o.productionSpecification, true) && compareDeep(languageCode, o.languageCode, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof DeviceComponent))
+          return false;
+        DeviceComponent o = (DeviceComponent) other;
+        return compareValues(lastSystemChange, o.lastSystemChange, true) && compareValues(measurementPrinciple, o.measurementPrinciple, true)
+          ;
       }
 
       public boolean isEmpty() {

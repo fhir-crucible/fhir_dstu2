@@ -1,17 +1,13 @@
-<ValueSet xmlns="http://hl7.org/fhir" 
+<ValueSet xmlns="http://hl7.org/fhir"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../schema/valueset.xsd">
-  <text>
-    <status value="generated"/>
-    <div xmlns="http://www.w3.org/1999/xhtml">
-      This value set includes all LOINC codes in the "Clinical" or "Lab" class types (TODO: narrow this further - diagnostic codes, panels only)
-    </div>
-  </text>
   <name value="LOINC Diagnostic Order Codes"/>
   <publisher value="FHIR Project team"/>
-  <telecom>  
+  <contact>
+    <telecom>
     <system value="url"/>
     <value value="http://hl7.org/fhir"/>
   </telecom>
+  </contact>
   <description value="This value set includes all the LOINC Order codes"/>
   <copyright value="This content from LOINC® is copyright © 1995 Regenstrief Institute, Inc. and the LOINC Committee, and available at no cost under the license at http://loinc.org/terms-of-use"/>
   <status value="draft"/>

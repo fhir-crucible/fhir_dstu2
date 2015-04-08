@@ -43,7 +43,7 @@
   <contained>
     <ValueSet>
       <id value="2179414"/>
-      <identifier value="2179414"/>
+      <url value="2179414"/>
       <version value="1.0"/>
       <name value="Gender Code"/>
       <description value="All codes representing the gender of a person."/>
@@ -54,22 +54,22 @@
           <concept>
             <code value="C17998"/>
             <display value="Unknown"/>
-<!--            <definition value="Not known, not observed, not recorded, or refused. "/>-->
+            <!--            <definition value="Not known, not observed, not recorded, or refused. "/>-->
           </concept>
           <concept>
             <code value="C20197"/>
             <display value="Male"/>
-<!--            <definition value="A person who belongs to the sex that normally produces sperm. The term is used to indicate biological sex distinctions, cultural gender role distinctions, or both."/>-->
+            <!--            <definition value="A person who belongs to the sex that normally produces sperm. The term is used to indicate biological sex distinctions, cultural gender role distinctions, or both."/>-->
           </concept>
           <concept>
             <code value="C16576"/>
             <display value="Female"/>
-<!--            <definition value="A person who belongs to the sex that normally produces ova. The term is used to indicate biological sex distinctions, or cultural gender role distinctions, or both."/>-->
+            <!--            <definition value="A person who belongs to the sex that normally produces ova. The term is used to indicate biological sex distinctions, or cultural gender role distinctions, or both."/>-->
           </concept>
           <concept>
             <code value="C38046"/>
             <display value="Not specified"/>
-<!--            <definition value="Not specified"/>-->
+            <!--            <definition value="Not specified"/>-->
           </concept>
         </include>
       </compose>
@@ -81,6 +81,7 @@
       <status value="active"/>
       <define>
         <system value="http://example.org/fhir/2179414"/>
+        <caseSensitive value="true"/>
         <concept>
           <code value="0"/>
         </concept>
@@ -136,105 +137,108 @@
       </element>
     </ConceptMap>
   </contained>
-  <extension url="http://hl7.org/fhir/ExtensionDefinition/minLength">
-    <valueInteger value="1"/>
-  </extension>
-  <extension url="http://hl7.org/fhir/ExtensionDefinition/maxLength">
-    <valueInteger value="13"/>
-  </extension>
   <identifier>
     <value value="2179650"/>
   </identifier>
   <version value="1.0"/>
-  <publisher value="DCP"/>
-  <status value="active"/>
   <name value="Gender Code"/>
-  <category>
+  <useContext>
     <coding>
-      <system value="http://unknown/FBPP"/>
+      <system value="http://example.org/FBPP"/>
       <display value="FBPP Pooled Database"/>
     </coding>
     <coding>
-      <system value="http://unknown/PhenX"/>
+      <system value="http://example.org/PhenX"/>
       <display value="Demographics"/>
     </coding>
     <coding>
-      <system value="http://unknown/Eligibility Criteria"/>
+      <system value="http://example.org/EligibilityCriteria"/>
       <display value="Pt. Administrative"/>
     </coding>
     <coding>
-      <system value="http://unknown/UAMS Clinical Research"/>
+      <system value="http://example.org/UAMSClinicalResearch"/>
       <display value="UAMS New CDEs"/>
     </coding>
     <coding>
-      <system value="http://unknown/PhenX"/>
+      <system value="http://example.org/PhenX"/>
       <display value="Substance Abuse and "/>
     </coding>
     <coding>
-      <system value="http://unknown/Category"/>
+      <system value="http://example.org/Category"/>
       <display value="CSAERS Adverse Event"/>
     </coding>
     <coding>
-      <system value="http://unknown/PhenX"/>
+      <system value="http://example.org/PhenX"/>
       <display value="Core: Tier 1"/>
     </coding>
     <coding>
-      <system value="http://unknown/Category"/>
+      <system value="http://example.org/Category"/>
       <display value="Case Report Forms"/>
     </coding>
     <coding>
-      <system value="http://unknown/Category"/>
+      <system value="http://example.org/Category"/>
       <display value="CSAERS Review Set"/>
     </coding>
     <coding>
-      <system value="http://unknown/Demonstration%20Applications"/>
+      <system value="http://example.org/Demonstration%20Applications"/>
       <display value="CIAF"/>
     </coding>
     <coding>
-      <system value="http://unknown/NIDA%20CTN%20Usage"/>
+      <system value="http://example.org/NIDA%20CTN%20Usage"/>
       <display value="Clinical Research"/>
     </coding>
     <coding>
-      <system value="http://unknown/NIDA%20CTN%20Usage"/>
+      <system value="http://example.org/NIDA%20CTN%20Usage"/>
       <display value="Electronic Health Re"/>
     </coding>
     <coding>
-      <system value="http://unknown/Condition"/>
+      <system value="http://example.org/Condition"/>
       <display value="Barretts Esophagus"/>
     </coding>
     <coding>
-      <system value="http://unknown/Condition"/>
+      <system value="http://example.org/Condition"/>
       <display value="Bladder Cancer"/>
     </coding>
     <coding>
-      <system value="http://unknown/Condition"/>
+      <system value="http://example.org/Condition"/>
       <display value="Oral Leukoplakia"/>
     </coding>
     <coding>
-      <system value="http://unknown/Condition"/>
+      <system value="http://example.org/Condition"/>
       <display value="Sulindac for Breast"/>
     </coding>
-  </category>
-  <question value="Gender"/>
-  <definition value="The code representing the gender of a person."/>
-  <type value="CodeableConcept"/>
-  <binding>
-    <isExtensible value="false"/>
-    <conformance value="required"/>
-    <valueSet>
-    <!-- 
-      <extension url="http://hl7.org/fhir/ExtensionDefinition/iso-11179-permitted-value-valueset">
-        <valueReference>
-          <reference value="#2179414-permitted"/>
-        </valueReference>
-      </extension>
-      <extension url="http://hl7.org/fhir/ExtensionDefinition/iso-11179-permitted-value-conceptmap">
-        <valueReference>
-          <reference value="#2179414-cm"/>
-        </valueReference>
-      </extension>
-      -->
-      <reference value="#2179414"/>
-    </valueSet>
-  </binding>
+  </useContext>
+  <status value="active"/>
+  <publisher value="DCP"/>
+  <element>
+    <extension url="http://hl7.org/fhir/StructureDefinition/minLength">
+      <valueInteger value="1"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-question">
+      <valueString value="Gender"/>
+    </extension>
+    <path value="Gender"/>
+    <definition value="The code representing the gender of a person."/>
+    <type>
+      <code value="CodeableConcept"/>
+    </type>
+    <maxLength value="13"/>
+    <binding>
+      <name value="Gender"/>
+      <strength value="required"/>
+      <valueSetReference>
+        <extension url="http://hl7.org/fhir/StructureDefinition/11179-permitted-value-valueset">
+          <valueReference>
+            <reference value="#2179414-permitted"/>
+          </valueReference>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/11179-permitted-value-conceptmap">
+          <valueReference>
+            <reference value="#2179414-cm"/>
+          </valueReference>
+        </extension>
+        <reference value="#2179414"/>
+      </valueSetReference>
+    </binding>
+  </element>
 </DataElement>

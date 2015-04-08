@@ -198,7 +198,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
   private void generateEnumParser() throws Exception {
     write("  @SuppressWarnings(\"unchecked\")\r\n");
     write("  protected <E extends Enum<E>> Enumeration<E> parseEnumeration(XmlPullParser xpp, E item, EnumFactory e) throws Exception {\r\n");
-    write("    Enumeration<E> res = new Enumeration<E>();\r\n");
+    write("    Enumeration<E> res = new Enumeration<E>(e);\r\n");
     write("    parseElementAttributes(xpp, res);\r\n");
     write("    res.setValue((E) e.fromCode(xpp.getAttributeValue(null, \"value\")));\r\n");
     write("    next(xpp);\r\n");
@@ -225,9 +225,8 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
   private void generatePrimitive(DefinedCode dc) throws Exception {
     String tn = getPrimitiveTypeModelName(dc.getCode());
     write("  protected "+tn+" parse"+upFirst(dc.getCode())+"(XmlPullParser xpp) throws Exception {\r\n");
-    write("    "+tn+" res = new "+tn+"();\r\n");
+    write("    "+tn+" res = new "+tn+"(xpp.getAttributeValue(null, \"value\"));\r\n");
     write("    parseElementAttributes(xpp, res);\r\n");
-    write("    res.setValue(parse"+upFirst(dc.getCode())+"Primitive(xpp.getAttributeValue(null, \"value\")));\r\n");
     write("    next(xpp);\r\n");
     write("    int eventType = nextNoWhitespace(xpp);\r\n");
     write("    while (eventType != XmlPullParser.END_TAG) {\r\n");
@@ -432,6 +431,8 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
       BindingSpecification cd = definitions.getBindingByName(e.getBindingName());
       if (e.typeCode().equals("code") && cd != null && cd.getBinding() == BindingSpecification.Binding.CodeList) {
         String en = typeNames.get(e); // getCodeListType(cd.getBinding());
+        if (isSharedEnum(e.getBindingName()))
+          en = "Enumerations."+e.getBindingName();
         prsr = "parseEnumeration(xpp, "+en+".NULL, new "+en.substring(0, en.indexOf("."))+"."+en.substring(en.indexOf(".")+1)+"EnumFactory())"; // en+".fromCode(parseString(xpp))";
         // parseEnumeration(xpp, Narrative.NarrativeStatus.additional, new Narrative.NarrativeStatusEnumFactory())
       } else {   
@@ -804,16 +805,15 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
     String tn = getPrimitiveTypeModelName(dc.getCode());
 
     write("  protected void compose"+upFirst(dc.getCode())+"(String name, "+tn+" value) throws Exception {\r\n");
-    if (dc.getCode().equals("integer")  || dc.getCode().equals("boolean"))
-      write("    if (value != null) {\r\n");
+    if (dc.getCode().equals("integer")  || dc.getCode().equals("unsignedInt") || dc.getCode().equals("positiveInt") || dc.getCode().equals("boolean"))
+      write("    if (value != null) { // "+dc.getCode()+"\r\n");
     else if (dc.getCode().equals("decimal") || dc.getCode().equals("uri") || dc.getCode().equals("base64Binary") || dc.getCode().equals("instant") || dc.getCode().equals("date") || dc.getCode().equals("dateTime"))
-      write("    if (value != null && (!Utilities.noString(value.getId()) || ExtensionHelper.hasExtensions(value) || value.getValue() != null)) {\r\n");
+      write("    if (value != null && (!Utilities.noString(value.getId()) || ExtensionHelper.hasExtensions(value) || value.getValue() != null)) {// "+dc.getCode()+"\r\n");
     else
-      write("    if (value != null && (!Utilities.noString(value.getId()) || ExtensionHelper.hasExtensions(value) || !Utilities.noString(value.getValue()))) {\r\n");
+      write("    if (value != null && (!Utilities.noString(value.getId()) || ExtensionHelper.hasExtensions(value) || !Utilities.noString(value.getValue()))) {// "+dc.getCode()+"\r\n");
     write("      composeElementAttributes(value);\r\n");
-    if (!dc.getCode().equals("integer") && !dc.getCode().equals("boolean"))
-      write("      if (value.getValue() != null) \r\n");
-    write("        xml.attribute(\"value\", toString(value.getValue()));\r\n");
+    write("      if (value.asStringValue() != null) \r\n");
+    write("        xml.attribute(\"value\", value.asStringValue());\r\n");
     write("        \r\n");
     write("      xml.open(FHIR_NS, name);\r\n");
     write("      composeElementElements(value);\r\n");
@@ -1031,8 +1031,11 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         
         }
       } else if (en != null) {
-        write("      if (element.has"+upFirst(getElementName(name, false))+"Element())\r\n");
-        write("        composeEnumeration(\""+name+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+mainName+"."+upFirst(en.substring(en.indexOf(".")+2))+"EnumFactory());\r\n");
+        write("      if (element.has"+upFirst(getElementName(name, false))+"Element())\r\n"); 
+        if (isSharedEnum(e.getBindingName()))
+          write("        composeEnumeration(\""+name+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new Enumerations."+upFirst(en.substring(en.indexOf(".")+2))+"EnumFactory());\r\n");
+        else
+          write("        composeEnumeration(\""+name+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+mainName+"."+upFirst(en.substring(en.indexOf(".")+2))+"EnumFactory());\r\n");
 //        write("        composeString(\""+name+"\", element.get"+upFirst(getElementName(name, false))+"().toCode());\r\n");        
       } else if (isJavaPrimitive(e)) {
         write("      if (element.has"+upFirst(getElementName(name, false))+"Element()) {\r\n");

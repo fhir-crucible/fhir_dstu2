@@ -4,6 +4,7 @@ langauge: java
 jdk:
   - oraclejdk7
 script: ./build.sh
+sudo: false
 notifications:
   email:
     - fhir-svn-travis@dilute.net
@@ -24,6 +25,7 @@ after_success:
   - git init
   - git remote add origin git@github.com:hl7-fhir/hl7-fhir.github.io.git
   - cp -r ../publish/* .
+  - ../remove_files_larger_than_100mg_for_gh_pages_compatibility.sh
   - git add -A .
   - git commit -m "Travis docs build"
   - git push -f origin master

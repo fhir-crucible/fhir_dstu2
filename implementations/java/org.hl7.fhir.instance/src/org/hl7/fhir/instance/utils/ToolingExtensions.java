@@ -32,18 +32,23 @@ POSSIBILITY OF SUCH DAMAGE.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.hl7.fhir.instance.model.BooleanType;
 import org.hl7.fhir.instance.model.CodeType;
+import org.hl7.fhir.instance.model.CodeableConcept;
 import org.hl7.fhir.instance.model.DomainResource;
 import org.hl7.fhir.instance.model.Element;
+import org.hl7.fhir.instance.model.ElementDefinition;
 import org.hl7.fhir.instance.model.Extension;
 import org.hl7.fhir.instance.model.ExtensionHelper;
 import org.hl7.fhir.instance.model.Factory;
 import org.hl7.fhir.instance.model.Identifier;
+import org.hl7.fhir.instance.model.PrimitiveType;
 import org.hl7.fhir.instance.model.Questionnaire.GroupComponent;
 import org.hl7.fhir.instance.model.Questionnaire.QuestionComponent;
 import org.hl7.fhir.instance.model.Reference;
 import org.hl7.fhir.instance.model.StringType;
+import org.hl7.fhir.instance.model.Type;
 import org.hl7.fhir.instance.model.UriType;
 import org.hl7.fhir.instance.model.ValueSet;
 import org.hl7.fhir.instance.model.ValueSet.ConceptDefinitionComponent;
@@ -54,17 +59,18 @@ import org.hl7.fhir.utilities.Utilities;
 public class ToolingExtensions {
 
   // validated
-  public static final String EXT_SUBSUMES = "http://hl7.org/fhir/ExtensionDefinition/valueset-subsumes"; 
-  private static final String EXT_OID = "http://hl7.org/fhir/ExtensionDefinition/valueset-oid";
-  public static final String EXT_DEPRECATED = "http://hl7.org/fhir/ExtensionDefinition/valueset-deprecated";
-  public static final String EXT_DEFINITION = "http://hl7.org/fhir/ExtensionDefinition/valueset-definition";
-  public static final String EXT_COMMENT = "http://hl7.org/fhir/ExtensionDefinition/valueset-comments";
-  private static final String EXT_IDENTIFIER = "http://hl7.org/fhir/ExtensionDefinition/identifier";
-  private static final String EXT_TRANSLATION = "http://hl7.org/fhir/ExtensionDefinition/translation";
-  public static final String EXT_ISSUE_SOURCE = "http://hl7.org/fhir/ExtensionDefinition/operationoutcome-issue-source";
-  public static final String EXT_DISPLAY_HINT = "http://hl7.org/fhir/ExtensionDefinition/profile-display-hint"; 
+  public static final String EXT_SUBSUMES = "http://hl7.org/fhir/StructureDefinition/valueset-subsumes"; 
+  private static final String EXT_OID = "http://hl7.org/fhir/StructureDefinition/valueset-oid";
+  public static final String EXT_DEPRECATED = "http://hl7.org/fhir/StructureDefinition/valueset-deprecated";
+  public static final String EXT_DEFINITION = "http://hl7.org/fhir/StructureDefinition/valueset-definition";
+  public static final String EXT_COMMENT = "http://hl7.org/fhir/StructureDefinition/valueset-comments";
+  private static final String EXT_IDENTIFIER = "http://hl7.org/fhir/StructureDefinition/identifier";
+  private static final String EXT_TRANSLATION = "http://hl7.org/fhir/StructureDefinition/translation";
+  public static final String EXT_ISSUE_SOURCE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source";
+  public static final String EXT_DISPLAY_HINT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-display-hint"; 
 
   // unregistered?
+  
   public static final String EXT_FLYOVER = "http://hl7.org/fhir/Profile/questionnaire-extensions#flyover";
   private static final String EXT_QTYPE = "http://www.healthintersections.com.au/fhir/Profile/metadata#type";
   private static final String EXT_EXPANSION_CLOSED = "http://hl7.org/fhir/Profile/questionnaire-extensions#closed";
@@ -72,6 +78,7 @@ public class ToolingExtensions {
   private static final String EXTENSION_FILTER_ONLY = "http://www.healthintersections.com.au/fhir/Profile/metadata#expandNeedsFilter";
   private static final String EXT_TYPE = "http://www.healthintersections.com.au/fhir/Profile/metadata#type";
   private static final String EXT_REFERENCE = "http://www.healthintersections.com.au/fhir/Profile/metadata#reference";
+  private static final String EXT_ALLOWABLE_UNITS = "http://hl7.org/fhir/StructureDefinition/elementdefinition-allowedUnits";
 
   
   // specific extension helpers
@@ -84,6 +91,20 @@ public class ToolingExtensions {
     c.setValue(source.toString());
     ex.setValue(c);
     return ex;
+  }
+
+  public static boolean hasExtension(DomainResource de, String url) {
+    return getExtension(de, url) != null;
+  }
+  
+  public static void addStringExtension(DomainResource dr, String url, String content) throws Exception {
+    if (!Utilities.noString(content)) {
+      Extension ex = getExtension(dr, url);
+      if (ex != null)
+        ex.setValue(new StringType(content));
+      else
+        dr.getExtension().add(Factory.newExtension(url, new StringType(content), true));   
+    }
   }
 
   public static void addComment(Element nc, String comment) throws Exception {
@@ -123,7 +144,7 @@ public class ToolingExtensions {
   }
 
   public static String readStringExtension(DomainResource c, String uri) {
-    Extension ex = ResourceUtilities.getExtension(c, uri);
+    Extension ex = getExtension(c, uri);
     if (ex == null)
       return null;
     if ((ex.getValue() instanceof StringType))
@@ -131,6 +152,14 @@ public class ToolingExtensions {
     if ((ex.getValue() instanceof UriType))
       return ((UriType) ex.getValue()).getValue();
     return null;
+  }
+
+  @SuppressWarnings("unchecked")
+  public static PrimitiveType<Type> readPrimitiveExtension(DomainResource c, String uri) {
+    Extension ex = getExtension(c, uri);
+    if (ex == null)
+      return null;
+    return (PrimitiveType<Type>) ex.getValue();
   }
 
   public static boolean findStringExtension(Element c, String uri) {
@@ -229,7 +258,21 @@ public class ToolingExtensions {
   public static Extension getExtension(DomainResource resource, String name) {
     if (name == null)
       return null;
+    if (!resource.hasExtension())
+      return null;
     for (Extension e : resource.getExtension()) {
+      if (name.equals(e.getUrl()))
+        return e;
+    }
+    return null;
+  }
+  
+  public static Extension getExtension(Element el, String name) {
+    if (name == null)
+      return null;
+    if (!el.hasExtension())
+      return null;
+    for (Extension e : el.getExtension()) {
       if (name.equals(e.getUrl()))
         return e;
     }
@@ -290,5 +333,38 @@ public class ToolingExtensions {
     extension.addExtension().setUrl("lang").setValue(new StringType(lang));
     extension.addExtension().setUrl("content").setValue(new StringType(value));
     element.getExtension().add(extension);
+  }
+
+  public static Type getAllowedUnits(ElementDefinition eld) {
+    for (Extension e : eld.getExtension()) 
+      if (e.getUrl().equals(EXT_ALLOWABLE_UNITS)) 
+        return e.getValue();
+    return null;
+  }
+
+  public static void setAllowableUnits(ElementDefinition eld, CodeableConcept cc) {
+    for (Extension e : eld.getExtension()) 
+      if (e.getUrl().equals(EXT_ALLOWABLE_UNITS)) {
+        e.setValue(cc);
+        return;
+      }
+    eld.getExtension().add(new Extension().setUrl(EXT_ALLOWABLE_UNITS).setValue(cc));
+ 
+  }
+
+	public static List<Extension> getExtensions(Element element, String url) {
+	  List<Extension> results = new ArrayList<Extension>();
+	  for (Extension ex : element.getExtension())
+	  	if (ex.getUrl().equals(url))
+	  		results.add(ex);
+	  return results;
+  }
+
+	public static List<Extension> getExtensions(DomainResource resource, String url) {
+	  List<Extension> results = new ArrayList<Extension>();
+	  for (Extension ex : resource.getExtension())
+	  	if (ex.getUrl().equals(url))
+	  		results.add(ex);
+	  return results;
   }
 }

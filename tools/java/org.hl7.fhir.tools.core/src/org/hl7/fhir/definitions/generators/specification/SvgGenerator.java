@@ -11,7 +11,6 @@ import java.util.Map;
 
 import org.hl7.fhir.definitions.model.BindingSpecification;
 import org.hl7.fhir.definitions.model.BindingSpecification.Binding;
-import org.hl7.fhir.definitions.model.BindingSpecification.BindingStrength;
 import org.hl7.fhir.definitions.model.DefinedCode;
 import org.hl7.fhir.definitions.model.DefinedStringPattern;
 import org.hl7.fhir.definitions.model.ElementDefn;
@@ -19,6 +18,7 @@ import org.hl7.fhir.definitions.model.PrimitiveType;
 import org.hl7.fhir.definitions.model.ProfiledType;
 import org.hl7.fhir.definitions.model.ResourceDefn;
 import org.hl7.fhir.definitions.model.TypeRef;
+import org.hl7.fhir.instance.model.ElementDefinition.BindingStrength;
 import org.hl7.fhir.tools.publisher.PageProcessor;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -159,8 +159,8 @@ public class SvgGenerator extends BaseGenerator {
     xml.setDefaultNamespace(NS_SVG);
     xml.namespace(NS_XLINK, "xlink");
     xml.attribute("version", "1.1");
-    xml.attribute("width", Double.toString(size.x));
-    xml.attribute("height", Double.toString(size.y));
+    xml.attribute("width", Utilities.noString(ini.getStringProperty("size", "width")) ? Double.toString(size.x) : ini.getStringProperty("size", "width"));
+    xml.attribute("height", Utilities.noString(ini.getStringProperty("size", "height")) ? Double.toString(size.y) : ini.getStringProperty("size", "height"));
     xml.open("svg");
     shadowFilter(xml);
     drawElement(xml, classNames);
@@ -678,6 +678,8 @@ public class SvgGenerator extends BaseGenerator {
       xml.attribute("style", "fill:#f8ddf8;stroke:black;stroke-width:1");
     else if (primitive instanceof DefinedStringPattern)
       xml.attribute("style", "fill:#f8ddf8;stroke:black;stroke-width:1");
+    else if (e.getName().equals("Element"))
+      xml.attribute("style", "fill:#ffffff;stroke:black;stroke-width:1");
     else
       xml.attribute("style", "fill:#f0f8ff;stroke:black;stroke-width:1");
     xml.element("rect", null);    
@@ -699,7 +701,7 @@ public class SvgGenerator extends BaseGenerator {
     if (link) {
       xml.open("text");
       if (tn.equals("Extension") || tn.equals("Reference") || tn.equals("Narrative"))
-        xml.attribute("xlink:href", GeneratorUtils.getSrcFile(tn, false) + ".html#"+tn.toLowerCase());
+        xml.attribute("xlink:href", definitions.getSrcFile(tn) + ".html#"+tn.toLowerCase());
       else
         xml.attribute("xlink:href", "#"+tn.toLowerCase());
       xml.open("a");
@@ -812,11 +814,13 @@ public class SvgGenerator extends BaseGenerator {
   private String describeBinding(ElementDefn e) {
     BindingSpecification b = definitions.getBindingByName(e.getBindingName());
     if (e.hasBinding() && b.getBinding() != Binding.Unbound) {
-      if (b.getBindingStrength() == BindingStrength.Example)
+      if (b.getStrength() == BindingStrength.EXAMPLE)
         return " \u00AB ("+e.getBindingName()+") \u00BB";
-      else if (b.getBindingStrength() == BindingStrength.Preferred)
+      else if (b.getStrength() == BindingStrength.PREFERRED)
+        return " \u00AB "+e.getBindingName()+"? \u00BB";
+      else if (b.getStrength() == BindingStrength.EXTENSIBLE)
         return " \u00AB "+e.getBindingName()+"+ \u00BB";
-      else // if (b.getBindingStrength() == BindingStrength.Required)
+      else // if (b.getBindingStrength() == BindingStrength.REQUIRED)
         return " \u00AB "+e.getBindingName()+" \u00BB";
     } else
       return "";
@@ -865,7 +869,7 @@ public class SvgGenerator extends BaseGenerator {
         if (e.hasBinding() && definitions.getBindingByName(e.getBindingName()).getBinding() != Binding.Unbound) {
           BindingSpecification b = definitions.getBindingByName(e.getBindingName());
           xml.text(" \u00AB ");
-          if (b.getBindingStrength() == BindingStrength.Example) {
+          if (b.getStrength() == BindingStrength.EXAMPLE) {
             xml.text("(");
             xml.attribute("xlink:href", getBindingLink(e));
             xml.open("a");
@@ -873,14 +877,21 @@ public class SvgGenerator extends BaseGenerator {
             xml.text(e.getBindingName());
             xml.close("a");
             xml.text(")");
-          } else if (b.getBindingStrength() == BindingStrength.Preferred) {
+          } else if (b.getStrength() == BindingStrength.PREFERRED) {
             xml.attribute("xlink:href", getBindingLink(e));
             xml.open("a");
             xml.element("title", definitions.getBindingByName(e.getBindingName()).getDefinition());
             xml.text(e.getBindingName());
             xml.close("a");
             xml.text("+");
-          } else if (b.getBindingStrength() == BindingStrength.Required) {
+          } else if (b.getStrength() == BindingStrength.EXTENSIBLE) {
+            xml.attribute("xlink:href", getBindingLink(e));
+            xml.open("a");
+            xml.element("title", definitions.getBindingByName(e.getBindingName()).getDefinition());
+            xml.text(e.getBindingName());
+            xml.close("a");
+            xml.text("+");
+          } else if (b.getStrength() == BindingStrength.REQUIRED) {
             xml.attribute("xlink:href", getBindingLink(e));
             xml.open("a");
             xml.element("title", definitions.getBindingByName(e.getBindingName()).getDefinition());
@@ -1027,7 +1038,7 @@ public class SvgGenerator extends BaseGenerator {
       else if (tr.getName().startsWith("@")) 
         prog.attribute(xml, "title", "@"+tr.getName().substring(1));
       else
-        prog.attribute(xml, "xlink:href", GeneratorUtils.getSrcFile(tr.getName(), false) + ".html#" + tr.getName());
+        prog.attribute(xml, "xlink:href", definitions.getSrcFile(tr.getName()) + ".html#" + tr.getName());
       
       prog.element(xml, "a", tr.getName());
       
@@ -1038,7 +1049,7 @@ public class SvgGenerator extends BaseGenerator {
           if (!firstP)
             if (prog.breaktext(xml, "|", t))
               return;
-          prog.attribute(xml, "xlink:href", GeneratorUtils.getSrcFile(t, false) + ".html#" + t);
+          prog.attribute(xml, "xlink:href", definitions.getSrcFile(t) + ".html#" + t);
           prog.element(xml, "a", t);
           firstP = false;
         }

@@ -16,13 +16,13 @@
 <p>URL for this extension: </p>
 <pre><b><%extensionurl%></b></pre>
 
-<p>Status: <%status%></p>
+<p>Status: <%status%>. <%pubdetails%></p>
 
 <p> 
 <%definition%> 
 </p>
 
-<%pubdetails%>
+<%context-info%>
 
 <%extref%>
 
@@ -65,8 +65,8 @@ Extension Content
 
 <div id="json">
 <p><b>JSON Template</b></p>
- <div id="xml-inner">
-  <p>todo</p>
+ <div id="json-inner">
+  <%json%>
  </div>
 </div>
 
@@ -122,8 +122,6 @@ try {
   var currentTabIndex = sessionStorage.getItem('fhir-resource-tab-index');
 }
 catch(exception){ 
-  if (navigator.userAgent.toLowerCase().indexof('msie') == -1)
-    alert(exception);
 }
 
 if (!currentTabIndex)
@@ -134,12 +132,11 @@ $( '#tabs' ).tabs({
          activate: function( event, ui ) {
              var active = $('.selector').tabs('option', 'active');
              currentTabIndex = ui.newTab.index();
+             document.activeElement.blur();
              try {
                sessionStorage.setItem('fhir-resource-tab-index', currentTabIndex);
              }
              catch(exception){ 
-                if (navigator.userAgent.toLowerCase().indexof('msie') == -1)
-                  alert(exception);
              }
          }
      });

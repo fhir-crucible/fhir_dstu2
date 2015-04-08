@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Wed, Dec 10, 2014 21:16+1100 for FHIR v0.4.0
+// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
 
 import java.util.*;
 
@@ -45,14 +45,14 @@ public abstract class Element extends Base {
     /**
      * unique id for the element within a resource (for internal references).
      */
-    @Child(name="id", type={IdType.class}, order=-1, min=0, max=1)
+    @Child(name ="id", type={IdType.class}, order=0, min=0, max=1)
     @Description(shortDefinition="xml:id (or equivalent in JSON)", formalDefinition="unique id for the element within a resource (for internal references)." )
     protected IdType id;
 
     /**
      * May be used to represent additional information that is not part of the basic definition of the element. In order to make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.
      */
-    @Child(name="extension", type={Extension.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name ="extension", type={Extension.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Additional Content defined by implementations", formalDefinition="May be used to represent additional information that is not part of the basic definition of the element. In order to make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension." )
     protected List<Extension> extension;
 
@@ -70,7 +70,7 @@ public abstract class Element extends Base {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Element.id");
         else if (Configuration.doAutoCreate())
-          this.id = new IdType();
+          this.id = new IdType(); // bb
       return this.id;
     }
 
@@ -141,6 +141,16 @@ public abstract class Element extends Base {
       return t;
     }
 
+    // syntactic sugar
+    public Element addExtension(Extension t) { //3
+      if (t == null)
+        return this;
+      if (this.extension == null)
+        this.extension = new ArrayList<Extension>();
+      this.extension.add(t);
+      return this;
+    }
+
       protected void listChildren(List<Property> childrenList) {
         childrenList.add(new Property("id", "id", "unique id for the element within a resource (for internal references).", 0, java.lang.Integer.MAX_VALUE, id));
         childrenList.add(new Property("extension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element. In order to make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", 0, java.lang.Integer.MAX_VALUE, extension));
@@ -155,6 +165,26 @@ public abstract class Element extends Base {
           for (Extension i : extension)
             dst.extension.add(i.copy());
         };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other) {
+        if (!super.equalsDeep(other))
+          return false;
+        if (!(other instanceof Element))
+          return false;
+        Element o = (Element) other;
+        return compareDeep(id, o.id, true) && compareDeep(extension, o.extension, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other) {
+        if (!super.equalsShallow(other))
+          return false;
+        if (!(other instanceof Element))
+          return false;
+        Element o = (Element) other;
+        return compareValues(id, o.id, true);
       }
 
       public boolean isEmpty() {

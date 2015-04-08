@@ -134,7 +134,7 @@ public class HeirarchicalTableGenerator  {
       if (this.hint == null)
         this.hint = text;
       else
-        this.hint += (this.hint.endsWith(".") ? " " : ". ")+text;
+        this.hint += (this.hint.endsWith(".") || this.hint.endsWith("?") ? " " : ". ")+text;
     }
   }
   
@@ -167,7 +167,7 @@ public class HeirarchicalTableGenerator  {
       for (Piece p : pieces)
         p.addToHint(text);            
     }
-    public void addImage(String src, String hint, String alt) {
+    public Piece addImage(String src, String hint, String alt) {
       if (pieces.size() > 0 && pieces.get(0).tag == null)
         pieces.get(0).text += " ";
 //      Piece img = new Piece("img");
@@ -177,6 +177,7 @@ public class HeirarchicalTableGenerator  {
 //      img.attributes.put("alt", alt);
 //      img.hint = hint;
       pieces.add(img);
+      return img;
     }
     public String text() {
       StringBuilder b = new StringBuilder();
@@ -275,13 +276,13 @@ public class HeirarchicalTableGenerator  {
   public TableModel initNormalTable() {
     TableModel model = new TableModel();
     
-    model.getTitles().add(new Title(null, null, "Name", null, null, 0));
-    model.getTitles().add(new Title(null, null, "Flags", null, null, 0));
-    model.getTitles().add(new Title(null, null, "Card.", null, null, 0));
-    model.getTitles().add(new Title(null, null, "Type", null, null, 100));
-    model.getTitles().add(new Title(null, null, "Description & Constraints", null, null, 0));
     model.setDocoImg("help16.png");
     model.setDocoRef("formats.html#table");
+    model.getTitles().add(new Title(null, model.getDocoRef(), "Name", "The logical name of the element", null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), "Flags", "Information about the use of the element", null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), "Card.", "Minimum and Maximum # of times the the element can appear in the instance", null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), "Type", "Reference to the type of the element", null, 100));
+    model.getTitles().add(new Title(null, model.getDocoRef(), "Description & Constraints", "Additional information about the element", null, 0));
     return model;
   }
 
@@ -297,7 +298,7 @@ public class HeirarchicalTableGenerator  {
       if (t.width != 0)
         tc.setAttribute("style", "width: "+Integer.toString(t.width)+"px");
     }
-    if (tc != null)
+    if (tc != null && model.getDocoRef() != null)
       tc.addTag("span").setAttribute("style", "float: right").addTag("a").setAttribute("title", "Legend for this format").setAttribute("href", model.getDocoRef()).addTag("img").setAttribute("alt", "doco").setAttribute("src", model.getDocoImg());
       
     for (Row r : model.getRows()) {
@@ -405,7 +406,12 @@ public class HeirarchicalTableGenerator  {
         return files.get(filename);
       StringBuilder b = new StringBuilder();
       b.append("data: image/png;base64,");
-      byte[] bytes = FileUtils.readFileToByteArray(new File(Utilities.path(dest, filename)));
+      byte[] bytes;
+      File file = new File(Utilities.path(dest, filename));
+      if (!file.exists()) // because sometime this is called real early before the files exist. it will be uilt again later because of this
+    	bytes = new byte[0]; 
+      else
+        bytes = FileUtils.readFileToByteArray(file);
       b.append(new String(Base64.encodeBase64(bytes)));
       files.put(filename, b.toString());
       return b.toString();
@@ -480,10 +486,10 @@ public class HeirarchicalTableGenerator  {
 
 
   private void genImage(List<Boolean> indents, boolean hasChildren, OutputStream stream) throws IOException {
-    BufferedImage bi = new BufferedImage(400, 2, BufferedImage.TYPE_BYTE_BINARY);
+    BufferedImage bi = new BufferedImage(800, 2, BufferedImage.TYPE_BYTE_BINARY);
     Graphics2D graphics = bi.createGraphics();
     graphics.setBackground(Color.WHITE);
-    graphics.clearRect(0, 0, 600, 2);
+    graphics.clearRect(0, 0, 800, 2);
     for (int i = 0; i < indents.size(); i++) {
       if (!indents.get(i))
         bi.setRGB(12+(i*16), 0, 0);

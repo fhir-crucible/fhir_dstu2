@@ -1342,62 +1342,11 @@ public class PageProcessor implements Logger, ProfileKnowledgeProvider  {
   }
 
   private void cloneToXhtml(String src, String dst, String name, String description, int level, boolean adorn, String pageType, String crumbTitle) throws Exception {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setNamespaceAware(true);
-    DocumentBuilder builder = factory.newDocumentBuilder();
-
-    Document xdoc = builder.parse(new CSFileInputStream(new CSFile(src)));
-//    XhtmlGenerator xhtml = new XhtmlGenerator(null);
-//    xhtml.generate(xdoc, new CSFile(dst), name, description, level, adorn);
-    
-    String n = new File(dst).getName();
-    n = n.substring(0, n.length()-9);
-    XhtmlGenerator xhtml = new XhtmlGenerator(new ExampleAdorner(definitions));
-    ByteArrayOutputStream b = new ByteArrayOutputStream();
-    xhtml.generate(xdoc, b, name, description, level, adorn, n+".xml.html");
-    String html = TextFile.fileToString(folders.srcDir + "template-example-xml.html").replace("<%setlevel 0%>", "<%setlevel "+Integer.toString(level)+"%>").replace("<%example%>", b.toString());
-    html = processPageIncludes(n+".xml.html", html, pageType, null, null, null, crumbTitle);
-    TextFile.stringToFile(html, dst);
-    
-//    epub.registerFile(dst, description, EPubManager.XHTML_TYPE);
-    epub.registerExternal(dst);
+    return;
   }
 
   public void jsonToXhtml(String src, String dst, String link, String name, String description, int level, String json, String pageType, String crumbTitle) throws Exception {
-
-    json = "<div class=\"example\">\r\n<p>" + Utilities.escapeXml(description) + "</p>\r\n<pre class=\"json\">\r\n" + Utilities.escapeXml(json)+ "\r\n</pre>\r\n</div>\r\n";
-    String html = TextFile.fileToString(folders.srcDir + "template-example-json.html").replace("<%setlevel 0%>", "<%setlevel "+Integer.toString(level)+"%>").replace("<%example%>", json);
-    html = processPageIncludes(dst, html, pageType, null, null, null, crumbTitle);
-    TextFile.stringToFile(html, getFolders().dstDir + dst);
-//    epub.registerFile(dst, description, EPubManager.XHTML_TYPE);
-    epub.registerExternal(dst);
-//
-//    
-//    FileOutputStream outs = new FileOutputStream(folders.dstDir+ dst);
-//    OutputStreamWriter out = new OutputStreamWriter(outs);
-//    
-//    out.write("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\r\n");
-//    out.write("<head>\r\n");
-//    out.write(" <title>Example Instance for "+name+"</title>\r\n");
-//    out.write(" <link rel=\"Stylesheet\" href=\"");
-//    for (int i = 0; i < level; i++)
-//      out.write("../");
-//    out.write("fhir.css\" type=\"text/css\" media=\"screen\"/>\r\n");
-//    out.write("</head>\r\n");
-//    out.write("<body>\r\n");
-//    out.write("<p>&nbsp;</p>\r\n"); 
-//    out.write("<div class=\"example\">\r\n");
-//    out.write("<p>"+Utilities.escapeXml(description)+"</p>\r\n"); 
-//    out.write("<p><a href=\""+link+"\">Raw JSON</a></p>\r\n"); 
-//    out.write("<pre class=\"json\">\r\n");
-//    out.write(Utilities.escapeXml(json));    
-//    out.write("</pre>\r\n");
-//    out.write("</div>\r\n");
-//    out.write("</body>\r\n");
-//    out.write("</html>\r\n");
-//    out.flush();
-//    outs.close();
-//    epub.registerFile(dst, description, EPubManager.XHTML_TYPE);
+    return;
   }
 
   

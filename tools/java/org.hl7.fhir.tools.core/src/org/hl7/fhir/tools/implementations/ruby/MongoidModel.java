@@ -88,7 +88,7 @@ public class MongoidModel extends ResourceGenerator {
 
   @Override
   protected void generateMainHeader(GenBlock fileBlock) {
-    fileBlock.ln("# Copyright (c) 2011-2014, HL7, Inc & The MITRE Corporation");
+    fileBlock.ln("# Copyright (c) 2011-2015, HL7, Inc & The MITRE Corporation");
     fileBlock.ln("# All rights reserved.");
     fileBlock.ln("# ");
     fileBlock.ln("# Redistribution and use in source and binary forms, with or without modification, ");

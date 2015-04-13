@@ -6,8 +6,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.definitions.model.Definitions;
 import org.hl7.fhir.definitions.model.ElementDefn;
@@ -21,12 +23,13 @@ public abstract class ResourceGenerator {
   protected File outputFile;
   protected Definitions definitions;
   protected boolean xmlAttributeAsField = true;
+  public static Set<String> dataTypes = new HashSet<String>();
 
   protected enum FieldType {
     ANY("*"),
     BINARY("base64Binary"),
     BOOLEAN("boolean"),
-    INTEGER("integer"),
+    INTEGER("integer","positiveInt","unsignedInt"),
     DECIMAL("decimal"),
     DATE("date", "dateTime", "time"),
     INSTANT("instant"),
@@ -120,6 +123,7 @@ public abstract class ResourceGenerator {
           handleField(block, FieldType.EMBEDDED, multipleCardinality, elementDefinition, typeRef);
         } else {
           handleField(block, FieldType.getFieldType(elementType), multipleCardinality, elementDefinition, typeRef);
+          dataTypes.add(elementType);
         }
       }
     } else if (types.size() == 0) {

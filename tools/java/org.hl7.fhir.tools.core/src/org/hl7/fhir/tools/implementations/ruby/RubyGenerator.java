@@ -141,7 +141,9 @@ public class RubyGenerator extends BaseGenerator implements PlatformGenerator {
         
     ZipGenerator zip = new ZipGenerator(destDir+getReference(version));
     zip.addFolder(implDir, "mongoid", false);
-    zip.close();    
+    zip.close();  
+    
+    System.out.println(ResourceGenerator.dataTypes);
   }
   
   private void createDirStructrue(Map<String, String> dirs) throws IOException {

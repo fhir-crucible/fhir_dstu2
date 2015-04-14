@@ -9,6 +9,7 @@ implementations/ruby/output
 #.project
 ivy/
 publish/
+qa/
 temp/**
 tools/java/imports/
 #implementations/ruby/base/*

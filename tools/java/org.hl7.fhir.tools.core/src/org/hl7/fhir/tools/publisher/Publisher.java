@@ -513,6 +513,7 @@ public class Publisher implements URIResolver {
     Utilities.copyFileToDirectory(new File( folder + "/publish/profiles-others.xml"), profilesDir);
     Utilities.copyFileToDirectory(new File( folder + "/publish/profiles-resources.xml"), profilesDir);
     Utilities.copyFileToDirectory(new File( folder + "/publish/profiles-types.xml"), profilesDir);
+    Utilities.copyFileToDirectory(new File( folder + "/publish/extension-definitions.xml"), profilesDir);
 
     File valuesetsDir = new File( folder + "/implementations/ruby/output/model/lib/models/valuesets");
     valuesetsDir.mkdirs();

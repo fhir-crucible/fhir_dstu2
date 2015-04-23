@@ -183,6 +183,8 @@ public abstract class ResourceGenerator {
       elementName = "fhirHash";
     } else if (elementName.equals("identity")) {
       elementName = "fhirIdentity";
+    } else if (elementName.equals("modifier")) {
+      elementName = "fhirModifier";
     }
 
     return elementName;

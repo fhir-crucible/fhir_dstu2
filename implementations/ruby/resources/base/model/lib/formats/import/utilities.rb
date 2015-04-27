@@ -154,7 +154,7 @@ module FHIR
                 end              
               end
               set_model_data(obj, fixed, value)
-            elsif value.is_a? String or value.is_a? TrueClass or value.is_a? FalseClass
+            elsif value.is_a?(String) || value.is_a?(TrueClass) || value.is_a?(FalseClass) || value.is_a?(Numeric)
               # puts ' ' * depth + "Key: #{key} is a recognized primitive"
               # do nothing, we can set Strings and booleans directly
               obj[fixed] = value

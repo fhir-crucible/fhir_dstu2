@@ -26,7 +26,7 @@ module FHIR
 
           # go through the keys, if one is a FHIR::PartialDateTime,
           # then include the iso8601 value and not a hash
-          klass = get_fhir_class_from_resource_type(resourceType)
+          klass = get_fhir_class_from_resource_type(h.class.name)
           klass.fields.each do |key,value|
             if value.type == FHIR::PartialDateTime
               hash[key] = h.send(key)
@@ -38,6 +38,8 @@ module FHIR
         if h.is_a? Hash
           # remove "_id" attributes
           h.delete("_id")
+          h.delete("versionNum")
+
           # loop through all the entries in the hash
           h.each do |key,value|
             # massage entries that are also hashes...
@@ -51,7 +53,7 @@ module FHIR
                   next massageHash(item,false) # .. with a massaged hash
                 # serialize FHIR children correctly
                 elsif is_fhir_class?(item.class.name)
-                  next massageHash(item,false) # .. with a hash representation of an object
+                  next massageHash(item, (key=='contained') ) # .. with a hash representation of an object
                 else
                   next item # .. or with the item itself (probably primitive data type)
                 end
@@ -65,7 +67,13 @@ module FHIR
               h.delete(key)
             # special handling for partial date times
             elsif value.is_a? FHIR::PartialDateTime
-              h[key] = value.iso8601 
+              if key.ends_with? 'Date'
+                h[key] = value.to_date.iso8601
+              elsif key.ends_with?('Time') && !key.ends_with?('DateTime')
+                h[key] = value.to_time.strftime("%T")
+              else
+                h[key] = value.iso8601 
+              end
             # massage entires that are FHIR classes...
             elsif is_fhir_class?(value.class.name)
               h[key] = massageHash(value,false)

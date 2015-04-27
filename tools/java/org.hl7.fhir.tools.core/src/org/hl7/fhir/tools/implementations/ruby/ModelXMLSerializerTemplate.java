@@ -241,9 +241,20 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
   }
 
   private String getPartialDateFieldLine(String typeName, String originalTypeName) {
+    String d = "";
+    if(typeName.endsWith("Date")) {
+      // this is only a Date
+      d = "().to_date.iso8601";
+    } else if(typeName.endsWith("Time") && !typeName.endsWith("DateTime")) {
+      // this is only a Time
+      d = "().to_time.strftime(\"%T\")";
+    } else {
+      // this is a full DateTime
+      d = "().iso8601";
+    }
     return ""
          + "<%- if !model." + typeName + "().nil? -%>"
-         +   "<" + originalTypeName + " value=\"<%= model." + typeName + "().iso8601 %>\"/>"
+         +   "<" + originalTypeName + " value=\"<%= model." + typeName + d + " %>\"/>"
          + "<%- end -%>";
   }
 

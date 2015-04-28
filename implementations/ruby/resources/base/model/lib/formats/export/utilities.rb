@@ -5,7 +5,7 @@ module FHIR
         FHIR::Export::ModelSerializer.new.serialize(self, options)
       end
             
-      #	Export FHIR Resources as FHIR JSON
+      # Export FHIR Resources as FHIR JSON
       def to_fhir_json
         h = massageHash(self,true)
         JSON.pretty_unparse(h)
@@ -32,16 +32,23 @@ module FHIR
               hash[key] = h.send(key)
             end
           end
+          hash['extension'] = h.extension.map {|e|build_extension_hash(e)}
+          hash['modifierExtension'] = h.modifierExtension.map {|e|build_extension_hash(e)}
+          hash['entry'] = h.entry.map {|e|build_entry_hash(e)} if h.respond_to?(:entry)
           h = hash
         end
         
         if h.is_a? Hash
           # remove "_id" attributes
           h.delete("_id")
-          h.delete("versionNum")
 
           # loop through all the entries in the hash
           h.each do |key,value|
+            if ['extension','modifierExtension','entry'].include?(key)
+              h.delete(key) if value.empty?
+              next
+            end
+
             # massage entries that are also hashes...
             if value.is_a? Hash
               h[key] = massageHash(value,false)
@@ -104,6 +111,51 @@ module FHIR
         
         fix_all_keys(h)
       end # eof massageHash method
+      
+      def build_extension_hash(e)
+        extension_hash = {}
+        extension_hash['id']=e.xmlId if e.xmlId
+        extension_hash['url']=e.url if !e.url.nil?
+        # render template element
+        # <%== render :template => 'element', :locals => {model: model, is_resource: false} %>
+        if !e.value().nil?
+          if FHIR::AnyType::PRIMITIVES.include? e.valueType().downcase
+            # <value<%= model.valueType() %> value="<%= model.value()[:value] %>"/>
+            if e.value.is_a? Hash
+              extension_hash["value#{e.valueType}"] = e.value[:value]
+            else
+              extension_hash["value#{e.valueType}"] = e.value
+            end
+          elsif FHIR::AnyType::DATE_TIMES.include? e.valueType().downcase 
+            # <value<%= model.valueType() %> value="<%= model.value()[:value] %>"/>
+            if e.value.is_a? Hash
+              extension_hash["value#{e.valueType}"] = e.value[:value]
+            else
+              extension_hash["value#{e.valueType}"] = e.value
+            end
+          else
+            # model.value()[:value].to_xml(is_root: false, name: "value#{model.valueType()}")%>
+            if e.value.methods.include? :to_fhir_json
+              contained = JSON.parse(e.value.to_fhir_json)
+              contained.delete('resourceType')
+              extension_hash["value#{e.valueType}"] = contained
+            elsif e.value[:value].methods.include? :to_fhir_json
+              contained = JSON.parse(e.value[:value].to_fhir_json)
+              contained.delete('resourceType')              
+              extension_hash["value#{e.valueType}"] = contained
+            end
+          end
+        end
+        extension_hash
+      end
+
+      def build_entry_hash(e)
+        entry_hash = massageHash(e,true)
+        resourceType = entry_hash['resourceType']
+        entry_hash.delete('resourceType')
+        entry_hash['resource'] = JSON.parse(e.resource.to_fhir_json)
+        entry_hash
+      end
       
     end
   end

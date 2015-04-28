@@ -207,11 +207,15 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
 
   private String getResourceFieldLine(String typeName, String originalTypeName) {
     return ""
-        + "<%- if !model." + typeName + "().nil? -%>"
-        + "<"+typeName+">"
-        +     "<%== model." + typeName + "().to_xml(is_root: false, name: \"#{model." + typeName + "Type()}\")%>"
-        + "</"+typeName+">"
-        + "<%- end -%>";      
+        + "<%- if !model." + typeName + "().nil? -%>"  
+        +   "<"+typeName+">"
+        +       "<%== model." + typeName + "().to_xml(is_root: false)%>"
+        +   "</"+typeName+">"
+        + "<%- elsif !model[\"" + typeName + "\".to_sym].nil? -%>"      
+        +   "<"+typeName+">"
+        +      "<%== model[\"" + typeName + "\".to_sym].to_xml(is_root: false)}\")%>"
+        +   "</"+typeName+">"
+        + "<%- end -%>";
   }
 
   private String getIgnoredElementLine(String typeName) {

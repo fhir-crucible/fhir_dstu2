@@ -153,7 +153,11 @@ module FHIR
         entry_hash = massageHash(e,true)
         resourceType = entry_hash['resourceType']
         entry_hash.delete('resourceType')
-        entry_hash['resource'] = JSON.parse(e.resource.to_fhir_json)
+        if e.methods.include?(:resouce) && e.resource.methods.include?(:to_fhir_json)
+          entry_hash['resource'] = JSON.parse(e.resource.to_fhir_json)
+        elsif e[:resource].methods.include? :to_fhir_json
+          entry_hash['resource'] = JSON.parse(e[:resource].to_fhir_json)
+        end
         entry_hash
       end
       

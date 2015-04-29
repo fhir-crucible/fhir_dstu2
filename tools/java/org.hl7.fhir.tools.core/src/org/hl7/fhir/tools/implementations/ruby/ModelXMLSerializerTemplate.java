@@ -258,10 +258,10 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
 
   private String getPartialDateFieldLine(String typeName, String originalTypeName, boolean multipleCardinality) {
     String d = "";
-    if(typeName.endsWith("Date")) {
+    if(typeName.toLowerCase().endsWith("date")) {
       // this is only a Date
       d = "().to_date.iso8601";
-    } else if(typeName.endsWith("Time") && !typeName.endsWith("DateTime")) {
+    } else if(typeName.toLowerCase().endsWith("time") && !typeName.toLowerCase().endsWith("datetime")) {
       // this is only a Time
       d = "().to_time.strftime(\"%T\")";
     } else {

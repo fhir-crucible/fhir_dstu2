@@ -153,7 +153,7 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
       block.ln(getInstantFieldLine(typeName, originalTypeName));
       break;
     case DATE:
-      block.ln(getPartialDateFieldLine(typeName, originalTypeName));
+      block.ln(getPartialDateFieldLine(typeName, originalTypeName, multipleCardinality));
       break;
     case BOOLEAN:
     case INTEGER:
@@ -213,7 +213,7 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
         +   "</"+typeName+">"
         + "<%- elsif !model[\"" + typeName + "\".to_sym].nil? -%>"      
         +   "<"+typeName+">"
-        +      "<%== model[\"" + typeName + "\".to_sym].to_xml(is_root: false)}\")%>"
+        +      "<%== model[\"" + typeName + "\".to_sym].to_xml(is_root: false) %>"
         +   "</"+typeName+">"
         + "<%- end -%>";
   }
@@ -256,7 +256,7 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
          + "<%- end -%>";
   }
 
-  private String getPartialDateFieldLine(String typeName, String originalTypeName) {
+  private String getPartialDateFieldLine(String typeName, String originalTypeName, boolean multipleCardinality) {
     String d = "";
     if(typeName.endsWith("Date")) {
       // this is only a Date
@@ -268,10 +268,19 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
       // this is a full DateTime
       d = "().iso8601";
     }
-    return ""
-         + "<%- if !model." + typeName + "().nil? -%>"
-         +   "<" + originalTypeName + " value=\"<%= model." + typeName + d + " %>\"/>"
-         + "<%- end -%>";
+    if(multipleCardinality) {
+      return ""
+          + "<%- if (!model." + typeName + "().nil? && !model." + typeName + ".empty?) -%>"
+          +   "<%- model." + typeName + "().each do |element| -%>"
+          +     "<" + originalTypeName + " value=\"<%= element." + d + " %>\"/>"
+          +   "<%- end -%>"
+          + "<%- end -%>";
+    } else {
+      return ""
+          + "<%- if !model." + typeName + "().nil? -%>"
+          +   "<" + originalTypeName + " value=\"<%= model." + typeName + d + " %>\"/>"
+          + "<%- end -%>";      
+    }
   }
 
   private String getNestedElementLine(String typeName, String originalTypeName, String template, boolean multipleCardinality) {

@@ -14,7 +14,7 @@ class ProfileComparisonTest < Test::Unit::TestCase
   FileUtils.rm_rf(REPORT_DIR) if File.directory?(REPORT_DIR)
   FileUtils.mkdir_p REPORT_DIR
   File.open("#{REPORT_DIR}/profile_comparison.csv", 'w:UTF-8') do |file| 
-    file.puts "Resource,Profile A,Profile B,Status,Message,Value A,Value B"
+    file.puts "Resource,Profile A,Profile B,Path,Attribute,Status,Message,Value A,Value B"
   end
 
   # Load StructureDefinitions
@@ -67,19 +67,11 @@ class ProfileComparisonTest < Test::Unit::TestCase
 
       File.open("#{REPORT_DIR}/profile_comparison.csv", 'a:UTF-8') do |file| 
         p0.errors.each do |e| 
-          file.print(resource_name,',')
-          file.print("#{p0.xmlId},")
-          file.print("#{p1.xmlId},")
-          file.print('ERROR,')
-          e.split("\n").each{|x| file.print(x.strip.gsub(/[:,]/,' '),',')}
+          file.print(e.to_s)
           file.print("\n")
         end
         p0.warnings.each do |w| 
-          file.print(resource_name,',')
-          file.print("#{p0.xmlId},")
-          file.print("#{p1.xmlId},")
-          file.print('WARNING,')
-          w.split("\n").each{|x| file.print(x.strip.gsub(/[:,]/,' '),',')}
+          file.print(w.to_s)
           file.print("\n")
         end        
       end

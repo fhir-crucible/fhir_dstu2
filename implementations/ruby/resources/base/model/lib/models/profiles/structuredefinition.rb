@@ -66,7 +66,7 @@ module FHIR
 
       @@base_definitions.entry.each do |entry|
         if entry.resourceType == 'StructureDefinition'
-          if !entry.resource.nil? && (entry.resource.fhirType == resource_name || entry.resource.name == resource_name)
+          if !entry.resource.nil? && (entry.resource.fhirType == resource_name || entry.resource.name == resource_name || entry.resource.url == resource_name)
             return entry.resource
           end
         end
@@ -129,6 +129,35 @@ module FHIR
       nil
     end
 
+    def self.find_all_flaws
+      load_definitions
+      all_flaws = []
+      begin
+        @@other_definitions.entry.each do |entry|
+          if entry.resourceType == 'StructureDefinition'
+            if !entry.resource.nil?
+              base = get_base_definition(entry.resource.base)
+              if base.nil? || base.snapshot.nil?
+                puts "Skipping #{entry.resource.xmlId} with base #{entry.resource.base}"
+                next
+              end
+              base_elements = base.snapshot.element.map {|e| e.path}
+              profile_elements = entry.resource.snapshot.element.map {|e| e.path }
+              missing = base_elements - profile_elements
+              if !missing.nil?
+                missing.each do |m|
+                  all_flaws << "#{entry.resource.xmlId} is missing #{m} from #{base.xmlId}"
+                end
+              end
+            end
+          end
+        end
+      rescue Exception => ex
+        binding.pry
+      end
+      all_flaws
+    end
+    
     # -------------------------------------------------------------------------
     #                            Profile Comparison
     # -------------------------------------------------------------------------
@@ -790,16 +819,16 @@ module FHIR
         end
         is_valid_uri
       when 'instant'
-        regex = /-?[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]+)?(Z|(\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))))/
+        regex = /\A[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]+)?(Z|(\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))))\Z/
         value.is_a?(String) && !(regex =~ value).nil?
       when 'date'
-        regex = /-?[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1])))/
+        regex = /\A[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1]))?)?\Z/
         value.is_a?(String) && !(regex =~ value).nil?        
       when 'datetime'
-        regex = /-?[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]+)?(Z|(\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?/
+        regex = /\A[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]+)?(Z|(\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?\Z/
         value.is_a?(String) && !(regex =~ value).nil?
       when 'time'
-        regex = /([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]+)?/
+        regex = /\A([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]+)?\Z/
         value.is_a?(String) && !(regex =~ value).nil?
       when 'integer','unsignedint'
         (!Integer(value).nil? rescue false)

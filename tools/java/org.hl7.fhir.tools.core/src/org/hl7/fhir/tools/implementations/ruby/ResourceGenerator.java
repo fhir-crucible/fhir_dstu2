@@ -25,13 +25,20 @@ public abstract class ResourceGenerator {
   protected boolean xmlAttributeAsField = true;
   public static Set<String> dataTypes = new HashSet<String>();
 
+  protected static final String REGEX_DATE = "/\\A[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1]))?)?\\Z/";;
+  protected static final String REGEX_TIME = "/\\A([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?\\Z/";
+  protected static final String REGEX_DATETIME = "/\\A[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?\\Z/";
+  protected static final String REGEX_INSTANT = "/\\A[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))))\\Z/";
+  
   protected enum FieldType {
     ANY("*"),
     BINARY("base64Binary"),
     BOOLEAN("boolean"),
     INTEGER("integer","positiveInt","unsignedInt"),
     DECIMAL("decimal"),
-    DATE("date", "dateTime", "time"),
+    DATE("date"),
+    DATETIME("dateTime"),
+    TIME("time"),
     INSTANT("instant"),
     CODE("code"),
     STRING("string", "uri", "id", "oid", "idref"),
@@ -129,7 +136,6 @@ public abstract class ResourceGenerator {
     } else if (types.size() == 0) {
       handleField(block, FieldType.EMBEDDED, multipleCardinality, elementDefinition, null);
     }
-
   }
 
   protected String getEmbeddedClassName(ElementDefn elementDefinition, TypeRef typeRef) {

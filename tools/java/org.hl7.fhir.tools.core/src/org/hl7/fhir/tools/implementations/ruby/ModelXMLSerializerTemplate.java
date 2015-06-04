@@ -150,10 +150,10 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
       block.ln(getValueFieldLine(typeName, originalTypeName, multipleCardinality, elementDefinition.isXmlAttribute()));
       break;
     case INSTANT:
-      block.ln(getInstantFieldLine(typeName, originalTypeName));
-      break;
     case DATE:
-      block.ln(getPartialDateFieldLine(typeName, originalTypeName, multipleCardinality));
+    case DATETIME:
+    case TIME:
+      block.ln(getPartialDateFieldLine(fieldType, typeName, originalTypeName, multipleCardinality));
       break;
     case BOOLEAN:
     case INTEGER:
@@ -248,37 +248,36 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
     }
   }
 
-  private String getInstantFieldLine(String typeName, String originalTypeName) {
-    // TODO: Assumes Zulu time...
-    return ""
-         + "<%- if !model." + typeName + "().nil? -%>"
-         +   "<" + originalTypeName + " value=\"<%= model." + typeName + "().utc.strftime('%Y-%m-%dT%H:%M:%SZ') %>\"/>"
-         + "<%- end -%>";
-  }
-
-  private String getPartialDateFieldLine(String typeName, String originalTypeName, boolean multipleCardinality) {
-    String d = "";
-    if(typeName.toLowerCase().endsWith("date")) {
+  private String getPartialDateFieldLine(FieldType dataType, String typeName, String originalTypeName, boolean multipleCardinality) {
+    String regex = "";
+    if(dataType==FieldType.DATE) {
       // this is only a Date
-      d = "().to_date.iso8601";
-    } else if(typeName.toLowerCase().endsWith("time") && !typeName.toLowerCase().endsWith("datetime")) {
+      regex = ResourceGenerator.REGEX_DATE;
+    } else if(dataType==FieldType.TIME) {
       // this is only a Time
-      d = "().to_time.strftime(\"%T\")";
-    } else {
+      regex = ResourceGenerator.REGEX_TIME;
+    } else if(dataType==FieldType.DATETIME) {
       // this is a full DateTime
-      d = "().iso8601";
+      regex = ResourceGenerator.REGEX_DATETIME;
+    } else if(dataType==FieldType.INSTANT) {
+      // this is an exact Instant
+      regex = ResourceGenerator.REGEX_INSTANT;
     }
     if(multipleCardinality) {
       return ""
           + "<%- if (!model." + typeName + "().nil? && !model." + typeName + ".empty?) -%>"
           +   "<%- model." + typeName + "().each do |element| -%>"
-          +     "<" + originalTypeName + " value=\"<%= element." + d + " %>\"/>"
+          +     "<%- if (!element.match(" + regex + ").nil?) -%>"
+          +       "<" + originalTypeName + " value=\"<%= element %>\"/>"
+          +     "<%- end -%>"
           +   "<%- end -%>"
           + "<%- end -%>";
     } else {
       return ""
           + "<%- if !model." + typeName + "().nil? -%>"
-          +   "<" + originalTypeName + " value=\"<%= model." + typeName + d + " %>\"/>"
+          +   "<%- if (!model." + typeName + "().match(" + regex + ").nil?) -%>"
+          +     "<" + originalTypeName + " value=\"<%= model." + typeName + " %>\"/>"
+          +   "<%- end -%>"
           + "<%- end -%>";      
     }
   }

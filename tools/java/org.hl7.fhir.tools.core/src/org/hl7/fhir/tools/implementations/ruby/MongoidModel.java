@@ -73,7 +73,8 @@ public class MongoidModel extends ResourceGenerator {
       block.bs();
 
       generateValidCodes(block, elementDefinition);
-      
+      generateMultipleTypes(block, elementDefinition);
+
       for (ElementDefn nestedElement : elementDefinition.getElements()) {
         generateElement(block, nestedElement);
       }
@@ -141,6 +142,7 @@ public class MongoidModel extends ResourceGenerator {
     fileBlock.ln();
     generateSearchParams(fileBlock);
     generateValidCodes(fileBlock, elementDefinition);
+    generateMultipleTypes(fileBlock, elementDefinition);
   }
 
   private void generateSearchParams(GenBlock block) {
@@ -155,8 +157,8 @@ public class MongoidModel extends ResourceGenerator {
         String comma = iter.hasNext() ? "," : "";
         block.ln("'" + param + "'" + comma);
       }
-      block.ln("]");
       block.es();
+      block.ln("]");
     }
   }
   
@@ -210,6 +212,52 @@ public class MongoidModel extends ResourceGenerator {
       block.ln();      
     }    
   }
+  
+  private void generateMultipleTypes(GenBlock block, ElementDefn elementDefinition ) {
+    
+    Map<String,List<String>> multipleTypes = new HashMap<String,List<String>>();
+    for (ElementDefn nestedElement : elementDefinition.getElements()) {
+      if(nestedElement.getTypes()!=null && nestedElement.getTypes().size() > 1) {
+        String name = nestedElement.getName();
+        if(name.endsWith("[x]")) {
+          name = name.substring(0, name.length()-3);
+        }
+        List<String> t = new ArrayList<String>();
+        for (TypeRef typeRef : nestedElement.getTypes()) {
+          String typeName = generateTypeName(nestedElement, typeRef);
+          t.add(typeName);
+        }
+        multipleTypes.put(name, t);
+      }
+    }
+    
+    if(!multipleTypes.isEmpty()) {
+      block.ln("MULTIPLE_TYPES = {");
+      block.bs();
+      StringBuffer sb = new StringBuffer();
+      Iterator<String> keys = multipleTypes.keySet().iterator();
+      while( keys.hasNext() ) {
+        String key = keys.next();
+        List<String> types = multipleTypes.get(key);
+        if(types.size() > 0) {
+          sb.setLength(0);
+          sb.append(key).append(": [");
+          for(String type : types) {
+            sb.append(" \"").append(type).append("\",");
+          }
+          sb.setLength( sb.length() - 1 );
+          sb.append(" ]");
+          if(keys.hasNext()) {
+            sb.append(",");
+          }
+          block.ln( sb.toString() );          
+        }
+      }
+      block.es();
+      block.ln("}");
+      block.ln();      
+    }    
+  }
 
   @Override
   protected void generateResourceFooter(GenBlock fileBlock) {
@@ -227,7 +275,9 @@ public class MongoidModel extends ResourceGenerator {
     String typeName = generateTypeName(elementDefinition, typeRef);
 
     boolean requiredField = (elementDefinition.getMinCardinality() >= 1);
-
+    StringBuilder sb;
+    String regex = null;
+    
     switch (fieldType) {
     case ANY:
       block.ln(getValueFieldLine(typeName+"Type", "String", multipleCardinality));
@@ -247,17 +297,38 @@ public class MongoidModel extends ResourceGenerator {
       block.ln(getValueFieldLine(typeName, "Float", multipleCardinality));
       break;
     case DATE:
-      block.ln(getValueFieldLine(typeName, "FHIR::PartialDateTime", multipleCardinality));
-      break;
+      if(regex==null) regex = ResourceGenerator.REGEX_DATE;
+    case DATETIME:
+      if(regex==null) regex = ResourceGenerator.REGEX_DATETIME;
+    case TIME:
+      if(regex==null) regex = ResourceGenerator.REGEX_TIME;
     case INSTANT:
-      block.ln(getValueFieldLine(typeName, "DateTime", multipleCardinality));
+      if(regex==null) regex = ResourceGenerator.REGEX_INSTANT;
+      
+      block.ln(getValueFieldLine(typeName, "String", multipleCardinality));
+      if(multipleCardinality) {
+        block.ln("validates_each :" + typeName + ", allow_nil: true do |record, attr, values|");
+        block.bs();
+        block.ln("values.each do |value|");
+        block.bs();
+        block.ln("record.errors.add(attr, \"#{value} is not a valid "+fieldType.toString().toLowerCase()+".\") if value.match("+regex+").nil?");
+        block.es();
+        block.ln("end");
+        block.es();
+        block.ln("end");
+      } else {
+        sb = new StringBuilder();
+        sb.append("validates :").append(typeName).append(", :allow_nil => true, :format => {  with: ");
+        sb.append(regex).append(" }");
+        block.ln(sb.toString());        
+      }
       break;
     case CODE:
       block.ln(getValueFieldLine(typeName, "String", multipleCardinality));
       if(elementDefinition.hasBinding() && elementDefinition.hasBindingName()) {
         BindingSpecification binding = this.definitions.getBindingByName(elementDefinition.getBindingName());
         if(binding!=null && binding.getCodes()!=null && (binding.getCodes().size() > 0) ) {
-          StringBuilder sb = new StringBuilder();
+          sb = new StringBuilder();
           sb.append("validates :").append(typeName).append(", :inclusion => { in: VALID_CODES[:");
           sb.append(typeName).append("]");
           if(requiredField) {

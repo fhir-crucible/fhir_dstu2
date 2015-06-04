@@ -40,9 +40,7 @@ import org.hl7.fhir.definitions.model.TypeRef;
 import org.hl7.fhir.tools.implementations.GenBlock;
 
 public class ModelXMLDeSerializerTemplate extends ResourceGenerator {
-  
-    private static final String DATE_TIME_PARSE_FUNCTION = "parse_date_time";
-    
+      
     public ModelXMLDeSerializerTemplate(String name, Definitions definitions, File outputFile) {
       super(name, definitions, outputFile);
     }
@@ -141,12 +139,12 @@ public class ModelXMLDeSerializerTemplate extends ResourceGenerator {
         block.ln(getValueFieldLine(typeName, originalTypeName, multipleCardinality, elementDefinition.isXmlAttribute()));
         break;
       case INSTANT:
-        block.ln(getValueFieldLine(typeName, originalTypeName, multipleCardinality, elementDefinition.isXmlAttribute(), DATE_TIME_PARSE_FUNCTION));
-        break;
       case BOOLEAN:
       case INTEGER:
       case DECIMAL:
       case DATE:
+      case DATETIME:
+      case TIME:
       case CODE:
       case STRING:
         block.ln(getValueFieldLine(typeName, originalTypeName, multipleCardinality, elementDefinition.isXmlAttribute()));

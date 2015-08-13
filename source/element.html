@@ -16,7 +16,9 @@
 -->
 
 <%elheader base%>
+
 <h1>Element</h1>
+<table class="cols"><tr><td id="wg"><a _target="blank" href="[%wg fhir%]">[%wgt fhir%]</a> Work Group</td><td id="fmm"><a href="resource.html#maturity">Maturity Level</a>: N/A</td><td id="ballot"><a href="help.html#status">Ballot Status</a>: <a href="history.html#pubs">DSTU 2</a></td></tr></table>
 
 <p>
 The base definition for all elements contained inside a resource. All elements, whether defined as a <a href="datatypes.html">Data Type</a>
@@ -28,8 +30,20 @@ or as part of a resource structure, have this base content:
 Content
 </h2>
 
-[%dt Element%]
+[%dt Element 1%]
 
+
+<p>&nbsp;</p>
+
+<p><b>Constraints</b></p>
+
+[%dt.constraints Element%]
+
+<p>
+This constraint exists to reduce syntactical variation in resource contents. 
+If an element has no children, then it is always omitted from the resource, 
+as opposed to optionally present without any content.
+</p>
 
 </div>
 

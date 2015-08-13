@@ -7,6 +7,7 @@ import org.hl7.fhir.instance.formats.XmlParser;
 import org.hl7.fhir.instance.model.DomainResource;
 import org.hl7.fhir.instance.utils.NarrativeGenerator;
 import org.hl7.fhir.instance.utils.WorkerContext;
+import org.hl7.fhir.instance.utils.WorkerContextFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +19,7 @@ public class NarrativeGeneratorTests {
 	@Before
 	public void setUp() throws Exception {
 		if (gen == null)
-  		gen = new NarrativeGenerator("", WorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation.zip"));
+  		gen = new NarrativeGenerator("", null, WorkerContextFactory.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation.zip"));
 	}
 
 	@After
@@ -27,14 +28,16 @@ public class NarrativeGeneratorTests {
 
 	@Test
 	public void test() throws Exception {
-		process("C:\\work\\org.hl7.fhir\\build\\source\\questionnaireanswers\\questionnaireanswers-example-f201-lifelines.xml");
+		process("C:\\work\\org.hl7.fhir\\build\\source\\questionnaireresponse\\questionnaireresponse-example-f201-lifelines.xml");
 	}
 
 	private void process(String path) throws Exception {
 	  XmlParser p = new XmlParser();
 	  DomainResource r = (DomainResource) p.parse(new FileInputStream(path));
 	  gen.generate(r);
-	  new XmlParser().compose(new FileOutputStream("c:\\temp\\gen.xml"), r, true);
+	  FileOutputStream s = new FileOutputStream("c:\\temp\\gen.xml");
+    new XmlParser().compose(s, r, true);
+    s.close();
 	  
   }
 

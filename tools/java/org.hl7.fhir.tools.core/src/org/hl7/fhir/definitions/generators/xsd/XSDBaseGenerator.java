@@ -38,7 +38,7 @@ import java.util.Map;
 
 import org.hl7.fhir.definitions.Config;
 import org.hl7.fhir.definitions.model.BindingSpecification;
-import org.hl7.fhir.definitions.model.BindingSpecification.Binding;
+import org.hl7.fhir.definitions.model.BindingSpecification.BindingMethod;
 import org.hl7.fhir.definitions.model.DefinedCode;
 import org.hl7.fhir.definitions.model.DefinedStringPattern;
 import org.hl7.fhir.definitions.model.Definitions;
@@ -47,6 +47,10 @@ import org.hl7.fhir.definitions.model.PrimitiveType;
 import org.hl7.fhir.definitions.model.ProfiledType;
 import org.hl7.fhir.definitions.model.ResourceDefn;
 import org.hl7.fhir.definitions.model.TypeRef;
+import org.hl7.fhir.instance.model.ValueSet.ConceptDefinitionComponent;
+import org.hl7.fhir.instance.model.ValueSet.ConceptDefinitionDesignationComponent;
+import org.hl7.fhir.instance.model.ValueSet.ConceptReferenceComponent;
+import org.hl7.fhir.instance.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.utilities.Utilities;
 
 public class XSDBaseGenerator {
@@ -57,18 +61,22 @@ public class XSDBaseGenerator {
 
   private Map<String, ElementDefn> structures = new HashMap<String, ElementDefn>();
   private List<String> typenames = new ArrayList<String>();
+  private Map<ElementDefn, String> types = new HashMap<ElementDefn, String>();
   // private List<TypeDefn> datatypes = new ArrayList<TypeDefn>();
   // private Map<String, ConceptDomain> tx;
-  private List<String> enums = new ArrayList<String>();
+  private List<BindingSpecification> enums = new ArrayList<BindingSpecification>();
   private Map<String, String> enumDefs = new HashMap<String, String>();
 
   private List<String> genEnums = new ArrayList<String>();
-  private Map<String, String> regexQueue = new HashMap<String, String>(); 
+  private Map<String, String> regexQueue = new HashMap<String, String>();
+
+  private boolean forCodeGeneration; 
 
   // private Map<String, PrimitiveType> primitives;
 
-  public XSDBaseGenerator(OutputStreamWriter out) throws UnsupportedEncodingException {
+  public XSDBaseGenerator(OutputStreamWriter out, boolean forCodeGeneration) throws UnsupportedEncodingException {
     writer = out;
+    this.forCodeGeneration = forCodeGeneration;
   }
 
   private void write(String s) throws IOException {
@@ -112,15 +120,16 @@ public class XSDBaseGenerator {
       if (!r.isAbstract()) {
         write("  <xs:element name=\""+r.getName()+"\" type=\""+r.getName()+"\">\r\n");
         write("    <xs:annotation>\r\n");
-        write("      <xs:documentation>"+Utilities.escapeXml(r.getDefinition())+"</xs:documentation>\r\n");
+        write("      <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(r.getDefinition())+"</xs:documentation>\r\n");
         write("    </xs:annotation>\r\n");
         write("  </xs:element>\r\n");
         
       }
     }
-    for (BindingSpecification b : definitions.getBindings().values())
-      if ((b.getUseContexts().size() > 1 && b.getBinding() == Binding.CodeList) || definitions.getCommonBindings().contains(b))
-        generateEnum(b.getName());
+    // todo: what to do about this? 
+    for (BindingSpecification b : definitions.getCommonBindings().values())
+      if ((b.getUseContexts().size() > 1 && b.getBinding() == BindingMethod.CodeList))
+        generateEnum(b);
     if (outer) { 
       write("</xs:schema>\r\n");
       writer.flush();
@@ -129,11 +138,22 @@ public class XSDBaseGenerator {
 
   private void genResourceContainer() throws IOException {
         write("  <xs:complexType name=\"ResourceContainer\">\r\n");
-        write("    <xs:choice>\r\n");
-        for (String n : definitions.sortedResourceNames())
-          write("      <xs:element ref=\""+n+"\"/>\r\n");
-        write("      <xs:element ref=\"Parameters\"/>\r\n");
-        write("    </xs:choice>\r\n");
+        if (forCodeGeneration) {
+          write("    <xs:sequence>\r\n");
+          write("      <xs:annotation>\r\n");
+          write("        <xs:documentation xml:lang=\"en\">(choose any one of the elements, but only one)</xs:documentation>\r\n");         
+          write("      </xs:annotation>\r\n");
+          for (String n : definitions.sortedResourceNames())
+            write("      <xs:element name=\""+n+"\" type=\""+n+"\" minOccurs=\"0\" maxOccurs=\"1\"/>\r\n");
+          write("      <xs:element name=\"Parameters\" type=\"Parameters\" minOccurs=\"0\" maxOccurs=\"1\"/>\r\n");
+          write("    </xs:sequence>\r\n");
+        } else {
+          write("    <xs:choice>\r\n");
+          for (String n : definitions.sortedResourceNames())
+            write("      <xs:element ref=\""+n+"\"/>\r\n");
+          write("      <xs:element ref=\"Parameters\"/>\r\n");
+          write("    </xs:choice>\r\n");
+        }
         write("  </xs:complexType>\r\n");
     
   }
@@ -141,12 +161,12 @@ public class XSDBaseGenerator {
 //  private void genElementRoot() throws Exception  {
 //    write("  <xs:complexType name=\"Element\">\r\n");
 //    write("    <xs:annotation>\r\n");
-//    write("      <xs:documentation>The base element used for all FHIR elements and resources - allows for them to be extended with extensions</xs:documentation>\r\n");
+//    write("      <xs:documentation xml:lang=\"en\">The base element used for all FHIR elements and resources - allows for them to be extended with extensions</xs:documentation>\r\n");
 //    write("    </xs:annotation>\r\n");
 //    write("    <xs:sequence>\r\n");
 //    write("      <xs:element name=\"extension\" type=\"Extension\" minOccurs=\"0\" maxOccurs=\"unbounded\">\r\n");
 //    write("        <xs:annotation>\r\n");
-//    write("          <xs:documentation>An extension - additional local content. The extension URL defines it's meaning</xs:documentation>\r\n");
+//    write("          <xs:documentation xml:lang=\"en\">An extension - additional local content. The extension URL defines it's meaning</xs:documentation>\r\n");
 //    write("        </xs:annotation>\r\n");
 //    write("      </xs:element>\r\n");
 //    write("    </xs:sequence>\r\n");
@@ -155,14 +175,14 @@ public class XSDBaseGenerator {
 //    write("\r\n");    
 //    write("  <xs:complexType name=\"BackboneElement\">\r\n");
 //    write("    <xs:annotation>\r\n");
-//    write("      <xs:documentation>An element defined in a FHIR resources - can have modifierExtension elements</xs:documentation>\r\n");
+//    write("      <xs:documentation xml:lang=\"en\">An element defined in a FHIR resources - can have modifierExtension elements</xs:documentation>\r\n");
 //    write("    </xs:annotation>\r\n");
 //    write("    <xs:complexContent>\r\n");
 //    write("      <xs:extension base=\"Element\">\r\n");
 //    write("        <xs:sequence>\r\n");
 //    write("          <xs:element name=\"modifierExtension\" type=\"Extension\" minOccurs=\"0\" maxOccurs=\"unbounded\">\r\n");
 //    write("            <xs:annotation>\r\n");
-//    write("              <xs:documentation>An extension that modifies the meaning of the element that contains it - additional local content. The extension URL defines it's meaning</xs:documentation>\r\n");
+//    write("              <xs:documentation xml:lang=\"en\">An extension that modifies the meaning of the element that contains it - additional local content. The extension URL defines it's meaning</xs:documentation>\r\n");
 //    write("            </xs:annotation>\r\n");
 //    write("          </xs:element>\r\n");
 //    write("        </xs:sequence>\r\n");
@@ -177,7 +197,7 @@ public class XSDBaseGenerator {
   //    write("    <xs:sequence>\r\n");
   //    write("      <xs:element name=\"extension\" type=\"Extension\" minOccurs=\"0\" maxOccurs=\"unbounded\">\r\n");
   //    write("        <xs:annotation>\r\n");
-  //    write("          <xs:documentation>An extension value</xs:documentation>\r\n");
+  //    write("          <xs:documentation xml:lang=\"en\">An extension value</xs:documentation>\r\n");
   //    write("        </xs:annotation>\r\n");
   //    write("      </xs:element>\r\n");
   //    write("    </xs:sequence>\r\n");
@@ -190,7 +210,7 @@ public class XSDBaseGenerator {
 //    for (DefinedCode c : definitions.getKnownResources().values()) {
 //      write("      <xs:enumeration value=\"" + c.getCode() + "\">\r\n");
 //      write("        <xs:annotation>\r\n");
-//      write("          <xs:documentation>"
+//      write("          <xs:documentation xml:lang=\"en\">"
 //          + Utilities.escapeXml(c.getDefinition())
 //          + "</xs:documentation>\r\n");
 //      write("        </xs:annotation>\r\n");
@@ -206,12 +226,18 @@ public class XSDBaseGenerator {
     write("      <xs:restriction base=\"" + cd.getBaseType() + "\">\r\n");
     write("        <xs:sequence>\r\n");
 
+    write("          <xs:element name=\"extension\" type=\"Extension\" minOccurs=\"0\" maxOccurs=\"unbounded\">\r\n");
+    write("            <xs:annotation>\r\n");
+    write("              <xs:documentation xml:lang=\"en\">Exception as inherited from Element</xs:documentation>\r\n");
+    write("            </xs:annotation>\r\n");
+    write("          </xs:element>\r\n");
+
     ElementDefn elem = definitions.getTypes().get(cd.getBaseType());
     for (ElementDefn e : elem.getElements()) {
       if (e.getName().equals("[type]"))
-        generateAny(elem, e, null);
+        generateAny(elem, e, null, cd.getRules());
       else 
-        generateElement(elem, e, null);
+        generateElement(elem, e, null, cd.getRules());
     }
     write("        </xs:sequence>\r\n");
 
@@ -259,6 +285,10 @@ public class XSDBaseGenerator {
             write("    <xs:restriction base=\"xs:"+pt.getSchemaType()+"\">\r\n");
             write("      <xs:minLength value=\"1\"/>\r\n");
             write("    </xs:restriction>\r\n");
+          } else if (!Utilities.noString(pt.getRegEx())) {
+            write("    <xs:restriction base=\"xs:"+pt.getSchemaType()+"\">\r\n");
+            write("      <xs:pattern value=\""+pt.getRegEx()+"\"/>\r\n");
+            write("    </xs:restriction>\r\n");
           } else {
             write("    <xs:restriction base=\"xs:"+pt.getSchemaType()+"\"/>\r\n");
           }
@@ -266,8 +296,10 @@ public class XSDBaseGenerator {
         }
         write("  <xs:complexType name=\"" + pt.getCode() + "\">\r\n");
         write("    <xs:annotation>\r\n");
-        write("      <xs:documentation>"+Utilities.escapeXml(pt.getDefinition())+"</xs:documentation>\r\n");
-        write("      <xs:documentation>If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>\r\n");
+        write("      <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(pt.getDefinition())+"</xs:documentation>\r\n");
+        if (!Utilities.noString(pt.getComment()))
+            write("      <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(pt.getComment())+"</xs:documentation>\r\n");
+        write("      <xs:documentation xml:lang=\"en\">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>\r\n");
         write("    </xs:annotation>\r\n");
         write("    <xs:complexContent>\r\n");
         write("      <xs:extension base=\"Element\">\r\n");
@@ -289,13 +321,18 @@ public class XSDBaseGenerator {
           if (!sp.getSchema().contains("Integer")) {
              write("      <xs:minLength value=\"1\"/>\r\n");
           }
+          if (!Utilities.noString(sp.getRegex())) {
+            write("      <xs:pattern value=\""+sp.getRegex()+"\"/>\r\n");
+          }
           write("    </xs:restriction>\r\n");
           write("  </xs:simpleType>\r\n");        
         }
         write("  <xs:complexType name=\"" + sp.getCode() + "\">\r\n");
         write("    <xs:annotation>\r\n");
-        write("      <xs:documentation>"+Utilities.escapeXml(sp.getDefinition())+"</xs:documentation>\r\n");
-        write("      <xs:documentation>If the element is present, it must have either a @value, an @id referenced from the Narrative, or extensions</xs:documentation>\r\n");
+        write("      <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(sp.getDefinition())+"</xs:documentation>\r\n");
+        if (!Utilities.noString(sp.getComment()))
+          write("      <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(sp.getComment())+"</xs:documentation>\r\n");
+        write("      <xs:documentation xml:lang=\"en\">If the element is present, it must have either a @value, an @id referenced from the Narrative, or extensions</xs:documentation>\r\n");
         write("    </xs:annotation>\r\n");
         write("    <xs:complexContent>\r\n");
         write("      <xs:extension base=\"Element\">\r\n");
@@ -313,8 +350,8 @@ public class XSDBaseGenerator {
     String name = elem.getName();
     write("  <xs:complexType name=\"" + name + "\">\r\n");
     write("    <xs:annotation>\r\n");
-    write("      <xs:documentation>"+Utilities.escapeXml(elem.getDefinition())+"</xs:documentation>\r\n");
-    write("      <xs:documentation>If the element is present, it must have a value for at least one of the defined elements, an @id referenced from the Narrative, or extensions</xs:documentation>\r\n");
+    write("      <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(elem.getDefinition())+"</xs:documentation>\r\n");
+    write("      <xs:documentation xml:lang=\"en\">If the element is present, it must have a value for at least one of the defined elements, an @id referenced from the Narrative, or extensions</xs:documentation>\r\n");
     write("    </xs:annotation>\r\n");
     if (!elem.getName().equals("Element")) {
       write("    <xs:complexContent>\r\n");
@@ -325,9 +362,9 @@ public class XSDBaseGenerator {
     for (ElementDefn e : elem.getElements()) {
       if (!e.isXmlAttribute()) {
         if (e.getName().equals("[type]"))
-          generateAny(elem, e, null);
+          generateAny(elem, e, null, null);
         else 
-          generateElement(elem, e, null);
+          generateElement(elem, e, null, null);
       }
     }
     write("        </xs:sequence>\r\n");
@@ -348,7 +385,7 @@ public class XSDBaseGenerator {
       structures.remove(s);
     }
 
-    for (String en : enums) {
+    for (BindingSpecification en : enums) {
       generateEnum(en);
     }
 
@@ -368,8 +405,8 @@ public class XSDBaseGenerator {
     String name = elem.getName();
     write("  <xs:complexType name=\"" + name + "\">\r\n");
     write("    <xs:annotation>\r\n");
-    write("      <xs:documentation>"+Utilities.escapeXml(elem.getDefinition())+"</xs:documentation>\r\n");
-    write("      <xs:documentation>If the element is present, it must have a value for at least one of the defined elements, an @id referenced from the Narrative, or extensions</xs:documentation>\r\n");
+    write("      <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(elem.getDefinition())+"</xs:documentation>\r\n");
+    write("      <xs:documentation xml:lang=\"en\">If the element is present, it must have a value for at least one of the defined elements, an @id referenced from the Narrative, or extensions</xs:documentation>\r\n");
     write("    </xs:annotation>\r\n");
     write("    <xs:complexContent>\r\n");
     write("      <xs:extension base=\"Element\">\r\n");
@@ -380,9 +417,9 @@ public class XSDBaseGenerator {
       if (e.typeCode().equals("x ml:lang")) {
         // do nothing here
       } else if (e.getName().equals("[type]"))
-        generateAny(elem, e, null);
+        generateAny(elem, e, null, null);
       else 
-        generateElement(elem, e, null);
+        generateElement(elem, e, null, null);
     }
     write("        </xs:sequence>\r\n");
     for (ElementDefn e : elem.getElements()) {
@@ -410,7 +447,7 @@ public class XSDBaseGenerator {
       structures.remove(s);
     }
 
-    for (String en : enums) {
+    for (BindingSpecification en : enums) {
       generateEnum(en);
     }
     genRegex();
@@ -443,7 +480,7 @@ public class XSDBaseGenerator {
     boolean isBase = Utilities.noString(res.getRoot().typeCode());
     write("  <xs:complexType name=\"" + name + "\">\r\n");
     write("    <xs:annotation>\r\n");
-    write("      <xs:documentation>"+Utilities.escapeXml(res.getDefinition())+"</xs:documentation>\r\n");
+    write("      <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(res.getDefinition())+"</xs:documentation>\r\n");
     write("    </xs:annotation>\r\n");
     if (!isBase) {
       write("    <xs:complexContent>\r\n");
@@ -452,7 +489,7 @@ public class XSDBaseGenerator {
     write("        <xs:sequence>\r\n");
 
     for (ElementDefn e : res.getRoot().getElements()) {
-        generateElement(res.getRoot(), e, null);
+        generateElement(res.getRoot(), e, null, null);
     }
     write("        </xs:sequence>\r\n");
     if (!isBase) {
@@ -468,7 +505,7 @@ public class XSDBaseGenerator {
       structures.remove(s);
     }
 
-    for (String en : enums) {
+    for (BindingSpecification en : enums) {
       generateEnum(en);
     }
 
@@ -482,8 +519,8 @@ public class XSDBaseGenerator {
     String name = elem.getName();
     write("  <xs:complexType name=\"" + name + "\">\r\n");
     write("    <xs:annotation>\r\n");
-    write("      <xs:documentation>"+Utilities.escapeXml(elem.getDefinition())+"</xs:documentation>\r\n");
-    write("      <xs:documentation>If the element is present, it must have a value for at least one of the defined elements, an @id referenced from the Narrative, or extensions</xs:documentation>\r\n");
+    write("      <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(elem.getDefinition())+"</xs:documentation>\r\n");
+    write("      <xs:documentation xml:lang=\"en\">If the element is present, it must have a value for at least one of the defined elements, an @id referenced from the Narrative, or extensions</xs:documentation>\r\n");
     write("    </xs:annotation>\r\n");
     write("    <xs:complexContent>\r\n");
     write("      <xs:extension base=\"Element\">\r\n");
@@ -491,9 +528,9 @@ public class XSDBaseGenerator {
 
     for (ElementDefn e : elem.getElements()) {
       if (e.getName().equals("[type]"))
-        generateAny(elem, e, null);
+        generateAny(elem, e, null, null);
       else 
-        generateElement(elem, e, null);
+        generateElement(elem, e, null, null);
     }
     write("        </xs:sequence>\r\n");
     write("      </xs:extension>\r\n");
@@ -507,36 +544,40 @@ public class XSDBaseGenerator {
       structures.remove(s);
     }
 
-    for (String en : enums) {
+    for (BindingSpecification en : enums) {
       generateEnum(en);
     }
 
     genRegex();
   }
 
-  private void generateEnum(String en) throws IOException {
+  private void generateEnum(BindingSpecification bs) throws IOException {
+    String en = bs.getValueSet().getName();
     if (genEnums.contains(en))
       return;
 
     write("  <xs:simpleType name=\"" + en + "-list\">\r\n");
     write("    <xs:restriction base=\"xs:string\">\r\n");
-    for (DefinedCode c : definitions.getBindingByName(en).getCodes()) {
-      write("      <xs:enumeration value=\""
-          + Utilities.escapeXml(c.getCode()) + "\">\r\n");
-      write("        <xs:annotation>\r\n");
-      write("          <xs:documentation>"
-          + Utilities.escapeXml(c.getDefinition())
-          + "</xs:documentation>\r\n");
-      write("        </xs:annotation>\r\n");
-      write("      </xs:enumeration>\r\n");
+    if (bs.getValueSet().hasCodeSystem()) {
+      for (ConceptDefinitionComponent c : bs.getValueSet().getCodeSystem().getConcept()) {
+        genDefinedCode(c);
+      }
+    }
+    if (bs.getValueSet().hasCompose()) {
+      for (ConceptSetComponent cc : bs.getValueSet().getCompose().getInclude()) {
+        for (ConceptReferenceComponent c : cc.getConcept()) {
+          genIncludedCode(c);
+          
+        }
+      }
     }
     write("    </xs:restriction>\r\n");
     write("  </xs:simpleType>\r\n");
 
     write("  <xs:complexType name=\""+en+"\">\r\n");
     write("    <xs:annotation>\r\n");
-    write("      <xs:documentation>"+Utilities.escapeXml(enumDefs.get(en))+"</xs:documentation>\r\n");
-    write("      <xs:documentation>If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>\r\n");
+    write("      <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(enumDefs.get(en))+"</xs:documentation>\r\n");
+    write("      <xs:documentation xml:lang=\"en\">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>\r\n");
     write("    </xs:annotation>\r\n");
     write("    <xs:complexContent>\r\n");
     write("       <xs:extension base=\"Element\">\r\n");
@@ -548,12 +589,37 @@ public class XSDBaseGenerator {
     genEnums.add(en);
   }
 
+  private void genIncludedCode(ConceptReferenceComponent c) throws IOException {
+    write("      <xs:enumeration value=\"" + Utilities.escapeXml(c.getCode()) + "\">\r\n");
+    write("        <xs:annotation>\r\n");
+    write("          <xs:documentation xml:lang=\"en\">" + Utilities.escapeXml(c.getDisplay()) + "</xs:documentation>\r\n"); // todo: do we need to look the definition up? 
+    for (ConceptDefinitionDesignationComponent l : c.getDesignation())
+      if (l.hasLanguage())
+        write("          <xs:documentation xml:lang=\""+l.getLanguage()+"\">"+Utilities.escapeXml(l.getValue())+"</xs:documentation>\r\n");
+    write("        </xs:annotation>\r\n");
+    write("      </xs:enumeration>\r\n");
+  }
+
+  private void genDefinedCode(ConceptDefinitionComponent c) throws IOException {
+    write("      <xs:enumeration value=\"" + Utilities.escapeXml(c.getCode()) + "\">\r\n");
+    write("        <xs:annotation>\r\n");
+    write("          <xs:documentation xml:lang=\"en\">" + Utilities.escapeXml(c.getDefinition()) + "</xs:documentation>\r\n");
+    for (ConceptDefinitionDesignationComponent l : c.getDesignation())
+      if (l.hasLanguage())
+        write("          <xs:documentation xml:lang=\""+l.getLanguage()+"\">"+Utilities.escapeXml(l.getValue())+"</xs:documentation>\r\n");
+    write("        </xs:annotation>\r\n");
+    write("      </xs:enumeration>\r\n");
+    for (ConceptDefinitionComponent cc : c.getConcept()) {
+      genDefinedCode(cc);
+    }
+  }
+
   private void generateType(ElementDefn root, String name, ElementDefn struc)
       throws IOException, Exception {
     write("  <xs:complexType name=\"" + name + "\">\r\n");
     write("    <xs:annotation>\r\n");
-    write("      <xs:documentation>"+Utilities.escapeXml(root.getDefinition())+"</xs:documentation>\r\n");
-    write("      <xs:documentation>If the element is present, it must have a value for at least one of the defined elements, an @id referenced from the Narrative, or extensions</xs:documentation>\r\n");
+    write("      <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(root.getDefinition())+"</xs:documentation>\r\n");
+    write("      <xs:documentation xml:lang=\"en\">If the element is present, it must have a value for at least one of the defined elements, an @id referenced from the Narrative, or extensions</xs:documentation>\r\n");
     write("    </xs:annotation>\r\n");
     write("    <xs:complexContent>\r\n");
     write("      <xs:extension base=\"Element\">\r\n");
@@ -561,9 +627,9 @@ public class XSDBaseGenerator {
 
     for (ElementDefn e : struc.getElements()) {
       if (e.getName().equals("[type]"))
-        generateAny(root, e, null);
+        generateAny(root, e, null, null);
       else 
-        generateElement(root, e, null);
+        generateElement(root, e, null, null);
     }
     write("        </xs:sequence>\r\n");
     write("      </xs:extension>\r\n");
@@ -571,85 +637,98 @@ public class XSDBaseGenerator {
     write("  </xs:complexType>\r\n");
   }
 
-  private void generateAny(ElementDefn root, ElementDefn e, String prefix)
-      throws Exception {
-    write("        <xs:choice minOccurs=\""
-        + e.getMinCardinality().toString() + "\" maxOccurs=\"1\">\r\n");
-    if (e.hasDefinition()) {
-      write("           <xs:annotation>\r\n");
-      write("             <xs:documentation>"
-          + Utilities.escapeXml(e.getDefinition())
-          + "</xs:documentation>\r\n");
-      write("           </xs:annotation>\r\n");
+  private void generateAny(ElementDefn root, ElementDefn e, String prefix, Map<String, String> rules) throws Exception {
+    String close = " minOccurs=\"0\">";;
+    if (!forCodeGeneration) {
+      write("        <xs:choice minOccurs=\"" + e.getMinCardinality().toString() + "\" maxOccurs=\"1\">\r\n");
+      if (e.hasDefinition()) {
+        write("           <xs:annotation>\r\n");
+        write("             <xs:documentation xml:lang=\"en\">" + Utilities.escapeXml(e.getDefinition()) + "</xs:documentation>\r\n");
+        write("           </xs:annotation>\r\n");
+      }
+      close = "/>";
     }
     for (TypeRef t : definitions.getKnownTypes()) {
-      if (!definitions.getInfrastructure().containsKey(t.getName())
-          && !definitions.getConstraints().containsKey(t.getName())) {
-        String en = prefix != null ? prefix + upFirst(t.getName()) : t
-            .getName();
-        if (t.hasParams()) {
-          for (String p : t.getParams()) {
-            write("           <xs:element name=\"" + en + "_"
-                + upFirst(p) + "\" type=\""+ t.getName() + "_" + upFirst(p) + "\"/>\r\n");
+      if (!definitions.getInfrastructure().containsKey(t.getName()) && !definitions.getConstraints().containsKey(t.getName()) && !definitions.getShared().contains(t.getName())) {
+        if (t.isResourceReference()) {
+          write("           <xs:element name=\""+prefix+"Resource\" type=\"Reference\""+close+"\r\n");        
+        } else {
+          write("           <xs:element name=\""+prefix+Utilities.capitalize(t.getName())+"\" type=\""+t.getName()+"\""+close+"\r\n");       
+        }
+        if (forCodeGeneration) {
+          write("            <xs:annotation>\r\n");
+          if (e.hasDefinition()) {
+            write("              <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(e.getDefinition())+" (choose any one of the elements, but only one)</xs:documentation>\r\n");
+          } else {
+            write("              <xs:documentation xml:lang=\"en\">(choose any one of the elements, but only one)</xs:documentation>\r\n");         
           }
-        } else if (!definitions.getShared().contains(t.getName())) { 
-          write("           <xs:element name=\"" + en + "\" type=\"" + t.getName()+ "\"/>\r\n");
+          write("            </xs:annotation>\r\n");
+          write("           </xs:element>\r\n");       
         }
       }
     }
-    write("          </xs:choice>\r\n");
+    if (!forCodeGeneration) 
+      write("         </xs:choice>\r\n");
   }
 
-  private void generateElement(ElementDefn root, ElementDefn e, String paramType) throws Exception {
+  private void generateElement(ElementDefn root, ElementDefn e, String paramType, Map<String, String> rules) throws Exception {
     List<TypeRef> types = e.getTypes();
     if (types.size() > 1 || (types.size() == 1 && types.get(0).isWildcardType())) {
       if (!e.getName().contains("[x]"))
         throw new Exception("Element has multiple types as a choice doesn't have a [x] in the element name '"+ e.getName()+ "' in resource "+ root.getName());
-      generateAny(root, e, e.getName().replace("[x]", ""));
-      // write("<xs:choice>\r\n");
-      // if (e.hasDefinition()) {
-      // write("        <xs:annotation>\r\n");
-      // write("          <xs:documentation>"+Utilities.escapeXml(e.getDefinition())+"</xs:documentation>\r\n");
-      // write("        </xs:annotation>\r\n");
-      // }
-      // if (types.size() == 1)
-      // types = definitions.getKnownTypes();
-      // for (TypeDefn t : types) {
-      // if (!definitions.getInfrastructure().containsKey(t.getName())) {
-      // if (t.hasParams()) {
-      // for (String p : t.getParams()) {
-      // String tn = t.getName()+"_"+upFirst(p);
-      // String n = e.getName().replace("[x]", upFirst(tn));
-      // write("        <xs:element name=\""+n+"\" type=\""+tn+"\"/>\r\n");
-      //
-      // }
-      // } else {
-      // String tn = encodeType(e, t, false);
-      // String n = e.getName().replace("[x]", upFirst(tn));
-      // write("        <xs:element name=\""+n+"\" type=\""+encodeType(e,
-      // t, true)+"\"/>\r\n");
-      // }
-      // }
-      // }
-      // write("      </xs:choice>\r\n");
+      if ((types.size() == 1 && types.get(0).isWildcardType())) {
+        generateAny(root, e, e.getName().replace("[x]", ""), null);
+      } else {
+        String close = " minOccurs=\"0\">";;
+        if (!forCodeGeneration) {
+          write("          <xs:choice minOccurs=\"" + checkRule(e.getMinCardinality().toString(), e.getName()+".min", rules) + "\">\r\n");
+          if (e.hasDefinition()) {
+            write("            <xs:annotation>\r\n");
+            write("              <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(checkRule(e.getDefinition(), e.getName()+".defn", rules))+"</xs:documentation>\r\n");
+            write("            </xs:annotation>\r\n");
+          }
+          close = "/>";
+        }
+        for 
+        (TypeRef t : types) {
+          String type = encodeType(e, t, true);
+          String name = e.getName().substring(0,  e.getName().length()-3) + nameForType(type); 
+          write("           <xs:element name=\"" + name + "\" type=\"" + type + "\" ");
+          if (e.unbounded())
+            write(" maxOccurs=\""+checkRule("unbounded", e.getName()+".max", rules)+"\""+close+"\r\n");
+          else
+            write(" maxOccurs=\""+checkRule("1", e.getName()+".max", rules)+"\""+close+"\r\n");
+          if (forCodeGeneration) {
+            write("              <xs:annotation>\r\n");
+            if (e.hasDefinition()) {
+              write("                <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(checkRule(e.getDefinition(), e.getName()+".defn", rules))+" (choose any one of "+e.getName().replace("[x]", "")+"*, but only one)</xs:documentation>\r\n");
+            } else {
+              write("                <xs:documentation xml:lang=\"en\">(choose any one of "+e.getName().replace("[x]", "")+"*, but only one)</xs:documentation>\r\n");         
+            }
+            write("              </xs:annotation>\r\n");
+            write("             </xs:element>\r\n");       
+          }
+        }
+        if (!forCodeGeneration) 
+          write("          </xs:choice>\r\n");
+      }
     } else {
       write("          ");
       if ("extension".equals(e.getName()))
         write("<xs:element name=\"" + e.getName() + "\" type=\"Extension\" ");
       else if ("div".equals(e.getName()) && e.typeCode().equals("xhtml"))
         write("<xs:element ref=\"xhtml:div\" ");
-      else if (e.usesCompositeType())
-        write("<xs:element name=\"" + e.getName() + "\" type=\"" + e.typeCode().substring(1) + "\" ");
-      else if (types.size() == 0 && e.getElements().size() > 0) {
-        int i = 0;
-        String tn = root.getName() + "." + upFirst(e.getName()) + (i == 0 ? "" : Integer.toString(i));
-        // while (typenames.contains(tn)) {
-        // i++;
-        // tn = root.getName()+"."+upFirst(e.getName())+ (i == 0 ? "" :
-        // Integer.toString(i));
-        // }
+      else if (e.usesCompositeType()) {
+        ElementDefn ref = root.getElementByName(e.typeCode().substring(1));
+        String rtn = this.types.get(ref);
+        if (rtn == null)
+          throw new Exception("logic error in schema generator (null composite reference in "+types.toString()+")");
+        write("<xs:element name=\"" + e.getName() + "\" type=\"" + rtn + "\" ");
+      } else if (types.size() == 0 && e.getElements().size() > 0) {
+        String tn = root.getName() + "." + Utilities.capitalize(e.getName());
         write("<xs:element name=\"" + e.getName() + "\" type=\"" + tn + "\" ");
         structures.put(tn, e);
+        this.types.put(e, tn);
         typenames.add(tn);
       } else if (types.size() == 1) {
         if (types.get(0).isUnboundGenericParam() && paramType != null)
@@ -663,22 +742,36 @@ public class XSDBaseGenerator {
       } else
         throw new Exception("how do we get here? " + e.getName() + " in " + root.getName() + " " + Integer.toString(types.size()));
 
-      write("minOccurs=\"" + e.getMinCardinality().toString() + "\"");
+      write("minOccurs=\"" + checkRule(e.getMinCardinality().toString(), e.getName()+".min", rules) + "\"");
       if (e.unbounded())
-        write(" maxOccurs=\"unbounded\"");
+        write(" maxOccurs=\"" + checkRule("unbounded", e.getName()+".max", rules) + "\"");
       else
-        write(" maxOccurs=\"1\"");
+        write(" maxOccurs=\"" + checkRule("1", e.getName()+".max", rules) + "\"");
 
       if (e.hasDefinition()) {
         write(">\r\n");
         write("            <xs:annotation>\r\n");
-        write("              <xs:documentation>" + Utilities.escapeXml(e.getDefinition()) + "</xs:documentation>\r\n");
+        write("              <xs:documentation xml:lang=\"en\">" + Utilities.escapeXml(checkRule(e.getDefinition(), e.getName()+".defn", rules)) + "</xs:documentation>\r\n");
         write("            </xs:annotation>\r\n");
         write("          </xs:element>\r\n");
       } else {
         write("/>\r\n");
       }
     }
+  }
+
+  private String nameForType(String type) {
+    if (definitions.getConstraints().containsKey(type))
+      return definitions.getConstraints().get(type).getBaseType();
+    else 
+      return Utilities.capitalize(type);
+  }
+
+  private String checkRule(String defvalue, String rulename, Map<String, String> rules) {
+    if (rules != null && rules.containsKey(rulename)) {
+      return rules.get(rulename);
+    }
+    return defvalue;
   }
 
   private String upFirst(String name) {
@@ -698,10 +791,10 @@ public class XSDBaseGenerator {
     else if (type.getName().equals("code")) {
       String en = null;
       if (e.hasBinding()) {
-        BindingSpecification cd = definitions.getBindingByName(e.getBindingName());
-        if (cd != null && cd.getBinding() == BindingSpecification.Binding.CodeList) {
-          en = cd.getName();
-          enums.add(en);
+        BindingSpecification cd = e.getBinding();
+        if (cd != null && cd.getBinding() == BindingSpecification.BindingMethod.CodeList) {
+          en = cd.getValueSet().getName();
+          enums.add(cd);
           enumDefs.put(en, cd.getDefinition());
           return en;
         }

@@ -78,7 +78,8 @@ public class SpecificationInternalClient implements IFHIRClient {
       ResourceDefn r = page.getDefinitions().getResourceByName(path[0]);
       for (Example e : r.getExamples()) {
         if (e.getId().equals(path[1])) {
-          return (T) new XmlParser().parse(new FileInputStream(e.getPath()));
+          throw new Exception("TODO");
+//          return (T) new XmlParser().parse(e.getXml());
         }
       }
       return null;
@@ -208,6 +209,21 @@ public class SpecificationInternalClient implements IFHIRClient {
   @Override
   public <T extends Resource> Parameters operateType(Class<T> resourceClass, String name, Parameters params) {
     throw new Error("operateType not supported by the internal specification client");
+  }
+
+  @Override
+  public Conformance getConformanceStatementQuick() {
+    throw new Error("getConformanceStatementQuick not supported by the internal specification client");
+  }
+
+  @Override
+  public Conformance getConformanceStatementQuick(boolean useOptionsVerb) {
+    throw new Error("getConformanceStatementQuick not supported by the internal specification client");
+  }
+
+  @Override
+  public String getAddress() {
+    return "(internal)";
   }
 
 

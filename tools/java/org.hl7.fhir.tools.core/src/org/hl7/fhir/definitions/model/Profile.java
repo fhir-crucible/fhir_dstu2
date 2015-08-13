@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.instance.model.Composition;
-import org.hl7.fhir.instance.model.StructureDefinition;
 import org.hl7.fhir.instance.model.SearchParameter;
+import org.hl7.fhir.instance.model.StructureDefinition;
 import org.hl7.fhir.instance.model.ValueSet;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
@@ -35,6 +35,7 @@ public class Profile {
   private List<ValueSet> valuesets = new ArrayList<ValueSet>();
   private List<SearchParameter> searchParameters = new ArrayList<SearchParameter>();
   private Map<String, MappingSpace> mappingSpaces = new HashMap<String, MappingSpace>();
+  private List<Operation> operations = new ArrayList<Operation>();
   
   public Profile(String category) {
     super();
@@ -158,6 +159,15 @@ public class Profile {
         return st;
     }
     return null;
+  }
+  public boolean coversResource(ResourceDefn resource) {
+    for (ConstraintStructure item : profiles)
+      if (item.getDefn() != null && item.getDefn().getName().equals(resource.getName()))
+        return true;
+    return false;
+  }
+  public List<Operation> getOperations() {
+    return operations;
   }
 
   

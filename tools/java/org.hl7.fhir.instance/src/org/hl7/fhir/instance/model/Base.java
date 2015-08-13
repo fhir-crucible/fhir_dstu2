@@ -6,9 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-public abstract class Base implements Serializable {
+public abstract class Base implements Serializable, IBase {
 
   /**
    * User appended data items - allow users to add extra information to the class
@@ -18,7 +19,12 @@ private Map<String, Object> userData;
   /**
    * Round tracking xml comments for testing convenience
    */
-  private List<String> formatComments; 
+  private List<String> formatCommentsPre; 
+   
+  /**
+   * Round tracking xml comments for testing convenience
+   */
+  private List<String> formatCommentsPost; 
    
   
   public Object getUserData(String name) {
@@ -33,6 +39,15 @@ private Map<String, Object> userData;
     userData.put(name, value);
   }
 
+  public void setUserDataINN(String name, Object value) {
+    if (value == null)
+      return;
+    
+    if (userData == null)
+      userData = new HashMap<String, Object>();
+    userData.put(name, value);
+  }
+
   public boolean hasUserData(String name) {
     if (userData == null)
       return false;
@@ -40,15 +55,30 @@ private Map<String, Object> userData;
       return userData.containsKey(name);
   }
 
+	public String getUserString(String name) {
+    return (String) getUserData(name);
+  }
+
+  public int getUserInt(String name) {
+    if (!hasUserData(name))
+      return 0;
+    return (Integer) getUserData(name);
+  }
 
   public boolean hasFormatComment() {
-  	return (formatComments != null && !formatComments.isEmpty());
+  	return (formatCommentsPre != null && !formatCommentsPre.isEmpty()) || (formatCommentsPost != null && !formatCommentsPost.isEmpty());
   }
   
-  public List<String> getFormatComments() {
-    if (formatComments == null)
-    	formatComments = new ArrayList<String>();
-    return formatComments;
+  public List<String> getFormatCommentsPre() {
+    if (formatCommentsPre == null)
+      formatCommentsPre = new ArrayList<String>();
+    return formatCommentsPre;
+  }  
+  
+  public List<String> getFormatCommentsPost() {
+    if (formatCommentsPost == null)
+      formatCommentsPost = new ArrayList<String>();
+    return formatCommentsPost;
   }  
   
 	protected abstract void listChildren(List<Property> result) ;

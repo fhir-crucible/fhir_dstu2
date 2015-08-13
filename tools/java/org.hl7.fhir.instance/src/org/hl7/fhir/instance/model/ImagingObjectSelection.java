@@ -29,58 +29,77 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
+// Generated on Thu, Aug 13, 2015 06:30+1000 for FHIR v0.5.0
 
 import java.util.*;
 
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.instance.model.annotations.ResourceDef;
 import org.hl7.fhir.instance.model.annotations.SearchParamDefinition;
-import org.hl7.fhir.instance.model.annotations.Block;
 import org.hl7.fhir.instance.model.annotations.Child;
 import org.hl7.fhir.instance.model.annotations.Description;
+import org.hl7.fhir.instance.model.annotations.Block;
+import org.hl7.fhir.instance.model.api.*;
 /**
- * A set of DICOM SOP Instances of a patient, selected for some application purpose, e.g., quality assurance, teaching, conference, consulting, etc.  Objects selected can be from different studies, but must be of the same patient.
+ * A manifest of a set of DICOM Service-Object Pair Instances (SOP Instances).  The referenced SOP Instances (images or other content) are for a single patient, and may be from one or more studies. The referenced SOP Instances have been selected for a purpose, such as quality assurance, conference, or consult. Reflecting that range of purposes, typical ImagingObjectSelection resources may include all SOP Instances in a study (perhaps for sharing through a Health Information Exchange); key images from multiple studies (for reference by a referring or treating physician); a multi-frame ultrasound instance ("cine" video clip) and a set of measurements taken from that instance (for inclusion in a teaching file); and so on.
  */
 @ResourceDef(name="ImagingObjectSelection", profile="http://hl7.org/fhir/Profile/ImagingObjectSelection")
 public class ImagingObjectSelection extends DomainResource {
 
     @Block()
-    public static class StudyComponent extends BackboneElement {
+    public static class StudyComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Study instance uid of the SOP instances in the selection.
+         * Study instance UID of the SOP instances in the selection.
          */
-        @Child(name ="uid", type={OidType.class}, order=1, min=1, max=1)
-        @Description(shortDefinition="Study instance uid", formalDefinition="Study instance uid of the SOP instances in the selection." )
+        @Child(name = "uid", type = {OidType.class}, order=1, min=1, max=1)
+        @Description(shortDefinition="Study instance UID", formalDefinition="Study instance UID of the SOP instances in the selection." )
         protected OidType uid;
 
         /**
          * WADO-RS URL to retrieve the study. Note that this URL retrieves all SOP instances of the study, not only those in the selection.
          */
-        @Child(name ="url", type={UriType.class}, order=2, min=0, max=1)
-        @Description(shortDefinition="Retrieve URL", formalDefinition="WADO-RS URL to retrieve the study. Note that this URL retrieves all SOP instances of the study, not only those in the selection." )
+        @Child(name = "url", type = {UriType.class}, order=2, min=0, max=1)
+        @Description(shortDefinition="Retrieve study URL", formalDefinition="WADO-RS URL to retrieve the study. Note that this URL retrieves all SOP instances of the study, not only those in the selection." )
         protected UriType url;
 
         /**
-         * Series indetity and locating information of the DICOM SOP instances in the selection.
+         * Reference to the Imaging Study in FHIR form.
          */
-        @Child(name ="series", type={}, order=3, min=1, max=Child.MAX_UNLIMITED)
-        @Description(shortDefinition="Series identity of the selected instances", formalDefinition="Series indetity and locating information of the DICOM SOP instances in the selection." )
+        @Child(name = "imagingStudy", type = {ImagingStudy.class}, order=3, min=0, max=1)
+        @Description(shortDefinition="Reference to ImagingStudy", formalDefinition="Reference to the Imaging Study in FHIR form." )
+        protected Reference imagingStudy;
+
+        /**
+         * The actual object that is the target of the reference (Reference to the Imaging Study in FHIR form.)
+         */
+        protected ImagingStudy imagingStudyTarget;
+
+        /**
+         * Series indentity and locating information of the DICOM SOP instances in the selection.
+         */
+        @Child(name = "series", type = {}, order=4, min=1, max=Child.MAX_UNLIMITED)
+        @Description(shortDefinition="Series identity of the selected instances", formalDefinition="Series indentity and locating information of the DICOM SOP instances in the selection." )
         protected List<SeriesComponent> series;
 
-        private static final long serialVersionUID = -1632673574L;
+        private static final long serialVersionUID = 341246743L;
 
+    /*
+     * Constructor
+     */
       public StudyComponent() {
         super();
       }
 
+    /*
+     * Constructor
+     */
       public StudyComponent(OidType uid) {
         super();
         this.uid = uid;
       }
 
         /**
-         * @return {@link #uid} (Study instance uid of the SOP instances in the selection.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
+         * @return {@link #uid} (Study instance UID of the SOP instances in the selection.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
          */
         public OidType getUidElement() { 
           if (this.uid == null)
@@ -100,7 +119,7 @@ public class ImagingObjectSelection extends DomainResource {
         }
 
         /**
-         * @param value {@link #uid} (Study instance uid of the SOP instances in the selection.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
+         * @param value {@link #uid} (Study instance UID of the SOP instances in the selection.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
          */
         public StudyComponent setUidElement(OidType value) { 
           this.uid = value;
@@ -108,14 +127,14 @@ public class ImagingObjectSelection extends DomainResource {
         }
 
         /**
-         * @return Study instance uid of the SOP instances in the selection.
+         * @return Study instance UID of the SOP instances in the selection.
          */
         public String getUid() { 
           return this.uid == null ? null : this.uid.getValue();
         }
 
         /**
-         * @param value Study instance uid of the SOP instances in the selection.
+         * @param value Study instance UID of the SOP instances in the selection.
          */
         public StudyComponent setUid(String value) { 
             if (this.uid == null)
@@ -174,7 +193,51 @@ public class ImagingObjectSelection extends DomainResource {
         }
 
         /**
-         * @return {@link #series} (Series indetity and locating information of the DICOM SOP instances in the selection.)
+         * @return {@link #imagingStudy} (Reference to the Imaging Study in FHIR form.)
+         */
+        public Reference getImagingStudy() { 
+          if (this.imagingStudy == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create StudyComponent.imagingStudy");
+            else if (Configuration.doAutoCreate())
+              this.imagingStudy = new Reference(); // cc
+          return this.imagingStudy;
+        }
+
+        public boolean hasImagingStudy() { 
+          return this.imagingStudy != null && !this.imagingStudy.isEmpty();
+        }
+
+        /**
+         * @param value {@link #imagingStudy} (Reference to the Imaging Study in FHIR form.)
+         */
+        public StudyComponent setImagingStudy(Reference value) { 
+          this.imagingStudy = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #imagingStudy} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to the Imaging Study in FHIR form.)
+         */
+        public ImagingStudy getImagingStudyTarget() { 
+          if (this.imagingStudyTarget == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create StudyComponent.imagingStudy");
+            else if (Configuration.doAutoCreate())
+              this.imagingStudyTarget = new ImagingStudy(); // aa
+          return this.imagingStudyTarget;
+        }
+
+        /**
+         * @param value {@link #imagingStudy} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to the Imaging Study in FHIR form.)
+         */
+        public StudyComponent setImagingStudyTarget(ImagingStudy value) { 
+          this.imagingStudyTarget = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #series} (Series indentity and locating information of the DICOM SOP instances in the selection.)
          */
         public List<SeriesComponent> getSeries() { 
           if (this.series == null)
@@ -192,7 +255,7 @@ public class ImagingObjectSelection extends DomainResource {
         }
 
         /**
-         * @return {@link #series} (Series indetity and locating information of the DICOM SOP instances in the selection.)
+         * @return {@link #series} (Series indentity and locating information of the DICOM SOP instances in the selection.)
          */
     // syntactic sugar
         public SeriesComponent addSeries() { //3
@@ -215,9 +278,10 @@ public class ImagingObjectSelection extends DomainResource {
 
         protected void listChildren(List<Property> childrenList) {
           super.listChildren(childrenList);
-          childrenList.add(new Property("uid", "oid", "Study instance uid of the SOP instances in the selection.", 0, java.lang.Integer.MAX_VALUE, uid));
+          childrenList.add(new Property("uid", "oid", "Study instance UID of the SOP instances in the selection.", 0, java.lang.Integer.MAX_VALUE, uid));
           childrenList.add(new Property("url", "uri", "WADO-RS URL to retrieve the study. Note that this URL retrieves all SOP instances of the study, not only those in the selection.", 0, java.lang.Integer.MAX_VALUE, url));
-          childrenList.add(new Property("series", "", "Series indetity and locating information of the DICOM SOP instances in the selection.", 0, java.lang.Integer.MAX_VALUE, series));
+          childrenList.add(new Property("imagingStudy", "Reference(ImagingStudy)", "Reference to the Imaging Study in FHIR form.", 0, java.lang.Integer.MAX_VALUE, imagingStudy));
+          childrenList.add(new Property("series", "", "Series indentity and locating information of the DICOM SOP instances in the selection.", 0, java.lang.Integer.MAX_VALUE, series));
         }
 
       public StudyComponent copy() {
@@ -225,6 +289,7 @@ public class ImagingObjectSelection extends DomainResource {
         copyValues(dst);
         dst.uid = uid == null ? null : uid.copy();
         dst.url = url == null ? null : url.copy();
+        dst.imagingStudy = imagingStudy == null ? null : imagingStudy.copy();
         if (series != null) {
           dst.series = new ArrayList<SeriesComponent>();
           for (SeriesComponent i : series)
@@ -240,8 +305,8 @@ public class ImagingObjectSelection extends DomainResource {
         if (!(other instanceof StudyComponent))
           return false;
         StudyComponent o = (StudyComponent) other;
-        return compareDeep(uid, o.uid, true) && compareDeep(url, o.url, true) && compareDeep(series, o.series, true)
-          ;
+        return compareDeep(uid, o.uid, true) && compareDeep(url, o.url, true) && compareDeep(imagingStudy, o.imagingStudy, true)
+           && compareDeep(series, o.series, true);
       }
 
       @Override
@@ -255,43 +320,46 @@ public class ImagingObjectSelection extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && (uid == null || uid.isEmpty()) && (url == null || url.isEmpty()) && (series == null || series.isEmpty())
-          ;
+        return super.isEmpty() && (uid == null || uid.isEmpty()) && (url == null || url.isEmpty()) && (imagingStudy == null || imagingStudy.isEmpty())
+           && (series == null || series.isEmpty());
       }
 
   }
 
     @Block()
-    public static class SeriesComponent extends BackboneElement {
+    public static class SeriesComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Series instance uid of the SOP instances in the selection.
+         * Series instance UID of the SOP instances in the selection.
          */
-        @Child(name ="uid", type={OidType.class}, order=1, min=0, max=1)
-        @Description(shortDefinition="Series instance uid", formalDefinition="Series instance uid of the SOP instances in the selection." )
+        @Child(name = "uid", type = {OidType.class}, order=1, min=0, max=1)
+        @Description(shortDefinition="Series instance UID", formalDefinition="Series instance UID of the SOP instances in the selection." )
         protected OidType uid;
 
         /**
-         * WADO-RS URL to retrieve the series Note that this URL retrieves all SOP instances of the series not only those in the selection.
+         * WADO-RS URL to retrieve the series. Note that this URL retrieves all SOP instances of the series not only those in the selection.
          */
-        @Child(name ="url", type={UriType.class}, order=2, min=0, max=1)
-        @Description(shortDefinition="Retrieve URL", formalDefinition="WADO-RS URL to retrieve the series Note that this URL retrieves all SOP instances of the series not only those in the selection." )
+        @Child(name = "url", type = {UriType.class}, order=2, min=0, max=1)
+        @Description(shortDefinition="Retrieve series URL", formalDefinition="WADO-RS URL to retrieve the series. Note that this URL retrieves all SOP instances of the series not only those in the selection." )
         protected UriType url;
 
         /**
          * Identity and locating information of the selected DICOM SOP instances.
          */
-        @Child(name ="instance", type={}, order=3, min=1, max=Child.MAX_UNLIMITED)
+        @Child(name = "instance", type = {}, order=3, min=1, max=Child.MAX_UNLIMITED)
         @Description(shortDefinition="The selected instance", formalDefinition="Identity and locating information of the selected DICOM SOP instances." )
         protected List<InstanceComponent> instance;
 
         private static final long serialVersionUID = 229247770L;
 
+    /*
+     * Constructor
+     */
       public SeriesComponent() {
         super();
       }
 
         /**
-         * @return {@link #uid} (Series instance uid of the SOP instances in the selection.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
+         * @return {@link #uid} (Series instance UID of the SOP instances in the selection.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
          */
         public OidType getUidElement() { 
           if (this.uid == null)
@@ -311,7 +379,7 @@ public class ImagingObjectSelection extends DomainResource {
         }
 
         /**
-         * @param value {@link #uid} (Series instance uid of the SOP instances in the selection.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
+         * @param value {@link #uid} (Series instance UID of the SOP instances in the selection.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
          */
         public SeriesComponent setUidElement(OidType value) { 
           this.uid = value;
@@ -319,14 +387,14 @@ public class ImagingObjectSelection extends DomainResource {
         }
 
         /**
-         * @return Series instance uid of the SOP instances in the selection.
+         * @return Series instance UID of the SOP instances in the selection.
          */
         public String getUid() { 
           return this.uid == null ? null : this.uid.getValue();
         }
 
         /**
-         * @param value Series instance uid of the SOP instances in the selection.
+         * @param value Series instance UID of the SOP instances in the selection.
          */
         public SeriesComponent setUid(String value) { 
           if (Utilities.noString(value))
@@ -340,7 +408,7 @@ public class ImagingObjectSelection extends DomainResource {
         }
 
         /**
-         * @return {@link #url} (WADO-RS URL to retrieve the series Note that this URL retrieves all SOP instances of the series not only those in the selection.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+         * @return {@link #url} (WADO-RS URL to retrieve the series. Note that this URL retrieves all SOP instances of the series not only those in the selection.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
          */
         public UriType getUrlElement() { 
           if (this.url == null)
@@ -360,7 +428,7 @@ public class ImagingObjectSelection extends DomainResource {
         }
 
         /**
-         * @param value {@link #url} (WADO-RS URL to retrieve the series Note that this URL retrieves all SOP instances of the series not only those in the selection.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+         * @param value {@link #url} (WADO-RS URL to retrieve the series. Note that this URL retrieves all SOP instances of the series not only those in the selection.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
          */
         public SeriesComponent setUrlElement(UriType value) { 
           this.url = value;
@@ -368,14 +436,14 @@ public class ImagingObjectSelection extends DomainResource {
         }
 
         /**
-         * @return WADO-RS URL to retrieve the series Note that this URL retrieves all SOP instances of the series not only those in the selection.
+         * @return WADO-RS URL to retrieve the series. Note that this URL retrieves all SOP instances of the series not only those in the selection.
          */
         public String getUrl() { 
           return this.url == null ? null : this.url.getValue();
         }
 
         /**
-         * @param value WADO-RS URL to retrieve the series Note that this URL retrieves all SOP instances of the series not only those in the selection.
+         * @param value WADO-RS URL to retrieve the series. Note that this URL retrieves all SOP instances of the series not only those in the selection.
          */
         public SeriesComponent setUrl(String value) { 
           if (Utilities.noString(value))
@@ -430,8 +498,8 @@ public class ImagingObjectSelection extends DomainResource {
 
         protected void listChildren(List<Property> childrenList) {
           super.listChildren(childrenList);
-          childrenList.add(new Property("uid", "oid", "Series instance uid of the SOP instances in the selection.", 0, java.lang.Integer.MAX_VALUE, uid));
-          childrenList.add(new Property("url", "uri", "WADO-RS URL to retrieve the series Note that this URL retrieves all SOP instances of the series not only those in the selection.", 0, java.lang.Integer.MAX_VALUE, url));
+          childrenList.add(new Property("uid", "oid", "Series instance UID of the SOP instances in the selection.", 0, java.lang.Integer.MAX_VALUE, uid));
+          childrenList.add(new Property("url", "uri", "WADO-RS URL to retrieve the series. Note that this URL retrieves all SOP instances of the series not only those in the selection.", 0, java.lang.Integer.MAX_VALUE, url));
           childrenList.add(new Property("instance", "", "Identity and locating information of the selected DICOM SOP instances.", 0, java.lang.Integer.MAX_VALUE, instance));
         }
 
@@ -477,41 +545,47 @@ public class ImagingObjectSelection extends DomainResource {
   }
 
     @Block()
-    public static class InstanceComponent extends BackboneElement {
+    public static class InstanceComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * SOP class uid of the selected instance.
+         * SOP class UID of the selected instance.
          */
-        @Child(name ="sopClass", type={OidType.class}, order=1, min=1, max=1)
-        @Description(shortDefinition="SOP class uid of instance", formalDefinition="SOP class uid of the selected instance." )
+        @Child(name = "sopClass", type = {OidType.class}, order=1, min=1, max=1)
+        @Description(shortDefinition="SOP class UID of instance", formalDefinition="SOP class UID of the selected instance." )
         protected OidType sopClass;
 
         /**
-         * SOP Instance uid of the selected instance.
+         * SOP Instance UID of the selected instance.
          */
-        @Child(name ="uid", type={OidType.class}, order=2, min=1, max=1)
-        @Description(shortDefinition="Uid of the selected instance", formalDefinition="SOP Instance uid of the selected instance." )
+        @Child(name = "uid", type = {OidType.class}, order=2, min=1, max=1)
+        @Description(shortDefinition="Selected instance UID", formalDefinition="SOP Instance UID of the selected instance." )
         protected OidType uid;
 
         /**
          * WADO-RS URL to retrieve the DICOM SOP Instance.
          */
-        @Child(name ="url", type={UriType.class}, order=3, min=1, max=1)
-        @Description(shortDefinition="Retrieve URL", formalDefinition="WADO-RS URL to retrieve the DICOM SOP Instance." )
+        @Child(name = "url", type = {UriType.class}, order=3, min=1, max=1)
+        @Description(shortDefinition="Retrieve instance URL", formalDefinition="WADO-RS URL to retrieve the DICOM SOP Instance." )
         protected UriType url;
 
         /**
          * Identity and location information of the frames in the selected instance.
          */
-        @Child(name ="frames", type={}, order=4, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name = "frames", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED)
         @Description(shortDefinition="The frame set", formalDefinition="Identity and location information of the frames in the selected instance." )
         protected List<FramesComponent> frames;
 
         private static final long serialVersionUID = 1641180916L;
 
+    /*
+     * Constructor
+     */
       public InstanceComponent() {
         super();
       }
 
+    /*
+     * Constructor
+     */
       public InstanceComponent(OidType sopClass, OidType uid, UriType url) {
         super();
         this.sopClass = sopClass;
@@ -520,7 +594,7 @@ public class ImagingObjectSelection extends DomainResource {
       }
 
         /**
-         * @return {@link #sopClass} (SOP class uid of the selected instance.). This is the underlying object with id, value and extensions. The accessor "getSopClass" gives direct access to the value
+         * @return {@link #sopClass} (SOP class UID of the selected instance.). This is the underlying object with id, value and extensions. The accessor "getSopClass" gives direct access to the value
          */
         public OidType getSopClassElement() { 
           if (this.sopClass == null)
@@ -540,7 +614,7 @@ public class ImagingObjectSelection extends DomainResource {
         }
 
         /**
-         * @param value {@link #sopClass} (SOP class uid of the selected instance.). This is the underlying object with id, value and extensions. The accessor "getSopClass" gives direct access to the value
+         * @param value {@link #sopClass} (SOP class UID of the selected instance.). This is the underlying object with id, value and extensions. The accessor "getSopClass" gives direct access to the value
          */
         public InstanceComponent setSopClassElement(OidType value) { 
           this.sopClass = value;
@@ -548,14 +622,14 @@ public class ImagingObjectSelection extends DomainResource {
         }
 
         /**
-         * @return SOP class uid of the selected instance.
+         * @return SOP class UID of the selected instance.
          */
         public String getSopClass() { 
           return this.sopClass == null ? null : this.sopClass.getValue();
         }
 
         /**
-         * @param value SOP class uid of the selected instance.
+         * @param value SOP class UID of the selected instance.
          */
         public InstanceComponent setSopClass(String value) { 
             if (this.sopClass == null)
@@ -565,7 +639,7 @@ public class ImagingObjectSelection extends DomainResource {
         }
 
         /**
-         * @return {@link #uid} (SOP Instance uid of the selected instance.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
+         * @return {@link #uid} (SOP Instance UID of the selected instance.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
          */
         public OidType getUidElement() { 
           if (this.uid == null)
@@ -585,7 +659,7 @@ public class ImagingObjectSelection extends DomainResource {
         }
 
         /**
-         * @param value {@link #uid} (SOP Instance uid of the selected instance.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
+         * @param value {@link #uid} (SOP Instance UID of the selected instance.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
          */
         public InstanceComponent setUidElement(OidType value) { 
           this.uid = value;
@@ -593,14 +667,14 @@ public class ImagingObjectSelection extends DomainResource {
         }
 
         /**
-         * @return SOP Instance uid of the selected instance.
+         * @return SOP Instance UID of the selected instance.
          */
         public String getUid() { 
           return this.uid == null ? null : this.uid.getValue();
         }
 
         /**
-         * @param value SOP Instance uid of the selected instance.
+         * @param value SOP Instance UID of the selected instance.
          */
         public InstanceComponent setUid(String value) { 
             if (this.uid == null)
@@ -696,8 +770,8 @@ public class ImagingObjectSelection extends DomainResource {
 
         protected void listChildren(List<Property> childrenList) {
           super.listChildren(childrenList);
-          childrenList.add(new Property("sopClass", "oid", "SOP class uid of the selected instance.", 0, java.lang.Integer.MAX_VALUE, sopClass));
-          childrenList.add(new Property("uid", "oid", "SOP Instance uid of the selected instance.", 0, java.lang.Integer.MAX_VALUE, uid));
+          childrenList.add(new Property("sopClass", "oid", "SOP class UID of the selected instance.", 0, java.lang.Integer.MAX_VALUE, sopClass));
+          childrenList.add(new Property("uid", "oid", "SOP Instance UID of the selected instance.", 0, java.lang.Integer.MAX_VALUE, uid));
           childrenList.add(new Property("url", "uri", "WADO-RS URL to retrieve the DICOM SOP Instance.", 0, java.lang.Integer.MAX_VALUE, url));
           childrenList.add(new Property("frames", "", "Identity and location information of the frames in the selected instance.", 0, java.lang.Integer.MAX_VALUE, frames));
         }
@@ -746,27 +820,33 @@ public class ImagingObjectSelection extends DomainResource {
   }
 
     @Block()
-    public static class FramesComponent extends BackboneElement {
+    public static class FramesComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * The frame numbers in the frame set.
          */
-        @Child(name ="frameNumbers", type={UnsignedIntType.class}, order=1, min=1, max=Child.MAX_UNLIMITED)
+        @Child(name = "frameNumbers", type = {UnsignedIntType.class}, order=1, min=1, max=Child.MAX_UNLIMITED)
         @Description(shortDefinition="Frame numbers", formalDefinition="The frame numbers in the frame set." )
         protected List<UnsignedIntType> frameNumbers;
 
         /**
          * WADO-RS URL to retrieve the DICOM frames.
          */
-        @Child(name ="url", type={UriType.class}, order=2, min=1, max=1)
-        @Description(shortDefinition="Retrieve URL", formalDefinition="WADO-RS URL to retrieve the DICOM frames." )
+        @Child(name = "url", type = {UriType.class}, order=2, min=1, max=1)
+        @Description(shortDefinition="Retrieve frame URL", formalDefinition="WADO-RS URL to retrieve the DICOM frames." )
         protected UriType url;
 
         private static final long serialVersionUID = -2068206970L;
 
+    /*
+     * Constructor
+     */
       public FramesComponent() {
         super();
       }
 
+    /*
+     * Constructor
+     */
       public FramesComponent(UriType url) {
         super();
         this.url = url;
@@ -917,70 +997,76 @@ public class ImagingObjectSelection extends DomainResource {
   }
 
     /**
-     * Instance UID of the DICOM KOS SOP Instances represenetd in this resource.
+     * Instance UID of the DICOM KOS SOP Instances represented in this resource.
      */
-    @Child(name ="uid", type={OidType.class}, order=0, min=1, max=1)
-    @Description(shortDefinition="Instance UID", formalDefinition="Instance UID of the DICOM KOS SOP Instances represenetd in this resource." )
+    @Child(name = "uid", type = {OidType.class}, order=0, min=1, max=1)
+    @Description(shortDefinition="Instance UID", formalDefinition="Instance UID of the DICOM KOS SOP Instances represented in this resource." )
     protected OidType uid;
 
     /**
-     * A patient resource reference which is the patient subject of all DICOM SOP Instances in this key object selection.
+     * A patient resource reference which is the patient subject of all DICOM SOP Instances in this ImagingObjectSelection.
      */
-    @Child(name ="patient", type={Patient.class}, order=1, min=1, max=1)
-    @Description(shortDefinition="Patient of the selected objects", formalDefinition="A patient resource reference which is the patient subject of all DICOM SOP Instances in this key object selection." )
+    @Child(name = "patient", type = {Patient.class}, order=1, min=1, max=1)
+    @Description(shortDefinition="Patient of the selected objects", formalDefinition="A patient resource reference which is the patient subject of all DICOM SOP Instances in this ImagingObjectSelection." )
     protected Reference patient;
 
     /**
-     * The actual object that is the target of the reference (A patient resource reference which is the patient subject of all DICOM SOP Instances in this key object selection.)
+     * The actual object that is the target of the reference (A patient resource reference which is the patient subject of all DICOM SOP Instances in this ImagingObjectSelection.)
      */
     protected Patient patientTarget;
 
     /**
      * The reason for, or significance of, the selection of objects referenced in the resource.
      */
-    @Child(name ="title", type={CodeableConcept.class}, order=2, min=1, max=1)
+    @Child(name = "title", type = {CodeableConcept.class}, order=2, min=1, max=1)
     @Description(shortDefinition="Reason for selection", formalDefinition="The reason for, or significance of, the selection of objects referenced in the resource." )
     protected CodeableConcept title;
 
     /**
-     * Text description of the DICOM SOP instances selected in the key object selection. This should be aligned with the content of the title element, and can provide further explanation of the SOP instances in the selection.
+     * Text description of the DICOM SOP instances selected in the ImagingObjectSelection. This should be aligned with the content of the title element, and can provide further explanation of the SOP instances in the selection.
      */
-    @Child(name ="description", type={StringType.class}, order=3, min=0, max=1)
-    @Description(shortDefinition="Description text", formalDefinition="Text description of the DICOM SOP instances selected in the key object selection. This should be aligned with the content of the title element, and can provide further explanation of the SOP instances in the selection." )
+    @Child(name = "description", type = {StringType.class}, order=3, min=0, max=1)
+    @Description(shortDefinition="Description text", formalDefinition="Text description of the DICOM SOP instances selected in the ImagingObjectSelection. This should be aligned with the content of the title element, and can provide further explanation of the SOP instances in the selection." )
     protected StringType description;
 
     /**
-     * Author of key object selection. It can be a human authtor or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion.
+     * Author of ImagingObjectSelection. It can be a human author or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion.
      */
-    @Child(name ="author", type={Practitioner.class, Device.class, Organization.class, Patient.class, RelatedPerson.class}, order=4, min=0, max=1)
-    @Description(shortDefinition="Author (human or machine)", formalDefinition="Author of key object selection. It can be a human authtor or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion." )
+    @Child(name = "author", type = {Practitioner.class, Device.class, Organization.class, Patient.class, RelatedPerson.class}, order=4, min=0, max=1)
+    @Description(shortDefinition="Author (human or machine)", formalDefinition="Author of ImagingObjectSelection. It can be a human author or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion." )
     protected Reference author;
 
     /**
-     * The actual object that is the target of the reference (Author of key object selection. It can be a human authtor or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion.)
+     * The actual object that is the target of the reference (Author of ImagingObjectSelection. It can be a human author or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion.)
      */
     protected Resource authorTarget;
 
     /**
-     * Date and time when the key object selection was authored. Note that this is the date and time the DICOM SOP instances in the selection were selected (selection decision making). It is different from the creation date and time of the selection resource.
+     * Date and time when the selection of the referenced instances were made. It is (typically) diffeent from the creation date of the selection resource, and from dates associated with the referenced instances (e.g. capture time of the referenced image).
      */
-    @Child(name ="authoringTime", type={DateTimeType.class}, order=5, min=0, max=1)
-    @Description(shortDefinition="Authoring time of the selection", formalDefinition="Date and time when the key object selection was authored. Note that this is the date and time the DICOM SOP instances in the selection were selected (selection decision making). It is different from the creation date and time of the selection resource." )
+    @Child(name = "authoringTime", type = {DateTimeType.class}, order=5, min=0, max=1)
+    @Description(shortDefinition="Authoring time of the selection", formalDefinition="Date and time when the selection of the referenced instances were made. It is (typically) diffeent from the creation date of the selection resource, and from dates associated with the referenced instances (e.g. capture time of the referenced image)." )
     protected DateTimeType authoringTime;
 
     /**
      * Study identity and locating information of the DICOM SOP instances in the selection.
      */
-    @Child(name ="study", type={}, order=6, min=1, max=Child.MAX_UNLIMITED)
+    @Child(name = "study", type = {}, order=6, min=1, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Study identity of the selected instances", formalDefinition="Study identity and locating information of the DICOM SOP instances in the selection." )
     protected List<StudyComponent> study;
 
     private static final long serialVersionUID = -1961832713L;
 
+  /*
+   * Constructor
+   */
     public ImagingObjectSelection() {
       super();
     }
 
+  /*
+   * Constructor
+   */
     public ImagingObjectSelection(OidType uid, Reference patient, CodeableConcept title) {
       super();
       this.uid = uid;
@@ -989,7 +1075,7 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @return {@link #uid} (Instance UID of the DICOM KOS SOP Instances represenetd in this resource.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
+     * @return {@link #uid} (Instance UID of the DICOM KOS SOP Instances represented in this resource.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
      */
     public OidType getUidElement() { 
       if (this.uid == null)
@@ -1009,7 +1095,7 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @param value {@link #uid} (Instance UID of the DICOM KOS SOP Instances represenetd in this resource.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
+     * @param value {@link #uid} (Instance UID of the DICOM KOS SOP Instances represented in this resource.). This is the underlying object with id, value and extensions. The accessor "getUid" gives direct access to the value
      */
     public ImagingObjectSelection setUidElement(OidType value) { 
       this.uid = value;
@@ -1017,14 +1103,14 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @return Instance UID of the DICOM KOS SOP Instances represenetd in this resource.
+     * @return Instance UID of the DICOM KOS SOP Instances represented in this resource.
      */
     public String getUid() { 
       return this.uid == null ? null : this.uid.getValue();
     }
 
     /**
-     * @param value Instance UID of the DICOM KOS SOP Instances represenetd in this resource.
+     * @param value Instance UID of the DICOM KOS SOP Instances represented in this resource.
      */
     public ImagingObjectSelection setUid(String value) { 
         if (this.uid == null)
@@ -1034,7 +1120,7 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @return {@link #patient} (A patient resource reference which is the patient subject of all DICOM SOP Instances in this key object selection.)
+     * @return {@link #patient} (A patient resource reference which is the patient subject of all DICOM SOP Instances in this ImagingObjectSelection.)
      */
     public Reference getPatient() { 
       if (this.patient == null)
@@ -1050,7 +1136,7 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @param value {@link #patient} (A patient resource reference which is the patient subject of all DICOM SOP Instances in this key object selection.)
+     * @param value {@link #patient} (A patient resource reference which is the patient subject of all DICOM SOP Instances in this ImagingObjectSelection.)
      */
     public ImagingObjectSelection setPatient(Reference value) { 
       this.patient = value;
@@ -1058,7 +1144,7 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A patient resource reference which is the patient subject of all DICOM SOP Instances in this key object selection.)
+     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A patient resource reference which is the patient subject of all DICOM SOP Instances in this ImagingObjectSelection.)
      */
     public Patient getPatientTarget() { 
       if (this.patientTarget == null)
@@ -1070,7 +1156,7 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A patient resource reference which is the patient subject of all DICOM SOP Instances in this key object selection.)
+     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A patient resource reference which is the patient subject of all DICOM SOP Instances in this ImagingObjectSelection.)
      */
     public ImagingObjectSelection setPatientTarget(Patient value) { 
       this.patientTarget = value;
@@ -1102,7 +1188,7 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @return {@link #description} (Text description of the DICOM SOP instances selected in the key object selection. This should be aligned with the content of the title element, and can provide further explanation of the SOP instances in the selection.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     * @return {@link #description} (Text description of the DICOM SOP instances selected in the ImagingObjectSelection. This should be aligned with the content of the title element, and can provide further explanation of the SOP instances in the selection.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
     public StringType getDescriptionElement() { 
       if (this.description == null)
@@ -1122,7 +1208,7 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @param value {@link #description} (Text description of the DICOM SOP instances selected in the key object selection. This should be aligned with the content of the title element, and can provide further explanation of the SOP instances in the selection.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     * @param value {@link #description} (Text description of the DICOM SOP instances selected in the ImagingObjectSelection. This should be aligned with the content of the title element, and can provide further explanation of the SOP instances in the selection.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
     public ImagingObjectSelection setDescriptionElement(StringType value) { 
       this.description = value;
@@ -1130,14 +1216,14 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @return Text description of the DICOM SOP instances selected in the key object selection. This should be aligned with the content of the title element, and can provide further explanation of the SOP instances in the selection.
+     * @return Text description of the DICOM SOP instances selected in the ImagingObjectSelection. This should be aligned with the content of the title element, and can provide further explanation of the SOP instances in the selection.
      */
     public String getDescription() { 
       return this.description == null ? null : this.description.getValue();
     }
 
     /**
-     * @param value Text description of the DICOM SOP instances selected in the key object selection. This should be aligned with the content of the title element, and can provide further explanation of the SOP instances in the selection.
+     * @param value Text description of the DICOM SOP instances selected in the ImagingObjectSelection. This should be aligned with the content of the title element, and can provide further explanation of the SOP instances in the selection.
      */
     public ImagingObjectSelection setDescription(String value) { 
       if (Utilities.noString(value))
@@ -1151,7 +1237,7 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @return {@link #author} (Author of key object selection. It can be a human authtor or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion.)
+     * @return {@link #author} (Author of ImagingObjectSelection. It can be a human author or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion.)
      */
     public Reference getAuthor() { 
       if (this.author == null)
@@ -1167,7 +1253,7 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @param value {@link #author} (Author of key object selection. It can be a human authtor or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion.)
+     * @param value {@link #author} (Author of ImagingObjectSelection. It can be a human author or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion.)
      */
     public ImagingObjectSelection setAuthor(Reference value) { 
       this.author = value;
@@ -1175,14 +1261,14 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @return {@link #author} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Author of key object selection. It can be a human authtor or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion.)
+     * @return {@link #author} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Author of ImagingObjectSelection. It can be a human author or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion.)
      */
     public Resource getAuthorTarget() { 
       return this.authorTarget;
     }
 
     /**
-     * @param value {@link #author} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Author of key object selection. It can be a human authtor or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion.)
+     * @param value {@link #author} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Author of ImagingObjectSelection. It can be a human author or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion.)
      */
     public ImagingObjectSelection setAuthorTarget(Resource value) { 
       this.authorTarget = value;
@@ -1190,7 +1276,7 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @return {@link #authoringTime} (Date and time when the key object selection was authored. Note that this is the date and time the DICOM SOP instances in the selection were selected (selection decision making). It is different from the creation date and time of the selection resource.). This is the underlying object with id, value and extensions. The accessor "getAuthoringTime" gives direct access to the value
+     * @return {@link #authoringTime} (Date and time when the selection of the referenced instances were made. It is (typically) diffeent from the creation date of the selection resource, and from dates associated with the referenced instances (e.g. capture time of the referenced image).). This is the underlying object with id, value and extensions. The accessor "getAuthoringTime" gives direct access to the value
      */
     public DateTimeType getAuthoringTimeElement() { 
       if (this.authoringTime == null)
@@ -1210,7 +1296,7 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @param value {@link #authoringTime} (Date and time when the key object selection was authored. Note that this is the date and time the DICOM SOP instances in the selection were selected (selection decision making). It is different from the creation date and time of the selection resource.). This is the underlying object with id, value and extensions. The accessor "getAuthoringTime" gives direct access to the value
+     * @param value {@link #authoringTime} (Date and time when the selection of the referenced instances were made. It is (typically) diffeent from the creation date of the selection resource, and from dates associated with the referenced instances (e.g. capture time of the referenced image).). This is the underlying object with id, value and extensions. The accessor "getAuthoringTime" gives direct access to the value
      */
     public ImagingObjectSelection setAuthoringTimeElement(DateTimeType value) { 
       this.authoringTime = value;
@@ -1218,14 +1304,14 @@ public class ImagingObjectSelection extends DomainResource {
     }
 
     /**
-     * @return Date and time when the key object selection was authored. Note that this is the date and time the DICOM SOP instances in the selection were selected (selection decision making). It is different from the creation date and time of the selection resource.
+     * @return Date and time when the selection of the referenced instances were made. It is (typically) diffeent from the creation date of the selection resource, and from dates associated with the referenced instances (e.g. capture time of the referenced image).
      */
     public Date getAuthoringTime() { 
       return this.authoringTime == null ? null : this.authoringTime.getValue();
     }
 
     /**
-     * @param value Date and time when the key object selection was authored. Note that this is the date and time the DICOM SOP instances in the selection were selected (selection decision making). It is different from the creation date and time of the selection resource.
+     * @param value Date and time when the selection of the referenced instances were made. It is (typically) diffeent from the creation date of the selection resource, and from dates associated with the referenced instances (e.g. capture time of the referenced image).
      */
     public ImagingObjectSelection setAuthoringTime(Date value) { 
       if (value == null)
@@ -1280,12 +1366,12 @@ public class ImagingObjectSelection extends DomainResource {
 
       protected void listChildren(List<Property> childrenList) {
         super.listChildren(childrenList);
-        childrenList.add(new Property("uid", "oid", "Instance UID of the DICOM KOS SOP Instances represenetd in this resource.", 0, java.lang.Integer.MAX_VALUE, uid));
-        childrenList.add(new Property("patient", "Reference(Patient)", "A patient resource reference which is the patient subject of all DICOM SOP Instances in this key object selection.", 0, java.lang.Integer.MAX_VALUE, patient));
+        childrenList.add(new Property("uid", "oid", "Instance UID of the DICOM KOS SOP Instances represented in this resource.", 0, java.lang.Integer.MAX_VALUE, uid));
+        childrenList.add(new Property("patient", "Reference(Patient)", "A patient resource reference which is the patient subject of all DICOM SOP Instances in this ImagingObjectSelection.", 0, java.lang.Integer.MAX_VALUE, patient));
         childrenList.add(new Property("title", "CodeableConcept", "The reason for, or significance of, the selection of objects referenced in the resource.", 0, java.lang.Integer.MAX_VALUE, title));
-        childrenList.add(new Property("description", "string", "Text description of the DICOM SOP instances selected in the key object selection. This should be aligned with the content of the title element, and can provide further explanation of the SOP instances in the selection.", 0, java.lang.Integer.MAX_VALUE, description));
-        childrenList.add(new Property("author", "Reference(Practitioner|Device|Organization|Patient|RelatedPerson)", "Author of key object selection. It can be a human authtor or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion.", 0, java.lang.Integer.MAX_VALUE, author));
-        childrenList.add(new Property("authoringTime", "dateTime", "Date and time when the key object selection was authored. Note that this is the date and time the DICOM SOP instances in the selection were selected (selection decision making). It is different from the creation date and time of the selection resource.", 0, java.lang.Integer.MAX_VALUE, authoringTime));
+        childrenList.add(new Property("description", "string", "Text description of the DICOM SOP instances selected in the ImagingObjectSelection. This should be aligned with the content of the title element, and can provide further explanation of the SOP instances in the selection.", 0, java.lang.Integer.MAX_VALUE, description));
+        childrenList.add(new Property("author", "Reference(Practitioner|Device|Organization|Patient|RelatedPerson)", "Author of ImagingObjectSelection. It can be a human author or a device which made the decision of the SOP instances selected. For example, a radiologist selected a set of imaging SOP instances to attached in a diagnostic report, and a CAD application may author a selection to describe SOP instances it used to generate a detection conclusion.", 0, java.lang.Integer.MAX_VALUE, author));
+        childrenList.add(new Property("authoringTime", "dateTime", "Date and time when the selection of the referenced instances were made. It is (typically) diffeent from the creation date of the selection resource, and from dates associated with the referenced instances (e.g. capture time of the referenced image).", 0, java.lang.Integer.MAX_VALUE, authoringTime));
         childrenList.add(new Property("study", "", "Study identity and locating information of the DICOM SOP instances in the selection.", 0, java.lang.Integer.MAX_VALUE, study));
       }
 

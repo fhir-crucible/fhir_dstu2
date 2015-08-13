@@ -29,42 +29,129 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
+// Generated on Thu, Aug 13, 2015 06:30+1000 for FHIR v0.5.0
 
 import java.util.*;
 
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.instance.model.annotations.ResourceDef;
 import org.hl7.fhir.instance.model.annotations.SearchParamDefinition;
-import org.hl7.fhir.instance.model.annotations.Block;
 import org.hl7.fhir.instance.model.annotations.Child;
 import org.hl7.fhir.instance.model.annotations.Description;
+import org.hl7.fhir.instance.model.annotations.Block;
+import org.hl7.fhir.instance.model.api.*;
 /**
  * Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient.  E.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, etc.
  */
 @ResourceDef(name="Contraindication", profile="http://hl7.org/fhir/Profile/Contraindication")
 public class Contraindication extends DomainResource {
 
+    public enum ContraindicationSeverity {
+        /**
+         * Indicates the condition may be life-threatening or has the potential to cause permanent injury
+         */
+        HIGH, 
+        /**
+         * Indicates the condition may result in noticable adverse adverse consequences but is unlikely to be life-threatening or cause permanent injury
+         */
+        MODERATE, 
+        /**
+         * Indicates the condition may result in some adverse consequences but is unlikely to substantially affect the situation of the subjec
+         */
+        LOW, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ContraindicationSeverity fromCode(String codeString) throws Exception {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("high".equals(codeString))
+          return HIGH;
+        if ("moderate".equals(codeString))
+          return MODERATE;
+        if ("low".equals(codeString))
+          return LOW;
+        throw new Exception("Unknown ContraindicationSeverity code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case HIGH: return "high";
+            case MODERATE: return "moderate";
+            case LOW: return "low";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case HIGH: return "http://hl7.org/fhir/contraindication-severity";
+            case MODERATE: return "http://hl7.org/fhir/contraindication-severity";
+            case LOW: return "http://hl7.org/fhir/contraindication-severity";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case HIGH: return "Indicates the condition may be life-threatening or has the potential to cause permanent injury";
+            case MODERATE: return "Indicates the condition may result in noticable adverse adverse consequences but is unlikely to be life-threatening or cause permanent injury";
+            case LOW: return "Indicates the condition may result in some adverse consequences but is unlikely to substantially affect the situation of the subjec";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case HIGH: return "High";
+            case MODERATE: return "Moderate";
+            case LOW: return "Low";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class ContraindicationSeverityEnumFactory implements EnumFactory<ContraindicationSeverity> {
+    public ContraindicationSeverity fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("high".equals(codeString))
+          return ContraindicationSeverity.HIGH;
+        if ("moderate".equals(codeString))
+          return ContraindicationSeverity.MODERATE;
+        if ("low".equals(codeString))
+          return ContraindicationSeverity.LOW;
+        throw new IllegalArgumentException("Unknown ContraindicationSeverity code '"+codeString+"'");
+        }
+    public String toCode(ContraindicationSeverity code) {
+      if (code == ContraindicationSeverity.HIGH)
+        return "high";
+      if (code == ContraindicationSeverity.MODERATE)
+        return "moderate";
+      if (code == ContraindicationSeverity.LOW)
+        return "low";
+      return "?";
+      }
+    }
+
     @Block()
-    public static class ContraindicationMitigationComponent extends BackboneElement {
+    public static class ContraindicationMitigationComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Describes the action that was taken or the observation that was made that reduces/eliminates the risk associated with the identified contraindication.
          */
-        @Child(name ="action", type={CodeableConcept.class}, order=1, min=1, max=1)
+        @Child(name = "action", type = {CodeableConcept.class}, order=1, min=1, max=1)
         @Description(shortDefinition="What mitigation?", formalDefinition="Describes the action that was taken or the observation that was made that reduces/eliminates the risk associated with the identified contraindication." )
         protected CodeableConcept action;
 
         /**
          * Indicates when the mitigating action was documented.
          */
-        @Child(name ="date", type={DateTimeType.class}, order=2, min=0, max=1)
+        @Child(name = "date", type = {DateTimeType.class}, order=2, min=0, max=1)
         @Description(shortDefinition="Date committed", formalDefinition="Indicates when the mitigating action was documented." )
         protected DateTimeType date;
 
         /**
          * Identifies the practitioner who determined the mitigation and takes responsibility for the mitigation step occurring.
          */
-        @Child(name ="author", type={Practitioner.class}, order=3, min=0, max=1)
+        @Child(name = "author", type = {Practitioner.class}, order=3, min=0, max=1)
         @Description(shortDefinition="Who is committing?", formalDefinition="Identifies the practitioner who determined the mitigation and takes responsibility for the mitigation step occurring." )
         protected Reference author;
 
@@ -75,10 +162,16 @@ public class Contraindication extends DomainResource {
 
         private static final long serialVersionUID = -1994768436L;
 
+    /*
+     * Constructor
+     */
       public ContraindicationMitigationComponent() {
         super();
       }
 
+    /*
+     * Constructor
+     */
       public ContraindicationMitigationComponent(CodeableConcept action) {
         super();
         this.action = action;
@@ -248,7 +341,7 @@ public class Contraindication extends DomainResource {
     /**
      * Indicates the patient whose record the contraindication is associated with.
      */
-    @Child(name ="patient", type={Patient.class}, order=0, min=0, max=1)
+    @Child(name = "patient", type = {Patient.class}, order=0, min=0, max=1)
     @Description(shortDefinition="Associated patient", formalDefinition="Indicates the patient whose record the contraindication is associated with." )
     protected Reference patient;
 
@@ -260,21 +353,21 @@ public class Contraindication extends DomainResource {
     /**
      * Identifies the general type of issue identified.
      */
-    @Child(name ="category", type={CodeableConcept.class}, order=1, min=0, max=1)
+    @Child(name = "category", type = {CodeableConcept.class}, order=1, min=0, max=1)
     @Description(shortDefinition="E.g. Drug-drug, duplicate therapy, etc.", formalDefinition="Identifies the general type of issue identified." )
     protected CodeableConcept category;
 
     /**
      * Indicates the degree of importance associated with the identified issue based on the potential impact on the patient.
      */
-    @Child(name ="severity", type={CodeType.class}, order=2, min=0, max=1)
-    @Description(shortDefinition="high | medium | low", formalDefinition="Indicates the degree of importance associated with the identified issue based on the potential impact on the patient." )
-    protected CodeType severity;
+    @Child(name = "severity", type = {CodeType.class}, order=2, min=0, max=1)
+    @Description(shortDefinition="high | moderate | low", formalDefinition="Indicates the degree of importance associated with the identified issue based on the potential impact on the patient." )
+    protected Enumeration<ContraindicationSeverity> severity;
 
     /**
      * Indicates the resource representing the current activity or proposed activity that.
      */
-    @Child(name ="implicated", type={}, order=3, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "implicated", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Problem resource", formalDefinition="Indicates the resource representing the current activity or proposed activity that." )
     protected List<Reference> implicated;
     /**
@@ -286,21 +379,21 @@ public class Contraindication extends DomainResource {
     /**
      * A textual explanation of the contraindication.
      */
-    @Child(name ="detail", type={StringType.class}, order=4, min=0, max=1)
+    @Child(name = "detail", type = {StringType.class}, order=4, min=0, max=1)
     @Description(shortDefinition="Description and context", formalDefinition="A textual explanation of the contraindication." )
     protected StringType detail;
 
     /**
      * The date or date-time when the contraindication was initially identified.
      */
-    @Child(name ="date", type={DateTimeType.class}, order=5, min=0, max=1)
+    @Child(name = "date", type = {DateTimeType.class}, order=5, min=0, max=1)
     @Description(shortDefinition="When identified", formalDefinition="The date or date-time when the contraindication was initially identified." )
     protected DateTimeType date;
 
     /**
      * Identifies the provider or software that identified the.
      */
-    @Child(name ="author", type={Practitioner.class, Device.class}, order=6, min=0, max=1)
+    @Child(name = "author", type = {Practitioner.class, Device.class}, order=6, min=0, max=1)
     @Description(shortDefinition="Who found issue?", formalDefinition="Identifies the provider or software that identified the." )
     protected Reference author;
 
@@ -312,26 +405,29 @@ public class Contraindication extends DomainResource {
     /**
      * Business identifier associated with the contraindication record.
      */
-    @Child(name ="identifier", type={Identifier.class}, order=7, min=0, max=1)
+    @Child(name = "identifier", type = {Identifier.class}, order=7, min=0, max=1)
     @Description(shortDefinition="Unique id for the contraindication", formalDefinition="Business identifier associated with the contraindication record." )
     protected Identifier identifier;
 
     /**
      * The literature, knowledge-base or similar reference that describes the propensity for the contraindication identified.
      */
-    @Child(name ="reference", type={UriType.class}, order=8, min=0, max=1)
+    @Child(name = "reference", type = {UriType.class}, order=8, min=0, max=1)
     @Description(shortDefinition="Authority for issue", formalDefinition="The literature, knowledge-base or similar reference that describes the propensity for the contraindication identified." )
     protected UriType reference;
 
     /**
-     * Indicates an action that has been taken or is committed to to reduce or eliminate the likelihood of the risk identified by the contraindicaiton from manifesting.  Can also reflect an observation of known mitigating factors that may reduce/eliminate the need for any action.
+     * Indicates an action that has been taken or is committed to to reduce or eliminate the likelihood of the risk identified by the contraindication from manifesting.  Can also reflect an observation of known mitigating factors that may reduce/eliminate the need for any action.
      */
-    @Child(name ="mitigation", type={}, order=9, min=0, max=Child.MAX_UNLIMITED)
-    @Description(shortDefinition="Step taken to address", formalDefinition="Indicates an action that has been taken or is committed to to reduce or eliminate the likelihood of the risk identified by the contraindicaiton from manifesting.  Can also reflect an observation of known mitigating factors that may reduce/eliminate the need for any action." )
+    @Child(name = "mitigation", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED)
+    @Description(shortDefinition="Step taken to address", formalDefinition="Indicates an action that has been taken or is committed to to reduce or eliminate the likelihood of the risk identified by the contraindication from manifesting.  Can also reflect an observation of known mitigating factors that may reduce/eliminate the need for any action." )
     protected List<ContraindicationMitigationComponent> mitigation;
 
-    private static final long serialVersionUID = 528603336L;
+    private static final long serialVersionUID = -1915322652L;
 
+  /*
+   * Constructor
+   */
     public Contraindication() {
       super();
     }
@@ -407,12 +503,12 @@ public class Contraindication extends DomainResource {
     /**
      * @return {@link #severity} (Indicates the degree of importance associated with the identified issue based on the potential impact on the patient.). This is the underlying object with id, value and extensions. The accessor "getSeverity" gives direct access to the value
      */
-    public CodeType getSeverityElement() { 
+    public Enumeration<ContraindicationSeverity> getSeverityElement() { 
       if (this.severity == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Contraindication.severity");
         else if (Configuration.doAutoCreate())
-          this.severity = new CodeType(); // bb
+          this.severity = new Enumeration<ContraindicationSeverity>(new ContraindicationSeverityEnumFactory()); // bb
       return this.severity;
     }
 
@@ -427,7 +523,7 @@ public class Contraindication extends DomainResource {
     /**
      * @param value {@link #severity} (Indicates the degree of importance associated with the identified issue based on the potential impact on the patient.). This is the underlying object with id, value and extensions. The accessor "getSeverity" gives direct access to the value
      */
-    public Contraindication setSeverityElement(CodeType value) { 
+    public Contraindication setSeverityElement(Enumeration<ContraindicationSeverity> value) { 
       this.severity = value;
       return this;
     }
@@ -435,19 +531,19 @@ public class Contraindication extends DomainResource {
     /**
      * @return Indicates the degree of importance associated with the identified issue based on the potential impact on the patient.
      */
-    public String getSeverity() { 
+    public ContraindicationSeverity getSeverity() { 
       return this.severity == null ? null : this.severity.getValue();
     }
 
     /**
      * @param value Indicates the degree of importance associated with the identified issue based on the potential impact on the patient.
      */
-    public Contraindication setSeverity(String value) { 
-      if (Utilities.noString(value))
+    public Contraindication setSeverity(ContraindicationSeverity value) { 
+      if (value == null)
         this.severity = null;
       else {
         if (this.severity == null)
-          this.severity = new CodeType();
+          this.severity = new Enumeration<ContraindicationSeverity>(new ContraindicationSeverityEnumFactory());
         this.severity.setValue(value);
       }
       return this;
@@ -713,7 +809,7 @@ public class Contraindication extends DomainResource {
     }
 
     /**
-     * @return {@link #mitigation} (Indicates an action that has been taken or is committed to to reduce or eliminate the likelihood of the risk identified by the contraindicaiton from manifesting.  Can also reflect an observation of known mitigating factors that may reduce/eliminate the need for any action.)
+     * @return {@link #mitigation} (Indicates an action that has been taken or is committed to to reduce or eliminate the likelihood of the risk identified by the contraindication from manifesting.  Can also reflect an observation of known mitigating factors that may reduce/eliminate the need for any action.)
      */
     public List<ContraindicationMitigationComponent> getMitigation() { 
       if (this.mitigation == null)
@@ -731,7 +827,7 @@ public class Contraindication extends DomainResource {
     }
 
     /**
-     * @return {@link #mitigation} (Indicates an action that has been taken or is committed to to reduce or eliminate the likelihood of the risk identified by the contraindicaiton from manifesting.  Can also reflect an observation of known mitigating factors that may reduce/eliminate the need for any action.)
+     * @return {@link #mitigation} (Indicates an action that has been taken or is committed to to reduce or eliminate the likelihood of the risk identified by the contraindication from manifesting.  Can also reflect an observation of known mitigating factors that may reduce/eliminate the need for any action.)
      */
     // syntactic sugar
     public ContraindicationMitigationComponent addMitigation() { //3
@@ -763,7 +859,7 @@ public class Contraindication extends DomainResource {
         childrenList.add(new Property("author", "Reference(Practitioner|Device)", "Identifies the provider or software that identified the.", 0, java.lang.Integer.MAX_VALUE, author));
         childrenList.add(new Property("identifier", "Identifier", "Business identifier associated with the contraindication record.", 0, java.lang.Integer.MAX_VALUE, identifier));
         childrenList.add(new Property("reference", "uri", "The literature, knowledge-base or similar reference that describes the propensity for the contraindication identified.", 0, java.lang.Integer.MAX_VALUE, reference));
-        childrenList.add(new Property("mitigation", "", "Indicates an action that has been taken or is committed to to reduce or eliminate the likelihood of the risk identified by the contraindicaiton from manifesting.  Can also reflect an observation of known mitigating factors that may reduce/eliminate the need for any action.", 0, java.lang.Integer.MAX_VALUE, mitigation));
+        childrenList.add(new Property("mitigation", "", "Indicates an action that has been taken or is committed to to reduce or eliminate the likelihood of the risk identified by the contraindication from manifesting.  Can also reflect an observation of known mitigating factors that may reduce/eliminate the need for any action.", 0, java.lang.Integer.MAX_VALUE, mitigation));
       }
 
       public Contraindication copy() {

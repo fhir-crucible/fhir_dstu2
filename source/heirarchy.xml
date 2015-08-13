@@ -1,4 +1,4 @@
-<!-- FHIR Hierarchy -->
+﻿<!-- FHIR Hierarchy -->
 <!--
 
 todo: compartments
@@ -10,6 +10,7 @@ signatures.html
 		<page title="Documentation" filename="documentation.html">
 
     <page title="Table of Contents" filename="toc.html"/>
+			<page title="Documentation Guidance and Glossary" filename="help.html"/>
 			<page title="License and Legal Terms" filename="license.html"/>
 			<page title="Community and Credits" filename="credits.html"/>
 			<page title="Version History" filename="history.html"/>
@@ -31,7 +32,7 @@ signatures.html
 			<page title="References" filename="references.html">
 				<page title="Definitions" filename="references-definitions.html"/>
 			</page>
-			<page title="Compartment Based Access" filename="extras.html">
+			<page title="Compartment Based Access" filename="compartments.html">
 				<page title="Patient Compartment" filename="compartment-patient.html"/>
 				<page title="Encounter Compartment" filename="compartment-encounter.html"/>
 				<page title="RelatedPerson Compartment" filename="compartment-relatedPerson.html"/>
@@ -51,6 +52,7 @@ signatures.html
 			<page title="Formats" filename="formats.html">
 				<page title="XML" filename="xml.html"/>
 				<page title="JSON" filename="json.html"/>
+				<page title="RDF" filename="rdf.html"/>
 			</page>
 			<page title="Data Types" filename="datatypes.html">
 				<page title="Examples" filename="datatypes-examples.html"/>
@@ -69,6 +71,7 @@ signatures.html
 				<page title="ElementDefinition Detailed Descriptions" filename="elementdefinition-definitions.html"/>
 				<page title="ElementDefinition Mappings" filename="elementdefinition-mappings.html"/>
 			</page>
+			<page title="Ontology" filename="ontology.html"/>
 
 			<page title="Using Codes" filename="terminologies.html">
 				<page title="Systems" filename="terminologies-systems.html">
@@ -93,9 +96,9 @@ signatures.html
 					<pages type="v3-vocab" filename="template-v3.html"/>
 				</page>
 				<page title="Concept Maps" filename="terminologies-conceptmaps.html"/>
-				<page title="Service" filename="terminology-service.html"/>
+				<page title="identifier Registry" filename="identifier-registry.html"/>
 			</page>
-
+      
 			<page title="Comparison" filename="comparison.html">
 				<page title="v2 Messaging" filename="comparison-v2.html"/>
 				<page title="v3 Messaging" filename="comparison-v3.html"/>
@@ -106,10 +109,10 @@ signatures.html
 			<page title="How FHIR fits into an EHR" filename="ehr-fm.html"/>
 			<page title="Status Code Map" filename="sc.html"/>
 			<page title="W5 Map" filename="w5.html"/>
-
+      
 			<page title="Ballot Intro" filename="ballot-intro.html"/>
 		</page>
-
+    
 		<page title="Implementation" filename="implementation.html">
 			<page title="RESTful API" filename="http.html">
 				<page title="Search" filename="search.html"/>
@@ -122,8 +125,10 @@ signatures.html
         <page title="CDA on FHIR" filename="cda-intro.html"/>
       </page>
 			<page title="Messaging" filename="messaging.html"/>
-			<page title="Services / SOA #1" filename="services.html"/>
-			<page title="Services / SOA #2" filename="soa.html"/>
+			<page title="Services" filename="services.html">
+  		  <page title="TerminologyService" filename="terminology-service.html"/>
+			  <page title="SOA" filename="soa.html"/>
+      </page>
 
 			<page title="Downloads" filename="downloads.html"/>
 			<page title="Managing Resource Identity" filename="managing.html"/>
@@ -140,7 +145,7 @@ signatures.html
 				<page title="Common Usages" filename="usecases.html"/>
 			</page>
 			<page title="Implementation Guides" filename="iglist.html">
-				<page title="Argonaut Project" filename="argonauts.html"/>
+<!--				<page title="Argonaut Project" filename="argonauts.html"/>
 				<page title="Data Access Framework (DAF)" filename="daf.html">
 					<page title="DAF Introduction" filename="daf-intro.html"/>
 					<page title="DAF Security" filename="daf-security.html"/>
@@ -164,7 +169,7 @@ signatures.html
 					<page title="USLabPHReport" filename="uslabphreport.html">
 						<page title="Documentation" filename="uslabphresult-guide.html"/>
 					</page>
-				</page>
+				</page> -->
 			</page>
 		  <page title="Profile List" filename="profilelist.html"/>
 			<page title="Using Resources" filename="use.html"/>
@@ -193,7 +198,7 @@ signatures.html
 			<page type="resource" resource="Contraindication"/>
 			<page type="resource" resource="RiskAssessment"/>
 			<page type="resource" resource="Medication"/>
-			<page type="resource" resource="MedicationPrescription"/>
+			<page type="resource" resource="MedicationOrder"/>
 			<page type="resource" resource="MedicationAdministration"/>
 			<page type="resource" resource="MedicationDispense"/>
 			<page type="resource" resource="MedicationStatement"/>
@@ -208,7 +213,7 @@ signatures.html
 			<page type="resource" resource="Specimen"/>
 			<!--<page type="resource" resource="DeviceObservationReport"/>-->
 			<page type="resource" resource="Questionnaire"/>
-			<page type="resource" resource="QuestionnaireAnswers"/>
+			<page type="resource" resource="QuestionnaireResponse"/>
 			<page type="resource" resource="FamilyMemberHistory"/>
 			<page type="resource" resource="VisionPrescription"/>
 		</page>
@@ -219,6 +224,7 @@ signatures.html
 			<page type="resource" resource="Practitioner"/>
 			<page type="resource" resource="Organization"/>
 			<page type="resource" resource="HealthcareService"/>
+			<page type="resource" resource="Account"/>
 			<page type="resource" resource="Contract"/>
 			<page type="resource" resource="ProcessRequest"/>
 			<page type="resource" resource="ProcessResponse"/>
@@ -235,7 +241,8 @@ signatures.html
 			<page type="resource" resource="Flag"/>
 			<page type="resource" resource="Communication"/>
 			<page type="resource" resource="CommunicationRequest"/>
-			<page type="resource" resource="Supply"/>
+			<page type="resource" resource="SupplyDelivery"/>
+			<page type="resource" resource="SupplyRequest"/>			
 			<page type="resource" resource="Order"/>
 			<page type="resource" resource="OrderResponse"/>
 			<page type="resource" resource="Appointment"/>
@@ -263,6 +270,7 @@ signatures.html
 			<!--    <page type="resource" resource="SecurityPrincipal"/>
     <page type="resource" resource="SecurityGroup"/>
     <page type="resource" resource="SecurityClaim"/>-->
+			<page type="resource" resource="ImplementationGuide"/>
 			<page type="resource" resource="Conformance"/>
 			<page type="resource" resource="StructureDefinition"/>
 			<page type="resource" resource="OperationDefinition"/>
@@ -271,7 +279,7 @@ signatures.html
 			<page type="resource" resource="ValueSet"/>
 			<page type="resource" resource="NamingSystem"/>
 			<page type="resource" resource="ConceptMap"/>
-			<page type="resource" resource="TestScript"/>
+			<page type="resource" resource="TestScript" />
 		</page>
 		<page title="Financial" filename="financial.html">
 			<page type="resource" resource="Claim"/>

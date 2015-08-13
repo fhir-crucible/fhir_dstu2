@@ -27,15 +27,17 @@ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWIS
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 POSSIBILITY OF SUCH DAMAGE.
 
-*/
+ */
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.hl7.fhir.instance.model.BooleanType;
 import org.hl7.fhir.instance.model.CodeType;
 import org.hl7.fhir.instance.model.CodeableConcept;
+import org.hl7.fhir.instance.model.Coding;
+import org.hl7.fhir.instance.model.DataElement;
 import org.hl7.fhir.instance.model.DomainResource;
 import org.hl7.fhir.instance.model.Element;
 import org.hl7.fhir.instance.model.ElementDefinition;
@@ -43,6 +45,8 @@ import org.hl7.fhir.instance.model.Extension;
 import org.hl7.fhir.instance.model.ExtensionHelper;
 import org.hl7.fhir.instance.model.Factory;
 import org.hl7.fhir.instance.model.Identifier;
+import org.hl7.fhir.instance.model.IntegerType;
+import org.hl7.fhir.instance.model.MarkdownType;
 import org.hl7.fhir.instance.model.PrimitiveType;
 import org.hl7.fhir.instance.model.Questionnaire.GroupComponent;
 import org.hl7.fhir.instance.model.Questionnaire.QuestionComponent;
@@ -52,7 +56,7 @@ import org.hl7.fhir.instance.model.Type;
 import org.hl7.fhir.instance.model.UriType;
 import org.hl7.fhir.instance.model.ValueSet;
 import org.hl7.fhir.instance.model.ValueSet.ConceptDefinitionComponent;
-import org.hl7.fhir.instance.model.ValueSet.ValueSetDefineComponent;
+import org.hl7.fhir.instance.model.ValueSet.ValueSetCodeSystemComponent;
 import org.hl7.fhir.instance.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -69,21 +73,25 @@ public class ToolingExtensions {
   private static final String EXT_TRANSLATION = "http://hl7.org/fhir/StructureDefinition/translation";
   public static final String EXT_ISSUE_SOURCE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source";
   public static final String EXT_DISPLAY_HINT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-display-hint"; 
+  public static final String EXT_REPLACED_BY = "http://hl7.org/fhir/StructureDefinition/valueset-replacedby";
 
   // unregistered?
-  
+
   public static final String EXT_FLYOVER = "http://hl7.org/fhir/Profile/questionnaire-extensions#flyover";
   private static final String EXT_QTYPE = "http://www.healthintersections.com.au/fhir/Profile/metadata#type";
-  private static final String EXT_EXPANSION_CLOSED = "http://hl7.org/fhir/Profile/questionnaire-extensions#closed";
   private static final String EXT_QREF = "http://www.healthintersections.com.au/fhir/Profile/metadata#reference";
   private static final String EXTENSION_FILTER_ONLY = "http://www.healthintersections.com.au/fhir/Profile/metadata#expandNeedsFilter";
   private static final String EXT_TYPE = "http://www.healthintersections.com.au/fhir/Profile/metadata#type";
   private static final String EXT_REFERENCE = "http://www.healthintersections.com.au/fhir/Profile/metadata#reference";
   private static final String EXT_ALLOWABLE_UNITS = "http://hl7.org/fhir/StructureDefinition/elementdefinition-allowedUnits";
-  
-  
+  public static final String EXT_CIMI_REFERENCE = "http://hl7.org/fhir/StructureDefinition/cimi-reference";
+  public static final String EXT_UNCLOSED = "http://hl7.org/fhir/StructureDefinition/valueset-unclosed";
+  public static final String EXT_FMM_LEVEL = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm";
+  public static final String EXT_FMM_LEVEL_NO_WARN = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm-no-warnings";
+
+
   // specific extension helpers
-  
+
   public static Extension makeIssueSource(Source source) {
     Extension ex = new Extension();
     // todo: write this up and get it published with the pack (and handle the redirect?)
@@ -97,7 +105,11 @@ public class ToolingExtensions {
   public static boolean hasExtension(DomainResource de, String url) {
     return getExtension(de, url) != null;
   }
-  
+
+  public static boolean hasExtension(Element e, String url) {
+    return getExtension(e, url) != null;
+  }
+
   public static void addStringExtension(DomainResource dr, String url, String content) throws Exception {
     if (!Utilities.noString(content)) {
       Extension ex = getExtension(dr, url);
@@ -108,13 +120,31 @@ public class ToolingExtensions {
     }
   }
 
+  public static void addStringExtension(Element e, String url, String content) throws Exception {
+    if (!Utilities.noString(content)) {
+      Extension ex = getExtension(e, url);
+      if (ex != null)
+        ex.setValue(new StringType(content));
+      else
+        e.getExtension().add(Factory.newExtension(url, new StringType(content), true));   
+    }
+  }
+
+  public static void addIntegerExtension(DomainResource dr, String url, int value) throws Exception {
+    Extension ex = getExtension(dr, url);
+    if (ex != null)
+      ex.setValue(new IntegerType(value));
+    else
+      dr.getExtension().add(Factory.newExtension(url, new IntegerType(value), true));   
+  }
+
   public static void addComment(Element nc, String comment) throws Exception {
     if (!Utilities.noString(comment))
       nc.getExtension().add(Factory.newExtension(EXT_COMMENT, Factory.newString_(comment), true));   
   }
 
   public static void markDeprecated(Element nc) throws Exception {
-    nc.getExtension().add(Factory.newExtension(EXT_DEPRECATED, Factory.newBoolean(true), true));   
+    setDeprecated(nc);   
   }
 
   public static void addSubsumes(ConceptDefinitionComponent nc, String code) throws Exception {
@@ -139,6 +169,8 @@ public class ToolingExtensions {
     Extension ex = ExtensionHelper.getExtension(c, uri);
     if (ex == null)
       return null;
+    if (ex.getValue() instanceof UriType)
+      return ((UriType) ex.getValue()).getValue();
     if (!(ex.getValue() instanceof StringType))
       return null;
     return ((StringType) ex.getValue()).getValue();
@@ -152,6 +184,8 @@ public class ToolingExtensions {
       return ((StringType) ex.getValue()).getValue();
     if ((ex.getValue() instanceof UriType))
       return ((UriType) ex.getValue()).getValue();
+    if ((ex.getValue() instanceof MarkdownType))
+      return ((MarkdownType) ex.getValue()).getValue();
     return null;
   }
 
@@ -172,13 +206,13 @@ public class ToolingExtensions {
     return !Utilities.noString(((StringType) ex.getValue()).getValue());
   }
 
-  public static String readBooleanExtension(Element c, String uri) {
+  public static Boolean readBooleanExtension(Element c, String uri) {
     Extension ex = ExtensionHelper.getExtension(c, uri);
     if (ex == null)
       return null;
     if (!(ex.getValue() instanceof BooleanType))
       return null;
-    return java.lang.Boolean.toString(((BooleanType) ex.getValue()).getValue());
+    return ((BooleanType) ex.getValue()).getValue();
   }
 
   public static boolean findBooleanExtension(Element c, String uri) {
@@ -194,7 +228,7 @@ public class ToolingExtensions {
     return readStringExtension(c, EXT_COMMENT);    
   }
 
-  public static String getDeprecated(ConceptDefinitionComponent c) {
+  public static Boolean getDeprecated(ConceptDefinitionComponent c) {
     return readBooleanExtension(c, EXT_DEPRECATED);    
   }
 
@@ -219,7 +253,7 @@ public class ToolingExtensions {
   public static void addFlyOver(GroupComponent group, String text) throws Exception {
     if (!Utilities.noString(text))
       group.getExtension().add(Factory.newExtension(EXT_FLYOVER, Factory.newString_(text), true));   
-    
+
   }
 
   public static void setQuestionType(GroupComponent group, String text) throws Exception {
@@ -247,11 +281,11 @@ public class ToolingExtensions {
   public static void addReference(QuestionComponent group, String value) throws Exception {
     group.getExtension().add(Factory.newExtension(EXT_REFERENCE, Factory.newString_(value), true));       
   }
-  
+
   public static void addIdentifier(Element element, Identifier value) throws Exception {
     element.getExtension().add(Factory.newExtension(EXT_IDENTIFIER, value, true));       
   }
-  
+
   /**
    * @param name the identity of the extension of interest
    * @return The extension, if on this element, else null
@@ -267,7 +301,7 @@ public class ToolingExtensions {
     }
     return null;
   }
-  
+
   public static Extension getExtension(Element el, String name) {
     if (name == null)
       return null;
@@ -279,7 +313,7 @@ public class ToolingExtensions {
     }
     return null;
   }
-  
+
   public static void setStringExtension(DomainResource resource, String uri, String value) {
     Extension ext = getExtension(resource, uri);
     if (ext != null)
@@ -288,7 +322,7 @@ public class ToolingExtensions {
       resource.getExtension().add(new Extension(new UriType(uri)).setValue(new StringType(value)));
   }
 
-  public static String getOID(ValueSetDefineComponent define) {
+  public static String getOID(ValueSetCodeSystemComponent define) {
     return readStringExtension(define, EXT_OID);    
   }
 
@@ -296,7 +330,7 @@ public class ToolingExtensions {
     return readStringExtension(vs, EXT_OID);    
   }
 
-  public static void setOID(ValueSetDefineComponent define, String oid) throws Exception {
+  public static void setOID(ValueSetCodeSystemComponent define, String oid) throws Exception {
     define.getExtension().add(Factory.newExtension(EXT_OID, Factory.newUri(oid), false));       
   }
   public static void setOID(ValueSet vs, String oid) throws Exception {
@@ -307,7 +341,7 @@ public class ToolingExtensions {
     for (Extension e : element.getExtension()) {
       if (e.getUrl().equals(EXT_TRANSLATION)) {
         Extension e1 = ExtensionHelper.getExtension(e, "lang");
-        
+
         if (e1 != null && e1.getValue() instanceof CodeType && ((CodeType) e.getValue()).getValue().equals(lang))
           return true;
       }
@@ -319,7 +353,7 @@ public class ToolingExtensions {
     for (Extension e : element.getExtension()) {
       if (e.getUrl().equals(EXT_TRANSLATION)) {
         Extension e1 = ExtensionHelper.getExtension(e, "lang");
-        
+
         if (e1 != null && e1.getValue() instanceof CodeType && ((CodeType) e.getValue()).getValue().equals(lang)) {
           e1 = ExtensionHelper.getExtension(e, "content");
           return ((StringType) e.getValue()).getValue();
@@ -350,22 +384,58 @@ public class ToolingExtensions {
         return;
       }
     eld.getExtension().add(new Extension().setUrl(EXT_ALLOWABLE_UNITS).setValue(cc));
- 
   }
 
-	public static List<Extension> getExtensions(Element element, String url) {
-	  List<Extension> results = new ArrayList<Extension>();
-	  for (Extension ex : element.getExtension())
-	  	if (ex.getUrl().equals(url))
-	  		results.add(ex);
-	  return results;
+  public static List<Extension> getExtensions(Element element, String url) {
+    List<Extension> results = new ArrayList<Extension>();
+    for (Extension ex : element.getExtension())
+      if (ex.getUrl().equals(url))
+        results.add(ex);
+    return results;
   }
 
-	public static List<Extension> getExtensions(DomainResource resource, String url) {
-	  List<Extension> results = new ArrayList<Extension>();
-	  for (Extension ex : resource.getExtension())
-	  	if (ex.getUrl().equals(url))
-	  		results.add(ex);
-	  return results;
+  public static List<Extension> getExtensions(DomainResource resource, String url) {
+    List<Extension> results = new ArrayList<Extension>();
+    for (Extension ex : resource.getExtension())
+      if (ex.getUrl().equals(url))
+        results.add(ex);
+    return results;
+  }
+
+  public static void addDEReference(DataElement de, String value) {
+    for (Extension e : de.getExtension()) 
+      if (e.getUrl().equals(EXT_CIMI_REFERENCE)) {
+        e.setValue(new UriType(value));
+        return;
+      }
+    de.getExtension().add(new Extension().setUrl(EXT_CIMI_REFERENCE).setValue(new UriType(value)));
+  }
+
+  public static void setDeprecated(Element nc) {
+    for (Extension e : nc.getExtension()) 
+      if (e.getUrl().equals(EXT_DEPRECATED)) {
+        e.setValue(new BooleanType(true));
+        return;
+      }
+    nc.getExtension().add(new Extension().setUrl(EXT_DEPRECATED).setValue(new BooleanType(true)));    
+  }
+
+  public static void setExtension(Element focus, String url, Coding c) {
+    for (Extension e : focus.getExtension()) 
+      if (e.getUrl().equals(url)) {
+        e.setValue(c);
+        return;
+      }
+    focus.getExtension().add(new Extension().setUrl(url).setValue(c));    
+  }
+
+  public static void removeExtension(DomainResource focus, String url) {
+    Iterator<Extension> i = focus.getExtension().iterator();
+    while (i.hasNext()) {
+      Extension e = i.next(); // must be called before you can call i.remove()
+      if (e.getUrl().equals(url)) {
+        i.remove();
+      }
+    }
   }
 }

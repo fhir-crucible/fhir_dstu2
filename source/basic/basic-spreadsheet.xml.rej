@@ -1,0 +1,174 @@
+***************
+*** 3,17 ****
+  <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+   xmlns:o="urn:schemas-microsoft-com:office:office"
+   xmlns:x="urn:schemas-microsoft-com:office:excel"
+   xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+   xmlns:html="http://www.w3.org/TR/REC-html40">
+   <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+    <Author>Grahame</Author>
+-   <LastAuthor>Lloyd</LastAuthor>
+    <Created>2012-03-19T11:12:07Z</Created>
+-   <LastSaved>2015-03-28T09:44:14Z</LastSaved>
+-   <Version>12.00</Version>
+   </DocumentProperties>
+   <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+    <AllowPNG/>
+   </OfficeDocumentSettings>
+--- 3,21 ----
+  <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+   xmlns:o="urn:schemas-microsoft-com:office:office"
+   xmlns:x="urn:schemas-microsoft-com:office:excel"
++  xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"
+   xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+   xmlns:html="http://www.w3.org/TR/REC-html40">
+   <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+    <Author>Grahame</Author>
++   <LastAuthor>Bryn</LastAuthor>
+    <Created>2012-03-19T11:12:07Z</Created>
++   <LastSaved>2015-06-01T19:10:40Z</LastSaved>
++   <Version>15.00</Version>
+   </DocumentProperties>
++  <CustomDocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
++   <WorkbookGuid dt:dt="string">28f06f6f-8827-43ae-aad7-65436cae94d7</WorkbookGuid>
++  </CustomDocumentProperties>
+   <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+    <AllowPNG/>
+   </OfficeDocumentSettings>
+***************
+*** 20,27 ****
+     <Path>\work\org.hl7.fhir\build\source\alert\Invariants</Path>
+     <SheetName>Invariants</SheetName>
+    </SupBook>
+-   <WindowHeight>11655</WindowHeight>
+-   <WindowWidth>21600</WindowWidth>
+    <WindowTopX>0</WindowTopX>
+    <WindowTopY>0</WindowTopY>
+    <ActiveSheet>6</ActiveSheet>
+--- 24,31 ----
+     <Path>\work\org.hl7.fhir\build\source\alert\Invariants</Path>
+     <SheetName>Invariants</SheetName>
+    </SupBook>
++   <WindowHeight>10740</WindowHeight>
++   <WindowWidth>20880</WindowWidth>
+    <WindowTopX>0</WindowTopX>
+    <WindowTopY>0</WindowTopY>
+    <ActiveSheet>6</ActiveSheet>
+***************
+*** 801,806 ****
+   </Styles>
+   <Names>
+    <NamedRange ss:Name="Invariantids" ss:RefersTo="=Invariants!R2C1:R50C1"/>
+   </Names>
+   <Worksheet ss:Name="Instructions">
+    <Table ss:ExpandedColumnCount="1" ss:ExpandedRowCount="3" x:FullColumns="1"
+--- 805,829 ----
+   </Styles>
+   <Names>
+    <NamedRange ss:Name="Invariantids" ss:RefersTo="=Invariants!R2C1:R50C1"/>
++   <NamedRange ss:Name="LOCAL_DATE_SEPARATOR"
++    ss:RefersTo="=INDEX(GET.WORKSPACE(37),17)" ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_DAY_FORMAT" ss:RefersTo="=INDEX(GET.WORKSPACE(37),21)"
++    ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_HOUR_FORMAT"
++    ss:RefersTo="=INDEX(GET.WORKSPACE(37),22)" ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_MINUTE_FORMAT"
++    ss:RefersTo="=INDEX(GET.WORKSPACE(37),23)" ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_MONTH_FORMAT"
++    ss:RefersTo="=INDEX(GET.WORKSPACE(37),20)" ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_MYSQL_DATE_FORMAT"
++    ss:RefersTo="=REPT(LOCAL_YEAR_FORMAT,4)&amp;LOCAL_DATE_SEPARATOR&amp;REPT(LOCAL_MONTH_FORMAT,2)&amp;LOCAL_DATE_SEPARATOR&amp;REPT(LOCAL_DAY_FORMAT,2)&amp;&quot; &quot;&amp;REPT(LOCAL_HOUR_FORMAT,2)&amp;LOCAL_TIME_SEPARATOR&amp;REPT(LOCAL_MINUTE_FORMAT,2)&amp;LOCAL_TIME_SEPARATOR&amp;REPT(LOCAL_SECOND_FORMAT,2)"
++    ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_SECOND_FORMAT"
++    ss:RefersTo="=INDEX(GET.WORKSPACE(37),24)" ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_TIME_SEPARATOR"
++    ss:RefersTo="=INDEX(GET.WORKSPACE(37),18)" ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_YEAR_FORMAT"
++    ss:RefersTo="=INDEX(GET.WORKSPACE(37),19)" ss:Hidden="1"/>
+   </Names>
+   <Worksheet ss:Name="Instructions">
+    <Table ss:ExpandedColumnCount="1" ss:ExpandedRowCount="3" x:FullColumns="1"
+***************
+*** 3600,3606 ****
+     <FreezePanes/>
+     <FrozenNoSplit/>
+     <SplitHorizontal>1</SplitHorizontal>
+-    <TopRowBottomPane>2</TopRowBottomPane>
+     <SplitVertical>1</SplitVertical>
+     <LeftColumnRightPane>1</LeftColumnRightPane>
+     <ActivePane>0</ActivePane>
+--- 3623,3629 ----
+     <FreezePanes/>
+     <FrozenNoSplit/>
+     <SplitHorizontal>1</SplitHorizontal>
++    <TopRowBottomPane>4</TopRowBottomPane>
+     <SplitVertical>1</SplitVertical>
+     <LeftColumnRightPane>1</LeftColumnRightPane>
+     <ActivePane>0</ActivePane>
+***************
+*** 5786,5807 ****
+      <Cell><Data ss:Type="String">cqf</Data></Cell>
+     </Row>
+     <Row ss:AutoFitHeight="0">
+-     <Cell ss:StyleID="s116"/>
+-     <Cell ss:StyleID="s117"/>
+-     <Cell ss:StyleID="s117"/>
+-     <Cell ss:StyleID="s118"/>
+     </Row>
+     <Row ss:AutoFitHeight="0">
+-     <Cell ss:StyleID="s116"/>
+-     <Cell ss:StyleID="s117"/>
+-     <Cell ss:StyleID="s117"/>
+-     <Cell ss:StyleID="s118"/>
+     </Row>
+     <Row ss:AutoFitHeight="0">
+-     <Cell ss:StyleID="s116"/>
+-     <Cell ss:StyleID="s117"/>
+-     <Cell ss:StyleID="s117"/>
+-     <Cell ss:StyleID="s118"/>
+     </Row>
+     <Row ss:AutoFitHeight="0">
+      <Cell ss:StyleID="s116"/>
+--- 5809,5833 ----
+      <Cell><Data ss:Type="String">cqf</Data></Cell>
+     </Row>
+     <Row ss:AutoFitHeight="0">
++     <Cell ss:StyleID="s116"><Data ss:Type="String">knowledgerequest-qif</Data></Cell>
++     <Cell ss:StyleID="s117"><Data ss:Type="String">basic-knowledgerequest-qif.xml</Data></Cell>
++     <Cell ss:StyleID="s117"><Data ss:Type="String">basic-knowledgerequest-qif-profile-spreadsheet.xml</Data></Cell>
++     <Cell ss:StyleID="s118"><Data ss:Type="String">spreadsheet</Data></Cell>
++     <Cell><Data ss:Type="String">qif</Data></Cell>
+     </Row>
+     <Row ss:AutoFitHeight="0">
++     <Cell ss:StyleID="s116"><Data ss:Type="String">knowledgeresponse-qif</Data></Cell>
++     <Cell ss:StyleID="s117"><Data ss:Type="String">basic-knowledgeresponse-qif.xml</Data></Cell>
++     <Cell ss:StyleID="s117"><Data ss:Type="String">basic-knowledgeresponse-qif-profile-spreadsheet.xml</Data></Cell>
++     <Cell ss:StyleID="s118"><Data ss:Type="String">spreadsheet</Data></Cell>
++     <Cell><Data ss:Type="String">qif</Data></Cell>
+     </Row>
+     <Row ss:AutoFitHeight="0">
++     <Cell ss:StyleID="s116"><Data ss:Type="String">knowledgeartifact-qif</Data></Cell>
++     <Cell ss:StyleID="s117"><Data ss:Type="String">basic-knowledgeartifact-qif.xml</Data></Cell>
++     <Cell ss:StyleID="s117"><Data ss:Type="String">basic-knowledgeartifact-qif-profile-spreadsheet.xml</Data></Cell>
++     <Cell ss:StyleID="s118"><Data ss:Type="String">spreadsheet</Data></Cell>
++     <Cell><Data ss:Type="String">qif</Data></Cell>
+     </Row>
+     <Row ss:AutoFitHeight="0">
+      <Cell ss:StyleID="s116"/>
+***************
+*** 6042,6048 ****
+      </Pane>
+      <Pane>
+       <Number>0</Number>
+-      <ActiveRow>2</ActiveRow>
+       <ActiveCol>2</ActiveCol>
+      </Pane>
+     </Panes>
+--- 6068,6074 ----
+      </Pane>
+      <Pane>
+       <Number>0</Number>
++      <ActiveRow>4</ActiveRow>
+       <ActiveCol>2</ActiveCol>
+      </Pane>
+     </Panes>

@@ -5,58 +5,26 @@ source data from http://wiki.ihe.net/index.php?title=Annotated_ProvideAndRegiste
 -->
 <DocumentReference xmlns="http://hl7.org/fhir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../schema/documentreference.xsd">
   <id value="example"/>
-    <!-- Many XDS systems do not trak any id for the author. When systems don't do this, 
+  <!-- Many XDS systems do not trak any id for the author. When systems don't do this, 
     the only option is for the author information to be contained in the Document Reference -->
   <contained>
     <Practitioner>
-      <id value="a1"/>    
-        <name>
-          <family value="Dopplemeyer"/>
-          <given value="Sherry"/>
-        </name>
-        <telecom>
-          <system value="email"/>
-          <value value="john.doe@healthcare.example.org"/>
-        </telecom>
-      <practitionerRole>
-				
-      <managingOrganization>
-        <display value="Cleveland Clinic"/>
-      </managingOrganization>
-<!--
-      <organization>
-        <display value="Berea Community"/>
-      </organization>      
--->
-      <role><text value="Primary Surgon"/></role>
-      <specialty><text value="Orthopedic"/></specialty>
-			</practitionerRole>
-    </Practitioner>
-  </contained>
-  <contained>
-    <Practitioner>
       <id value="a2"/> 
-        <name>
-          <family value="Smitty"/>
-          <given value="Gerald"/>
-        </name>
-        <telecom>
-          <system value="email"/>
-          <value value="john.doe@healthcare.example.org"/>
-        </telecom>
-    <practitionerRole>
-			
-      <managingOrganization>
-        <display value="Cleveland Clinic"/>
-      </managingOrganization>
-<!--
-      <organization>
-        <display value="Parma Community"/>
-      </organization>      
--->
-      <role><text value="Attending"/></role>
-      <specialty><text value="Orthopedic"/></specialty>
-		</practitionerRole>  
+      <name>
+        <family value="Smitty"/>
+        <given value="Gerald"/>
+      </name>
+      <practitionerRole>
+        <managingOrganization>
+          <display value="Cleveland Clinic"/>
+        </managingOrganization>
+        <role>
+          <text value="Attending"/>
+        </role>
+        <specialty>
+          <text value="Orthopedic"/>
+        </specialty>
+      </practitionerRole>  
     </Practitioner>
   </contained>
   <masterIdentifier>
@@ -68,20 +36,20 @@ source data from http://wiki.ihe.net/index.php?title=Annotated_ProvideAndRegiste
   </subject>
   <type>
     <coding>
-	<system value="http://loinc.org"/>
-	<code value="34108-1"/>
-	<display value="Outpatient Note"/>
+      <system value="http://loinc.org"/>
+      <code value="34108-1"/>
+      <display value="Outpatient Note"/>
     </coding>
   </type>
   <class>
-      <coding>
-        <system value="http://ihe.net/xds/connectathon/classCodes"/>
-        <code value="History and Physical"/>
-        <display value="History and Physical"/>
-      </coding>
+    <coding>
+      <system value="http://ihe.net/xds/connectathon/classCodes"/>
+      <code value="History and Physical"/>
+      <display value="History and Physical"/>
+    </coding>
   </class>
   <author>
-    <reference value="#a1"/>
+    <reference value="Practitioner/xcda1"/>
   </author>
   <author>
     <reference value="#a2"/>
@@ -89,15 +57,15 @@ source data from http://wiki.ihe.net/index.php?title=Annotated_ProvideAndRegiste
   <created value="2005-12-24T09:35:00+11:00"/>
   <indexed value="2005-12-24T09:43:41+11:00"/>
   <status value="current"/>
-  
+
   <description value="Physical"/>
-  <confidentiality>
+  <securityLabel>
     <coding>
       <system value="http://ihe.net/xds/connectathon/confidentialityCodes"/>
       <code value="1.3.6.1.4.1.21367.2006.7.101"/>
       <display value="Clinical-Staff"/>
     </coding>
-  </confidentiality>
+  </securityLabel>
   <content>
     <contentType value="application/hl7-v3+xml"/>
     <language value="en-US"/>
@@ -106,6 +74,9 @@ source data from http://wiki.ihe.net/index.php?title=Annotated_ProvideAndRegiste
     <hash value="2jmj7l5rSw0yVb/vlWAYkK/YBwk="/>
   </content>
   <context>
+    <encounter>
+      <reference value="Encounter/xcda"/>
+    </encounter>
     <event>
       <coding>
         <system value="http://ihe.net/xds/connectathon/eventCodes"/>
@@ -124,9 +95,6 @@ source data from http://wiki.ihe.net/index.php?title=Annotated_ProvideAndRegiste
         <display value="Outpatient"/>
       </coding>
     </facilityType>
-  </context>    
-
-<!--
     <practiceSetting>
       <coding>
         <system value="http://www.ihe.net/xds/connectathon/practiceSettingCodes"/>
@@ -134,10 +102,8 @@ source data from http://wiki.ihe.net/index.php?title=Annotated_ProvideAndRegiste
         <display value="General Medicine"/>
       </coding>
     </practiceSetting>
-
-  <currentSubject>
-    <reference value="Patient/xcda"/>
-  </currentSubject>
--->
-
+    <sourcePatientInfo>
+      <reference value="Patient/xcda"/>
+    </sourcePatientInfo	>
+  </context>    
 </DocumentReference>

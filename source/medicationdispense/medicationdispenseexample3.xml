@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<MedicationDispense xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://hl7.org/fhir ../../publish/medicationdispense.xsd"
- xmlns="http://hl7.org/fhir">
+<MedicationDispense xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../publish/medicationdispense.xsd" xmlns="http://hl7.org/fhir">
   <id value="meddisp003"/>
   <status value="completed"/>
   <patient>
@@ -11,32 +9,33 @@
     <reference value="Practitioner/example"/>
   </dispenser>
   <authorizingPrescription>
-    <reference value="MedicationPrescription/medicationprescriptionexample5" />
+    <reference value="MedicationOrder/medicationorderexample5" />
   </authorizingPrescription>
-<type>
-  <coding>
-    <system value="http:hl7.org/fhir"/>
-    <code value="FF"/>
-    <display value="First Fill"/>
-  </coding>
-</type>
+  <type>
+    <coding>
+      <system value="http:hl7.org/fhir"/>
+      <code value="FF"/>
+      <display value="First Fill"/>
+    </coding>
+  </type>
   <quantity>
     <value value="1"/>
     <system value="http://hl7.org/fhir/v3/orderableDrugForm"/>
     <code value="CAP"/>
   </quantity>
-<daysSupply>
-  <value value="10"/>
-  <units value="Day" />
-  <system value="http://unitsofmeasure.org"/>
-  <code value="D"/>   
-</daysSupply>
-  <medication> <!-- Linked to a RESOURCE Medication -->
+  <daysSupply>
+    <value value="10"/>
+    <unit value="Day" />
+    <system value="http://unitsofmeasure.org"/>
+    <code value="D"/>   
+  </daysSupply>
+  <medicationReference>
+    <!-- Linked to a RESOURCE Medication -->
     <reference value="Medication/MedicationExample6"/>
     <display value="prescribed medication"/>
-  </medication> 
-  <whenPrepared value="2015-01-15T16:20:00Z"/>
-  <whenHandedOver value="2015-01-15T10:20:00Z"/>
+  </medicationReference> 
+  <whenPrepared value="2015-01-15T10:20:00Z"/>
+  <whenHandedOver value="2015-01-15T16:20:00Z"/>
   <dosageInstruction>
     <additionalInstructions>
       <coding>
@@ -45,13 +44,13 @@
         <display value="With or after food"/>
       </coding>
     </additionalInstructions>
-    <scheduleTiming>
+    <timing>
       <repeat>
         <frequency value="1"/>
         <period value="1"/>
         <periodUnits value="d"/>
       </repeat>
-    </scheduleTiming>
+    </timing>
     <site>
       <coding>
         <system value="http://snomed.info/sct"/>
@@ -80,13 +79,13 @@
         <display value="With or after food"/>
       </coding>
     </additionalInstructions>
-    <scheduleTiming>
+    <timing>
       <repeat>
         <frequency value="3"/>
         <period value="1"/>
         <periodUnits value="d"/>
       </repeat>
-    </scheduleTiming>
+    </timing>
     <site>
       <coding>
         <system value="http://snomed.info/sct"/>

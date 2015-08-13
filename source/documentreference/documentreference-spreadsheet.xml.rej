@@ -1,0 +1,209 @@
+***************
+*** 3,8 ****
+  <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+   xmlns:o="urn:schemas-microsoft-com:office:office"
+   xmlns:x="urn:schemas-microsoft-com:office:excel"
+   xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+   xmlns:html="http://www.w3.org/TR/REC-html40">
+   <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+--- 3,9 ----
+  <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+   xmlns:o="urn:schemas-microsoft-com:office:office"
+   xmlns:x="urn:schemas-microsoft-com:office:excel"
++  xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"
+   xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+   xmlns:html="http://www.w3.org/TR/REC-html40">
+   <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+***************
+*** 10,17 ****
+    <LastAuthor>Moehrke, John (GE Healthcare)</LastAuthor>
+    <Created>2012-03-19T11:12:07Z</Created>
+    <LastSaved>2015-03-27T01:39:44Z</LastSaved>
+-   <Version>14.00</Version>
+   </DocumentProperties>
+   <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+    <AllowPNG/>
+   </OfficeDocumentSettings>
+--- 11,21 ----
+    <LastAuthor>Moehrke, John (GE Healthcare)</LastAuthor>
+    <Created>2012-03-19T11:12:07Z</Created>
+    <LastSaved>2015-03-27T01:39:44Z</LastSaved>
++   <Version>15.00</Version>
+   </DocumentProperties>
++  <CustomDocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
++   <WorkbookGuid dt:dt="string">cbf41def-c35e-4670-8b1c-c5a82a6ac12a</WorkbookGuid>
++  </CustomDocumentProperties>
+   <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+    <AllowPNG/>
+   </OfficeDocumentSettings>
+***************
+*** 20,30 ****
+     <Path>\FHIR_Build\source\documentmanifest\Invariants</Path>
+     <SheetName>Invariants</SheetName>
+    </SupBook>
+-   <WindowHeight>11415</WindowHeight>
+-   <WindowWidth>20730</WindowWidth>
+    <WindowTopX>0</WindowTopX>
+-   <WindowTopY>240</WindowTopY>
+-   <ActiveSheet>1</ActiveSheet>
+    <FirstVisibleSheet>1</FirstVisibleSheet>
+    <RefModeR1C1/>
+    <ProtectStructure>False</ProtectStructure>
+--- 24,34 ----
+     <Path>\FHIR_Build\source\documentmanifest\Invariants</Path>
+     <SheetName>Invariants</SheetName>
+    </SupBook>
++   <WindowHeight>10740</WindowHeight>
++   <WindowWidth>20880</WindowWidth>
+    <WindowTopX>0</WindowTopX>
++   <WindowTopY>0</WindowTopY>
++   <ActiveSheet>6</ActiveSheet>
+    <FirstVisibleSheet>1</FirstVisibleSheet>
+    <RefModeR1C1/>
+    <ProtectStructure>False</ProtectStructure>
+***************
+*** 784,789 ****
+   </Styles>
+   <Names>
+    <NamedRange ss:Name="Invariantids" ss:RefersTo="=Invariants!R2C1:R49C1"/>
+   </Names>
+   <Worksheet ss:Name="Instructions">
+    <Table ss:ExpandedColumnCount="1" ss:ExpandedRowCount="3" x:FullColumns="1"
+--- 788,812 ----
+   </Styles>
+   <Names>
+    <NamedRange ss:Name="Invariantids" ss:RefersTo="=Invariants!R2C1:R49C1"/>
++   <NamedRange ss:Name="LOCAL_DATE_SEPARATOR"
++    ss:RefersTo="=INDEX(GET.WORKSPACE(37),17)" ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_DAY_FORMAT" ss:RefersTo="=INDEX(GET.WORKSPACE(37),21)"
++    ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_HOUR_FORMAT"
++    ss:RefersTo="=INDEX(GET.WORKSPACE(37),22)" ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_MINUTE_FORMAT"
++    ss:RefersTo="=INDEX(GET.WORKSPACE(37),23)" ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_MONTH_FORMAT"
++    ss:RefersTo="=INDEX(GET.WORKSPACE(37),20)" ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_MYSQL_DATE_FORMAT"
++    ss:RefersTo="=REPT(LOCAL_YEAR_FORMAT,4)&amp;LOCAL_DATE_SEPARATOR&amp;REPT(LOCAL_MONTH_FORMAT,2)&amp;LOCAL_DATE_SEPARATOR&amp;REPT(LOCAL_DAY_FORMAT,2)&amp;&quot; &quot;&amp;REPT(LOCAL_HOUR_FORMAT,2)&amp;LOCAL_TIME_SEPARATOR&amp;REPT(LOCAL_MINUTE_FORMAT,2)&amp;LOCAL_TIME_SEPARATOR&amp;REPT(LOCAL_SECOND_FORMAT,2)"
++    ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_SECOND_FORMAT"
++    ss:RefersTo="=INDEX(GET.WORKSPACE(37),24)" ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_TIME_SEPARATOR"
++    ss:RefersTo="=INDEX(GET.WORKSPACE(37),18)" ss:Hidden="1"/>
++   <NamedRange ss:Name="LOCAL_YEAR_FORMAT"
++    ss:RefersTo="=INDEX(GET.WORKSPACE(37),19)" ss:Hidden="1"/>
+   </Names>
+   <Worksheet ss:Name="Instructions">
+    <Table ss:ExpandedColumnCount="1" ss:ExpandedRowCount="3" x:FullColumns="1"
+***************
+*** 3552,3558 ****
+      <HorizontalResolution>600</HorizontalResolution>
+      <VerticalResolution>600</VerticalResolution>
+     </Print>
+-    <Selected/>
+     <FreezePanes/>
+     <FrozenNoSplit/>
+     <SplitHorizontal>1</SplitHorizontal>
+--- 3575,3580 ----
+      <HorizontalResolution>600</HorizontalResolution>
+      <VerticalResolution>600</VerticalResolution>
+     </Print>
+     <FreezePanes/>
+     <FrozenNoSplit/>
+     <SplitHorizontal>1</SplitHorizontal>
+***************
+*** 3588,3594 ****
+     <Value>&quot;DomainResource,Type,Resource,Structure&quot;</Value>
+    </DataValidation>
+    <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
+-    <Range>R2C4,R4C4:R7C4,R9C4:R91C4</Range>
+     <Type>List</Type>
+     <Value>'\FHIR_Build\source\documentmanifest\[Invariants]Invariants'!#REF!</Value>
+     <ErrorHide/>
+--- 3610,3616 ----
+     <Value>&quot;DomainResource,Type,Resource,Structure&quot;</Value>
+    </DataValidation>
+    <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
++    <Range>R2C4,R4C4:R7C4,R9C4:R91C4,R8C4</Range>
+     <Type>List</Type>
+     <Value>'\FHIR_Build\source\documentmanifest\[Invariants]Invariants'!#REF!</Value>
+     <ErrorHide/>
+***************
+*** 3640,3651 ****
+     <CellRangeList/>
+     <Value>&quot;0..1,1..1,0..*,1..*&quot;</Value>
+    </DataValidation>
+-   <DataValidation xmlns="urn:schemas-microsoft-com:office:excel">
+-    <Range>R8C4</Range>
+-    <Type>List</Type>
+-    <Value>'\FHIR_Build\source\documentmanifest\[Invariants]Invariants'!#REF!</Value>
+-    <ErrorHide/>
+-   </DataValidation>
+    <AutoFilter x:Range="R1C1:R91C24"
+     xmlns="urn:schemas-microsoft-com:office:excel">
+    </AutoFilter>
+--- 3662,3667 ----
+     <CellRangeList/>
+     <Value>&quot;0..1,1..1,0..*,1..*&quot;</Value>
+    </DataValidation>
+    <AutoFilter x:Range="R1C1:R91C24"
+     xmlns="urn:schemas-microsoft-com:office:excel">
+    </AutoFilter>
+***************
+*** 5803,5812 ****
+      <Cell><Data ss:Type="String">ihe</Data></Cell>
+     </Row>
+     <Row ss:AutoFitHeight="0">
+-     <Cell ss:StyleID="s116"/>
+-     <Cell ss:StyleID="s117"/>
+-     <Cell ss:StyleID="s117"/>
+-     <Cell ss:StyleID="s118"/>
+     </Row>
+     <Row ss:AutoFitHeight="0">
+      <Cell ss:StyleID="s116"/>
+--- 5819,5829 ----
+      <Cell><Data ss:Type="String">ihe</Data></Cell>
+     </Row>
+     <Row ss:AutoFitHeight="0">
++     <Cell ss:StyleID="s116"><Data ss:Type="String">evidence-qif</Data></Cell>
++     <Cell ss:StyleID="s117"><Data ss:Type="String">documentreference-evidence-qif.xml</Data></Cell>
++     <Cell ss:StyleID="s117"><Data ss:Type="String">documentreference-evidence-qif-profile-spreadsheet.xml</Data></Cell>
++     <Cell ss:StyleID="s118"><Data ss:Type="String">spreadsheet</Data></Cell>
++     <Cell><Data ss:Type="String">qif</Data></Cell>
+     </Row>
+     <Row ss:AutoFitHeight="0">
+      <Cell ss:StyleID="s116"/>
+***************
+*** 6039,6044 ****
+      <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+     </PageSetup>
+     <Unsynced/>
+     <FreezePanes/>
+     <FrozenNoSplit/>
+     <SplitHorizontal>1</SplitHorizontal>
+--- 6056,6062 ----
+      <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+     </PageSetup>
+     <Unsynced/>
++    <Selected/>
+     <FreezePanes/>
+     <FrozenNoSplit/>
+     <SplitHorizontal>1</SplitHorizontal>
+***************
+*** 6058,6064 ****
+      </Pane>
+      <Pane>
+       <Number>0</Number>
+-      <ActiveCol>4</ActiveCol>
+      </Pane>
+     </Panes>
+     <ProtectObjects>False</ProtectObjects>
+--- 6076,6083 ----
+      </Pane>
+      <Pane>
+       <Number>0</Number>
++      <ActiveRow>3</ActiveRow>
++      <ActiveCol>2</ActiveCol>
+      </Pane>
+     </Panes>
+     <ProtectObjects>False</ProtectObjects>

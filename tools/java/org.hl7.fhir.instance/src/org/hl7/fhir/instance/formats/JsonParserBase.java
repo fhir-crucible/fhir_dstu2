@@ -32,16 +32,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.hl7.fhir.instance.model.DomainResource;
 import org.hl7.fhir.instance.model.Element;
-import org.hl7.fhir.instance.model.Extension;
+import org.hl7.fhir.instance.model.IdType;
 import org.hl7.fhir.instance.model.Resource;
+import org.hl7.fhir.instance.model.StringType;
 import org.hl7.fhir.instance.model.Type;
+import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -49,7 +48,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 /**
  * General parser for JSON content. You instantiate an JsonParser of these, but you 
@@ -115,7 +113,6 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     json.endObject();
     json.finish();
     osw.flush();
-    osw.close();
   }
 
   /**
@@ -139,7 +136,6 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     json.endObject();
     json.finish();
     osw.flush();
-    osw.close();
   }
     
 
@@ -165,7 +161,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     if (json.has("fhir_comments") && handleComments) {
       JsonArray array = json.getAsJsonArray("fhir_comments");
       for (int i = 0; i < array.size(); i++) {
-        e.getFormatComments().add(array.get(i).getAsString());
+        e.getFormatCommentsPre().add(array.get(i).getAsString());
       }
     }
   }
@@ -267,7 +263,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   }
 
 	protected boolean makeComments(Element element) {
-		return !handleComments && (style != OutputStyle.CANONICAL) && !element.getFormatComments().isEmpty();
+		return !handleComments && (style != OutputStyle.CANONICAL) && !element.getFormatCommentsPre().isEmpty() && !element.getFormatCommentsPost().isEmpty();
 	}
 	
   protected void composeDomainResource(String name, DomainResource e) throws Exception {
@@ -279,5 +275,25 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
 
   protected abstract void composeType(String prefix, Type type) throws Exception;
 
+  
+  abstract void composeStringCore(String name, StringType value, boolean inArray) throws Exception;
+
+  protected void composeStringCore(String name, IIdType value, boolean inArray) throws Exception {
+	  composeStringCore(name, new StringType(value.getValue()), inArray);
+  }    
+
+  abstract void composeStringExtras(String name, StringType value, boolean inArray) throws Exception;
+
+  protected void composeStringExtras(String name, IIdType value, boolean inArray) throws Exception {
+	  composeStringExtras(name, new StringType(value.getValue()), inArray);
+  }    
+  
+  protected void parseElementProperties(JsonObject theAsJsonObject, IIdType theReferenceElement) throws Exception {
+	  parseElementProperties(theAsJsonObject, (Element)theReferenceElement);
+  }
+
+  protected void parseElementProperties(JsonObject theAsJsonObject, IdType theReferenceElement) throws Exception {
+	  parseElementProperties(theAsJsonObject, (Element)theReferenceElement);
+  }
 
 }

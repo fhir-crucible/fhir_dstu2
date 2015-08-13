@@ -47,15 +47,16 @@ import org.hl7.fhir.instance.model.Coding;
 import org.hl7.fhir.instance.model.Conformance;
 import org.hl7.fhir.instance.model.Constants;
 import org.hl7.fhir.instance.model.OperationOutcome;
-import org.hl7.fhir.instance.model.Parameters;
 import org.hl7.fhir.instance.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.instance.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.instance.model.Parameters;
 import org.hl7.fhir.instance.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.instance.model.PrimitiveType;
 import org.hl7.fhir.instance.model.Resource;
 import org.hl7.fhir.instance.model.ValueSet;
 import org.hl7.fhir.instance.utils.Version;
 //import org.hl7.fhir.instance.formats.AtomComposer;
+import org.hl7.fhir.utilities.Utilities;
 
 /**
  * Simple RESTful client for the FHIR Resource Oriented API.
@@ -86,6 +87,7 @@ public class FHIRSimpleClient implements IFHIRClient {
 	public static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssK";
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 
+	private String base;
 	private ResourceAddress resourceAddress;
 	private ResourceFormat preferredResourceFormat;
 	private FeedFormat preferredFeedFormat;
@@ -115,6 +117,7 @@ public class FHIRSimpleClient implements IFHIRClient {
 	
 	@Override
 	public void initialize(String baseServiceUrl, int maxResultSetSize)  throws URISyntaxException {
+	  base = baseServiceUrl;
 		resourceAddress = new ResourceAddress(baseServiceUrl);
 		this.maxResultSetSize = maxResultSetSize;
 		checkConformance();
@@ -122,7 +125,7 @@ public class FHIRSimpleClient implements IFHIRClient {
 	
 	private void checkConformance() {
 	  try {
-      conf = getConformanceStatement();
+      conf = getConformanceStatementQuick();
 	  } catch (Throwable e) {
 	    
 	  }
@@ -172,7 +175,7 @@ public class FHIRSimpleClient implements IFHIRClient {
 			if(useOptionsVerb) {
 				conformance = (Conformance)ClientUtils.issueOptionsRequest(resourceAddress.getBaseServiceUri(), getPreferredResourceFormat(), proxy).getReference();//TODO fix this
 			} else {
-				conformance = (Conformance)ClientUtils.issueGetResourceRequest(resourceAddress.resolveMetadataUri(), getPreferredResourceFormat(), proxy).getReference();
+				conformance = (Conformance)ClientUtils.issueGetResourceRequest(resourceAddress.resolveMetadataUri(false), getPreferredResourceFormat(), proxy).getReference();
 			}
 		} catch(Exception e) {
 			handleException("An error has occurred while trying to fetch the server's conformance statement", e);
@@ -180,6 +183,28 @@ public class FHIRSimpleClient implements IFHIRClient {
 		return conformance;
 	}
 	
+  @Override
+  public Conformance getConformanceStatementQuick() throws EFhirClientException {
+    if (conf != null)
+      return conf;
+    return getConformanceStatementQuick(false);
+  }
+  
+  @Override
+  public Conformance getConformanceStatementQuick(boolean useOptionsVerb) {
+    Conformance conformance = null;
+    try {
+      if(useOptionsVerb) {
+        conformance = (Conformance)ClientUtils.issueOptionsRequest(resourceAddress.getBaseServiceUri(), getPreferredResourceFormat(), proxy).getReference();//TODO fix this
+      } else {
+        conformance = (Conformance)ClientUtils.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true), getPreferredResourceFormat(), proxy).getReference();
+      }
+    } catch(Exception e) {
+      handleException("An error has occurred while trying to fetch the server's conformance statement", e);
+    }
+    return conformance;
+  }
+  
 	//TODO Add call to get resource from URI - absolute or relative (both read and vread)
 	
 	@Override
@@ -418,25 +443,33 @@ public class FHIRSimpleClient implements IFHIRClient {
   	for (ParametersParameterComponent p : params.getParameter())
   		complex = complex || !(p.getValue() instanceof PrimitiveType);
   	Parameters searchResults = null;
-  	if (complex) {
-  		throw new Error("not done yet");
-  	} else {
 			String ps = "";
   		try {
+      if (!complex)
   			for (ParametersParameterComponent p : params.getParameter())
-  				ps += p.getName() + "=" + ((PrimitiveType) p.getValue()).asStringValue()+"&";    	  
-  			ResourceRequest<T> result = ClientUtils.issueGetResourceRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps), getPreferredResourceFormat(), proxy);
+  	  		if (p.getValue() instanceof PrimitiveType)
+  	  		  ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue())+"&";
+   		ResourceRequest<T> result;
+  		if (complex)
+  			result = ClientUtils.issuePostRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps), ClientUtils.getResourceAsByteArray(params, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), proxy);
+  		else 
+  			result = ClientUtils.issueGetResourceRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps), getPreferredResourceFormat(), proxy);
   			result.addErrorStatus(410);//gone
   			result.addErrorStatus(404);//unknown
   			result.addSuccessStatus(200);//Only one for now
   			if(result.isUnsuccessfulRequest()) 
   				throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome)result.getPayload());
+  		if (result.getPayload() instanceof Parameters)
   			return (Parameters) result.getPayload();
+  		else {
+  			Parameters p_out = new Parameters();
+  			p_out.addParameter().setName("return").setResource(result.getPayload());
+  			return p_out;
+  		}
   		} catch (Exception e) {
   			handleException("Error performing operation '"+name+"' with parameters " + ps, e);  		
   		}
   		return null;
-  	}
   }
 
   @Override
@@ -704,6 +737,11 @@ public class FHIRSimpleClient implements IFHIRClient {
       throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome)result.getPayload());
     }
     return (ValueSet) result.getPayload();
+  }
+
+  @Override
+  public String getAddress() {
+    return base;
   }
 
 }

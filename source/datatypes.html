@@ -18,7 +18,9 @@
 -->
 
 <%dtheader base%>
+
 <h1>Data Types</h1>
+<table class="cols"><tr><td id="wg"><a _target="blank" href="[%wg fhir%]">[%wgt fhir%]</a> Work Group</td><td id="fmm"><a href="resource.html#maturity">Maturity Level</a>: 4</td><td id="ballot"><a href="help.html#status">Ballot Status</a>: <a href="history.html#pubs">DSTU 2</a></td></tr></table>
 
 <p>
 The FHIR specification defines a set of data types that are used for the 
@@ -30,8 +32,8 @@ This page describes the data types. See also the <a href="datatypes-examples.htm
 <p><b>Table of Contents</b></p>
 <table class="grid">
  <tr>
-  <td><b>Primitive Types</b><br/>[%diagram datatypes/allprimitivetypes.diagram%]</td>
-  <td><b>Complex Types</b><br/>[%diagram datatypes/alltypes.diagram%]</td>
+  <td><b>Primitive Types</b><br/>[%diagram datatypes/allprimitivetypes.diagram 1a%]</td>
+  <td><b>Complex Types</b><br/>[%diagram datatypes/alltypes.diagram 2a%]</td>
  </tr>
 </table>
 
@@ -44,7 +46,7 @@ The data types are also available as a <a href="fhir-base.xsd">W3C Schema</a>.
 <h2>Primitive Types</h2>
 
 
-[%diagram datatypes/primitives.diagram%]
+[%diagram datatypes/primitives.diagram 3a%]
 
 <a name="imports"> </a>
 <p>
@@ -69,11 +71,12 @@ all types, they have <a href="extensibility.html">extensions</a>).
    <td>xs:boolean, except that <b>0 and 1 are not valid values</b></td>
    <td>JSON boolean (true or false)</td>
  </tr>
+ <!-- leading 0s -->
  <tr>
    <td>integer<a name="integer"> </a></td>
    <td>A signed 32-bit integer (for larger values, use decimal)</td>
-   <td>xs:int</td>
-   <td>JSON number</td>
+   <td>xs:int, except that <b>leading 0 digits are not allowed</b></td>
+   <td>JSON number (with no decimal point)</td>
  </tr>
  <tr>
    <td>string<a name="string"> </a></td>
@@ -88,8 +91,8 @@ all types, they have <a href="extensibility.html">extensions</a>).
  <tr>
    <td>decimal<a name="decimal"> </a></td>
    <td>Rational numbers that have a decimal representation. See below about the precision of the number</td>
-   <td>xs:decimal, except that <b>decimals may not use exponents</b></td>
-   <td>A JSON number, but without exponents</td>
+   <td>xs:decimal, except that <b>decimals may not use exponents, and leading 0 digits are not allowed</b></td>
+   <td>A JSON number, except that <b>exponents are not allowed</b></td>
  </tr>
  <tr>
    <td>uri<a name="uri"> </a></td>
@@ -109,11 +112,11 @@ all types, they have <a href="extensibility.html">extensions</a>).
  </tr>
  <tr>
    <td style="border-top: 0px silver solid"></td>
-   <td colspan="3" style="border-top: 0px silver solid"><i>Todo: is it possible to impose an upper absolute limit on a base64Binary (for denial of service reasons, like on string)</i></td>
+   <td colspan="3" style="border-top: 0px silver solid"><code>Todo: is it possible to impose an upper absolute limit on a base64Binary (for denial of service reasons, like on string)</code></td>
  </tr> 
  <tr>
    <td>instant<a name="instant"> </a></td>
-   <td>An instant in time - <b>known at least to the second and always includes a time zone</b></td>
+   <td>An instant in time - <b>known at least to the second and always includes a time zone</b>. Note: This is intended for precisely observed times (typically system logs etc), and not human-reported times - for them, use date and dateTime. <code>instant</code> is a more constrained dateTime</td>
    <td>xs:dateTime</td>
    <td>A JSON string - an xs:dateTime</td>
  </tr>
@@ -159,11 +162,13 @@ Notes:
 <ul>
  <li>For all the types, the XML and JSON representations are the same except for different escaping in XML and JSON</li>
  <li>The regexes allow a broader set of values than are actually valid (e.g. leap years) so additional validation is needed</li>
- <li>The precision of the decimal value is signficant:
+ <li>The precision of the decimal value has signficance:<a name="precision"> </a>
     <ul> 
-      <li>e.g 0.010 is regarded as different to 0.01</li>
-      <li>Implementations SHALL handle decimal values in ways that preserve and respect the precision of the value as represented</li> 
-      <li>Implementations that might meet this constraint are GMP implementations or Java BigDecimal that implement arbitrary precision, or a combination of a (64 bit) floating point value with a precision field</li> 
+      <li>e.g 0.010 is regarded as different to 0.01, and the original precision should be preserved</li>
+      <li>Implementations SHALL handle decimal values in ways that preserve and respect the precision of the value as represented for presentation purposes</li>
+      <li>Implementations are not required to perform calculations with these numbers differently, though they may choose to do so (i.e. preserve significance)</li>
+      <li>See implementation comments for <a href="xml.html#schema-gen">XML</a>, <a href="json.html#decimal">JSON</a> and <a href="rdf.html#decimal">RDF</a></li> 
+      <li>In object code, implementations that might meet this constraint are GMP implementations or equivalents to Java BigDecimal that implement arbitrary precision, or a combination of a (64 bit) floating point value with a precision field</li> 
       <li>Note that there is no absolute limit to the magnitude of the value, though large and/or highly precise values are extremely rare in medicine. One element where highly precise decimals may be encountered is the <a href="location.html">Location</a> coordinates</li>
     </ul>
  </li>
@@ -210,6 +215,7 @@ In addition to the base primitive types, a few additional primitive types are de
 <a name="id"> </a>
 <a name="unsignedInt"> </a>
 <a name="positiveInt"> </a>
+<a name="markdown"> </a>
 
 <table class="list">
  <tr>
@@ -225,19 +231,33 @@ In addition to the base primitive types, a few additional primitive types are de
  <tr><td>id</td><td>string</td><td>Any combination of upper or lower case ASCII letters ('A'..'Z', and 'a'..'z', numerals ('0'..'9'), '-' and '.', with a length limit of 64 characters.  (This might be an integer, an un-prefixed OID, UUID or any other identifier pattern that meets these constraints.)  
    <br/>regex: [%id_regex%]</td></tr>
 
+ <tr><td>markdown</td><td>string</td><td>A string that may contain markdown syntax for optional processing by a mark down presentation engine</td></tr>
  <tr><td>unsignedInt</td><td>int</td><td>Any non-negative integer (e.g. >= 0)<br/>regex: [0-9]+</td></tr>
- <tr><td>positiveInt</td><td>int</td><td>Any positive integer (e.g. > 0)<br/>regex: [1-9][0-9]+</td></tr>
+ <tr><td>positiveInt</td><td>int</td><td>Any positive integer (e.g. > 0)<br/>regex: [1-9][0-9]*</td></tr>
 </table>
 
 <p>
-Some additional notes about the <i>id</i> datatype:
+Some additional notes about the <code>id</code> datatype:
 </p>
 <ul>
  <li>Ids are case sensitive. UUIDs SHALL be sent using lowercase letters</li>
  <li>The ID type includes identifiers consistent with <a href="http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=38610">ISO 18232</a>, but also includes other identifier formats as well, and is not case insensitive like ISO 18232.</li>
  <li>In a typical FHIR URL, like http://example.com/fhir/Patient/<span style="color: navy">1234</span>, the last part "1234" (highlighted in navy) is the part that is an id datatype</li>
- <li>A full UUID is a uri, not an <i>id</i>. UUIDs in URIs SHALL also be represented in lowercase (urn:uuid:59bf0ef4-e89c-4628-9b51-12ae3fdbe22b), which SHALL be in lowercase</li>
+ <li>A full UUID is a <code>uri</code>, not an <code>id</code>. UUIDs in URIs SHALL also be represented in lowercase (urn:uuid:59bf0ef4-e89c-4628-9b51-12ae3fdbe22b), which SHALL be in lowercase</li>
 </ul>
+
+<p>
+Some additional notes about the <code>markdown</code> datatype:
+</p>
+<ul>
+ <li>Systems are not required to have markdown support, and there is considerable variation in markdown syntax, 
+   so the content of the string should be readable without markdown processing, per merkdown philosophy</li>
+ <li>The preferred markdown syntax is described at <a href="http://daringfireball.net/projects/markdown/syntax">http://daringfireball.net/projects/markdown/syntax</a>
+   (see tests here: <a href="http://daringfireball.net/projects/downloads/MarkdownTest_1.0.zip">http://daringfireball.net/projects/downloads/MarkdownTest_1.0.zip</a>)</li> 
+ <li>DSTU note: <a href="http://commonmark.org/">CommonMark</a> is a new arrival but may gain sufficient impetus to be preferred in a future version. 
+   Feedback on this is welcome</li>
+</ul>
+
 <!-- 
 boolean: [%dtusage boolean%]
 integer: [%dtusage integer%]
@@ -272,9 +292,9 @@ values are.
 
 <p><b>UML Diagrams of the Data types</b></p>
 
-[%diagram datatypes/types.diagram%]
+[%diagram datatypes/types.diagram 4a%]
 
-[%diagram datatypes/types2.diagram%]
+[%diagram datatypes/types2.diagram 5a%]
 
 <a name="Attachment"></a>
 <a name="attachment"></a>
@@ -291,24 +311,24 @@ formats. The most common use of this type is to include images or reports in
 some report format such as PDF. However it can be used for any 
 data that has a mime type. 
 </p>
-[%dt Attachment%]
+[%dt Attachment 1%] 
 <p>
-The <i>contentType</i> element SHALL always be populated. It can include charset information 
-and other mime type extensions as appropriate. If there is no character set in the <i>contentType</i>
+The actual content of the Attachment can be conveyed directly using the <code>data</code> element
+or a <code>URL</code> reference can be provided. If both are provided, the reference SHALL 
+point to the same content as found in the data. The reference can never be reused to point to
+some different data (i.e. the reference is version specific). The <code>URL</code> reference SHALL 
+point to a location that resolves to actual data; some URIs such as cid: meet this requirement. 
+If the URL is a relative reference, it is interpreted in the same way as a <a href="references.html#references">resource reference</a>.
+</p>
+<p>
+The <code>contentType</code> element SHALL always be populated when the attachment contains <code>data</code>, and 
+MAY be populated when there is a <code>url</code>. It can include charset information 
+and other mime type extensions as appropriate. If there is no character set in the <code>contentType</code>
 then the correct course of action is undefined, though some media types may define a default
 character set and/or the correct character set may be able to be determined by inspection of the content.
 </p>
-<p>The actual content of the 
-Attachment can be conveyed directly using the <i>data</i> element
-or a <i>URL</i> reference can be provided. If both are provided, the reference SHALL 
-point to the same content as found in the data. The reference can never be reused to point to
-some different data (i.e. the reference is version specific). The
-<i>URL</i> reference SHALL point to a location that resolves to actual data; some
-URIs such as cid: meet this requirement. If the URL is a relative reference, it is interpreted
-in the same way as a <a href="references.html#references">resource reference</a>.
-</p>
 <p>
-The <i>hash</i> is included so that applications can verify that the content returned by the URL has not changed. 
+The <code>hash</code> is included so that applications can verify that the content returned by the URL has not changed. 
 </p>
 <p>
 In many cases where Attachment is used, the cardinality is &gt;1. A valid use of repeats is to convey the same content in different mime types and languages.
@@ -319,9 +339,9 @@ The language element describes the language of the attachment using the <a href=
 <p><b>Constraints</b></p>
 [%dt.constraints Attachment%]
 <p>
-If neither <i>data</i> nor a <i>URL</i> 
+If neither <code>data</code> nor a <code>URL</code> 
 is provided, the value should be understood as an assertion that no content for 
-the specified <i>mimeType</i> and/or <i>language</i> is available for the combination of  <i>language</i> and <i>contentType</i>.
+the specified <code>mimeType</code> and/or <code>language</code> is available for the combination of  <code>language</code> and <code>contentType</code>.
 </p>
 <p>
 The context of use may frequently make rules about the kind of attachment
@@ -345,39 +365,25 @@ A Coding is a representation of a defined concept using a symbol from a defined 
 - see <a href="terminologies.html">Using Codes in resources</a> for more details.
 </p>
 
-[%dt Coding%]
+[%dt Coding 2%]
 
 <p>
-The meaning of the Coding is defined by the code. The <i>system</i> provides
+The meaning of the Coding is defined by the code. The <code>system</code> provides
 the source of the definition of the code, along with an optional version reference.
 The display is a human display for the text defined by the system - it adds no other 
-value. The Value Set reference provides context information about the selection of the 
-code. 
+value.
 </p>
 <p>
-The <i>system</i> is a URI that references the code system that defines the <i>code</i>. 
-The URI may be: 
+The <code>system</code> is a URI that references the code system that defines the <code>code</code>. 
+Choosing the correct system is important; for more information about the code system 
+URI, read <a href="terminologies.html#system">Managing Terminology System URIs</a>.
+The system URI SHALL NOT contain a reference to a value set (e.g. ValueSet.url). 
+If the code is taken from a ValueSet with an inline code system, <code>ValueSet.codeSystem.system</code>,
+is the correct value for the system uri.
 </p>
-<ul>
- <li>a URI defined in the <a href="terminologies-systems.html">named systems list</a></li>
- <li>an OID (urn:oid:) or a UUID (urn:uuid:). OIDs and UUIDs may be registered in the <a href="http://hl7.org/oid">HL7 OID registry</a></li>
- <li>a URL that references a definition of the system directly, which may be a reference to a code system defined as part of <a href="valueset.html">ValueSet</a> resource (i.e. the value in <i>ValueSet.define.system</i>)</li>
- <li>or any other URI that uniquely identifies the code system definition</li>
-</ul>
-<p>
-The correct value to use in the <i>system</i> for a given code system can be determined by working through the following list, in order:
-</p>
-<ul>
- <li>the <a href="terminologies-systems.html">Named Systems List</a> section</li>
- <li>the <a href="http://www.hl7.org/oid/index.cfm?ref=common">HL7 OID Registry</a></li>
- <li>the documentation associated with the code system</li>
- <li>consulting the owner of the code system</li>
- <li>asking on the HL7 vocabulary mailing list</li>
-</ul>
 <p>
 A code system version may also be supplied. If the meaning of codes within the code system is consistent across releases, this is not required. 
 The version SHOULD be exchanged when this the system does not maintain consistent definitions across versions.
-If a value set is referenced, and the value set defines the code system, and the code system definition specifies a version, the version SHALL be the same as in the value set. 
 Note that the following systems SHOULD always have a version specified:
 </p>
 <ul>
@@ -385,27 +391,27 @@ Note that the following systems SHOULD always have a version specified:
  <li>Various versions of ICD (note: the major releases are labelled as different code systems altogether, but there is veration within versions)</li>
 </ul>
 <p>
-More generally, any classification (e.g.  a code system that incldues concepts with relative definitions such as "not otherwise coded"
+More generally, any classification (e.g.  a code system that includes concepts with relative definitions such as "not otherwise coded"
 will require a version. See the <a href="valueset.html#versioning">discussion of code system versions in the Value Set resource</a> for 
 further discussion on versioning.
 </p>
 
 <p>
-If present, the <i>code</i> SHALL be a syntactically correct symbol as defined by the <i>system</i>.
+If present, the <code>code</code> SHALL be a syntactically correct symbol as defined by the <code>system</code>.
 In some code systems such as SNOMED CT, the symbol may be an expression composed of other predefined symbol (e.g. post-coordination). 
-Note that codes are case sensitive unless specified otherwise by the code system. The <i>display</i> 
-is a text representation of the code defined by the <i>system</i> and is used to display 
-the meaning of the code by an application that is not aware of the <i>system</i>. 
+Note that codes are case sensitive unless specified otherwise by the code system. The <code>display</code> 
+is a text representation of the code defined by the <code>system</code> and is used to display 
+the meaning of the code by an application that is not aware of the <code>system</code>. 
 </p>
 <p>
-Where the code system defines multiple possible display strings, one of these SHALL be used in <i>display</i>. 
+Where the code system defines multiple possible display strings, one of these SHALL be used in <code>display</code>. 
 If one is labeled as preferred, it SHOULD be used. If the code system does not define a text representation 
-(e.g. SNOMED CT Expressions) then <i>display</i> cannot be populated, and the meaning of the code won't be 
+(e.g. SNOMED CT Expressions) then <code>display</code> cannot be populated, and the meaning of the code won't be 
 accessible to systems that don't understand the code expression.
 </p>
 
 <p>
-In some cases, the <i>system</i> may not be known - only the code is known. 
+In some cases, the <code>system</code> may not be known - only the code is known. 
 In this case, no useful processing of the code may be performed unless
 the system can be safely inferred by the context. 
 This practice should be avoided where possible, as 
@@ -417,59 +423,19 @@ If the system is present, and there is no code, then this is understood to mean 
 is no suitable code in the system in which to represent the code. 
 </p>
 <p>
-If two codings have the same <i>system</i>, <i>version</i> and <i>code</i> then they have the same meaning.
-If the version information is missing, or the <i>system</i>, <i>version</i> or the <i>code</i> elements differ, then 
+If two codings have the same <code>system</code>, <code>version</code> and <code>code</code> then they have the same meaning.
+If the version information is missing, or the <code>system</code>, <code>version</code> or the <code>code</code> elements differ, then 
 how they codes are related can only be determined by consulting the definitions of the system(s) and any <a href="conceptmap.html">mappings</a> available.
 </p>
 <p>
-A coding may be marked as a "primary" if a user selected the particular coded value 
-in a user interface (e.g. the user selects an item in a pick-list). A primary
-is the preferred choice for performing translations etc. 
-</p>
-<p>
-A reference to a <a href="valueset.html">value set</a> may be provided to help a user or system processing the code
-to understand the context in which the code arose. In some contexts, the possible
-set of codes from which the code was chosen influences how the code should be 
-interpreted. A value set reference is not an acceptable substitute for a logical
-URI in the system. The system URI SHALL NOT contain a reference to a value set. 
-(If the value set defines its own codes, then the correct value for the 
-system is <i>ValueSet.define.system</i>, and the value set contains a direct reference
-to the value set resource.
+A coding may be marked as a "userSelected" if a user selected the particular coded value 
+in a user interface (e.g. the user selects an item in a pick-list). If a user selected coding exists, 
+it is the preferred choice for performing translations etc. 
 </p>
 
-<!--<h3>Version Management</h3>
-<p>
-Some code systems have periodic releases where the meanings of the codes are changed between
-each release. Other code systems provide multiple releases where only minor consistent changes 
-are allowed - mainly the addition of new codes. Finally, a few code systems provide an elaborate 
-set of policies and procedures to allow concepts to be refined and modified within a single
-definitional space. For the second two types of code system, it may help with implementation 
-and interpretation tasks to track which minor release (version) of the code system is in use. 
-</p>
-<p>
-For SNOMED CT, the minor release (and optionally module/release) are indicated as part of the 
-<i>system</i> element using the http://snomed.info/sct identifier as defined by SNOMED CT. For
-all other code systems, the <i>version</i> element is used to indicate the minor release. 
-In the absence of a specified version release format by the code system (such as 2.36 for 
-LOINC), the release date is to be used.
-</p>
-<p>
-The <i>version</i> element SHALL always be ignored when comparing <i>Coding</i> values
-</p>-->
 <div class="use">
 <p><b>Constraints</b></p>
-<!--
 [%dt.constraints Coding%]
-<p>
-Unless the Coding element has a dataAbsentReason flag, it SHALL contain a <i>system</i> element 
-and it should contain a <i>display</i> if it contains a <i>code</i>.
-<!-!- It can only contain a
-<i>version</i> element if it contains a <i>system</i> element.-!->
-</p>
--->
-<p>
-If a valueSet is provided, a system URI SHALL also be provided.
-</p>
 <p>
 The context of use (as defined in the resource or applicable profile) usually makes rules about what codes and systems are allowed or required in a 
 particular context by <a href="terminologies.html">binding</a> the element to a value set.
@@ -486,17 +452,17 @@ Coding is used in the following places: [%dtusage Coding%]
 </p>
 <ul>
  <li><b>Coding</b>: a simple direct reference to a code defined by a code system</li>
- <li><b>CodeableConcept</b>: a text description and/or a list of Codings (i.e. a list of references to codes defined by codes systems)</li>
+ <li><b>CodeableConcept</b>: a text description and/or a list of Codings (i.e. a list of references to codes defined by code systems)</li>
 </ul>
 <p>
-The <i>Coding</i> data type corresponds to the simple case of selecting 
+The <code>Coding</code> data type corresponds to the simple case of selecting 
 a single code from a code list. However this type is rarely used in the 
 FHIR specifications; long experience with exchanging coded values in
 HL7 shows that in the general case, systems need to able to exchange
 multiple translation codes, and/or an original text. 
 </p>
 <p>
-The <i>Coding</i> data type is used directly  when there is certainty that the value 
+The <code>Coding</code> data type is used directly  when there is certainty that the value 
 must be selected directly from one of the available codes, and the list of 
 possible codes is agreed to by all participants. This is not usually the case
 in the context of FHIR - general interoperability - so Coding is mostly used
@@ -516,22 +482,22 @@ See also <a href="datatypes-examples.html#CodeableConcept">Examples</a>, <a href
 A CodeableConcept represents a value that is usually supplied by providing a reference to one or more terminologies or ontologies, but may also be defined by the 
 provision of text. This is a common pattern in healthcare data.
 </p>
-[%dt CodeableConcept%]
+[%dt CodeableConcept 3%]
 <p>
-Each <i>coding</i> is a representation of the concept as described above. The concept may be coded multiple times in different code systems (or even 
+Each <code>coding</code> is a representation of the concept as described above. The concept may be coded multiple times in different code systems (or even 
 multiple times in the same code systems, where multiple forms are possible, such as 
 with SNOMED CT). The different codings may have slightly different granularity due to the differences 
-in the definitions of the underlying codes. There is no meaning associated with the ordering of <i>coding</i> within a <i>CodeableConcept</i>. 
-A typical use of <i>CodeableConcept</i> is to send the local code that the concept was coded with, and also one or more translations to publicly defined 
+in the definitions of the underlying codes. There is no meaning associated with the ordering of <code>coding</code> within a <code>CodeableConcept</code>. 
+A typical use of <code>CodeableConcept</code> is to send the local code that the concept was coded with, and also one or more translations to publicly defined 
 code systems such as LOINC or SNOMED CT. Sending local codes is useful and important for the purposes of debugging and integrity auditing.  
 </p>
 <p>
-Whether or not <i>coding</i> elements are present, the <i>text</i> 
+Whether or not <code>coding</code> elements are present, the <code>text</code> 
 is the representation of the concept as entered or chosen by the user, and which most closely 
-represents the intended meaning of the user or concept. Very often the <i>text</i> 
-is the same as a <i>display</i> of one of the codings. One of the codings 
-may be flagged as the primary - the code or concept that the user actually selected directly. 
-When none of the <i>coding</i> elements is marked as primary, the text (if present)
+represents the intended meaning of the user or concept. Very often the <code>text</code> 
+is the same as a <code>display</code> of one of the codings. One of the codings 
+may be flagged as the userSelected - the code or concept that the user actually selected directly. 
+When none of the <code>coding</code> elements is marked as userSelected, the text (if present)
 is the preferred source of meaning. 
 </p>
 
@@ -554,26 +520,27 @@ CodeableConcept is used in the following places: [%dtusage CodeableConcept%]
 Quantity
 </h2>
 <p style="background-color: gainsboro; padding: 4px; margin-top: 0px">
-See also <a href="datatypes-examples.html#Quantity">Examples</a>, <a href="datatypes-definitions.html#Quantity">Detailed Descriptions</a> and <a href="datatypes-mappings.html#Quantity">Mappings</a>.
+See also <a href="datatypes-examples.html#Quantity">Examples</a>, <a href="datatypes-definitions.html#Quantity">Detailed Descriptions</a> and 
+<a href="datatypes-mappings.html#Quantity">Mappings</a>.
 </p>
 <p>
 A measured amount (or an amount that can potentially be measured).
 </p>
-[%dt Quantity%]
+[%dt Quantity 4%]
 
 <p>
-The <i>value</i> contains the numerical value of the quantity, including an implicit precision. 
-If no comparator is specified, the value is a point value (i.e. '='). The <i>comparator</i> element can never be ignored.
+The <code>value</code> contains the numerical value of the quantity, including an implicit precision. 
+If no comparator is specified, the value is a point value (i.e. '='). The <code>comparator</code> element can never be ignored.
 </p>
 <p>
-The <i>units</i> element contains a displayable unit that defines what is measured. 
-The units may additionally be coded in some formal way using the <i>code</i> and the <i>system</i> 
-(see <a href="#Coding">Coding</a> for further information about how to use the <i>system</i> element). 
+The <code>units</code> element contains a displayable unit that defines what is measured. 
+The units may additionally be coded in some formal way using the <code>code</code> and the <code>system</code> 
+(see <a href="#Coding">Coding</a> for further information about how to use the <code>system</code> element). 
 </p>
 <p>
 If the units are able to be coded in UCUM and a code is provided, it SHOULD be a UCUM code. 
-If a UCUM unit is provided in the <i>code</i> then a canonical value can be generated for 
-purposes of comparison between quantities. Note that the <i>units</i> element will often 
+If a UCUM unit is provided in the <code>code</code> then a canonical value can be generated for 
+purposes of comparison between quantities. Note that the <code>units</code> element will often 
 contain text that is actually a valid UCUM unit, but it cannot be assumed that the units element actually contains a valid UCUM unit. 
 </p>
 
@@ -581,10 +548,10 @@ contain text that is actually a valid UCUM unit, but it cannot be assumed that t
 <p><b>Constraints</b></p>
 [%dt.constraints Quantity%]
 <p>
-The context of use may frequently define what kind of quantity
+The context of use may frequently define what kind of measured quantity
 this is and therefore what kind of units can be used. The context 
-of use may additionally require a <i>code</i> from a particular <i>system</i>.
-The context of use may also restrict the values for the <i>value</i> or <i>range</i>.
+of use may additionally require a <code>code</code> from a particular <code>system</code>.
+The context of use may also restrict the values for the <code>value</code> or <code>range</code>.
 </p>
 </div>
 <p>
@@ -614,14 +581,14 @@ A set of ordered Quantity values defined by a low and high limit.
 A Range specifies a set of possible values; usually, one value from the range applies (e.g. "give the patient between 2 and 4 tablets").
 Ranges are typically used in instructions.
 </p>
-[%dt Range%]
+[%dt Range 5%]
 <p>
-The <i>units</i> and <i>code</i>/<i>system</i> elements of the <i>low</i> or <i>high</i> elements SHALL match. 
-If the <i>low</i> or <i>high</i> elements are missing, the meaning
+The <code>units</code> and <code>code</code>/<code>system</code> elements of the <code>low</code> or <code>high</code> elements SHALL match. 
+If the <code>low</code> or <code>high</code> elements are missing, the meaning
 is that the low or high boundaries are not known and therefore neither is the complete range.
 </p>
 <p>
-The <i>comparator</i> flag on the <i>low</i> or <i>high</i> elements cannot be present. Note that the Range type should not be 
+The <code>comparator</code> flag on the <code>low</code> or <code>high</code> elements cannot be present. Note that the Range type should not be 
 used to represent out of range measurements: A quantity type with the comparator element should be used instead.
 </p>
 <p>
@@ -647,7 +614,7 @@ See also <a href="datatypes-examples.html#Ratio">Examples</a>, <a href="datatype
 <p>
 A relationship between two Quantity values expressed as a numerator and a denominator.
 </p>
-[%dt Ratio%]
+[%dt Ratio 6%]
 <p>
 Common factors in the numerator and denominator are not automatically cancelled out. The Ratio 
 data type is used for titers (e.g., "1:128") and other quantities produced by laboratories that 
@@ -691,10 +658,12 @@ of use will specify whether the entire range applies (e.g. "the patient
 was an inpatient of the hospital for this time range") or one value 
 from the period applies (e.g. "give to the patient between 2 and 4 pm on 24-Jun 2013").
 </p>
-[%dt Period%]
+[%dt Period 7%]
 <p>
-If the <i>start</i> element is  missing, the start of the period is not
-known. If the <i>end</i> element is missing, it means that the period is ongoing.
+If the <code>start</code> element is  missing, the start of the period is not
+known. If the <code>end</code> element is missing, it means that the period is ongoing,
+or the start mey be in the past, and the end date in the future, which means that period 
+is expected/planned to end at the specified time
 </p>
 <p>
 The end value includes any matching date/time. For example, the period 
@@ -726,14 +695,14 @@ Data that comes from a series of measurements taken by a device, with upper and 
 A SampledData provides a concise way to handle the data produced by devices that sample a physical particular state at a high frequency. A typical 
 use for this is for the output of an ECG or EKG device.
 </p>
-[%dt SampledData%]
+[%dt SampledData 8%]
 <p>
 The digits are a set of decimal values separated by a single space (Unicode character u20).
 In addition to decimal values, the special values "E" (error), "L" (below detection limit) 
 and "U" (above detection limit) can also be used. If there is more than one dimension, the
 different dimensions are interlaced - all the data points for a particular time are
 represented together. 
-The default value for <i>factor</i> is 1. 
+The default value for <code>factor</code> is 1. 
 </p>
 
 <p>
@@ -756,20 +725,28 @@ Identifiers are associated with objects, and may be changed or retired due to hu
 errors. 
 </p>
 
-[%dt Identifier%]
+[%dt Identifier 9%]
 
 <p>
-The <i>system</i> referred to by means of a URI defines how the identifier is defined (i.e. how the value is made unique). 
+The <code>system</code> referred to by means of a URI defines how the identifier is defined (i.e. how the value is made unique). 
 It might be a specific application or a recognized standard/specification for a set or identifiers
-or a way of making identifiers unique. The <i>value</i> SHALL be unique within the defined <i>system</i>
-and have a consistent meaning wherever it appears. Both <i>system</i> and <i>value</i> are always case sensitive.
+or a way of making identifiers unique. The <code>value</code> SHALL be unique within the defined <code>system</code>
+and have a consistent meaning wherever it appears. Both <code>system</code> and <code>value</code> are always case sensitive.
 </p>
 <p>
-FHIR defines <a href="terminologies-systems.html">some useful URIs directly</a>. OIDs (urn:oid:) and UUIDs (urn:uuid:) 
+In addition to the system the provides a uniqueness scope, and the value, identifiers may also have a
+<code>type</code>, which may be useful when a system encounters identifiers with unknown system values. 
+Note, however, that the type of an identifier is not a well controlled vocabulary with wide variations
+in practice. The <code>type</code> deals only with general categories of identifiers and SHOULD not be 
+used for codes that correspond 1..1 with the Identifier.system. Some identifiers may fall into multiple 
+categories due to variations in common usage.
+</p>
+<p>
+FHIR defines <a href="identifier-registry.html">some useful URIs directly</a>. OIDs (urn:oid:) and UUIDs (urn:uuid:) 
 may be registered in the <a href="http://hl7.org/oid">HL7 OID registry</a> and should be if the 
 content is shared or exchanged across institutional boundaries. If the identifier itself 
 is naturally globally unique (e.g. an OID, a UUID, or a URI with no trailing local part), 
-then the <i>system</i> SHALL be "urn:ietf:rfc:3986", and the URI is in the <i>value</i>.
+then the <code>system</code> SHALL be "urn:ietf:rfc:3986", and the URI is in the <code>value</code>.
 </p>
 <p>
 In some cases, the system may not be known - only the value is known (e.g. a simple device that scans a barcode), 
@@ -779,7 +756,7 @@ context. This practice should be avoided where possible, as
 information sharing in a wider context is very likely to arise eventually, and values without a system are inherently limited in use.
 </p>
 <p>
-The <i>assigner</i> is used to indicate what registry/state/facility/etc. assigned the identifier. 
+The <code>assigner</code> is used to indicate what registry/state/facility/etc. assigned the identifier. 
 </p>  
 <p>
 Identifier is used in the following places: [%dtusage Identifier%]
@@ -805,7 +782,7 @@ some implicit meaning; various cultures associate different importance with the
 name parts and the degree to which systems SHALL care about name parts around the 
 world varies widely.
 </p>
-[%dt HumanName%]
+[%dt HumanName 10%]
 <p>
 This table summarizes where common parts of a person's name are found. 
 </p>
@@ -830,10 +807,10 @@ consult the <a href="datatypes-examples.html#HumanName">examples</a>.
 The multiple give and family name parts combine to form a single name. Multiple given and family names are for
 when a person's name has multiple given names (relatively common across cultures) and multiple surnames (less common).
 Where a person has alternate names that may be used in place of each other, these are different
-instances of <i>HumanName</i>.
+instances of <code>HumanName</code>.
 </p>
 <p>
-The <i>text</i> element specifies the entire name as it should be represented. This
+The <code>text</code> element specifies the entire name as it should be represented. This
 may be provided instead of or as well as specific parts, and can be built from the parts, though
 the correct order of assembly is culture dependent: the order of the  parts within a given part type has 
 significance and SHALL be observed. The appropriate order between 
@@ -872,14 +849,14 @@ Address
 See also <a href="datatypes-examples.html#Address">Examples</a>, <a href="datatypes-definitions.html#Address">Detailed Descriptions</a> and <a href="datatypes-mappings.html#Address">Mappings</a>.
 </p>
 <p>
-A postal address. There is a variety of postal address formats defined around the world. 
+A postal address. There are a variety of postal address formats defined around the world. 
 Postal addresses are often also used to record a location that can be
 visited to find a patient or person.
 </p>
 
-[%dt Address%]
+[%dt Address 11%]
 <p>
-The <i>text</i> element specifies the entire address as it should be represented. This
+The <code>text</code> element specifies the entire address as it should be represented. This
 may be provided instead of or as well as the specific parts. Applications updating an address
 SHALL ensure either that the text and the parts are in agreement, or that only one
 of the two is present.
@@ -907,12 +884,22 @@ See also <a href="datatypes-examples.html#ContactPoint">Examples</a>, <a href="d
 <p>
 Details for all kinds of technology-mediated contact points for a person or organization, including telephone, email, etc.
 </p>
-[%dt ContactPoint%]
+[%dt ContactPoint 12%]
 <p>
 If capturing a phone, fax or similar contact point, the value should be a properly formatted telephone number according to 
 <a href="http://www.itu.int/rec/T-REC-E.123-200102-I/e">ITU-T E.123</a>. 
-However, this is frequently not possible due to legacy data and/or recording methods.
+However, this is frequently not possible due to legacy data and/or clerical practices when recording contact details.
+For this reason, phone, fax, page and email addresses are not handled as formal URLS. For other kinds 
+of contacts, the <code>system</code> is "other" and the <code>value</code> SHOULD be a URL so that it's use can be determined automatically. Typical 
+URL schemes used in the value are http(s) for web addresses, and URL schemes for various kinds of messaging systems.
+If the value is not a URL, then human interpretation will be required.
 </p>
+<p>
+The <code>rank</code> element can be used to specify a preference for the order in which a set of contacts
+is used. Contacts are ranked with lower values coming before higher values. Note that <code>rank</code> does not necessarily 
+follow the order in which the contacts are represented in the instance.
+</p>
+
 <div class="use">
 <p><b>Constraints</b></p>
 [%dt.constraints ContactPoint%]
@@ -941,35 +928,41 @@ Those systems do not use the Timing data type. Other systems use a set of 'commo
 not limited to, widely understood acronyms such as "BID". A structured timing specification SHOULD be provided whenever 
 possible, unless the code is BID, TID, QID, AM or PM, which have a ubiquitous meaning. 
 </p>
-[%dt Timing%]
+[%dt Timing 13%]
 <p>
 If the timing schedule has repeating criteria, the repeat can occur a given number of times per 
 the specified duration or in relation to some real world event. If no end condition is specified, 
 the schedule will terminate on some criteria that are expressed elsewhere. 
 </p>
 <p>
+If <code>duration</code> is provided as a <a href="#Range">Range</a>, the units in the Range
+SHALL be a <a href="valueset-units-of-time.html">UCUM unit of time</a>.
+</p>
+<p>
 This table summarises some common uses of the Timing Data Type criteria.
 </p>
 <table class="grid">
- <tr><td><b>text</b></td><td><b>duration+units</b></td><td><b>frequency</b></td><td><b>frequencyMax</b></td><td><b>period+units</b></td><td><b>periodMax</b></td><td><b>when</b></td></tr>
- <tr><td>BID</td><td></td><td>2</td><td></td><td>1 d</td><td></td><td></td></tr>
- <tr><td>TID</td><td></td><td>3</td><td></td><td>1 d</td><td></td><td></td></tr>
- <tr><td>QID</td><td></td><td>4</td><td></td><td>1 d</td><td></td><td></td></tr>
- <tr><td>Q6H</td><td></td><td>1</td><td></td><td>6 h</td><td></td><td></td></tr>
- <tr><td>Every 8 hours</td><td></td><td>1</td><td></td><td>8 h</td><td></td><td></td></tr>
- <tr><td>Every 7 days</td><td></td><td>1</td><td></td><td>7 d</td><td></td><td></td></tr>
- <tr><td>3 times a day</td><td></td><td>3</td><td></td><td>1 d</td><td></td><td></td></tr>
- <tr><td>3-4 times a day</td><td></td><td>3</td><td>4</td><td>1 d</td><td></td><td></td></tr>
- <tr><td>Every 4-6 hours</td><td></td><td>1</td><td></td><td>4 h</td><td>6</td><td></td></tr>
- <tr><td>Every 21 days for 1 hour</td><td>1 hr</td><td>1</td><td></td><td>21 d</td><td></td><td></td></tr>
- <tr><td>Three times a week for ½ hour</td><td>0.5 hr</td><td>3</td><td></td><td>1 wk</td><td></td><td></td></tr>
- <tr><td>With breakfast</td><td></td><td></td><td></td><td></td><td></td><td>CM</td></tr>
- <tr><td>For 10 minutes before meals</td><td>10 min</td><td></td><td></td><td>10 min</td><td></td><td>AC</td></tr>
+ <tr><td><b>description</b></td> <td><b>duration</b></td> <td><b>durationUnits</b></td> <td><b>frequency</b></td> <td><b>frequencyMax</b></td> <td><b>period</b></td> <td><b>periodUnits</b></td> <td><b>periodMax</b></td> <td><b>when</b></td> <td><b>bounds[x]</b></td></tr>
+ <tr><td>BID</td>                <td></td>                <td></td>                     <td>2</td>                <td></td>                    <td>1</td>             <td>d</td>                  <td></td>                 <td></td>            <td></td></tr>
+ <tr><td>TID</td>                <td></td>                <td></td>                     <td>3</td>                <td></td>                    <td>1</td>             <td>d</td>                  <td></td>                 <td></td>            <td></td></tr>
+ <tr><td>QID</td>                <td></td>                <td></td>                     <td>4</td>                <td></td>                    <td>1</td>             <td>d</td>                  <td></td>                 <td></td>            <td></td></tr>
+ <tr><td>Q6H</td>                <td></td>                <td></td>                     <td>1</td>                <td></td>                    <td>6</td>             <td>h</td>                  <td></td>                 <td></td>            <td></td></tr>
+ <tr><td>Every 8 hours</td>      <td></td>                <td></td>                     <td>1</td>                <td></td>                    <td>8</td>             <td>h</td>                  <td></td>                 <td></td>            <td></td></tr>
+ <tr><td>Every 7 days</td>       <td></td>                <td></td>                     <td>1</td>                <td></td>                    <td>7</td>             <td>d</td>                  <td></td>                 <td></td>            <td></td></tr>
+ <tr><td>3 times a day</td>      <td></td>                <td></td>                     <td>3</td>                <td></td>                    <td>1</td>             <td>d</td>                  <td></td>                 <td></td>            <td></td></tr>
+ <tr><td>3-4 times a day</td>    <td></td>                <td></td>                     <td>3</td>                <td>4</td>                   <td>1</td>             <td>d</td>                  <td></td>                 <td></td>            <td></td></tr>
+ <tr><td>Every 4-6 hours</td>    <td></td>                <td></td>                     <td>1</td>                <td></td>                    <td>4</td>             <td>h</td>                  <td>6</td>                <td></td>            <td></td></tr>
+ <tr><td>Every 21 days for 1 hour</td> <td>1</td>         <td>hr</td>                   <td>1</td>                <td></td>                    <td>21</td>            <td>d</td>                  <td></td>                 <td></td>            <td></td></tr>
+ <tr><td>Three times a week for ½ hour</td> <td>0.5</td>  <td>hr</td>                   <td>3</td>                <td></td>                    <td>1</td>             <td>wk</td>                 <td></td>                 <td></td>            <td></td></tr>
+ <tr><td>With breakfast</td>     <td></td>                <td></td>                     <td></td>                 <td></td>                    <td></td>              <td></td>                   <td></td>                 <td>CM</td>          <td></td></tr>
+ <tr><td>For 10 minutes before meals</td> <td>10</td>     <td>min</td>                  <td></td>                 <td></td>                    <td>10</td>            <td>min</td>                <td></td>                 <td>AC</td>          <td></td></tr>
+ <tr><td>TID, for 14 days</td>   <td></td>                <td></td>                     <td>3</td>                <td></td>                    <td>1</td>             <td>d</td>                  <td></td>                 <td></td>            <td>Duration = 14 days</td></tr>
+ <tr><td>BID, start on 7/1/2015 at 1:00 PM</td> <td></td> <td></td>                     <td>2</td>                <td></td>                    <td>1</td>             <td>d</td>                  <td></td>                 <td></td>            <td>Period, low = 2015-07-01T13:00:00</td></tr>
+ <tr><td></td>                   <td></td>                <td></td>                     <td></td>                 <td></td>                    <td></td>              <td></td>                   <td></td>                 <td></td>            <td></td></tr>
 </table>
 
-<p>
-Timing is used in the following places: [%dtusage Timing%]
-</p>
+
+
 
 
 <div class="use">
@@ -977,6 +970,11 @@ Timing is used in the following places: [%dtusage Timing%]
 [%dt.constraints Timing%]
 
 </div>
+<p>
+Timing is used in the following places: [%dtusage Timing%]
+</p>
+
+
 
 <a name="Signature"></a>
 <a name="signature"></a>
@@ -987,48 +985,85 @@ Signature
 See also <a href="datatypes-examples.html#Signature">Examples</a>, <a href="datatypes-definitions.html#Signature">Detailed Descriptions</a> and <a href="datatypes-mappings.html#Signature">Mappings</a>.
 </p>
 <p>
-A Signature holds a Digital Signature and supporting context in a FHIR accessible form. The non-repudiation proof is provided through the XML-Signature blob. 
+A Signature holds an electronic representation of a signature and it's supporting context in a FHIR accessible form. 
+The signature may either be a cryptographic type (XML DigSig or a JWT), which is able to provide non-repudiation proof, or 
+it may be a graphical image that represents a signature or a signature process. 
 </p>
-[%dt Signature%]
+[%dt Signature 14%]
+<div class="use">
+<p><b>Constraints</b></p>
+[%dt.constraints Signature%]
+</div>
+
 <p>
-The Signature.blob is base64 encoded XML-Signature. The XML-Signature is a <a href="http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/#def-SignatureDetached">Detached</a> Signature. Where the content that is signed is separate from the signature itself. 
+Note: One consequence of signing the document is that URLs, identifiers and internal references are frozen and 
+cannot be changed. This might be a desired feature, but it may also cripple interoperability between closed 
+ecosystems where <a href="managing.html">re-identification</a> frequently occurs. For this reason, it is 
+recommended that systems consider carefully the impact of any signature processes. The impact of signatures
+on <a href="documents.html">Document bundles</a> and their related processes is the most well understood
+use of digital signatures.
 </p>
+
+<p>&nbsp;</p>
+<h3>XML Signature rules</h3>
 <p>
-The Signature should conform to XAdES-X-L for support of Long Term signatures. The XAdES-X-L specification adds the timestamp of the signing, inclusion of the signing certificate, and statement of revocation. 
+When the signature is an XML Digital Signature (contentType = application/signature+xml), the following rules apply:
 </p>
-<p>
-Where the signed content is a FHIR Resource(s), the signature is accross the the XML form of the resource(s).
-</p>
-<p>
-The content should be canonicalized using the "Canonical XML 1.1. with Comments".
-</p>
-<p>
-The Signature should use the hashing algorithm sha256. The XML-Signature indicates the algorithm used. Other hashing algoirthms should be expected to have been used, signature validation policy would determine acceptability.
-</p>
-<p>
-The Signature Shall include a “CommitmentTypeIndication” element for the Purpose(s) of Signature. The Purpose can be the action being attested to, or the role associated with the signature. The value shall come from ASTM E1762-95(2013). 
-The Signature.type shall contain the same values as committmentTypeIndication.
-</p>
+<ul>
+ <li>The Signature.blob is base64 encoded XML-Signature</li>
+ <li>The XML-Signature is a <a href="http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/#def-SignatureDetached">Detached</a> Signature (where the content that is signed is separate from the signature itself)</li> 
+ <li>The Signature SHOULD conform to XAdES-X-L for support of Long Term signatures. The XAdES-X-L specification adds the timestamp of the signing, inclusion of the signing certificate, and statement of revocation</li>
+ <li>When FHIR Resources are signed, the signature is accross the <a href="xml.html#canonical">Canonical XML form</a> of the resource(s)</li>
+ <li>The Signature SHOULD use the hashing algorithm sha256. Signature validation policy will apply to the signature and determine acceptability</li>
+ <li>The Signature SHALL include a “CommitmentTypeIndication” element for the Purpose(s) of Signature. The Purpose can be the action being attested to, or the role associated with the signature. The value shall come from ASTM E1762-95(2013). The Signature.type shall contain the same values as committmentTypeIndication</li>
+</ul>
 <p>
 There are three levels of signature verification: 
 <ol>
    <li>	verifying that the Digital Signature block itself has integrity through verifying the signature across the XML-Signature, </li>
    <li> confirming that the signer was authentic, not revoked, and appropriate to the signature purpose, </li>
-   <li> confirming that the signed content of interest are unmodified using the hash algorithm.</li>
+   <li> confirming that the signed content of interest is unmodified using the hash algorithm.</li>
 </ol>
 </p>
 <p>
 Deviations from these guidelines would need to be expressed in site policy, and would be enumerated in the XML-Signature block. 
 For example some environments may choose a different XAdES profile, hashing algorithm, policy identifier, or signature purpose vocabulary. 
 </p>
-<div class="use">
-<p><b>Constraints</b></p>
-[%dt.constraints Signature%]
-
-</div>
 
 <p>
 Signature is used in the following places: [%dtusage Signature%]
+</p>
+
+<a name="Annotation"></a>
+<a name="annotation"></a>
+<h2 style="margin-bottom: 1px">
+Annotation
+</h2>
+<p style="background-color: gainsboro; padding: 4px; margin-top: 0px">
+See also <a href="datatypes-examples.html#Annotation">Examples</a>, <a href="datatypes-definitions.html#Annotation">Detailed Descriptions</a> and <a href="datatypes-mappings.html#Annotation">Mappings</a>.
+</p>
+<p>
+A  text note which also  contains information about who made the statement and when. 
+</p>
+[%dt Annotation 15%]
+<p>
+Systems that do not have structured annotations simply communicate a single annotation with no author or time. 
+</p>
+<p>
+This element may need to be included in narrative because of the potential for modifying information. 
+</p>
+<p>
+Annotations <b>SHOULD NOT</b> be used to communicate "modifying" information that could be computable 
+(this is a SHOULD because enforcing user behavior is nearly impossible).
+</p>
+<!--<div class="use">
+<p><b>Constraints</b></p>
+[%dt.constraints Annotation%]
+
+</div>
+-->
+<p>
+Annotation is used in the following places: [%dtusage Annotation%]
 </p>
 
 <a name="open"> </a>
@@ -1037,31 +1072,40 @@ Signature is used in the following places: [%dtusage Signature%]
 Some elements do not have a specified type. The type is represented by the wildcard symbol "*". In these cases, the element type may be one of the following:
 </p>
 <ul class="dense">
+ <li><a href="datatypes.html#boolean">boolean</a></li>
  <li><a href="datatypes.html#integer">integer</a></li>
  <li><a href="datatypes.html#decimal">decimal</a></li>
- <li><a href="datatypes.html#dateTime">dateTime</a></li>
- <li><a href="datatypes.html#date">date</a></li>
+ <li><a href="datatypes.html#base64Binary">base64Binary</a></li>
  <li><a href="datatypes.html#instant">instant</a></li>
- <li><a href="datatypes.html#time">time</a></li>
  <li><a href="datatypes.html#string">string</a></li>
  <li><a href="datatypes.html#uri">uri</a></li>
- <li><a href="datatypes.html#boolean">boolean</a></li>
- <li><a href="datatypes.html#code">code</a> - if the extension definition provides a binding to a suitable set of codes</li>
- <li><a href="datatypes.html#base64Binary">base64Binary</a></li>
- <li><a href="datatypes.html#Coding">Coding</a></li>
- <li><a href="datatypes.html#CodeableConcept">CodeableConcept</a></li>
+ <li><a href="datatypes.html#date">date</a></li>
+ <li><a href="datatypes.html#dateTime">dateTime</a></li>
+ <li><a href="datatypes.html#time">time</a></li>
+ <li><a href="datatypes.html#code">code</a></li>
+ <li><a href="datatypes.html#oid">oid</a></li>
+ <li><a href="datatypes.html#uuid">uuid</a></li>
+ <li><a href="datatypes.html#id">id</a></li>
+ <li><a href="datatypes.html#unsignedInt">unsignedInt</a></li>
+ <li><a href="datatypes.html#positiveInt">positiveInt</a></li>
+ <li><a href="datatypes.html#markdown">markdown</a></li>
+ <li><a href="datatypes.html#Annotation">Annotation</a></li>
  <li><a href="datatypes.html#Attachment">Attachment</a></li>
  <li><a href="datatypes.html#Identifier">Identifier</a></li>
+ <li><a href="datatypes.html#CodeableConcept">CodeableConcept</a></li>
+ <li><a href="datatypes.html#Coding">Coding</a></li>
  <li><a href="datatypes.html#Quantity">Quantity</a></li>
  <li><a href="datatypes.html#Range">Range</a></li>
  <li><a href="datatypes.html#Period">Period</a></li>
  <li><a href="datatypes.html#Ratio">Ratio</a></li>
+ <li><a href="datatypes.html#SampledData">SampledData</a></li>
+ <li><a href="datatypes.html#Signature">Signature</a></li>
  <li><a href="datatypes.html#HumanName">HumanName</a></li>
  <li><a href="datatypes.html#Address">Address</a></li>
  <li><a href="datatypes.html#ContactPoint">ContactPoint</a></li>
  <li><a href="datatypes.html#Timing">Timing</a></li>
- <li><a href="datatypes.html#Signature">Signature</a></li>
  <li><a href="references.html#Reference">Reference</a> - a reference to another resource</li>
+ <li><a href="resource.html#Meta">Meta</a></li>
 </ul>
 <p>
 The element name ends with "[x]", and this is replaced with the Title cased name of the data type.
@@ -1076,7 +1120,7 @@ Open references are used in the following places: [%dtusage *%]
 <p>
 The following types are defined as part of the data types, but are documented elsewhere in the specification:
 </p>
-[%diagram datatypes/types3.diagram%]
+[%diagram datatypes/types3.diagram 6a%]
 
 <ul>
  <li><b><a href="resource.html#metadata">Resource</a></b> - the conceptual base class for all resources</li>
@@ -1086,7 +1130,7 @@ The following types are defined as part of the data types, but are documented el
 </ul>
 
 </div>
-[%onthispage Primitive Types#primitive|Data Types#Types|Other Types#other%]
+<!--[.%.onthispage Primitive Types#primitive|Data Types#Types|Other Types#other.%.]-->
 
 [%file newfooter%]
 
@@ -1114,6 +1158,7 @@ $( '#tabs-Address' ).tabs({ active: currentTabIndex, activate: function( event, 
 $( '#tabs-ContactPoint' ).tabs({ active: currentTabIndex, activate: function( event, ui ) { store(ui.newTab.index()); } });
 $( '#tabs-Timing' ).tabs({ active: currentTabIndex, activate: function( event, ui ) { store(ui.newTab.index()); } });
 $( '#tabs-Signature' ).tabs({ active: currentTabIndex, activate: function( event, ui ) { store(ui.newTab.index()); } });
+$( '#tabs-Annotation' ).tabs({ active: currentTabIndex, activate: function( event, ui ) { store(ui.newTab.index()); } });
      
      
 function store(currentTab) {
@@ -1135,6 +1180,7 @@ function store(currentTab) {
   $( '#tabs-ContactPoint' ).tabs('option', 'active', currentTab);
   $( '#tabs-Timing' ).tabs('option', 'active', currentTab);
   $( '#tabs-Signature' ).tabs('option', 'active', currentTab);
+  $( '#tabs-Annotation' ).tabs('option', 'active', currentTab);
   document.activeElement.blur();
 }     
 </script>

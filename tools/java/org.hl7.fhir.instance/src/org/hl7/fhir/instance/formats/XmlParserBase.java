@@ -32,15 +32,19 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.instance.model.Base;
 import org.hl7.fhir.instance.model.DomainResource;
 import org.hl7.fhir.instance.model.Element;
 import org.hl7.fhir.instance.model.Resource;
+import org.hl7.fhir.instance.model.StringType;
 import org.hl7.fhir.instance.model.Type;
+import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
@@ -107,7 +111,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
     writer.setPretty(style == OutputStyle.PRETTY);
     writer.start();
     compose(writer, resource, writer.isPretty());
-    writer.close();
+    writer.end();
   }
 
   /**
@@ -118,7 +122,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
     writer.setPretty(style == OutputStyle.PRETTY);
     writer.start();
     compose(writer, resource, htmlPretty);
-    writer.close();
+    writer.end();
   }
 
   
@@ -131,7 +135,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
     xml.start();
     xml.setDefaultNamespace(FHIR_NS);
     composeType(Utilities.noString(rootName) ? "value" : rootName, type);
-    xml.close();
+    xml.end();
   }
 
   @Override
@@ -141,7 +145,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
     xml.start();
     xml.setDefaultNamespace(FHIR_NS);
     composeType(Utilities.noString(rootName) ? "value" : rootName, type);
-    xml.close();
+    xml.end();
   }
 
 
@@ -149,7 +153,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
   /* -- xml routines --------------------------------------------------- */
   
   protected XmlPullParser loadXml(String source) throws Exception {
-    return loadXml(new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8)));
+    return loadXml(new ByteArrayInputStream(source.getBytes("UTF-8")));
   }
   
   protected XmlPullParser loadXml(InputStream stream) throws Exception {
@@ -160,7 +164,6 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
     xpp.setInput(input, "UTF-8");
     next(xpp);
     nextNoWhitespace(xpp);
-    comments.clear();
     
     return xpp;
   }
@@ -172,7 +175,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	    return xpp.next();    
   }
 
-  private List<String> comments = new ArrayList<String>();
+  protected List<String> comments = new ArrayList<String>();
 	
   protected int nextNoWhitespace(XmlPullParser xpp) throws Exception {
     int eventType = xpp.getEventType();
@@ -221,7 +224,14 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
       idMap.put(e.getId(), e);
     }
     if (!comments.isEmpty()) {
-      e.getFormatComments().addAll(comments);
+      e.getFormatCommentsPre().addAll(comments);
+      comments.clear();
+    }
+  }
+
+  protected void parseElementClose(Base e) throws Exception {
+    if (!comments.isEmpty()) {
+      e.getFormatCommentsPost().addAll(comments);
       comments.clear();
     }
   }
@@ -303,21 +313,26 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 
 	protected void composeElementAttributes(Element element) throws Exception {
 	  if (style != OutputStyle.CANONICAL)
-	    for (String comment : element.getFormatComments())
-	      xml.comment(comment, false);
+	    for (String comment : element.getFormatCommentsPre())
+	      xml.comment(comment, getOutputStyle() == OutputStyle.PRETTY);
 		if (element.getId() != null) 
 			xml.attribute("id", element.getId());
 	}
 
+  protected void composeElementClose(Base base) throws Exception {
+    if (style != OutputStyle.CANONICAL)
+      for (String comment : base.getFormatCommentsPost())
+        xml.comment(comment, getOutputStyle() == OutputStyle.PRETTY);
+  }
 	protected void composeTypeAttributes(Type type) throws Exception {
 		composeElementAttributes(type);
 	}
 
 	protected void composeXhtml(String name, XhtmlNode html) throws Exception {
     if (!Utilities.noString(xhtmlMessage)) {
-      xml.open(XhtmlComposer.XHTML_NS, name);
+      xml.enter(XhtmlComposer.XHTML_NS, name);
       xml.comment(xhtmlMessage, false);
-      xml.close(XhtmlComposer.XHTML_NS, name);
+      xml.exit(XhtmlComposer.XHTML_NS, name);
     } else {
 		XhtmlComposer comp = new XhtmlComposer();
 		// name is also found in the html and should the same
@@ -325,6 +340,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 		boolean oldPretty = xml.isPretty();
 		xml.setPretty(htmlPretty);
       comp.setXmlOnly(true);
+    if (html.getNodeType() != NodeType.Text)
 		xml.namespace(XhtmlComposer.XHTML_NS, null);
 		comp.compose(xml, html);
 		xml.setPretty(oldPretty);
@@ -332,10 +348,17 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	}
 
 
+	abstract protected void composeString(String name, StringType value) throws Exception;
+
+	  protected void composeString(String name, IIdType value) throws Exception {
+		  composeString(name, new StringType(value.getValue()));
+	  }    
+
+	
   protected void composeDomainResource(String name, DomainResource res) throws Exception {
-    xml.open(FHIR_NS, name);
+    xml.enter(FHIR_NS, name);
     composeResource(res.getResourceType().toString(), res);
-    xml.close(FHIR_NS, name);
+    xml.exit(FHIR_NS, name);
   }
 
 	protected abstract void composeResource(String name, Resource res) throws Exception;

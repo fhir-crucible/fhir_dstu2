@@ -29,6 +29,8 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -43,18 +45,41 @@ public class Example {
   private String name;
   private String id;
   private String description;
-  private File path;
+  private String title;
   private String xhtm;
-  private String json;
   private ExampleType type;
   private boolean registered;
   private Document xml;
+  private String resourceName;
+  private Set<Example> inbounds = new HashSet<Example>();
+  private String ig;
+  
   
   public enum ExampleType {
-	    XmlFile,
-	    CsvFile,
-	    Tool
-	  }
+    Container,
+    XmlFile,
+    CsvFile,
+    Tool
+  }
+  
+  
+  public Example(String name, String id, String title, String description, boolean registered, ExampleType type, Document doc) throws Exception {
+    this.name = name;
+    this.id = id;
+    this.description = description;
+    this.type = type;
+    this.registered = registered;
+    this.title = title;
+    
+    xml = doc;
+    resourceName = xml.getDocumentElement().getNodeName();
+    if (XMLUtil.getNamedChild(xml.getDocumentElement(), "id") == null)
+      throw new Exception("no id element (looking for '"+id+"' from example "+id);
+    String xid = XMLUtil.getNamedChild(xml.getDocumentElement(), "id").getAttribute("value");
+    if (!id.equals(xid)) {
+      throw new Exception("misidentified resource example "+id+" expected '"+id+"' found '"+xid+"'");
+    }
+  }
   
   
   public Example(String name, String id, String description, File path, boolean registered, ExampleType type, boolean noId) throws Exception {
@@ -62,9 +87,10 @@ public class Example {
     this.name = name;
     this.id = id;
     this.description = description;
-    this.path = path;
+//    this.path = path;
     this.type = type;
     this.registered = registered;
+    this.title = getFileTitle(path);
     
     if( type == ExampleType.CsvFile ) {
       CSVProcessor csv = new CSVProcessor();
@@ -76,12 +102,13 @@ public class Example {
       path = tmp;
     }
     
-    if (type == ExampleType.XmlFile || type == ExampleType.CsvFile) {
+    if (type == ExampleType.XmlFile || type == ExampleType.CsvFile || type == ExampleType.Container) {
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
       factory.setNamespaceAware(true);
       try {
         DocumentBuilder builder = factory.newDocumentBuilder();
         xml = builder.parse(new CSFileInputStream(path.getAbsolutePath()));
+        resourceName = xml.getDocumentElement().getNodeName();
       } catch (Exception e) {
         throw new Exception("unable to read "+path.getAbsolutePath()+": "+e.getMessage(), e);
       }
@@ -98,6 +125,11 @@ public class Example {
     }
   }
   
+  private String getFileTitle(File path) {
+    String s = path.getName();
+    return s.substring(0, s.indexOf("."));
+  }
+  
   public String getName() {
     return name;
   }
@@ -110,16 +142,16 @@ public class Example {
   public void setDescription(String description) {
     this.description = description;
   }
-  public File getPath() {
-    return path;
-  }
-  public void setPath(File path) {
-    this.path = path;
-  }
-  public String getFileTitle() {
-    String s = path.getName();
-    return s.substring(0, s.indexOf("."));
-  }
+//  public File getPath() {
+//    return path;
+//  }
+//  public void setPath(File path) {
+//    this.path = path;
+//  }
+//  public String getFileTitle() {
+//    String s = path.getName();
+//    return s.substring(0, s.indexOf("."));
+//  }
   public void setXhtm(String content) {
    xhtm = content;
     
@@ -136,14 +168,12 @@ public class Example {
   public String getId() {
     return id;
   }
+  public String getTitle() {
+    return title;
+  }
+
   public Document getXml() {
     return xml;
-  }
-  public String getJson() {
-    return json;
-  }
-  public void setJson(String json) {
-    this.json = json;
   }
 
   public boolean isRegistered() {
@@ -152,6 +182,28 @@ public class Example {
 
   public void setRegistered(boolean registered) {
     this.registered = registered;
+  }
+
+  public String getResourceName() {
+    return resourceName;
+  }
+
+  public void setResourceName(String resourceName) {
+    this.resourceName = resourceName;
+  }
+
+  public Set<Example> getInbounds() {
+    return inbounds;
+  }
+
+
+  public String getIg() {
+    return ig;
+  }
+
+
+  public void setIg(String ig) {
+    this.ig = ig;
   }
   
   

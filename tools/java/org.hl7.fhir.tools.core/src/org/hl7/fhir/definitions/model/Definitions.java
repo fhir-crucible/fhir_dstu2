@@ -31,10 +31,15 @@ package org.hl7.fhir.definitions.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.hl7.fhir.definitions.ecore.fhir.BindingDefn;
+import org.hl7.fhir.definitions.model.Definitions.PageInformation;
 import org.hl7.fhir.instance.model.ConceptMap;
+import org.hl7.fhir.instance.model.NamingSystem;
 import org.hl7.fhir.instance.model.StructureDefinition;
 import org.hl7.fhir.instance.model.StructureDefinition.ExtensionContext;
 import org.hl7.fhir.instance.model.ValueSet;
@@ -50,17 +55,65 @@ import org.hl7.fhir.instance.model.ValueSet;
  * @author Grahame
  * 
  */
-public class Definitions {
+public class Definitions implements org.hl7.fhir.instance.utils.NameResolver {
+
+  public class PageInformation {
+
+    private String fmm;
+    private String wg;
+    private String wgCode;
+    private String name;
+
+    public PageInformation(String name) {
+      super();
+      this.name = name;
+    }
+
+    public String getFmm() {
+      return fmm;
+    }
+
+    public void setFmm(String fmm) {
+      this.fmm = fmm;
+    }
+
+    public String getWg() {
+      return wg;
+    }
+
+    public void setWg(String wg) {
+      this.wg = wg;
+    }
+
+    public String getWgCode() {
+      return wgCode;
+    }
+
+    public void setWgCode(String code) {
+      wgCode = code;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public void setName(String name) {
+      this.name = name;
+    }
+
+    
+  }
 
   public static final String RIM_MAPPING = "http://hl7.org/v3";
   public static final String v2_MAPPING = "http://hl7.org/v2";
   public static final String LOINC_MAPPING = "http://loinc.org";
   public static final String SNOMED_MAPPING = "http://snomed.info";
   
-  // todo: these binding registries that create global name uniqueness requirement need to be removed?
-  // but global name uniqueness is still required? 
-  private Map<String, BindingSpecification> bindings = new HashMap<String, BindingSpecification>();
-  private List<BindingSpecification> commonBindings = new ArrayList<BindingSpecification>();
+  /// value sets
+  private Map<String, BindingSpecification> commonBindings = new HashMap<String, BindingSpecification>();
+  private Map<String, ValueSet> boundValueSets = new HashMap<String, ValueSet>(); // indexed by ValueSet.url
+  private Set<BindingSpecification> unresolvedBindings = new HashSet<BindingSpecification>();
+  private List<BindingSpecification> allBindings = new ArrayList<BindingSpecification>();
 
   // base definitions - types and resources of various kinds
   private Map<String, DefinedCode> primitives = new HashMap<String, DefinedCode>();
@@ -73,7 +126,10 @@ public class Definitions {
   private Map<String, WorkGroup> workgroups = new HashMap<String, WorkGroup>();
 
 	// profiles not owned by a particular resource
-  private Map<String, Profile> packs = new HashMap<String, Profile>();
+  private Map<String, ImplementationGuideDefn> igs = new HashMap<String, ImplementationGuideDefn>();
+  private List<ImplementationGuideDefn> sortedIgs = new ArrayList<ImplementationGuideDefn>();
+  private List<Profile> packList = new ArrayList<Profile>();
+  private Map<String, Profile> packMap = new HashMap<String, Profile>();
   private Map<String, Dictionary> dictionaries = new HashMap<String, Dictionary>();
 
   // indexes of above
@@ -86,6 +142,7 @@ public class Definitions {
   private Map<String, ConceptMap> conceptMaps = new HashMap<String, ConceptMap>();
   private Map<String, ValueSet> codeSystems = new HashMap<String, ValueSet>();
   private Map<String, ValueSet> extraValuesets = new HashMap<String, ValueSet>();
+  private Set<String> styleExemptions = new HashSet<String>();
 
   // other miscellaineous lists
   private List<String> deletedResources = new ArrayList<String>();
@@ -99,11 +156,10 @@ public class Definitions {
   private Map<String, String> TLAs = new HashMap<String, String>();
 
   private Map<String, W5Entry> w5s = new HashMap<String, W5Entry>();
+  private List<W5Entry> w5list = new ArrayList<W5Entry>();
   private Map<String, String> typePages = new HashMap<String, String>();
-  private Map<String, ImplementationGuide> igs = new HashMap<String, ImplementationGuide>();
-  private List<ImplementationGuide> sortedIgs = new ArrayList<ImplementationGuide>();
   private Map<String, String> pageTitles = new HashMap<String, String>();
-
+  private Map<String, Set<String>> searchRules = new HashMap<String, Set<String>>();
   
   // Returns the root TypeDefn of a CompositeType or Resource,
 	// excluding future Resources (as they don't have definitions yet).
@@ -135,22 +191,24 @@ public class Definitions {
       root = structures.get(name);
     if (infrastructure.containsKey(name))
       root = infrastructure.get(name);
+    if (baseResources.containsKey(name))
+      root = baseResources.get(name).getRoot();
     if (resources.containsKey(name))
       root = resources.get(name).getRoot();
     return root != null;
   }
 
-	// Returns a list of Bindings as found on the "Bindings" tab in
-	// terminologies/bindings.xml and the "Binding" column on
-	// CompositeTypes and Resources.
-	public Map<String, BindingSpecification> getBindings() {
-		return bindings;
-	}
-
-
-	public BindingSpecification getBindingByName(String name) {
-		return bindings.get(name);
-	}
+//	// Returns a list of Bindings as found on the "Bindings" tab in
+//	// terminologies/bindings.xml and the "Binding" column on
+//	// CompositeTypes and Resources.
+//	public Map<String, BindingSpecification> getBindings() {
+//		return bindings;
+//	}
+//
+//
+//	public BindingSpecification getBindingByName(String name) {
+//		return bindings.get(name);
+//	}
 	
 	// Returns all PrimitiveTypes (both imported and with a
 	// restriction pattern as found in the primitives.xls
@@ -238,28 +296,32 @@ public class Definitions {
 		return events;
 	}
 
-	// Returns all defined Profiles, which are the profiles found
-	// under [profiles] in fhir.ini
-	public Map<String, Profile> getConformancePackages() {
-		return packs;
-	}
+  // Returns all defined Profiles, which are the profiles found
+  // under [profiles] in fhir.ini
+  public Map<String, Profile> getPackMap() {
+    return packMap;
+  }
 
-  public BindingSpecification getBindingByReference(String ref, BindingSpecification other) {
-    for (BindingSpecification b : bindings.values()) {
-      if (ref.equals(b.getReference()) && other != b)
-        return b;
-    }
-    return null;
+  public List<Profile> getPackList() {
+    return packList;
   }
-  
-  public BindingSpecification getBindingByReference(String ref) {
-    for (BindingSpecification b : bindings.values()) {
-      if (ref.equals(b.getReference()))
-        return b;
-    }
-    return null;
-  }
-  
+
+//  public BindingSpecification getBindingByReference(String ref, BindingSpecification other) {
+//    for (BindingSpecification b : bindings.values()) {
+//      if (ref.equals(b.getReference()) && other != b)
+//        return b;
+//    }
+//    return null;
+//  }
+//  
+//  public BindingSpecification getBindingByReference(String ref) {
+//    for (BindingSpecification b : bindings.values()) {
+//      if (ref.equals(b.getReference()))
+//        return b;
+//    }
+//    return null;
+//  }
+//  
   public boolean dataTypeIsSharedInfo(String name)  {
     try {
       return hasElementDefn(name) && getElementDefn(name).typeCode().equals("SharedDefinition");
@@ -281,7 +343,7 @@ public class Definitions {
     return baseResources;
   }
 
-  public List<BindingSpecification> getCommonBindings() {
+  public Map<String, BindingSpecification> getCommonBindings() {
     return commonBindings;
   }
 
@@ -290,7 +352,10 @@ public class Definitions {
   }
 
   private List<String> sortedNames;
-  private boolean publishAll;
+  private List<String> vsFixups = new ArrayList<String>();
+  private List<NamingSystem> namingSystems = new ArrayList<NamingSystem>();
+  private Set<String> structuralPages = new HashSet<String>();
+  private Map<String, PageInformation> pageInfo = new HashMap<String, Definitions.PageInformation>();
   
   public List<String> sortedResourceNames() {
     if (sortedNames == null) {
@@ -382,7 +447,7 @@ public class Definitions {
         }
       }
     }
-    for (Profile cp : packs.values()) {
+    for (Profile cp : packList) {
       for (ConstraintStructure p : cp.getProfiles()) {
         if (p.getResource() != null && base.equals(p.getResource().getUrl()))
           return p.getResource();
@@ -426,7 +491,7 @@ public class Definitions {
     return typePages;
   }
 
-  public Map<String, ImplementationGuide> getIgs() {
+  public Map<String, ImplementationGuideDefn> getIgs() {
     return igs;
   }
 
@@ -434,11 +499,11 @@ public class Definitions {
     return dictionaries;
   }
 
-  public List<ImplementationGuide> getSortedIgs() {
+  public List<ImplementationGuideDefn> getSortedIgs() {
     return sortedIgs;
   }
 
-  public ImplementationGuide getUsageIG(String usage, String context) throws Exception {
+  public ImplementationGuideDefn getUsageIG(String usage, String context) throws Exception {
     if (!igs.containsKey(usage))
       throw new Exception("Attempt to use an undefined implementation guide '"+usage+"' @ "+context);
     return igs.get(usage);
@@ -484,7 +549,7 @@ public class Definitions {
     while (e != null && i < parts.length) {
       if (e.getAcceptableGenericTypes().isEmpty() && hasType(e.typeCode()))
         e = getElementDefn(e.typeCode());
-      e = e.getElementByName(parts[i], true);
+      e = e.getElementByName(parts[i], true, this);
       i++;
     }
     return e;
@@ -494,35 +559,101 @@ public class Definitions {
     return pageTitles;
   }
 
-  public boolean noPublish(String category)  {
-    return !doPublish(category);
+  public Map<String, ValueSet> getBoundValueSets() {
+    return boundValueSets;
   }
 
-  public boolean noPublish(ImplementationGuide ig)  {
-    return !doPublish(ig);
+  public Set<BindingSpecification> getUnresolvedBindings() {
+    return unresolvedBindings;
   }
 
-  public boolean isPublishAll() {
-    return publishAll;
+  public List<BindingSpecification> getAllBindings() {
+    return allBindings;
   }
 
-  public void setPublishAll(boolean publishAll) {
-    this.publishAll = publishAll;
+  @Override
+  public boolean isResource(String name) {
+    return hasResource(name);
   }
 
-  public boolean doPublish(String category) {
-    ImplementationGuide ig = igs.get(category);
-    if (ig == null)
-      throw new Error("No known IG for "+category);
-    if (publishAll)
-      return true;
-    return ig.isBallot();
+  public boolean hasLogicalModel(String name) {
+    for (ImplementationGuideDefn ig : getSortedIgs()) {
+      for (LogicalModel lm : ig.getLogicalModels()) {
+        if (lm.getResource().getName().equals(name))
+          return true;
+        if (lm.getId().equals(name))
+          return true;
+      }
+    }
+    return false;
   }
 
-  public boolean doPublish(ImplementationGuide ig) {
-    if (publishAll)
-      return true;
-    return ig.isBallot();
+  public ImplementationGuideDefn getIGforLogicalModel(String name) {
+    for (ImplementationGuideDefn ig : getSortedIgs()) {
+      for (LogicalModel lm : ig.getLogicalModels()) {
+        if (lm.getResource().getName().equals(name))
+          return ig;
+        if (lm.getId().equals(name))
+          return ig;
+      }
+    }
+    return null;
   }
 
+  public LogicalModel getLogicalModel(String name) {
+    for (ImplementationGuideDefn ig : getSortedIgs()) {
+      for (LogicalModel lm : ig.getLogicalModels()) {
+        if (lm.getResource().getName().equals(name))
+          return lm;
+        if (lm.getId().equals(name))
+          return lm;
+      }
+    }
+    return null;
+  }
+
+  public List<String> getVsFixups() {
+    return vsFixups;
+  }
+
+  public void seachRule(String type, String searchTypes) {
+    Set<String> set = new HashSet<String>();
+    for (String s : searchTypes.split(",")) {
+      set.add(s);
+    }
+    searchRules.put(type, set);
+  }
+
+  public Map<String, Set<String>> getSearchRules() {
+    return searchRules;
+  }
+
+  public List<NamingSystem> getNamingSystems() {
+    return namingSystems ;
+  }
+
+  public Set<String> getStructuralPages() {
+    return structuralPages;
+  }
+
+  public PageInformation page(String file) {
+    if (!pageInfo.containsKey(file)) 
+      pageInfo.put(file, new PageInformation(file));
+    
+    return pageInfo.get(file);
+  }
+
+  public Map<String, PageInformation> getPageInfo() {
+    return pageInfo;
+  }
+
+  public Set<String> getStyleExemptions() {
+    return styleExemptions;
+  }
+
+  public List<W5Entry> getW5list() {
+    return w5list;
+  }
+
+  
 }

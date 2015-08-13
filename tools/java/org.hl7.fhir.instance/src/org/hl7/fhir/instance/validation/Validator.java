@@ -28,22 +28,16 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.instance.formats.XmlParser;
 import org.hl7.fhir.instance.model.OperationOutcome.IssueSeverity;
-import org.hl7.fhir.instance.model.StructureDefinition;
-import org.hl7.fhir.utilities.Utilities;
 
 /**
  * A service that will validate one or more FHIR resources against 
@@ -118,7 +112,9 @@ public class Validator {
           else
             System.out.println(" ...failure");
         } else {
-          new XmlParser().compose(new FileOutputStream(output), exe.engine.getOutcome(), true);
+          FileOutputStream s = new FileOutputStream(output);
+          new XmlParser().compose(s, exe.engine.getOutcome(), true);
+          s.close();
         }
       }
     }
@@ -165,6 +161,7 @@ public class Validator {
   }
 
   private byte[] loadSource() throws Exception {
+    System.out.println("  .. load "+source);
     byte[] src;
     if (new File(source).exists())
       src = loadFromFile(source);
@@ -202,6 +199,7 @@ public class Validator {
   public String getOutcome() throws Exception {
     ByteArrayOutputStream b = new ByteArrayOutputStream();
     new XmlParser().compose(b, engine.getOutcome(), true); 
+    b.close();
     return b.toString();
   }
 

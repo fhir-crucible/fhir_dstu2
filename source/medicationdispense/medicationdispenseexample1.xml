@@ -11,7 +11,7 @@
     <reference value="Practitioner/example"/>
   </dispenser>
   <authorizingPrescription>
-    <reference value="MedicationPrescription/medicationprescriptionexample2" />
+    <reference value="MedicationOrder/medicationorderexample2" />
   </authorizingPrescription>
 <type>
   <coding>
@@ -22,20 +22,20 @@
 </type>
   <quantity>
     <value value="90"/>
-    <units value="Tablet" />
+    <unit value="Tablet" />
     <system value="http://unitsofmeasure.org"/>
     <code value="tbl"/>  
   </quantity>
 <daysSupply>
   <value value="90"/>
-  <units value="Day" />
+  <unit value="Day" />
   <system value="http://unitsofmeasure.org"/>
   <code value="D"/>   
 </daysSupply>
-  <medication> <!-- Linked to a RESOURCE Medication -->
+  <medicationReference> <!-- Linked to a RESOURCE Medication -->
     <reference value="Medication/MedicationExample5"/>
     <display value="prescribed medication"/>
-  </medication> 
+  </medicationReference> 
   <whenPrepared value="2015-03-01T16:20:00Z"/>
   <whenHandedOver value="2015-03-01T17:15:00Z"/>
   <dosageInstruction>
@@ -46,13 +46,13 @@
         <display value="With or after food"/>
       </coding>
     </additionalInstructions>
-    <scheduleTiming>
+    <timing>
       <repeat>
         <frequency value="1"/>
         <period value="1"/>
         <periodUnits value="d"/>
       </repeat>
-    </scheduleTiming>
+    </timing>
     <site>
       <coding>
         <system value="http://snomed.info/sct"/>
@@ -69,7 +69,7 @@
     </route>
     <doseQuantity>
       <value value="1"/>
-      <units value="tbl"/>
+      <unit value="tbl"/>
       <system value="http://unitsofmeasure.org"/>
       <code value="tbl"/>
     </doseQuantity>

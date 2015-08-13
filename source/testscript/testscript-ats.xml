@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestScript xmlns="http://hl7.org/fhir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../schema/testscript.xsd">
   <id value="2014-02-washington-ts"/>
+  <url value="http://hl7.org/fhir/TestScript/2014-02-washington-ts"/>
   <name value="Terminology Connectathon #1 Test Script"/>
+  <status value="draft"/>
   <description value="This is the test script the 1st Terminology Services Connectathon"/>
 
   <fixture id="extensional-case-1">
@@ -2556,7 +2558,7 @@
           <severity value="error"/>
           <type>
             <system value="http://hl7.org/fhir/issue-type"/>
-            <code value="code-unknown"/>
+            <code value="code-invalid"/>
           </type>
           <details><extension url="http://www.healthintersections.com.au/fhir/ExtensionDefinition/pattern"><valueString value="!"/></extension></details>
         </issue>
@@ -2573,7 +2575,7 @@
           <severity value="error"/>
           <type>
             <system value="http://hl7.org/fhir/issue-type"/>
-            <code value="code-unknown"/>
+            <code value="code-invalid"/>
           </type>
           <details><extension url="http://www.healthintersections.com.au/fhir/ExtensionDefinition/pattern"><valueString value="!"/></extension></details>
         </issue>
@@ -2602,7 +2604,7 @@
           <severity value="warning"/>
           <type>
             <system value="http://hl7.org/fhir/issue-type"/>
-            <code value="code-unknown"/>
+            <code value="code-invalid"/>
           </type>
           <details><extension url="http://www.healthintersections.com.au/fhir/ExtensionDefinition/pattern"><valueString value="!"/></extension></details>
         </issue>
@@ -2619,7 +2621,7 @@
           <severity value="error"/>
           <type>
             <system value="http://hl7.org/fhir/issue-type"/>
-            <code value="code-unknown"/>
+            <code value="code-invalid"/>
           </type>
           <details><extension url="http://www.healthintersections.com.au/fhir/ExtensionDefinition/pattern"><valueString value="!"/></extension></details>
         </issue>
@@ -2636,7 +2638,7 @@
           <severity value="error"/>
           <type>
             <system value="http://hl7.org/fhir/issue-type"/>
-            <code value="code-unknown"/>
+            <code value="code-invalid"/>
           </type>
           <details><extension url="http://www.healthintersections.com.au/fhir/ExtensionDefinition/pattern"><valueString value="!"/></extension></details>
         </issue>
@@ -2653,7 +2655,7 @@
           <severity value="error"/>
           <type>
             <system value="http://hl7.org/fhir/issue-type"/>
-            <code value="code-unknown"/>
+            <code value="code-invalid"/>
           </type>
           <details><extension url="http://www.healthintersections.com.au/fhir/ExtensionDefinition/pattern"><valueString value="!"/></extension></details>
         </issue>
@@ -2682,7 +2684,7 @@
           <severity value="warning"/>
           <type>
             <system value="http://hl7.org/fhir/issue-type"/>
-            <code value="code-unknown"/>
+            <code value="code-invalid"/>
           </type>
           <details><extension url="http://www.healthintersections.com.au/fhir/ExtensionDefinition/pattern"><valueString value="!"/></extension></details>
         </issue>
@@ -2699,7 +2701,7 @@
           <severity value="error"/>
           <type>
             <system value="http://hl7.org/fhir/issue-type"/>
-            <code value="code-unknown"/>
+            <code value="code-invalid"/>
           </type>
           <details><extension url="http://www.healthintersections.com.au/fhir/ExtensionDefinition/pattern"><valueString value="!"/></extension></details>
         </issue>
@@ -2716,7 +2718,7 @@
           <severity value="error"/>
           <type>
             <system value="http://hl7.org/fhir/issue-type"/>
-            <code value="code-unknown"/>
+            <code value="code-invalid"/>
           </type>
           <details><extension url="http://www.healthintersections.com.au/fhir/ExtensionDefinition/pattern"><valueString value="!"/></extension></details>
         </issue>
@@ -2733,7 +2735,7 @@
           <severity value="error"/>
           <type>
             <system value="http://hl7.org/fhir/issue-type"/>
-            <code value="code-unknown"/>
+            <code value="code-invalid"/>
           </type>
           <details><extension url="http://www.healthintersections.com.au/fhir/ExtensionDefinition/pattern"><valueString value="!"/></extension></details>
         </issue>
@@ -2762,7 +2764,7 @@
           <severity value="warning"/>
           <type>
             <system value="http://hl7.org/fhir/issue-type"/>
-            <code value="code-unknown"/>
+            <code value="code-invalid"/>
           </type>
           <details><extension url="http://www.healthintersections.com.au/fhir/ExtensionDefinition/pattern"><valueString value="!"/></extension></details>
         </issue>
@@ -2779,7 +2781,7 @@
           <severity value="error"/>
           <type>
             <system value="http://hl7.org/fhir/issue-type"/>
-            <code value="code-unknown"/>
+            <code value="code-invalid"/>
           </type>
           <details><extension url="http://www.healthintersections.com.au/fhir/ExtensionDefinition/pattern"><valueString value="!"/></extension></details>
         </issue>
@@ -2796,7 +2798,7 @@
           <severity value="error"/>
           <type>
             <system value="http://hl7.org/fhir/issue-type"/>
-            <code value="code-unknown"/>
+            <code value="code-invalid"/>
           </type>
           <details><extension url="http://www.healthintersections.com.au/fhir/ExtensionDefinition/pattern"><valueString value="!"/></extension></details>
         </issue>
@@ -2813,7 +2815,7 @@
           <severity value="error"/>
           <type>
             <system value="http://hl7.org/fhir/issue-type"/>
-            <code value="code-unknown"/>
+            <code value="code-invalid"/>
           </type>
           <details><extension url="http://www.healthintersections.com.au/fhir/ExtensionDefinition/pattern"><valueString value="!"/></extension></details>
         </issue>

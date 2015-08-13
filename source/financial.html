@@ -12,6 +12,7 @@
 
 <div class="col-9">
 <h2>Financial Resources</h2>
+<table class="cols"><tr><td id="wg"><a _target="blank" href="[%wg fhir%]">[%wgt fhir%]</a> Work Group</td><td id="fmm"><a href="resource.html#maturity">Maturity Level</a>: N/A</td><td id="ballot"><a href="help.html#status">Ballot Status</a>: <a href="history.html#pubs">DSTU 2</a></td></tr></table>
  
  <p>
  The table below details various common business activities which occur in the financial realm, and the focal resources 
@@ -38,7 +39,7 @@
  <tr><td>Pre-Authorization</td><td>Claim (type={discipline}, use=proposed)</td><td>ClaimResponse</td></tr>
  <tr><td>Reversal</td><td>ProcessRequest (action=cancel, nullify=false)</td><td>ClaimResponse</td></tr>
  <tr><td>Nullify</td><td>ProcessRequest (action=cancel, nullify=true)</td><td>ClaimResponse</td></tr>
- <tr><td>Re-adjudication</td><td>Readjudication</td><td>ClaimResponse</td></tr>
+ <tr><td>Re-adjudication</td><td>ProcessRequest (action=reprocess)</td><td>ClaimResponse</td></tr>
  <tr><td>Status Check</td><td>ProcessRequest (action=status)</td><td>ProcessResponse</td></tr>
  <tr><td>Pended Check (Polling)</td><td>ProcessRequest (action=poll)</td><td>{Resource} or ProcessResponse</td></tr>
  <tr><td>Payment Notice</td><td>PaymentNotice</td><td>ProcessResponse</td></tr>

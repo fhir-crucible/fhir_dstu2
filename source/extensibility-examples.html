@@ -15,6 +15,7 @@
 <%extheader examples%>
 
 <h2>Extensibility Examples</h2>
+<table class="cols"><tr><td id="wg"><a _target="blank" href="[%wg fhir%]">[%wgt fhir%]</a> Work Group</td><td id="fmm"><a href="resource.html#maturity">Maturity Level</a>: N/A</td><td id="ballot"><a href="help.html#status">Ballot Status</a>: <a href="history.html#pubs">DSTU 2</a></td></tr></table>
 
 <p>
 In order to use an extension, there is a three step process:
@@ -77,7 +78,8 @@ From this table, we can build a formal extension definition. In this case, it lo
   &lt;url value="http://example.org/fhir/StructureDefinition/participation-agreement" /&gt;
   &lt;name value="Example Extension Definition" /&gt;
   &lt;!-- snip other metadata -->
-  &lt;type value="extension" /&gt;
+  &lt;kind value="datatype" /&gt;
+  &lt;constrainedType value="Extension" /&gt;
   &lt;contextType value="resource" /&gt;
   &lt;context value="Patient" /&gt;
   &lt;differential>
@@ -93,7 +95,7 @@ From this table, we can build a formal extension definition. In this case, it lo
       &lt;isModifier value="false" /&gt;
     &lt;/element>
     &lt;element>
-      &lt;path value="Extension.value"/>
+      &lt;path value="Extension.valueUri"/>
       &lt;short value="The URI value" /&gt;
       &lt;min value="1" /&gt;
       &lt;max value="*" /&gt;
@@ -276,7 +278,8 @@ and their associated bindings. In this case, the definition looks like this:
   &lt;url value="http://hl7.org/fhir/StructureDefinition/iso21090-EN-qualifier" /&gt;
   &lt;name value="iso-21090 Name Qualifier" /&gt;
   &lt;!-- snip other metadata, including definition of RIM Mapping -->
-  &lt;type value="extension" /&gt;
+  &lt;kind value="datatype" /&gt;
+  &lt;constrainedType value="Extension" /&gt;
   &lt;contextType value="datatype" /&gt;
   &lt;context value="HumanName.given" /&gt;
   &lt;context value="HumanName.prefix" /&gt;
@@ -302,7 +305,6 @@ and their associated bindings. In this case, the definition looks like this:
          &lt;code value="code" /&gt;
       &lt;/type>
       &lt;binding&gt;
-        &lt;name value="EntityNamePartQualifier" /&gt;
         &lt;strength value="required" /&gt;
         &lt;description value="A set of codes each of which specifies a certain subcategory
             of the name part in addition to the main name part type" /&gt;

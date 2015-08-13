@@ -29,137 +29,59 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
+// Generated on Thu, Aug 13, 2015 06:30+1000 for FHIR v0.5.0
 
 import java.util.*;
 
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.Enumerations.*;
 import org.hl7.fhir.instance.model.annotations.ResourceDef;
 import org.hl7.fhir.instance.model.annotations.SearchParamDefinition;
-import org.hl7.fhir.instance.model.annotations.Block;
 import org.hl7.fhir.instance.model.annotations.Child;
 import org.hl7.fhir.instance.model.annotations.Description;
+import org.hl7.fhir.instance.model.annotations.Block;
+import org.hl7.fhir.instance.model.api.*;
 /**
  * A manifest that defines a set of documents.
  */
 @ResourceDef(name="DocumentManifest", profile="http://hl7.org/fhir/Profile/DocumentManifest")
 public class DocumentManifest extends DomainResource {
 
-    public enum DocumentReferenceStatus {
-        /**
-         * This is the current reference for this document.
-         */
-        CURRENT, 
-        /**
-         * This reference has been superceded by another reference.
-         */
-        SUPERCEDED, 
-        /**
-         * This reference was created in error.
-         */
-        ENTEREDINERROR, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static DocumentReferenceStatus fromCode(String codeString) throws Exception {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("current".equals(codeString))
-          return CURRENT;
-        if ("superceded".equals(codeString))
-          return SUPERCEDED;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        throw new Exception("Unknown DocumentReferenceStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case CURRENT: return "current";
-            case SUPERCEDED: return "superceded";
-            case ENTEREDINERROR: return "entered-in-error";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case CURRENT: return "";
-            case SUPERCEDED: return "";
-            case ENTEREDINERROR: return "";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case CURRENT: return "This is the current reference for this document.";
-            case SUPERCEDED: return "This reference has been superceded by another reference.";
-            case ENTEREDINERROR: return "This reference was created in error.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case CURRENT: return "Current";
-            case SUPERCEDED: return "Superceded";
-            case ENTEREDINERROR: return "Entered In Error";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class DocumentReferenceStatusEnumFactory implements EnumFactory<DocumentReferenceStatus> {
-    public DocumentReferenceStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("current".equals(codeString))
-          return DocumentReferenceStatus.CURRENT;
-        if ("superceded".equals(codeString))
-          return DocumentReferenceStatus.SUPERCEDED;
-        if ("entered-in-error".equals(codeString))
-          return DocumentReferenceStatus.ENTEREDINERROR;
-        throw new IllegalArgumentException("Unknown DocumentReferenceStatus code '"+codeString+"'");
-        }
-    public String toCode(DocumentReferenceStatus code) {
-      if (code == DocumentReferenceStatus.CURRENT)
-        return "current";
-      if (code == DocumentReferenceStatus.SUPERCEDED)
-        return "superceded";
-      if (code == DocumentReferenceStatus.ENTEREDINERROR)
-        return "entered-in-error";
-      return "?";
-      }
-    }
-
     @Block()
-    public static class DocumentManifestContentComponent extends BackboneElement {
+    public static class DocumentManifestContentComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The list of DocumentReference or Media Resources, or Attachment that consist of the parts of this document manifest. Usually, these would be document references, but direct references to Media or Attachments are also allowed.
+         * The list of references to document content, or Attachment that consist of the parts of this document manifest. Usually, these would be document references, but direct references to Media or Attachments are also allowed.
          */
-        @Child(name ="p", type={Attachment.class, DocumentReference.class, Media.class}, order=1, min=1, max=1)
-        @Description(shortDefinition="Contents of this set of documents", formalDefinition="The list of DocumentReference or Media Resources, or Attachment that consist of the parts of this document manifest. Usually, these would be document references, but direct references to Media or Attachments are also allowed." )
+        @Child(name = "p", type = {Attachment.class}, order=1, min=1, max=1)
+        @Description(shortDefinition="Contents of this set of documents", formalDefinition="The list of references to document content, or Attachment that consist of the parts of this document manifest. Usually, these would be document references, but direct references to Media or Attachments are also allowed." )
         protected Type p;
 
         private static final long serialVersionUID = -347538500L;
 
+    /*
+     * Constructor
+     */
       public DocumentManifestContentComponent() {
         super();
       }
 
+    /*
+     * Constructor
+     */
       public DocumentManifestContentComponent(Type p) {
         super();
         this.p = p;
       }
 
         /**
-         * @return {@link #p} (The list of DocumentReference or Media Resources, or Attachment that consist of the parts of this document manifest. Usually, these would be document references, but direct references to Media or Attachments are also allowed.)
+         * @return {@link #p} (The list of references to document content, or Attachment that consist of the parts of this document manifest. Usually, these would be document references, but direct references to Media or Attachments are also allowed.)
          */
         public Type getP() { 
           return this.p;
         }
 
         /**
-         * @return {@link #p} (The list of DocumentReference or Media Resources, or Attachment that consist of the parts of this document manifest. Usually, these would be document references, but direct references to Media or Attachments are also allowed.)
+         * @return {@link #p} (The list of references to document content, or Attachment that consist of the parts of this document manifest. Usually, these would be document references, but direct references to Media or Attachments are also allowed.)
          */
         public Attachment getPAttachment() throws Exception { 
           if (!(this.p instanceof Attachment))
@@ -167,8 +89,12 @@ public class DocumentManifest extends DomainResource {
           return (Attachment) this.p;
         }
 
+        public boolean hasPAttachment() throws Exception { 
+          return this.p instanceof Attachment;
+        }
+
         /**
-         * @return {@link #p} (The list of DocumentReference or Media Resources, or Attachment that consist of the parts of this document manifest. Usually, these would be document references, but direct references to Media or Attachments are also allowed.)
+         * @return {@link #p} (The list of references to document content, or Attachment that consist of the parts of this document manifest. Usually, these would be document references, but direct references to Media or Attachments are also allowed.)
          */
         public Reference getPReference() throws Exception { 
           if (!(this.p instanceof Reference))
@@ -176,12 +102,16 @@ public class DocumentManifest extends DomainResource {
           return (Reference) this.p;
         }
 
+        public boolean hasPReference() throws Exception { 
+          return this.p instanceof Reference;
+        }
+
         public boolean hasP() { 
           return this.p != null && !this.p.isEmpty();
         }
 
         /**
-         * @param value {@link #p} (The list of DocumentReference or Media Resources, or Attachment that consist of the parts of this document manifest. Usually, these would be document references, but direct references to Media or Attachments are also allowed.)
+         * @param value {@link #p} (The list of references to document content, or Attachment that consist of the parts of this document manifest. Usually, these would be document references, but direct references to Media or Attachments are also allowed.)
          */
         public DocumentManifestContentComponent setP(Type value) { 
           this.p = value;
@@ -190,7 +120,7 @@ public class DocumentManifest extends DomainResource {
 
         protected void listChildren(List<Property> childrenList) {
           super.listChildren(childrenList);
-          childrenList.add(new Property("p[x]", "Attachment|Reference(DocumentReference|Media)", "The list of DocumentReference or Media Resources, or Attachment that consist of the parts of this document manifest. Usually, these would be document references, but direct references to Media or Attachments are also allowed.", 0, java.lang.Integer.MAX_VALUE, p));
+          childrenList.add(new Property("p[x]", "Attachment|Reference(Any)", "The list of references to document content, or Attachment that consist of the parts of this document manifest. Usually, these would be document references, but direct references to Media or Attachments are also allowed.", 0, java.lang.Integer.MAX_VALUE, p));
         }
 
       public DocumentManifestContentComponent copy() {
@@ -227,18 +157,18 @@ public class DocumentManifest extends DomainResource {
   }
 
     @Block()
-    public static class DocumentManifestRelatedComponent extends BackboneElement {
+    public static class DocumentManifestRelatedComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Related identifier to this DocumentManifest. If both id and ref are present they shall refer to the same thing.
          */
-        @Child(name ="identifier", type={Identifier.class}, order=1, min=0, max=1)
+        @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=1)
         @Description(shortDefinition="Related Identifier", formalDefinition="Related identifier to this DocumentManifest. If both id and ref are present they shall refer to the same thing." )
         protected Identifier identifier;
 
         /**
          * Related Resource to this DocumentManifest. If both id and ref are present they shall refer to the same thing.
          */
-        @Child(name ="ref", type={}, order=2, min=0, max=1)
+        @Child(name = "ref", type = {}, order=2, min=0, max=1)
         @Description(shortDefinition="Related Resource", formalDefinition="Related Resource to this DocumentManifest. If both id and ref are present they shall refer to the same thing." )
         protected Reference ref;
 
@@ -249,6 +179,9 @@ public class DocumentManifest extends DomainResource {
 
         private static final long serialVersionUID = -1670123330L;
 
+    /*
+     * Constructor
+     */
       public DocumentManifestRelatedComponent() {
         super();
       }
@@ -360,21 +293,21 @@ public class DocumentManifest extends DomainResource {
     /**
      * A single identifier that uniquely identifies this manifest. Principally used to refer to the manifest in non-FHIR contexts.
      */
-    @Child(name ="masterIdentifier", type={Identifier.class}, order=0, min=0, max=1)
+    @Child(name = "masterIdentifier", type = {Identifier.class}, order=0, min=0, max=1)
     @Description(shortDefinition="Unique Identifier for the set of documents", formalDefinition="A single identifier that uniquely identifies this manifest. Principally used to refer to the manifest in non-FHIR contexts." )
     protected Identifier masterIdentifier;
 
     /**
      * Other identifiers associated with the document manifest, including version independent  identifiers.
      */
-    @Child(name ="identifier", type={Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Other identifiers for the manifest", formalDefinition="Other identifiers associated with the document manifest, including version independent  identifiers." )
     protected List<Identifier> identifier;
 
     /**
      * Who or what the set of documents is about. The documents can be about a person, (patient or healthcare practitioner), a device (i.e. machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure). If the documents cross more than one subject, then more than one subject is allowed here (unusual use case).
      */
-    @Child(name ="subject", type={Patient.class, Practitioner.class, Group.class, Device.class}, order=2, min=0, max=1)
+    @Child(name = "subject", type = {Patient.class, Practitioner.class, Group.class, Device.class}, order=2, min=0, max=1)
     @Description(shortDefinition="The subject of the set of documents", formalDefinition="Who or what the set of documents is about. The documents can be about a person, (patient or healthcare practitioner), a device (i.e. machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure). If the documents cross more than one subject, then more than one subject is allowed here (unusual use case)." )
     protected Reference subject;
 
@@ -386,7 +319,7 @@ public class DocumentManifest extends DomainResource {
     /**
      * A patient, practitioner, or organization for which this set of documents is intended.
      */
-    @Child(name ="recipient", type={Patient.class, Practitioner.class, Organization.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "recipient", type = {Patient.class, Practitioner.class, RelatedPerson.class, Organization.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Intended to get notified about this set of documents", formalDefinition="A patient, practitioner, or organization for which this set of documents is intended." )
     protected List<Reference> recipient;
     /**
@@ -398,18 +331,18 @@ public class DocumentManifest extends DomainResource {
     /**
      * Specifies the kind of this set of documents (e.g. Patient Summary, Discharge Summary, Prescription, etc.). The type of a set of documents may be the same as one of the documents in it - especially if there is only one - but it may be wider.
      */
-    @Child(name ="type", type={CodeableConcept.class}, order=4, min=0, max=1)
+    @Child(name = "type", type = {CodeableConcept.class}, order=4, min=0, max=1)
     @Description(shortDefinition="What kind of document set this is", formalDefinition="Specifies the kind of this set of documents (e.g. Patient Summary, Discharge Summary, Prescription, etc.). The type of a set of documents may be the same as one of the documents in it - especially if there is only one - but it may be wider." )
     protected CodeableConcept type;
 
     /**
-     * Identifies who is responsible for adding the information to the document.
+     * Identifies who is responsible for creating the manifest, and adding  documents to it.
      */
-    @Child(name ="author", type={Practitioner.class, Organization.class, Device.class, Patient.class, RelatedPerson.class}, order=5, min=0, max=Child.MAX_UNLIMITED)
-    @Description(shortDefinition="Who and/or what authored the document", formalDefinition="Identifies who is responsible for adding the information to the document." )
+    @Child(name = "author", type = {Practitioner.class, Organization.class, Device.class, Patient.class, RelatedPerson.class}, order=5, min=0, max=Child.MAX_UNLIMITED)
+    @Description(shortDefinition="Who and/or what authored the manifest", formalDefinition="Identifies who is responsible for creating the manifest, and adding  documents to it." )
     protected List<Reference> author;
     /**
-     * The actual objects that are the target of the reference (Identifies who is responsible for adding the information to the document.)
+     * The actual objects that are the target of the reference (Identifies who is responsible for creating the manifest, and adding  documents to it.)
      */
     protected List<Resource> authorTarget;
 
@@ -417,51 +350,57 @@ public class DocumentManifest extends DomainResource {
     /**
      * When the document manifest was created for submission to the server (not necessarily the same thing as the actual resource last modified time, since it may be modified, replicated etc).
      */
-    @Child(name ="created", type={DateTimeType.class}, order=6, min=0, max=1)
+    @Child(name = "created", type = {DateTimeType.class}, order=6, min=0, max=1)
     @Description(shortDefinition="When this document manifest created", formalDefinition="When the document manifest was created for submission to the server (not necessarily the same thing as the actual resource last modified time, since it may be modified, replicated etc)." )
     protected DateTimeType created;
 
     /**
      * Identifies the source system, application, or software that produced the document manifest.
      */
-    @Child(name ="source", type={UriType.class}, order=7, min=0, max=1)
+    @Child(name = "source", type = {UriType.class}, order=7, min=0, max=1)
     @Description(shortDefinition="The source system/application/software", formalDefinition="Identifies the source system, application, or software that produced the document manifest." )
     protected UriType source;
 
     /**
      * The status of this document manifest.
      */
-    @Child(name ="status", type={CodeType.class}, order=8, min=1, max=1)
-    @Description(shortDefinition="current | superceded | entered-in-error", formalDefinition="The status of this document manifest." )
+    @Child(name = "status", type = {CodeType.class}, order=8, min=1, max=1)
+    @Description(shortDefinition="current | superseded | entered-in-error", formalDefinition="The status of this document manifest." )
     protected Enumeration<DocumentReferenceStatus> status;
 
     /**
      * Human-readable description of the source document. This is sometimes known as the "title".
      */
-    @Child(name ="description", type={StringType.class}, order=9, min=0, max=1)
+    @Child(name = "description", type = {StringType.class}, order=9, min=0, max=1)
     @Description(shortDefinition="Human-readable description (title)", formalDefinition="Human-readable description of the source document. This is sometimes known as the 'title'." )
     protected StringType description;
 
     /**
      * The manifest list.
      */
-    @Child(name ="content", type={}, order=10, min=1, max=Child.MAX_UNLIMITED)
+    @Child(name = "content", type = {}, order=10, min=1, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Contents of the manifest", formalDefinition="The manifest list." )
     protected List<DocumentManifestContentComponent> content;
 
     /**
      * Related identifiers or resources associated with the DocumentManifest.
      */
-    @Child(name ="related", type={}, order=11, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "related", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED)
     @Description(shortDefinition="Related things", formalDefinition="Related identifiers or resources associated with the DocumentManifest." )
     protected List<DocumentManifestRelatedComponent> related;
 
     private static final long serialVersionUID = -2056683927L;
 
+  /*
+   * Constructor
+   */
     public DocumentManifest() {
       super();
     }
 
+  /*
+   * Constructor
+   */
     public DocumentManifest(Enumeration<DocumentReferenceStatus> status) {
       super();
       this.status = status;
@@ -644,7 +583,7 @@ public class DocumentManifest extends DomainResource {
     }
 
     /**
-     * @return {@link #author} (Identifies who is responsible for adding the information to the document.)
+     * @return {@link #author} (Identifies who is responsible for creating the manifest, and adding  documents to it.)
      */
     public List<Reference> getAuthor() { 
       if (this.author == null)
@@ -662,7 +601,7 @@ public class DocumentManifest extends DomainResource {
     }
 
     /**
-     * @return {@link #author} (Identifies who is responsible for adding the information to the document.)
+     * @return {@link #author} (Identifies who is responsible for creating the manifest, and adding  documents to it.)
      */
     // syntactic sugar
     public Reference addAuthor() { //3
@@ -684,7 +623,7 @@ public class DocumentManifest extends DomainResource {
     }
 
     /**
-     * @return {@link #author} (The actual objects that are the target of the reference. The reference library doesn't populate this, but you can use this to hold the resources if you resolvethemt. Identifies who is responsible for adding the information to the document.)
+     * @return {@link #author} (The actual objects that are the target of the reference. The reference library doesn't populate this, but you can use this to hold the resources if you resolvethemt. Identifies who is responsible for creating the manifest, and adding  documents to it.)
      */
     public List<Resource> getAuthorTarget() { 
       if (this.authorTarget == null)
@@ -969,9 +908,9 @@ public class DocumentManifest extends DomainResource {
         childrenList.add(new Property("masterIdentifier", "Identifier", "A single identifier that uniquely identifies this manifest. Principally used to refer to the manifest in non-FHIR contexts.", 0, java.lang.Integer.MAX_VALUE, masterIdentifier));
         childrenList.add(new Property("identifier", "Identifier", "Other identifiers associated with the document manifest, including version independent  identifiers.", 0, java.lang.Integer.MAX_VALUE, identifier));
         childrenList.add(new Property("subject", "Reference(Patient|Practitioner|Group|Device)", "Who or what the set of documents is about. The documents can be about a person, (patient or healthcare practitioner), a device (i.e. machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure). If the documents cross more than one subject, then more than one subject is allowed here (unusual use case).", 0, java.lang.Integer.MAX_VALUE, subject));
-        childrenList.add(new Property("recipient", "Reference(Patient|Practitioner|Organization)", "A patient, practitioner, or organization for which this set of documents is intended.", 0, java.lang.Integer.MAX_VALUE, recipient));
+        childrenList.add(new Property("recipient", "Reference(Patient|Practitioner|RelatedPerson|Organization)", "A patient, practitioner, or organization for which this set of documents is intended.", 0, java.lang.Integer.MAX_VALUE, recipient));
         childrenList.add(new Property("type", "CodeableConcept", "Specifies the kind of this set of documents (e.g. Patient Summary, Discharge Summary, Prescription, etc.). The type of a set of documents may be the same as one of the documents in it - especially if there is only one - but it may be wider.", 0, java.lang.Integer.MAX_VALUE, type));
-        childrenList.add(new Property("author", "Reference(Practitioner|Organization|Device|Patient|RelatedPerson)", "Identifies who is responsible for adding the information to the document.", 0, java.lang.Integer.MAX_VALUE, author));
+        childrenList.add(new Property("author", "Reference(Practitioner|Organization|Device|Patient|RelatedPerson)", "Identifies who is responsible for creating the manifest, and adding  documents to it.", 0, java.lang.Integer.MAX_VALUE, author));
         childrenList.add(new Property("created", "dateTime", "When the document manifest was created for submission to the server (not necessarily the same thing as the actual resource last modified time, since it may be modified, replicated etc).", 0, java.lang.Integer.MAX_VALUE, created));
         childrenList.add(new Property("source", "uri", "Identifies the source system, application, or software that produced the document manifest.", 0, java.lang.Integer.MAX_VALUE, source));
         childrenList.add(new Property("status", "code", "The status of this document manifest.", 0, java.lang.Integer.MAX_VALUE, status));
@@ -1060,17 +999,7 @@ public class DocumentManifest extends DomainResource {
     return ResourceType.DocumentManifest;
    }
 
-  @SearchParamDefinition(name="status", path="DocumentManifest.status", description="current | superceded | entered-in-error", type="token" )
-  public static final String SP_STATUS = "status";
-  @SearchParamDefinition(name="subject", path="DocumentManifest.subject", description="The subject of the set of documents", type="reference" )
-  public static final String SP_SUBJECT = "subject";
-  @SearchParamDefinition(name="type", path="DocumentManifest.type", description="What kind of document set this is", type="token" )
-  public static final String SP_TYPE = "type";
-  @SearchParamDefinition(name="recipient", path="DocumentManifest.recipient", description="Intended to get notified about this set of documents", type="reference" )
-  public static final String SP_RECIPIENT = "recipient";
-  @SearchParamDefinition(name="relatedid", path="DocumentManifest.related.identifier", description="Related Identifier", type="token" )
-  public static final String SP_RELATEDID = "relatedid";
-  @SearchParamDefinition(name="author", path="DocumentManifest.author", description="Who and/or what authored the document", type="reference" )
+  @SearchParamDefinition(name="author", path="DocumentManifest.author", description="Who and/or what authored the manifest", type="reference" )
   public static final String SP_AUTHOR = "author";
   @SearchParamDefinition(name="relatedref", path="DocumentManifest.related.ref", description="Related Resource", type="reference" )
   public static final String SP_RELATEDREF = "relatedref";
@@ -1078,14 +1007,24 @@ public class DocumentManifest extends DomainResource {
   public static final String SP_PATIENT = "patient";
   @SearchParamDefinition(name="source", path="DocumentManifest.source", description="The source system/application/software", type="uri" )
   public static final String SP_SOURCE = "source";
+  @SearchParamDefinition(name="status", path="DocumentManifest.status", description="current | superseded | entered-in-error", type="token" )
+  public static final String SP_STATUS = "status";
   @SearchParamDefinition(name="created", path="DocumentManifest.created", description="When this document manifest created", type="date" )
   public static final String SP_CREATED = "created";
   @SearchParamDefinition(name="description", path="DocumentManifest.description", description="Human-readable description (title)", type="string" )
   public static final String SP_DESCRIPTION = "description";
+  @SearchParamDefinition(name="subject", path="DocumentManifest.subject", description="The subject of the set of documents", type="reference" )
+  public static final String SP_SUBJECT = "subject";
   @SearchParamDefinition(name="contentref", path="DocumentManifest.content.pReference", description="Contents of this set of documents", type="reference" )
   public static final String SP_CONTENTREF = "contentref";
+  @SearchParamDefinition(name="type", path="DocumentManifest.type", description="What kind of document set this is", type="token" )
+  public static final String SP_TYPE = "type";
   @SearchParamDefinition(name="identifier", path="DocumentManifest.masterIdentifier|DocumentManifest.identifier", description="Unique Identifier for the set of documents", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="recipient", path="DocumentManifest.recipient", description="Intended to get notified about this set of documents", type="reference" )
+  public static final String SP_RECIPIENT = "recipient";
+  @SearchParamDefinition(name="relatedid", path="DocumentManifest.related.identifier", description="Related Identifier", type="token" )
+  public static final String SP_RELATEDID = "relatedid";
 
 }
 

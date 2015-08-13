@@ -12,14 +12,15 @@
 
 <%dtheader examples%>
 <h2>Data Type Examples</h2>
+<table class="cols"><tr><td id="wg"><a _target="blank" href="[%wg fhir%]">[%wgt fhir%]</a> Work Group</td><td id="fmm"><a href="resource.html#maturity">Maturity Level</a>: N/A</td><td id="ballot"><a href="help.html#status">Ballot Status</a>: <a href="history.html#pubs">DSTU 2</a></td></tr></table>
 
 <p>This page includes additional examples of the data types, based on common usages and questions</p>
 
 <p><b>Table of Contents</b></p>
 <table class="grid">
  <tr>
-  <td><b>Primitive Types</b><br/>[%diagram datatypes/allprimitivetypes.diagram%]</td>
-  <td><b>Complex Types</b><br/>[%diagram datatypes/alltypes.diagram%]</td>
+  <td><b>Primitive Types</b><br/>[%diagram datatypes/allprimitivetypes.diagram 1%]</td>
+  <td><b>Complex Types</b><br/>[%diagram datatypes/alltypes.diagram 2%]</td>
  </tr>
 </table>
 
@@ -51,8 +52,8 @@
 	<p>A high-precision decimal value:</p><pre class="xml" fragment="decimal">&lt;pi value="3.14159265358979323846264338327950288419716939937510" /&gt;</pre>
 	<p>A stream of bytes, base64 encoded:</p><pre class="xml" fragment="base64Binary">&lt;data value="/9j/4...KAP//Z" /&gt; &lt;!-- covers many lines --&gt;</pre>
 	<p>A unicode string:</p><pre class="xml" fragment="string">&lt;caption value="Noodles are called ?? in Chinese" /&gt;</pre>
-	<p>A uri that points to a website:</p><pre class="xml" fragment="uri">&lt;reference value="http://hl7.org/fhir" /&gt;</pre>
-	<p>A uri that is a urn:</p><pre class="xml" fragment="uri">&lt;id value="urn:isbn:0451450523" /&gt;</pre>
+	<p>A URI that points to a website:</p><pre class="xml" fragment="uri">&lt;reference value="http://hl7.org/fhir" /&gt;</pre>
+	<p>A URI that is a urn:</p><pre class="xml" fragment="uri">&lt;id value="urn:isbn:0451450523" /&gt;</pre>
 	<p>A date of birth:</p><pre class="xml" fragment="date">&lt;date value="1951-06-04" /&gt;</pre>
 	<p>An approximate date of birth:</p><pre class="xml" fragment="date">&lt;date value="1951-06" /&gt;</pre>
 	<p>The instant a document was created, including time zone:</p><pre class="xml" fragment="instant">&lt;instant value="2013-06-08T10:57:34+01:00" /&gt;</pre>
@@ -64,8 +65,8 @@
 <h3>String Patterns</h3>
 
 <div class="example">
-	<p>A uri that is the root oid of HL7:</p><pre class="xml" fragment="oid">&lt;root value="urn:oid:2.16.840.1.113883" /&gt;</pre>
-	<p>A uri that is a uuid:</p><pre class="xml" fragment="uuid">&lt;id value="urn:uuid:a5afddf4-e880-459b-876e-e4591b0acc11" /&gt;</pre>
+	<p>A URI that is the root oid of HL7:</p><pre class="xml" fragment="oid">&lt;root value="urn:oid:2.16.840.1.113883" /&gt;</pre>
+	<p>A URI that is a uuid:</p><pre class="xml" fragment="uuid">&lt;id value="urn:uuid:a5afddf4-e880-459b-876e-e4591b0acc11" /&gt;</pre>
 	<p>A code:</p><pre class="xml" fragment="code">&lt;code value="acq4+acq5" /&gt;</pre>
 	<p>A code with single internal space:</p><pre class="xml" fragment="code">&lt;code value="Question 4b" /&gt;</pre>
 	<p>A numeric id:</p><pre class="xml" fragment="code">&lt;id value="314" /&gt;</pre>
@@ -252,7 +253,7 @@ See also <a href="datatypes.html#CodeableConcept">Base Definition</a>, <a href="
       &lt;system value="http://snomed.info/sct" /&gt;
       &lt;code value="25064002" /&gt;
       &lt;display value="Headache" /&gt;
-      &lt;primary value="true" /&gt;
+      &lt;userSelected value="true" /&gt;
     &lt;/coding&gt;
     &lt;text value="general headache" /&gt;
   &lt;/concept&gt;
@@ -303,7 +304,7 @@ And where the value set would be something like this:
         &lt;p&gt;Possible Clinistix codes: neg, trace, +, ++, and +++&lt;/p&gt;
       &lt;/div&gt;
     &lt;/text&gt;
-    &lt;identifier value=&quot;http://hl7.org/fhir/vs/clinistix&quot;/&gt;
+    &lt;identifier value=&quot;http://hl7.org/fhir/ValueSet/clinistix&quot;/&gt;
     &lt;name value=&quot;Codes for Clinistix&quot;/&gt;
     &lt;publisher value=&quot;HL7&quot;/&gt;
     &lt;telecom&gt;
@@ -314,7 +315,7 @@ And where the value set would be something like this:
     &lt;status value=&quot;draft&quot;/&gt;
     &lt;experimental value=&quot;true&quot;/&gt;
     &lt;date value=&quot;2013-10-01&quot;/&gt;
-    &lt;define&gt;
+    &lt;codeSystem&gt;
       &lt;system value=&quot;http://example.org/codes/simple-grades&quot;/&gt;
       &lt;caseSensitive value=&quot;false&quot;/&gt;
       &lt;concept&gt;
@@ -335,12 +336,14 @@ And where the value set would be something like this:
       &lt;concept&gt;
         &lt;code value=&quot;+++&quot;/&gt;
       &lt;/concept&gt;
-    &lt;/define&gt;
+    &lt;/codeSystem&gt;
   &lt;/ValueSet&gt;
 </pre>
 </div>
 <a name="Quantity"></a>
 <a name="quantity"></a>
+<a name="SimpleQuantity"></a>
+<a name="simplequantity"></a>
 <a name="age"></a>
 <a name="distance"></a>
 <a name="duration"></a>
@@ -359,7 +362,7 @@ See also <a href="datatypes.html#Quantity">Base Definition</a>, <a href="datatyp
 <pre class="xml" fragment="Quantity">
   &lt;time&gt;
     &lt;value value="25" /&gt;
-    &lt;units value="sec" /&gt;
+    &lt;unit value="sec" /&gt;
     &lt;system value="http://unitsofmeasure.org" /&gt;
     &lt;code value="s" /&gt;
   &lt;/time&gt;
@@ -369,7 +372,7 @@ See also <a href="datatypes.html#Quantity">Base Definition</a>, <a href="datatyp
   &lt;result&gt;
     &lt;value value="40000" /&gt;
     &lt;comparator value="&amp;gt;" /&gt;
-    &lt;units value="mcg/L" /&gt;
+    &lt;unit value="mcg/L" /&gt;
     &lt;system value="http://unitsofmeasure.org" /&gt;
     &lt;code value="ug" /&gt;
   &lt;/result&gt;
@@ -378,7 +381,7 @@ See also <a href="datatypes.html#Quantity">Base Definition</a>, <a href="datatyp
 <pre class="xml" fragment="Quantity">
   &lt;dose&gt;
     &lt;value value="3" /&gt;
-    &lt;units value="capsules" /&gt;
+    &lt;unit value="capsules" /&gt;
     &lt;system value="http://snomed.info/sct" /&gt;
     &lt;code value="385049006" /&gt;
   &lt;/dose&gt;
@@ -387,8 +390,8 @@ See also <a href="datatypes.html#Quantity">Base Definition</a>, <a href="datatyp
 <pre class="xml" fragment="Quantity">
   &lt;cost&gt;
     &lt;value value="25.45" /&gt;
-    &lt;units value="US$" /&gt;
-    &lt;system value="urn:std:iso:4217" /&gt;
+    &lt;unit value="US$" /&gt;
+    &lt;system value="urn:iso:std:iso:4217" /&gt;
     &lt;code value="USD" /&gt;
   &lt;/cost&gt;
 </pre>
@@ -409,11 +412,11 @@ See also <a href="datatypes.html#Range">Base Definition</a>, <a href="datatypes-
   &lt;estimate&gt;
    &lt;low&gt;
      &lt;value value="1.6" /&gt;
-     &lt;units value="m" /&gt;
+     &lt;unit value="m" /&gt;
    &lt;/low&gt;
    &lt;high&gt;
      &lt;value value="1.9" /&gt;
-     &lt;units value="m" /&gt;
+     &lt;unit value="m" /&gt;
    &lt;/high&gt;
   &lt;/estimate&gt;
 </pre>
@@ -439,19 +442,18 @@ See also <a href="datatypes.html#Ratio">Base Definition</a>, <a href="datatypes-
    &lt;/denominator&gt;
   &lt;/result&gt;
 </pre>
-<p>Unit cost (Ratio of
-Money:Quantity):</p>
+<p>Unit cost (Ratio of Money:Quantity):</p>
 <pre class="xml" fragment="Ratio">
   &lt;charge&gt;
    &lt;numerator&gt;
      &lt;value value="103.50" /&gt;
-     &lt;units value="US$" /&gt;
+     &lt;unit value="US$" /&gt;
      &lt;code value="USD" /&gt;
-     &lt;system value="urn:std:iso:4217" /&gt;
+     &lt;system value="urn:iso:std:iso:4217" /&gt;
    &lt;/numerator&gt;
    &lt;denominator&gt;
      &lt;value value="1" /&gt;
-     &lt;units value="day" /&gt;
+     &lt;unit value="day" /&gt;
      &lt;code value="day" /&gt;
      &lt;system value="http://unitsofmeasure.org" /&gt;
    &lt;/denominator&gt;
@@ -493,7 +495,7 @@ See also <a href="datatypes.html#SampledData">Base Definition</a>, <a href="data
  &lt;sampledData&gt;
   &lt;origin&gt;
    &lt;value value="0"/&gt;
-   &lt;units value="&mu;V"/&gt;
+   &lt;unit value="&mu;V"/&gt;
    &lt;system value="http://unitsofmeasure.org"/&gt;
    &lt;code value="uV"/&gt;
   &lt;/origin&gt;
@@ -965,15 +967,13 @@ on the structured data elements of the address.
    &lt;postalCode value="46240" /&gt;
   &lt;/address&gt;
 </pre>
-<p>A UK example address.</p>
+<p>A UK example address, with the county 'HUDDERSFIELD'.</p>
 <pre class="xml" fragment="Address">
   &lt;address&gt;
-    &lt;extension url=&quot;http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-county&quot;&gt;
-      &lt;valueString value=&quot;HUDDERSFIELD&quot;/&gt;
-    &lt;/extension&gt;
     &lt;text value=&quot;1 Back Lane&amp;#13;&amp;#10;Holmfirth&amp;#13;&amp;#10;HUDDERSFIELD&amp;#13;&amp;#10;HD7 1HQ&quot;/&gt;
     &lt;line value=&quot;1 Back Lane&quot;/&gt;
     &lt;city value=&quot;Holmfirth&quot;/&gt;
+    &lt;district value=&quot;HUDDERSFIELD&quot;/&gt;
     &lt;postalCode value=&quot;HD7 1HQ&quot;/&gt;
   &lt;/address&gt;
 </pre>
@@ -1005,11 +1005,9 @@ postal union</a> examples.
 </table>
 <pre class="xml" fragment="Address">
   &lt;address&gt;
-    &lt;extension url=&quot;http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-county&quot;&gt;
-      &lt;valueCode value=&quot;Minsk&quot;/&gt;
-    &lt;/extension&gt;
     &lt;line value=&quot;Rue Lougoraïa 12, app. 10&quot;/&gt;
     &lt;city value=&quot;Korolevo&quot;/&gt;
+    &lt;district value=&quot;Minsk&quot;/&gt;
     &lt;state value="Minsk" /&gt;
     &lt;country value="BELARUS" /&gt;
   &lt;/address&gt;
@@ -1044,14 +1042,12 @@ postal union</a> examples.
 </table>
 <pre class="xml" fragment="Address">
   &lt;address&gt;
-    &lt;extension url=&quot;http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-county&quot;&gt;
-      &lt;valueCode value=&quot;HAI&quot;/&gt;
-    &lt;/extension&gt;
     &lt;extension url=&quot;http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-precinct&quot;&gt;
       &lt;valueCode value=&quot;Kimashuku Village&quot;/&gt;
     &lt;/extension&gt;
     &lt;line value=&quot;15 Shiri&quot;/&gt;
     &lt;city value=&quot;MACHAME KUSINI&quot;/&gt;
+    &lt;district value=&quot;HAI&quot;/&gt;
     &lt;state value="KILIMANJARO" /&gt;
     &lt;postalCode value=&quot;25204&quot;/&gt;
     &lt;country value="TANZANIA" /&gt;
@@ -1059,45 +1055,59 @@ postal union</a> examples.
 </pre>
 
 <table class="lines">
-<tr><td>101-dong 103-ho</td><td>building number + door</td></tr>
-<tr><td>1229-1 Suseong 4-ga</td><td>complex of buildings + locality</td></tr>
-<tr><td>Suseong-gu</td><td>sub-province</td></tr>
-<tr><td>DAEGU, SEOUL 706-836</td><td>province + “SEOUL” + postcode</td></tr>
-<tr><td>REP. OF KOREA</td><td>country</td></tr>
+<tr><td>705-1104</td><td>building number + door</td></tr>
+<tr><td>56, Dalgubeol-daero 323beon-gil, Suseong-gu</td><td>street</td></tr>
+<tr><td>Daegu</td><td>city</td></tr>
+<tr><td>Rep. OF KOREA</td><td>country</td></tr>
+<tr><td>706-907</td><td>postcode</td></tr>
 </table>
 <pre class="xml" fragment="Address">
   &lt;address&gt;
-    &lt;extension url=&quot;http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-county&quot;&gt;
-      &lt;valueCode value=&quot;Suseong-gu&quot;/&gt;
-    &lt;/extension&gt;
-    &lt;line value=&quot;101-dong 103-ho&quot;/&gt;
-    &lt;line value=&quot;1229-1 Suseong 4-ga&quot;/&gt;
-    &lt;city value=&quot;Suseong&quot;/&gt;
-    &lt;state value="DAEGU" /&gt;
-    &lt;postalCode value=&quot;706-836&quot;/&gt;
-    &lt;country value="REP. OF KOREA" /&gt;
+    &lt;line value=&quot;705-1104&quot;/&gt;
+    &lt;line value=&quot;56, Dalgubeol-daero 323beon-gil, Suseong-gu&quot;/&gt;
+    &lt;city value=&quot;Daegu&quot;/&gt;
+    &lt;country value=&quot;Rep. OF KOREA&quot; /&gt;
+    &lt;postalCode value=&quot;706-907&quot;/&gt;
   &lt;/address&gt;
 </pre>
 
 <table class="lines">
-<tr><td>35-8 Doekhyeon-ri, Gujeong-myeon</td><td>premises + locality + sub-province 2</td></tr>
-<tr><td>Gangneung-si</td><td>sub-province</td></tr>
-<tr><td>GANGWON-do, SEOUL 210-813</td><td>province + “SEOUL” + postcode</td></tr>
-<tr><td>REP. OF KOREA</td><td>country</td></tr>
+<tr><td>3F</td><td>building floor</td></tr>
+<tr><td>42, Toegye-ro 77beon-gil</td><td>street</td></tr>
+<tr><td>Chuncheon-si</td><td>city</td></tr>
+<tr><td>Gangwon-do</td><td>province</td></tr>
+<tr><td>Rep. OF KOREA</td><td>country</td></tr>
+<tr><td>200-066</td><td>postcode</td></tr>
 </table>
 <pre class="xml" fragment="Address">
   &lt;address&gt;
-    &lt;extension url=&quot;http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-county&quot;&gt;
-      &lt;valueCode value=&quot;Gangneung-si&quot;/&gt;
-    &lt;/extension&gt;
-    &lt;line value=&quot;35-8 Doekhyeon-ri&quot;/&gt;
-    &lt;city value=&quot;Gujeong-myeon&quot;/&gt;
-    &lt;state value="GANGWON-do" /&gt;
-    &lt;postalCode value=&quot;210-813&quot;/&gt;
-    &lt;country value="REP. OF KOREA" /&gt;
+    &lt;line value=&quot;3F&quot;/&gt;
+    &lt;line value=&quot;42, Toegye-ro 77beon-gil&quot;/&gt;
+    &lt;city value=&quot;Chuncheon-si&quot;/&gt;
+    &lt;state value=&quot;Gangwon-do&quot; /&gt;
+    &lt;country value=&quot;Rep. OF KOREA&quot; /&gt;
+    &lt;postalCode value=&quot;200-066&quot;/&gt;
+  &lt;/address&gt;
+</pre>
+
+<table class="lines">
+<tr><td>Ga-B101</td><td>building number + door</td></tr>
+<tr><td>136, Sesil-ro</td><td>street</td></tr>
+<tr><td>Busan</td><td>city</td></tr>
+<tr><td>Rep. OF KOREA</td><td>country</td></tr>
+<tr><td>612-837</td><td>postcode</td></tr>
+</table>
+<pre class="xml" fragment="Address">
+  &lt;address&gt;
+    &lt;line value=&quot;Ga-B101&quot;/&gt;
+    &lt;line value=&quot;136, Sesil-ro&quot;/&gt;
+    &lt;city value=&quot;Busan&quot;/&gt;
+    &lt;country value=&quot;Rep. OF KOREA&quot; /&gt;
+    &lt;postalCode value=&quot;612-837&quot;/&gt;
   &lt;/address&gt;
 </pre>
 </div>
+
 
 <a name="ContactPoint"></a>
 <a name="contactpoint"></a>
@@ -1174,10 +1184,10 @@ See also <a href="datatypes.html#Timing">Base Definition</a>, <a href="datatypes
 <pre class="xml" fragment="Timing">
   &lt;schedule&gt;
     &lt;repeat&gt;
-      &lt;bounds&gt;
+      &lt;boundsPeriod&gt;
         &lt;start value="2011-12-23" /&gt;
         &lt;end value="2012-01-02" /&gt;
-      &lt;/bounds&gt;
+      &lt;/boundsPeriod&gt;
       &lt;when value="ACM" /&gt;
       &lt;period value="30" /&gt;
       &lt;periodUnits value="min" /&gt;
@@ -1187,10 +1197,39 @@ See also <a href="datatypes.html#Timing">Base Definition</a>, <a href="datatypes
 <p>
 Note that the end date is inclusive like the end date of a Period.
 </p>
+<p>TID, for 14 days:</p>
+<pre class="xml" fragment="Timing">
+  &lt;schedule&gt;
+    &lt;repeat&gt;
+      &lt;boundsDuration&gt;
+        &lt;value value="14" /&gt;
+        &lt;unit value="d" /&gt;
+        &lt;system value="http://unitsofmeasure.org" /&gt;
+        &lt;unit value="d" /&gt;
+      &lt;/boundsDuration&gt;
+      &lt;frequency value="3" /&gt;
+      &lt;period value="1" /&gt;
+      &lt;periodUnits value="d" /&gt;
+    &lt;/repeat&gt;
+  &lt;/schedule&gt;
+</pre>
+<p>BID, start on 7/1/2015 at 1:00 PM:</p>
+<pre class="xml" fragment="Timing">
+  &lt;schedule&gt;
+    &lt;repeat&gt;
+      &lt;boundsPeriod&gt;
+        &lt;start value="2015-07-01T13:00:00" /&gt;
+      &lt;/boundsPeriod&gt;
+      &lt;frequency value="2" /&gt;
+      &lt;period value="1" /&gt;
+      &lt;periodUnits value="d" /&gt;
+    &lt;/repeat&gt;
+  &lt;/schedule&gt;
+</pre>
 </div>
 
 <a name="Signature"></a>
-<a name="timing"></a>
+<a name="signature"></a>
 <h3>
 Signature
 </h3>
@@ -1209,6 +1248,25 @@ See also <a href="datatypes.html#Signature">Base Definition</a>, <a href="dataty
 
 </div>
 
+<a name="Annotation"></a>
+<a name="annotation"></a>
+<h3>
+Annotation
+</h3>
+<p style="background-color: gainsboro; padding: 4px; margin-top: 0px">
+See also <a href="datatypes.html#Annotation">Base Definition</a>, <a href="datatypes-definitions.html#Annotation">Detailed Descriptions</a> and <a href="datatypes-mappings.html#Annotation">Mappings</a>.
+</p>
+
+<div class="example">
+<p><b>Example</b></p>
+<p>todo</p>
+<pre class="xml" fragment="Annotation">
+  &lt;Annotation&gt;
+    &lt;!-- todo --&gt;
+  &lt;/Annotation&gt;
+</pre>
+
+</div>
 
 </div>
 

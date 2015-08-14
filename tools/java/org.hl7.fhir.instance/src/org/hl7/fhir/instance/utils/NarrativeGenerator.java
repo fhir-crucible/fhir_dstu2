@@ -899,7 +899,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     } else if (e instanceof ElementDefinition) {
       x.addText("todo-bundle");
     } else if (e != null && !(e instanceof Attachment) && !(e instanceof Narrative) && !(e instanceof Meta))
-      throw new Exception("type "+e.getClass().getName()+" not handled yet");      
+      return; // doesn't matter; throw new Exception("type "+e.getClass().getName()+" not handled yet");      
   }
 
   private boolean displayLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, String name, boolean showCodeDetails) throws Exception {

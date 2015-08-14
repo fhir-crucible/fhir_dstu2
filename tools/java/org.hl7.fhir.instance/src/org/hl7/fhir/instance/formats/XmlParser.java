@@ -11188,20 +11188,20 @@ public class XmlParser extends XmlParserBase {
     }
   }
 
-  protected void composeNarrative(String name, Narrative element) throws Exception {
-    if (element != null) {
-      composeElementAttributes(element);
-      xml.enter(FHIR_NS, name);
-      composeElementElements(element);
-      if (element.hasStatusElement())
-        composeEnumeration("status", element.getStatusElement(), new Narrative.NarrativeStatusEnumFactory());
-      if (element.hasDiv()) {
-        composeXhtml("div", element.getDiv());
-      }
-      composeElementClose(element);
-      xml.exit(FHIR_NS, name);
-    }
-  }
+//  protected void composeNarrative(String name, Narrative element) throws Exception {
+//    if (element != null) {
+//      composeElementAttributes(element);
+//      xml.enter(FHIR_NS, name);
+//      composeElementElements(element);
+//      if (element.hasStatusElement())
+//        composeEnumeration("status", element.getStatusElement(), new Narrative.NarrativeStatusEnumFactory());
+//      if (element.hasDiv()) {
+//        composeXhtml("div", element.getDiv());
+//      }
+//      composeElementClose(element);
+//      xml.exit(FHIR_NS, name);
+//    }
+//  }
 
   protected void composePeriod(String name, Period element) throws Exception {
     if (element != null) {
@@ -12084,9 +12084,9 @@ public class XmlParser extends XmlParserBase {
 
   protected void composeDomainResourceElements(DomainResource element) throws Exception {
     composeResourceElements(element);
-      if (element.hasText()) {
-        composeNarrative("text", element.getText());
-      }
+//      if (element.hasText()) {
+//        composeNarrative("text", element.getText());
+//      }
       if (element.hasContained()) { 
         for (Resource e : element.getContained()) 
         {
@@ -13967,9 +13967,9 @@ public class XmlParser extends XmlParserBase {
       if (element.hasCode()) {
         composeCodeableConcept("code", element.getCode());
       }
-      if (element.hasText()) {
-        composeNarrative("text", element.getText());
-      }
+//      if (element.hasText()) {
+//        composeNarrative("text", element.getText());
+//      }
       if (element.hasModeElement()) {
         composeCode("mode", element.getModeElement());
       }

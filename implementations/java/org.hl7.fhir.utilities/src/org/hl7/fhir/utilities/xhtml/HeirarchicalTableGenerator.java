@@ -499,22 +499,23 @@ public class HeirarchicalTableGenerator  {
 
 
   private void genImage(List<Boolean> indents, boolean hasChildren, OutputStream stream) throws IOException {
-    BufferedImage bi = new BufferedImage(800, 2, BufferedImage.TYPE_INT_ARGB);
-    // i have no idea why this works to make these pixels transparent. It defies logic. 
-    // But this combination of INT_ARGB and filling with grey magically worked when nothing else did. So it stays as is.
-    Color grey = new Color(99,99,99,0); 
-    for (int i = 0; i < 800; i++) {
-      bi.setRGB(i, 0, grey.getRGB());
-      bi.setRGB(i, 1, grey.getRGB());
-    }
-    Color black = new Color(0, 0, 0);
-    for (int i = 0; i < indents.size(); i++) {
-      if (!indents.get(i))
-        bi.setRGB(12+(i*16), 0, black.getRGB());
-    }
-    if (hasChildren)
-      bi.setRGB(12+(indents.size()*16), 0, black.getRGB());
-    ImageIO.write(bi, "PNG", stream);
+	return;
+//	BufferedImage bi = new BufferedImage(800, 2, BufferedImage.TYPE_INT_ARGB);
+//    // i have no idea why this works to make these pixels transparent. It defies logic. 
+//    // But this combination of INT_ARGB and filling with grey magically worked when nothing else did. So it stays as is.
+//    Color grey = new Color(99,99,99,0); 
+//    for (int i = 0; i < 800; i++) {
+//      bi.setRGB(i, 0, grey.getRGB());
+//      bi.setRGB(i, 1, grey.getRGB());
+//    }
+//    Color black = new Color(0, 0, 0);
+//    for (int i = 0; i < indents.size(); i++) {
+//      if (!indents.get(i))
+//        bi.setRGB(12+(i*16), 0, black.getRGB());
+//    }
+//    if (hasChildren)
+//      bi.setRGB(12+(indents.size()*16), 0, black.getRGB());
+//    ImageIO.write(bi, "PNG", stream);
   }
 
   private String makeName(List<Boolean> indents) {

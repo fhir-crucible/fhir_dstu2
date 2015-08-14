@@ -714,9 +714,9 @@ public class SourceParser {
     try {
       profile = new ProfileGenerator(definitions, context, page, genDate, null).generate(t);
       t.setProfile(profile);
-      DataTypeTableGenerator dtg = new DataTypeTableGenerator(dstDir, page, t.getName(), true);
-      t.getProfile().getText().setDiv(new XhtmlNode(NodeType.Element, "div"));
-      t.getProfile().getText().getDiv().getChildNodes().add(dtg.generate(t));
+//      DataTypeTableGenerator dtg = new DataTypeTableGenerator(dstDir, page, t.getName(), true);
+//      t.getProfile().getText().setDiv(new XhtmlNode(NodeType.Element, "div"));
+//      t.getProfile().getText().getDiv().getChildNodes().add(dtg.generate(t));
       if (context.getProfiles().containsKey(t.getProfile().getUrl()))
         throw new Exception("Duplicate Profile "+t.getProfile().getUrl());
       context.getProfiles().put(t.getProfile().getUrl(), t.getProfile());

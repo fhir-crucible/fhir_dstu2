@@ -261,11 +261,11 @@ public class ProfileGenerator {
     
     containedSlices.clear();
 
-    XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
-    div.addText("to do");
-    p.setText(new Narrative());
-    p.getText().setStatus(NarrativeStatus.GENERATED);
-    p.getText().setDiv(div);
+//    XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
+//    div.addText("to do");
+//    p.setText(new Narrative());
+//    p.getText().setStatus(NarrativeStatus.GENERATED);
+//    p.getText().setDiv(div);
     checkHasTypes(p);
     return p;
   }
@@ -378,11 +378,11 @@ public class ProfileGenerator {
 
     containedSlices.clear();
 
-    XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
-    div.addText("to do");
-    p.setText(new Narrative());
-    p.getText().setStatus(NarrativeStatus.GENERATED);
-    p.getText().setDiv(div);
+//    XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
+//    div.addText("to do");
+//    p.setText(new Narrative());
+//    p.getText().setStatus(NarrativeStatus.GENERATED);
+//    p.getText().setDiv(div);
     checkHasTypes(p);
     return p;
   }
@@ -430,12 +430,12 @@ public class ProfileGenerator {
       p.getSnapshot().getElement().get(0).addType().setCode("Element");
     }
 
-    XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
-    div.addText("to do");
-    p.setText(new Narrative());
-    p.getText().setStatus(NarrativeStatus.GENERATED);
-    p.getText().setDiv(div);
-    checkHasTypes(p);
+//    XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
+//    div.addText("to do");
+//    p.setText(new Narrative());
+//    p.getText().setStatus(NarrativeStatus.GENERATED);
+//    p.getText().setDiv(div);
+//    checkHasTypes(p);
     return p;
   }
   
@@ -522,16 +522,16 @@ public class ProfileGenerator {
     p.getDifferential().getElement().get(0).addType().setCode(pt.getBaseType());
     p.getSnapshot().getElement().get(0).getType().clear();
     p.getSnapshot().getElement().get(0).addType().setCode(pt.getBaseType());
-    XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
-    div.addTag("h2").addText("Data type "+pt.getName());
-    div.addTag("p").addText(pt.getDefinition());
-    div.addTag("h3").addText("Rule");
-    div.addTag("p").addText(pt.getInvariant().getEnglish());
-    div.addTag("p").addText("XPath:");
-    div.addTag("blockquote").addTag("pre").addText(pt.getInvariant().getXpath());
-    p.setText(new Narrative());
-    p.getText().setStatus(NarrativeStatus.GENERATED);
-    p.getText().setDiv(div);
+//    XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
+//    div.addTag("h2").addText("Data type "+pt.getName());
+//    div.addTag("p").addText(pt.getDefinition());
+//    div.addTag("h3").addText("Rule");
+//    div.addTag("p").addText(pt.getInvariant().getEnglish());
+//    div.addTag("p").addText("XPath:");
+//    div.addTag("blockquote").addTag("pre").addText(pt.getInvariant().getXpath());
+//    p.setText(new Narrative());
+//    p.getText().setStatus(NarrativeStatus.GENERATED);
+//    p.getText().setDiv(div);
     checkHasTypes(p);
     return p;
   }
@@ -624,11 +624,11 @@ public class ProfileGenerator {
       p.getSnapshot().getElement().get(0).getType().clear();
       p.getSnapshot().getElement().get(0).addType().setCode(r.getRoot().typeCode());
     }
-    XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
-    div.addText("to do");
-    p.setText(new Narrative());
-    p.getText().setStatus(NarrativeStatus.GENERATED);
-    p.getText().setDiv(div);
+//    XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
+//    div.addText("to do");
+//    p.setText(new Narrative());
+//    p.getText().setStatus(NarrativeStatus.GENERATED);
+//    p.getText().setDiv(div);
     checkHasTypes(p);
     return p;
   }
@@ -719,11 +719,11 @@ public class ProfileGenerator {
     p.getSnapshot().getElement().get(0).getType().clear();
     p.getSnapshot().getElement().get(0).addType().setCode(p.getSnapshot().getElement().get(0).getPath());
 
-    XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
-    div.addText("to do");
-    p.setText(new Narrative());
-    p.getText().setStatus(NarrativeStatus.GENERATED);
-    p.getText().setDiv(div);
+//    XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
+//    div.addText("to do");
+//    p.setText(new Narrative());
+//    p.getText().setStatus(NarrativeStatus.GENERATED);
+//    p.getText().setDiv(div);
     checkHasTypes(p);
     return p;
   }

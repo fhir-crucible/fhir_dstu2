@@ -12074,13 +12074,13 @@ public class JsonParser extends JsonParserBase {
       }
   }
 
-  protected void composeNarrative(String name, Narrative element) throws Exception {
-    if (element != null) {
-      open(name);
-      composeNarrativeInner(element);
-      close();
-    }
-  }
+//  protected void composeNarrative(String name, Narrative element) throws Exception {
+//    if (element != null) {
+//      open(name);
+//      composeNarrativeInner(element);
+//      close();
+//    }
+//  }
 
   protected void composeNarrativeInner(Narrative element) throws Exception {
       composeElement(element);
@@ -13314,9 +13314,9 @@ public class JsonParser extends JsonParserBase {
 
   protected void composeDomainResourceElements(DomainResource element) throws Exception {
       composeResourceElements(element);
-      if (element.hasText()) {
-        composeNarrative("text", element.getText());
-      }
+//      if (element.hasText()) {
+//        composeNarrative("text", element.getText());
+//      }
       if (element.hasContained()) {
         openArray("contained");
         for (Resource e : element.getContained()) {
@@ -15724,9 +15724,9 @@ public class JsonParser extends JsonParserBase {
       if (element.hasCode()) {
         composeCodeableConcept("code", element.getCode());
       }
-      if (element.hasText()) {
-        composeNarrative("text", element.getText());
-      }
+//      if (element.hasText()) {
+//        composeNarrative("text", element.getText());
+//      }
       if (element.hasModeElement()) {
         composeCodeCore("mode", element.getModeElement(), false);
         composeCodeExtras("mode", element.getModeElement(), false);

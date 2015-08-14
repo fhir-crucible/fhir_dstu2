@@ -203,6 +203,7 @@ import org.hl7.fhir.tools.implementations.delphi.DelphiGenerator;
 import org.hl7.fhir.tools.implementations.emf.EMFGenerator;
 import org.hl7.fhir.tools.implementations.java.JavaGenerator;
 import org.hl7.fhir.tools.implementations.javascript.JavaScriptGenerator;
+import org.hl7.fhir.tools.implementations.ruby.RubyGenerator;
 import org.hl7.fhir.tools.publisher.Publisher.DocumentHolder;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.CSFileInputStream;
@@ -329,9 +330,9 @@ public class Publisher implements URIResolver {
   private JavaGenerator javaReferencePlatform;
   private DelphiGenerator delphiReferencePlatform;
 
-  private boolean isGenerate;
-  private boolean noArchive;
-  private boolean web;
+  private boolean isGenerate = true;
+  private boolean noArchive = true;
+  private boolean web = false;
   private String diffProgram;
   private Bundle profileFeed;
   private Bundle profileOthersFeed;
@@ -355,7 +356,7 @@ public class Publisher implements URIResolver {
 
   private Map<String, Example> processingList = new HashMap<String, Example>();
   
-  private boolean genRDF;
+  private boolean genRDF = false;
   int errorCount = 0;
   int warningCount = 0;
   int informationCount = 0;
@@ -372,7 +373,7 @@ public class Publisher implements URIResolver {
       pub.genRDF = true; 
     }
     pub.noArchive = (args.length > 1 && hasParam(args, "-noarchive"));
-    pub.web = (args.length > 1 && hasParam(args, "-web"));
+    pub.web = false; //(args.length > 1 && hasParam(args, "-web"));
     pub.diffProgram = getNamedParam(args, "-diff");
     pub.noPartialBuild = (args.length > 1 && hasParam(args, "-nopartial"));
     if (hasParam(args, "-resource"))
@@ -523,7 +524,6 @@ public class Publisher implements URIResolver {
       loadValueSets1();
       prsr.getRegistry().commit();
 
-
       validate();
       processProfiles();
       checkAllOk();
@@ -547,11 +547,36 @@ public class Publisher implements URIResolver {
       } else if (genRDF) 
         processRDF();
 
-      validationProcess();
-      processWarnings();
+//      validationProcess();
+//      processWarnings();
       if (isGenerate && buildFlags.get("all"))
         produceQA();
-        
+      
+      File profilesDir = new File( folder + "/implementations/ruby/output/model/lib/models/profiles");
+      profilesDir.mkdirs();
+      Utilities.copyFileToDirectory(new File( folder + "/publish/profiles-others.xml"), profilesDir);
+      Utilities.copyFileToDirectory(new File( folder + "/publish/profiles-resources.xml"), profilesDir);
+      Utilities.copyFileToDirectory(new File( folder + "/publish/profiles-types.xml"), profilesDir);
+      Utilities.copyFileToDirectory(new File( folder + "/publish/extension-definitions.xml"), profilesDir);
+
+      File valuesetsDir = new File( folder + "/implementations/ruby/output/model/lib/models/valuesets");
+      valuesetsDir.mkdirs();
+      Utilities.copyFileToDirectory(new File( folder + "/publish/valuesets.xml"), valuesetsDir);         
+         
+      page.log("Clean up...", LogMessageType.Process);
+      File publish = new File(folder + "/publish");
+      File files[] = publish.listFiles(new FilenameFilter() {
+        @Override
+        public boolean accept(File dir, String name) {
+          return (name.endsWith(".html") || name.endsWith(".xls") || name.endsWith(".png"));
+        }
+      });
+      for (File html : files) {
+        try {
+          html.delete();
+        } catch(Exception e) {/*ignore*/}
+      }
+      
       if (!buildFlags.get("all")) {
         page.log("This was a Partial Build", LogMessageType.Process);
         CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
@@ -666,9 +691,9 @@ public class Publisher implements URIResolver {
         if (page.getProfiles().containsKey(r.getProfile().getUrl()))
           throw new Exception("Duplicate Profile URL "+r.getProfile().getUrl());
         page.getProfiles().put(r.getProfile().getUrl(), r.getProfile());
-        ResourceTableGenerator rtg = new ResourceTableGenerator(page.getFolders().dstDir, page, null, true);
-        r.getProfile().getText().setDiv(new XhtmlNode(NodeType.Element, "div"));
-        r.getProfile().getText().getDiv().getChildNodes().add(rtg.generate(r.getRoot(), ""));
+//        ResourceTableGenerator rtg = new ResourceTableGenerator(page.getFolders().dstDir, page, null, true);
+//        r.getProfile().getText().setDiv(new XhtmlNode(NodeType.Element, "div"));
+//        r.getProfile().getText().getDiv().getChildNodes().add(rtg.generate(r.getRoot(), ""));
     }
 
     for (ResourceDefn r : page.getDefinitions().getResources().values()) {
@@ -677,9 +702,9 @@ public class Publisher implements URIResolver {
       if (page.getProfiles().containsKey(r.getProfile().getUrl()))
         throw new Exception("Duplicate Profile URL "+r.getProfile().getUrl());
       page.getProfiles().put(r.getProfile().getUrl(), r.getProfile());
-      ResourceTableGenerator rtg = new ResourceTableGenerator(page.getFolders().dstDir, page, null, true);
-      r.getProfile().getText().setDiv(new XhtmlNode(NodeType.Element, "div"));
-      r.getProfile().getText().getDiv().getChildNodes().add(rtg.generate(r.getRoot(), ""));
+//      ResourceTableGenerator rtg = new ResourceTableGenerator(page.getFolders().dstDir, page, null, true);
+//      r.getProfile().getText().setDiv(new XhtmlNode(NodeType.Element, "div"));
+//      r.getProfile().getText().getDiv().getChildNodes().add(rtg.generate(r.getRoot(), ""));
     }
 
     for (ProfiledType pt : page.getDefinitions().getConstraints().values()) {
@@ -799,9 +824,9 @@ public class Publisher implements URIResolver {
       profile = new ProfileGenerator(page.getDefinitions(), page.getWorkerContext(), page, page.getGenDate(), dataElements).generate(t);
       page.getProfiles().put(profile.getUrl(), profile);
       t.setProfile(profile);
-      DataTypeTableGenerator dtg = new DataTypeTableGenerator(page.getFolders().dstDir, page, t.getName(), true);
-      t.getProfile().getText().setDiv(new XhtmlNode(NodeType.Element, "div"));
-      t.getProfile().getText().getDiv().getChildNodes().add(dtg.generate(t));
+//      DataTypeTableGenerator dtg = new DataTypeTableGenerator(page.getFolders().dstDir, page, t.getName(), true);
+//      t.getProfile().getText().setDiv(new XhtmlNode(NodeType.Element, "div"));
+//      t.getProfile().getText().getDiv().getChildNodes().add(dtg.generate(t));
     } catch (Exception e) {
       throw new Exception("Error generating profile for '"+t.getName()+"': "+e.getMessage(), e);
     }
@@ -1195,15 +1220,8 @@ public class Publisher implements URIResolver {
 
   private void registerReferencePlatforms() {
     javaReferencePlatform = new JavaGenerator(page.getFolders());
-    delphiReferencePlatform = new DelphiGenerator(page.getFolders());
     page.getReferenceImplementations().add(javaReferencePlatform);
-    page.getReferenceImplementations().add(delphiReferencePlatform);
-    page.getReferenceImplementations().add(new CSharpGenerator());
-    page.getReferenceImplementations().add(new XMLToolsGenerator());
-    page.getReferenceImplementations().add(new JavaScriptGenerator());
-    page.getReferenceImplementations().add(new EMFGenerator());
-
-    // page.getReferenceImplementations().add(new ECoreOclGenerator());
+    page.getReferenceImplementations().add(new RubyGenerator());
   }
 
   public boolean checkFile(String purpose, String dir, String file, List<String> errors, String category) throws IOException {
@@ -2041,8 +2059,6 @@ public class Publisher implements URIResolver {
         produceZip();
       }
 
-      page.log("Produce .epub Form", LogMessageType.Process);
-      page.getEpub().produce();
       checkAllOk();
     } else
       page.log("Partial Build - terminating now", LogMessageType.Error);
@@ -2662,9 +2678,9 @@ public class Publisher implements URIResolver {
     }
     s.append("</table>\r\n");
 
-    vs.setText(new Narrative());
-    vs.getText().setStatus(NarrativeStatus.GENERATED);
-    vs.getText().setDiv(new XhtmlParser().parse("<div>" + s.toString() + "</div>", "div").getElement("div"));
+//    vs.setText(new Narrative());
+//    vs.getText().setStatus(NarrativeStatus.GENERATED);
+//    vs.getText().setDiv(new XhtmlParser().parse("<div>" + s.toString() + "</div>", "div").getElement("div"));
     page.getVsValidator().validate(page.getValidationErrors(), "v3 valueset "+id, vs, false, true);
 
     return vs;
@@ -5297,10 +5313,10 @@ public class Publisher implements URIResolver {
         vs.setText(new Narrative());
         vs.getText().setStatus(NarrativeStatus.EMPTY);
       }
-      if (!vs.getText().hasDiv()) {
-        vs.getText().setDiv(new XhtmlNode(NodeType.Element));
-        vs.getText().getDiv().setName("div");
-      }
+//      if (!vs.getText().hasDiv()) {
+//        vs.getText().setDiv(new XhtmlNode(NodeType.Element));
+//        vs.getText().getDiv().setName("div");
+//      }
       if (ToolingExtensions.getOID(vs) == null)
         throw new Exception("No OID on value set "+vs.getUrl());
       if (vs.hasCodeSystem()) {

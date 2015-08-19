@@ -66,7 +66,7 @@ module FHIR
 
       @@base_definitions.entry.each do |entry|
         if entry.resourceType == 'StructureDefinition'
-          if !entry.resource.nil? && (entry.resource.fhirType == resource_name || entry.resource.name == resource_name || entry.resource.url == resource_name)
+          if !entry.resource.nil? && (entry.resource.xmlId == resource_name || entry.resource.name == resource_name || entry.resource.url == resource_name)
             return entry.resource
           end
         end
@@ -108,7 +108,7 @@ module FHIR
       load_definitions
       @@type_definitions.entry.each do |entry|
         if entry.resourceType == 'StructureDefinition'
-          if !entry.resource.nil? && (entry.resource.fhirType == type_name || entry.resource.name == type_name)
+          if !entry.resource.nil? && (entry.resource.xmlId == type_name || entry.resource.name == type_name)
             return entry.resource
           end
         end
@@ -439,14 +439,14 @@ module FHIR
 
       # check bindings 
       if x.binding.nil? && !y.binding.nil?
-        @warnings << @finding.warning("#{x.path}",'binding','Inconsistent binding','',"#{y.binding.name}")
+        val = y.binding.valueSetUri || y.binding.valueSetReference.try(:reference) || y.binding.description
+        @warnings << @finding.warning("#{x.path}",'binding','Inconsistent binding','',val)
       elsif !x.binding.nil? && y.binding.nil?
-        @warnings << @finding.warning("#{x.path}",'binding','Inconsistent binding',"#{x.binding.name}",'')
+        val = x.binding.valueSetUri || x.binding.valueSetReference.try(:reference) || x.binding.description
+        @warnings << @finding.warning("#{x.path}",'binding','Inconsistent binding',val,'')
       elsif !x.binding.nil? && !y.binding.nil?
-        x_vs = x.binding.valueSetUri
-        x_vs = x.binding.valueSetReference.reference if x_vs.nil? && !x.binding.valueSetReference.nil?
-        y_vs = y.binding.valueSetUri 
-        y_vs = y.binding.valueSetReference.reference if y_vs.nil? && !y.binding.valueSetReference.nil?
+        x_vs = x.binding.valueSetUri || x.binding.valueSetReference.try(:reference)
+        y_vs = y.binding.valueSetUri || y.binding.valueSetReference.try(:reference) 
         if x_vs != y_vs
           if x.binding.strength=='required' || y.binding.strength=='required'
             @errors << @finding.error("#{x.path}",'binding.strength','Incompatible bindings',"#{x.binding.strength} #{x_vs}","#{y.binding.strength} #{y_vs}")
@@ -794,7 +794,7 @@ module FHIR
         value==true || value==false || value.downcase=='true' || value.downcase=='false'
       when 'code'
         value.is_a?(String) && value.size>=1 && value.size==value.rstrip.size
-      when 'string'
+      when 'string', 'markdown'
         value.is_a?(String)
       when 'xhtml'
         fragment = Nokogiri::HTML::DocumentFragment.parse(value)
@@ -883,19 +883,19 @@ module FHIR
     end
 
     def check_binding(element,value)
-      valueset = FHIR::ValueSet.get_base_valueset(element.binding.name)
-      valueset = FHIR::ValueSet.get_base_valueset(element.binding.valueSetUri) if valueset.nil?
-      valueset = FHIR::ValueSet.get_base_valueset(element.binding.valueSetReference.reference) if valueset.nil? && !element.binding.valueSetReference.nil?
+
+      vsUri = element.binding.valueSetUri || element.binding.try(:valueSetReference).try(:reference)
+      valueset = FHIR::ValueSet.get_base_valueset(vsUri)
 
       matching_type = 0
 
-      if element.binding.name=='MimeType'
+      if vsUri=='http://hl7.org/fhir/ValueSet/content-type' || vsUri=='http://www.rfc-editor.org/bcp/bcp13.txt'
         matches = MIME::Types[value]
         if (matches.nil? || matches.size==0) && (value.downcase!='xml' && value.downcase!='json')
           @errors << "#{element.path} has invalid mime-type: '#{value}'"
           matching_type-=1 if element.binding.strength=='required'
         end
-      elsif element.binding.name=='Language'
+      elsif vsUri=='http://tools.ietf.org/html/bcp47' 
         hasRegion = (!(value =~ /-/).nil?)
         valid = !BCP47::Language.identify(value).nil? && (!hasRegion || !BCP47::Region.identify(value).nil?)
         if !valid
@@ -903,7 +903,7 @@ module FHIR
           matching_type-=1 if element.binding.strength=='required'            
         end
       elsif valueset.nil?
-        @errors << "#{element.path} has unknown ValueSet: '#{element.binding.name}'"
+        @errors << "#{element.path} has unknown ValueSet: '#{vsUri}'"
         matching_type-=1 if element.binding.strength=='required'
       elsif !valueset.include?(value)
         message = "#{element.path} has invalid code '#{value}' from '#{element.short}'"

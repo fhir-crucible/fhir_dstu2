@@ -145,6 +145,7 @@ public class RubyGenerator extends BaseGenerator implements PlatformGenerator {
     zip.close();  
     
     System.out.println(ResourceGenerator.dataTypes);
+    System.err.println(ResourceGenerator.unhandledDataTypes);
   }
   
   private void createDirStructrue(Map<String, String> dirs) throws IOException {

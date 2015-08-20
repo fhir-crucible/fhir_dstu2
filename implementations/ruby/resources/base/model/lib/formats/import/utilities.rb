@@ -139,19 +139,7 @@ module FHIR
                       # puts ' ' * depth + " -- Array Item is a #{metadata.class_name}"
                       child = nil
                       if metadata.class_name=='FHIR::Extension'
-                        child = FHIR::Extension.new
-                        child.url = item['url']
-                        item.keys.each do |ekey|
-                          if ekey.starts_with? 'value'
-                            child.valueType = ekey[5..-1]
-                            if item[ekey].is_a? Hash
-                              item[ekey]['resourceType'] = ekey[5..-1]
-                              child.value = decodeHash(item[ekey],depth)
-                            else
-                              child.value = item[ekey]
-                            end
-                          end
-                        end
+                        child = decodeExtension(item,depth+1)
                       else
                         item['resourceType'] = metadata.class_name
                         child = decodeHash(item,depth+1)
@@ -185,6 +173,38 @@ module FHIR
          
         obj
       end # eof decodeHash function
+
+      def decodeExtension(item,depth)
+        child = FHIR::Extension.new
+        begin
+          child.url = item['url']
+        rescue Exception => e
+          puts e.message
+          binding.pry
+        end
+        item.keys.each do |ekey|
+          if ekey.starts_with? 'value'
+            child.valueType = ekey[5..-1]
+            if item[ekey].is_a? Hash
+              item[ekey]['resourceType'] = ekey[5..-1]
+              child.value = decodeHash(item[ekey],depth+1)
+            else
+              child.value = item[ekey]
+            end
+          elsif ekey == 'extension'
+            child.extension = [] if child.extension.nil?
+            item[ekey].each do |x|
+              child.extension << decodeExtension(x,depth+1)
+            end
+          elsif ekey == 'modifierExtension'
+            child.modifierExtension = [] if child.modifierExtension.nil?
+            item[ekey].each do |x|
+              child.modifierExtension << decodeExtension(x,depth+1)
+            end  
+          end
+        end
+        child
+      end
 
     end
   end

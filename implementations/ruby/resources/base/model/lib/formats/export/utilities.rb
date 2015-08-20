@@ -1,6 +1,7 @@
 module FHIR
   module Serializer
     module Utilities
+
       def to_xml(options={})
         FHIR::Export::ModelSerializer.new.serialize(self, options)
       end
@@ -18,7 +19,7 @@ module FHIR
       #  - Add W3C namespace to <div/> tags
       def massageHash(h,top)
         resourceType = nil
-        
+
         # if this is a FHIR class, convert to a hash
         if is_fhir_class?(h.class.name)
           resourceType = h.class.name.demodulize
@@ -90,7 +91,7 @@ module FHIR
         if top and !resourceType.nil?
           h['resourceType'] = resourceType
         end
-        
+
         fix_all_keys(h)
       end # eof massageHash method
       
@@ -98,17 +99,33 @@ module FHIR
         extension_hash = {}
         extension_hash['id']=e.xmlId if e.xmlId
         extension_hash['url']=e.url if !e.url.nil?
+        extension_hash['extension'] = e.extension.map {|e|build_extension_hash(e)} if(e.extension && e.extension.any?)
+        extension_hash['modifierExtension'] = e.modifierExtension.map {|e|build_extension_hash(e)} if(e.modifierExtension && e.modifierExtension.any?)
+
         # render template element
         # <%== render :template => 'element', :locals => {model: model, is_resource: false} %>
         if !e.value().nil?
-          if FHIR::AnyType::PRIMITIVES.include? e.valueType().downcase
+          if FHIR::AnyType::PRIMITIVES.include? e.valueType.downcase
             # <value<%= model.valueType() %> value="<%= model.value()[:value] %>"/>
-            if e.value.is_a? Hash
-              extension_hash["value#{e.valueType}"] = e.value[:value]
+            x = e.value
+            x = e.value[:value] if e.value.is_a? Hash
+
+            if e.valueType.downcase == 'boolean'
+              if e.value.is_a?(TrueClass) || e.value.is_a?(FalseClass)
+                extension_hash["value#{e.valueType}"] = x
+              else
+                extension_hash["value#{e.valueType}"] = (x=='true')
+              end
+            elsif e.valueType.downcase == 'integer' || e.valueType.downcase == 'decimal'
+              if e.value.is_a?(Fixnum) || e.value.is_a?(Float)
+                extension_hash["value#{e.valueType}"] = x
+              else
+                extension_hash["value#{e.valueType}"] = to_num(x)
+              end
             else
-              extension_hash["value#{e.valueType}"] = e.value
+              extension_hash["value#{e.valueType}"] = x
             end
-          elsif FHIR::AnyType::DATE_TIMES.include? e.valueType().downcase 
+          elsif FHIR::AnyType::DATE_TIMES.include? e.valueType.downcase 
             # <value<%= model.valueType() %> value="<%= model.value()[:value] %>"/>
             if e.value.is_a? Hash
               extension_hash["value#{e.valueType}"] = e.value[:value]
@@ -131,11 +148,16 @@ module FHIR
         extension_hash
       end
 
+      # Convert string to Fixnum or Float as appropriate
+      def to_num(v)
+        ((float = Float(v)) && (float % 1.0 == 0) ? float.to_i : float) rescue v
+      end
+
       def build_entry_hash(e)
         entry_hash = massageHash(e,true)
         resourceType = entry_hash['resourceType']
         entry_hash.delete('resourceType')
-        if e.methods.include?(:resouce) && e.resource.methods.include?(:to_fhir_json)
+        if e.methods.include?(:resource) && e.resource.methods.include?(:to_fhir_json)
           entry_hash['resource'] = JSON.parse(e.resource.to_fhir_json)
         elsif e[:resource].methods.include? :to_fhir_json
           entry_hash['resource'] = JSON.parse(e[:resource].to_fhir_json)

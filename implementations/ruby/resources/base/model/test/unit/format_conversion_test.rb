@@ -5,8 +5,8 @@ class RunConversionTest < Test::Unit::TestCase
  
   ERROR_DIR_JJ = File.join('tmp','errors','format','read-json-write-json')
   ERROR_DIR_XJ = File.join('tmp','errors','format','read-xml-write-json')
-  EXAMPLE_ROOT = File.join('..','..','..','..','temp')
-  EXAMPLE_JSON_ROOT = File.join('..','..','..','..','temp')
+  EXAMPLE_ROOT = File.join('..','..','..','..','publish')
+  EXAMPLE_JSON_ROOT = File.join('..','..','..','..','publish')
   XSD_ROOT = File.join('..','..','..','..','schema')
 
   # Automatically generate one test method per example file

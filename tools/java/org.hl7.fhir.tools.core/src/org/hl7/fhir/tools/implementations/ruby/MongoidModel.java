@@ -171,8 +171,6 @@ public class MongoidModel extends ResourceGenerator {
       }
       String typeName = generateTypeName(nestedElement, typeRef);
       if(nestedElement.hasBinding() && nestedElement.getBinding().getName() != null) {
-//        BindingSpecification binding = this.definitions.getCommonBindings().get(nestedElement.getBinding().getName());
-//        if(binding!=null && binding.getAllCodes()!=null && (binding.getAllCodes().size() > 0) ) {
         if(nestedElement.getBinding().getAllCodes()!=null && nestedElement.getBinding().getAllCodes().size() > 0) {          
           List<String> codes = new ArrayList<String>();
           for(DefinedCode code : nestedElement.getBinding().getAllCodes())
@@ -197,7 +195,7 @@ public class MongoidModel extends ResourceGenerator {
           sb.setLength(0);
           sb.append(key).append(": [");
           for(String code : codes) {
-            sb.append(" \"").append(code).append("\",");
+            sb.append(" \'").append(code).append("\',");
           }
           sb.setLength( sb.length() - 1 );
           sb.append(" ]");
@@ -243,7 +241,7 @@ public class MongoidModel extends ResourceGenerator {
           sb.setLength(0);
           sb.append(key).append(": [");
           for(String type : types) {
-            sb.append(" \"").append(type).append("\",");
+            sb.append(" \'").append(type).append("\',");
           }
           sb.setLength( sb.length() - 1 );
           sb.append(" ]");

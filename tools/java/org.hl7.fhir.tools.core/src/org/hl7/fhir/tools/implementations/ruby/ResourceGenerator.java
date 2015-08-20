@@ -172,7 +172,11 @@ public abstract class ResourceGenerator {
     if (elementDefinition.getTypes().size() > 1) {
       String typeName = type.getName();
       typeName = Character.toUpperCase(typeName.charAt(0)) + typeName.substring(1);
-      elementName += typeName;
+      if(FieldType.QUANTITY == FieldType.getFieldType(typeName)) {
+        elementName += "Quantity";
+      } else {
+        elementName += typeName;        
+      }
     }
     
     if (!fixTypes) { 

@@ -214,8 +214,10 @@ public class MongoidModel extends ResourceGenerator {
   private void generateMultipleTypes(GenBlock block, ElementDefn elementDefinition ) {
     
     Map<String,List<String>> multipleTypes = new HashMap<String,List<String>>();
+    List<String> anyTypes = new ArrayList<String>();
+    
     for (ElementDefn nestedElement : elementDefinition.getElements()) {
-      if(nestedElement.getTypes()!=null && nestedElement.getTypes().size() > 1) {
+      if(nestedElement.getTypes()!=null && nestedElement.getTypes().size() > 0) {
         String name = nestedElement.getName();
         if(name.endsWith("[x]")) {
           name = name.substring(0, name.length()-3);
@@ -224,9 +226,12 @@ public class MongoidModel extends ResourceGenerator {
         for (TypeRef typeRef : nestedElement.getTypes()) {
           String typeName = generateTypeName(nestedElement, typeRef);
           t.add(typeName);
+          if(FieldType.ANY == FieldType.getFieldType(typeRef.getName())) {
+            anyTypes.add(name);
+          }
         }
-        multipleTypes.put(name, t);
-      }
+        if(t.size() > 1) multipleTypes.put(name, t);
+      }    
     }
     
     if(!multipleTypes.isEmpty()) {
@@ -254,6 +259,18 @@ public class MongoidModel extends ResourceGenerator {
       block.es();
       block.ln("}");
       block.ln();      
+    }
+    
+    if(!anyTypes.isEmpty()) {
+      StringBuffer sb = new StringBuffer();
+      sb.append("ANY_TYPES = [");
+      for(String attribute : anyTypes) {
+        sb.append(" \'").append(attribute).append("\',");
+      }
+      sb.setLength( sb.length() - 1 );
+      sb.append(" ]");
+      block.ln( sb.toString() );
+      block.ln();
     }    
   }
 
@@ -278,9 +295,7 @@ public class MongoidModel extends ResourceGenerator {
     
     switch (fieldType) {
     case ANY:
-      block.ln(getValueFieldLine(typeName+"Type", "String", multipleCardinality));
-      block.ln("attr_accessor :"+typeName);
-      block.ln("# " + getValueFieldLine(typeName, "FHIR::AnyType", multipleCardinality));
+      block.ln(getValueFieldLine(typeName, "FHIR::AnyType", multipleCardinality));
       break;
     case BINARY:
       block.ln(getValueFieldLine(typeName, "Moped::BSON::Binary", multipleCardinality));

@@ -100,6 +100,24 @@ module FHIR
           fixed = fix_key(key)
           regex = Regexp.new "^#{fixed}="
           setter = objClass.instance_methods.grep regex
+          if setter.empty?
+            # AnyType check, looking for a method of the format 'prefix=' where our
+            # current fixed/key is something like prefixDecimal (e.g. prefix[x] of AnyType)
+            begin
+              prefixes = objClass::ANY_TYPES.select{|x| fixed.starts_with?(x)}
+              prefixes.each do |prefix|
+                regex = Regexp.new "^#{prefix}="
+                temp = objClass.instance_methods.grep(regex) 
+                if !temp.empty?
+                  datatype = fixed.gsub(prefix,'')
+                  obj[prefix] = FHIR::AnyType.new(datatype,value)
+                end
+              end
+            rescue Exception => e
+              # this class does not have any attributes with type=='*'
+            end
+          end
+
           if !setter.empty?
             if value.is_a? Hash
               # puts ' ' * depth + "Key: #{key} is a Hash"
@@ -184,13 +202,14 @@ module FHIR
         end
         item.keys.each do |ekey|
           if ekey.starts_with? 'value'
-            child.valueType = ekey[5..-1]
+            d = ekey[5..-1]
             if item[ekey].is_a? Hash
               item[ekey]['resourceType'] = ekey[5..-1]
-              child.value = decodeHash(item[ekey],depth+1)
+              v = decodeHash(item[ekey],depth+1)
             else
-              child.value = item[ekey]
+              v = item[ekey]
             end
+            child.value = FHIR::AnyType.new(d,v)
           elsif ekey == 'extension'
             child.extension = [] if child.extension.nil?
             item[ekey].each do |x|

@@ -34,6 +34,9 @@ module FHIR
           # remove "_id" attributes
           h.delete("_id")
 
+          # hash for renamed attributes
+          renamed = {}
+
           # loop through all the entries in the hash
           h.each do |key,value|
             if ['extension','modifierExtension','entry'].include?(key)
@@ -64,7 +67,13 @@ module FHIR
             # remove empty attributes
             elsif value.nil?
               h.delete(key)
-            # massage entires that are FHIR classes...
+            # massage AnyTypes
+            elsif value.class.name == 'FHIR::AnyType'
+              renamed["#{key}#{value.type}"] = value.value
+              renamed["#{key}#{value.type}"] = to_num(value.value) if value.type.downcase=='integer' || value.type.downcase=='decimal'
+              renamed["#{key}#{value.type}"] = massageHash(value.value,false) if is_fhir_class?(value.value.class.name)
+              h.delete(key)
+            # massage entries that are FHIR classes...
             elsif is_fhir_class?(value.class.name)
               h[key] = massageHash(value,false)
             else
@@ -86,6 +95,8 @@ module FHIR
              
           end       
         end
+
+        h.merge!(renamed) if !renamed.empty?
         
         # if this is a FHIR class, add the 'resourceType' attribute
         if top and !resourceType.nil?
@@ -104,44 +115,45 @@ module FHIR
 
         # render template element
         # <%== render :template => 'element', :locals => {model: model, is_resource: false} %>
-        if !e.value().nil?
-          if FHIR::AnyType::PRIMITIVES.include? e.valueType.downcase
+        if !e.value.nil?
+          any = e.value
+          if FHIR::AnyType::PRIMITIVES.include? e.value.type.downcase
             # <value<%= model.valueType() %> value="<%= model.value()[:value] %>"/>
-            x = e.value
-            x = e.value[:value] if e.value.is_a? Hash
+            x = any.value
+            x = any.value[:value] if any.value.is_a? Hash
 
-            if e.valueType.downcase == 'boolean'
-              if e.value.is_a?(TrueClass) || e.value.is_a?(FalseClass)
-                extension_hash["value#{e.valueType}"] = x
+            if any.type.downcase == 'boolean'
+              if x.is_a?(TrueClass) || x.is_a?(FalseClass)
+                extension_hash["value#{e.value.type}"] = x
               else
-                extension_hash["value#{e.valueType}"] = (x=='true')
+                extension_hash["value#{e.value.type}"] = (x=='true')
               end
-            elsif e.valueType.downcase == 'integer' || e.valueType.downcase == 'decimal'
-              if e.value.is_a?(Fixnum) || e.value.is_a?(Float)
-                extension_hash["value#{e.valueType}"] = x
+            elsif any.type.downcase == 'integer' || any.type.downcase == 'decimal'
+              if x.is_a?(Fixnum) || x.is_a?(Float)
+                extension_hash["value#{e.value.type}"] = x
               else
-                extension_hash["value#{e.valueType}"] = to_num(x)
+                extension_hash["value#{e.value.type}"] = to_num(x)
               end
             else
-              extension_hash["value#{e.valueType}"] = x
+              extension_hash["value#{e.value.type}"] = x
             end
-          elsif FHIR::AnyType::DATE_TIMES.include? e.valueType.downcase 
+          elsif FHIR::AnyType::DATE_TIMES.include? e.value.type.downcase 
             # <value<%= model.valueType() %> value="<%= model.value()[:value] %>"/>
-            if e.value.is_a? Hash
-              extension_hash["value#{e.valueType}"] = e.value[:value]
+            if any.value.is_a? Hash
+              extension_hash["value#{e.value.type}"] = any.value[:value]
             else
-              extension_hash["value#{e.valueType}"] = e.value
+              extension_hash["value#{e.value.type}"] = any.value
             end
           else
             # model.value()[:value].to_xml(is_root: false, name: "value#{model.valueType()}")%>
-            if e.value.methods.include? :to_fhir_json
-              contained = JSON.parse(e.value.to_fhir_json)
+            if any.value.methods.include? :to_fhir_json
+              contained = JSON.parse(any.value.to_fhir_json)
               contained.delete('resourceType')
-              extension_hash["value#{e.valueType}"] = contained
-            elsif e.value[:value].methods.include? :to_fhir_json
-              contained = JSON.parse(e.value[:value].to_fhir_json)
+              extension_hash["value#{any.type}"] = contained
+            elsif any.value[:value].methods.include? :to_fhir_json
+              contained = JSON.parse(any.value[:value].to_fhir_json)
               contained.delete('resourceType')              
-              extension_hash["value#{e.valueType}"] = contained
+              extension_hash["value#{any.type}"] = contained
             end
           end
         end

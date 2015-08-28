@@ -28,12 +28,24 @@ module FHIR
   class ValueSet
 
     @@base_valuesets = nil
+    @@v2_tables = nil
+    @@v3_codesystems = nil
 
     def self.load_valuesets
       if @@base_valuesets.nil?
         filename = File.join(File.dirname(__FILE__),'valuesets.xml')
         xml = File.read(filename)
         @@base_valuesets = FHIR::Bundle.from_xml(xml)
+      end
+      if @@v2_tables.nil?
+        filename = File.join(File.dirname(__FILE__),'v2-tables.xml')
+        xml = File.read(filename)
+        @@v2_tables = FHIR::Bundle.from_xml(xml)
+      end      
+      if @@v3_codesystems.nil?
+        filename = File.join(File.dirname(__FILE__),'v3-codesystems.xml')
+        xml = File.read(filename)
+        @@v3_codesystems = FHIR::Bundle.from_xml(xml)
       end
     end
 
@@ -42,6 +54,20 @@ module FHIR
       load_valuesets
 
       @@base_valuesets.entry.each do |entry|
+        if entry.resourceType == 'ValueSet'
+          if !entry.resource.nil? && (entry.fullUrl == valueset_name || entry.resource.url == valueset_name || entry.resource.name == valueset_name || entry.resource.xmlId == valueset_name || entry.resource.try(:codeSystem).try(:system) == valueset_name)
+            return entry.resource
+          end
+        end
+      end
+      @@v2_tables.entry.each do |entry|
+        if entry.resourceType == 'ValueSet'
+          if !entry.resource.nil? && (entry.fullUrl == valueset_name || entry.resource.url == valueset_name || entry.resource.name == valueset_name || entry.resource.xmlId == valueset_name || entry.resource.try(:codeSystem).try(:system) == valueset_name)
+            return entry.resource
+          end
+        end
+      end
+      @@v3_codesystems.entry.each do |entry|
         if entry.resourceType == 'ValueSet'
           if !entry.resource.nil? && (entry.fullUrl == valueset_name || entry.resource.url == valueset_name || entry.resource.name == valueset_name || entry.resource.xmlId == valueset_name || entry.resource.try(:codeSystem).try(:system) == valueset_name)
             return entry.resource
@@ -71,7 +97,7 @@ module FHIR
       end
 
       # special cases
-      if url=='http://hl7.org/fhir/ValueSet/data-types'
+      if ['http://hl7.org/fhir/ValueSet/data-types','http://hl7.org/fhir/ValueSet/resource-types'].include?(url)
         return true if code.starts_with?('Reference(') && code.ends_with?(')')
         return true if code=='Resource'
       end

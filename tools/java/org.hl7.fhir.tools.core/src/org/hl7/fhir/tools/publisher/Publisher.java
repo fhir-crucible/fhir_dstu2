@@ -562,6 +562,8 @@ public class Publisher implements URIResolver {
       File valuesetsDir = new File( folder + "/implementations/ruby/output/model/lib/models/valuesets");
       valuesetsDir.mkdirs();
       Utilities.copyFileToDirectory(new File( folder + "/publish/valuesets.xml"), valuesetsDir);         
+      Utilities.copyFileToDirectory(new File( folder + "/publish/v2-tables.xml"), valuesetsDir);         
+      Utilities.copyFileToDirectory(new File( folder + "/publish/v3-codesystems.xml"), valuesetsDir);         
          
       page.log("Clean up...", LogMessageType.Process);
       File publish = new File(folder + "/publish");

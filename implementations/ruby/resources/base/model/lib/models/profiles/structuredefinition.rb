@@ -457,11 +457,11 @@ module FHIR
       end
 
       # check default values
-      if x.defaultValueType != y.defaultValueType
-        @errors << @finding.error("#{x.path}",'defaultValue','Incompatible default type',"#{x.defaultValueType}","#{y.defaultValueType}")
+      if x.defaultValue.try(:type) != y.defaultValue.try(:type)
+        @errors << @finding.error("#{x.path}",'defaultValue','Incompatible default type',"#{x.defaultValue.try(:type)}","#{y.defaultValue.try(:type)}")
       end
-      if x.defaultValue != y.defaultValue
-        @errors << @finding.error("#{x.path}",'defaultValue','Incompatible default value',"#{x.defaultValue}","#{y.defaultValue}")
+      if x.defaultValue.try(:value) != y.defaultValue.try(:value)
+        @errors << @finding.error("#{x.path}",'defaultValue','Incompatible default value',"#{x.defaultValue.try(:value)}","#{y.defaultValue.try(:value)}")
       end
 
       # check meaning when missing
@@ -470,25 +470,41 @@ module FHIR
       end        
 
       # check fixed values
-      if x.fixedType != y.fixedType
-        @errors << @finding.error("#{x.path}",'fixed','Incompatible fixed type',"#{x.fixedType}","#{y.fixedType}")
+      if x.fixed.try(:type) != y.fixed.try(:type)
+        @errors << @finding.error("#{x.path}",'fixed','Incompatible fixed type',"#{x.fixed.try(:type)}","#{y.fixed.try(:type)}")
       end
       if x.fixed != y.fixed
         xfv = ''
         yfv = ''
-        xfv = x.fixed[:value] if !x.fixed.nil? && x.fixed[:value]
-        xfv = xfv.to_xml.gsub(/\n/,'') if !x.fixed.nil? && x.fixed[:value].methods.include?(:to_xml)
-        yfv = y.fixed[:value] if !y.fixed.nil? && y.fixed[:value]
-        yfv = yfv.to_xml.gsub(/\n/,'') if !y.fixed.nil? && y.fixed[:value].methods.include?(:to_xml)
+        xfv = x.fixed.try(:value) 
+        xfv = xfv.to_xml.gsub(/\n/,'') if x.fixed.try(:value).methods.include?(:to_xml)
+        yfv = y.fixed.try(:value)
+        yfv = yfv.to_xml.gsub(/\n/,'') if y.fixed.try(:value).methods.include?(:to_xml)
         @errors << @finding.error("#{x.path}",'fixed','Incompatible fixed value',"#{xfv}","#{yfv}")
       end
 
-      # check pattern values
-      if x.patternType != y.patternType
-        @errors << @finding.error("#{x.path}",'pattern','Incompatible pattern type',"#{x.patternType}","#{y.patternType}")
+      # check min values
+      if x.min.try(:type) != y.min.try(:type)
+        @errors << @finding.error("#{x.path}",'min','Incompatible min type',"#{x.min.try(:type)}","#{y.min.try(:type)}")
       end
-      if x.pattern != y.pattern
-        @errors << @finding.error("#{x.path}",'pattern','Incompatible pattern value',"#{x.pattern}","#{y.pattern}")
+      if x.min.try(:value) != y.min.try(:value)
+        @errors << @finding.error("#{x.path}",'min','Incompatible min value',"#{x.min.try(:value)}","#{y.min.try(:value)}")
+      end
+
+      # check max values
+      if x.max.try(:type) != y.max.try(:type)
+        @errors << @finding.error("#{x.path}",'max','Incompatible max type',"#{x.max.try(:type)}","#{y.max.try(:type)}")
+      end
+      if x.max.try(:value) != y.max.try(:value)
+        @errors << @finding.error("#{x.path}",'max','Incompatible max value',"#{x.max.try(:value)}","#{y.max.try(:value)}")
+      end
+
+      # check pattern values
+      if x.pattern.try(:type) != y.pattern.try(:type)
+        @errors << @finding.error("#{x.path}",'pattern','Incompatible pattern type',"#{x.pattern.try(:type)}","#{y.pattern.try(:type)}")
+      end
+      if x.pattern.try(:value) != y.pattern.try(:value)
+        @errors << @finding.error("#{x.path}",'pattern','Incompatible pattern value',"#{x.pattern.try(:value)}","#{y.pattern.try(:value)}")
       end
 
       # maxLength (for Strings)
@@ -607,7 +623,7 @@ module FHIR
                   if(!element.binding.nil?)
                     matching_type+=check_binding(element,value)
                   end
-                elsif data_type_code=='CodeableConcept' && element.patternType=='CodeableConcept' && !element.pattern.nil?
+                elsif data_type_code=='CodeableConcept' && element.pattern.try(:type)=='CodeableConcept' && !element.pattern.try(:value).nil?
                   # TODO check that the CodeableConcept matches the defined pattern
                   binding.pry
                 elsif data_type_code=='String' && !element.maxLength.nil? && (value.size>element.maxLength)
@@ -891,7 +907,7 @@ module FHIR
 
       if vsUri=='http://hl7.org/fhir/ValueSet/content-type' || vsUri=='http://www.rfc-editor.org/bcp/bcp13.txt'
         matches = MIME::Types[value]
-        if (matches.nil? || matches.size==0) && (value.downcase!='xml' && value.downcase!='json')
+        if (matches.nil? || matches.size==0) && !is_some_type_of_xml_or_json(value)
           @errors << "#{element.path} has invalid mime-type: '#{value}'"
           matching_type-=1 if element.binding.strength=='required'
         end
@@ -916,6 +932,15 @@ module FHIR
       end
 
       matching_type
+    end
+
+    def is_some_type_of_xml_or_json(code)
+      m = code.downcase
+      return true if m=='xml' || m=='json'
+      return true if (m.starts_with?('application/') || m.starts_with?('text/')) && (m.ends_with?('json') || m.ends_with?('xml'))
+      return true if (m.starts_with?('application/xml') || m.starts_with?('text/xml'))
+      return true if (m.starts_with?('application/json') || m.starts_with?('text/json'))
+      false
     end
 
   private :is_valid_xml?, :is_valid_json?, :get_json_nodes, :is_data_type?, :check_binding, :add_missing_elements, :compare_element_definitions

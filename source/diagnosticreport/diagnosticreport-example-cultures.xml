@@ -13,7 +13,7 @@
     </coding>
   </code>
   <status value="partial"/>
-  <issued value="2013-10-07T17:18:16"/>
+  <issued value="2013-10-07T17:18:16Z"/>
   <subject>
     <reference value="Patient/example"/>
   </subject>

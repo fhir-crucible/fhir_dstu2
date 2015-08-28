@@ -298,7 +298,8 @@ public class MongoidModel extends ResourceGenerator {
       block.ln(getValueFieldLine(typeName, "FHIR::AnyType", multipleCardinality));
       break;
     case BINARY:
-      block.ln(getValueFieldLine(typeName, "Moped::BSON::Binary", multipleCardinality));
+      block.ln(getValueFieldLine(typeName, "String", multipleCardinality));
+      // TODO Add base64 validator? regex plus length%4==0
       break;
     case BOOLEAN:
       block.ln(getValueFieldLine(typeName, "Boolean", multipleCardinality));

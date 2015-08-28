@@ -272,7 +272,6 @@ class RunConversionTest < Test::Unit::TestCase
    
     xml_diff = XMLHelper.diff(canonical_xml,output_xml_string)
 
-
     if xml_diff.present?
       File.open("#{ERROR_DIR_JX}/#{example_name}.diff", 'w') {|file| xml_diff.each {|change, node| file.write("#{change} #{node.to_s}\t\t#{node.path}\n")}}
       File.open("#{ERROR_DIR_JX}/#{example_name}.xml", 'w') {|file| file.write((Nokogiri.XML(output_xml_string) {|x| x.default_xml.noblanks}).to_xml(indent: 2))}

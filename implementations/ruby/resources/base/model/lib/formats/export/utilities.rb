@@ -29,72 +29,71 @@ module FHIR
           hash['entry'] = h.entry.map {|e|build_entry_hash(e)} if h.respond_to?(:entry)
           h = hash
         end
-        
-        if h.is_a? Hash
-          # remove "_id" attributes
-          h.delete("_id")
 
-          # hash for renamed attributes
-          renamed = {}
+        # remove "_id" attributes
+        h.delete("_id")
 
-          # loop through all the entries in the hash
-          h.each do |key,value|
-            if ['extension','modifierExtension','entry'].include?(key)
-              h.delete(key) if value.empty?
-              next
-            end
+        # hash for renamed attributes
+        renamed = {}
 
-            # massage entries that are also hashes...
-            if value.is_a? Hash
-              h[key] = massageHash(value,false)
-            # massage entries that are arrays...
-            elsif value.is_a? Array
-              # replace each item in the array...
-              value.map! do |item|
-                if item.is_a? Hash
-                  next massageHash(item,false) # .. with a massaged hash
-                # serialize FHIR children correctly
-                elsif is_fhir_class?(item.class.name)
-                  next massageHash(item, (key=='contained') ) # .. with a hash representation of an object
-                else
-                  next item # .. or with the item itself (probably primitive data type)
-                end
+        # loop through all the entries in the hash
+        h.each do |key,value|
+          if ['extension','modifierExtension','entry'].include?(key)
+            h.delete(key) if value.empty?
+            next
+          end
+
+          if key=='primitiveExtension'
+            value.each do |pe|
+              if pe['extension'].size == 1
+                renamed[ pe['path'] ] = { 'extension' => [ build_extension_hash( pe['extension'][0]) ] }
+              else
+                renamed[ pe['path'] ] = pe['extension'].map do | extension |
+                  next extension if extension.nil?
+                  { 'extension' => [ build_extension_hash(extension)] }
+                end                
               end
-              # after massaging the array, remove empty arrays
-              if value.empty?
-                h.delete(key)
-              end
-            # remove empty attributes
-            elsif value.nil?
-              h.delete(key)
-            # massage AnyTypes
-            elsif value.class.name == 'FHIR::AnyType'
-              renamed["#{key}#{value.type}"] = value.value
-              renamed["#{key}#{value.type}"] = to_num(value.value) if value.type.downcase=='integer' || value.type.downcase=='decimal'
-              renamed["#{key}#{value.type}"] = massageHash(value.value,false) if is_fhir_class?(value.value.class.name)
-              h.delete(key)
-            # massage entries that are FHIR classes...
-            elsif is_fhir_class?(value.class.name)
-              h[key] = massageHash(value,false)
-            else
-              #puts "Ignoring '#{key}' inside '#{value.class.name}' of type '#{value.class.name}'"
             end
-            
-            # add W3C namespace to <div/> tags
-            # if key == 'div'
-              # i = (h[key] =~ /^<div>/)
-              # j = (h[key] =~ /^<div/)
-              # if i==0
-                # # replace the <div/> tag w/ one with the namespace
-                # h[key] = '<div xmlns="http://www.w3.org/1999/xhtml">' + value[5..value.length]
-              # elsif i!=0 and j!=0
-                # # there is no div tag at all -- add the full <div/> tag w/ namespace
-                # h[key] = '<div xmlns="http://www.w3.org/1999/xhtml">' + value + '</div>'
-              # end
-            # end
-             
-          end       
-        end
+            h.delete(key)
+            next
+          end
+
+          # massage entries that are also hashes...
+          if value.is_a? Hash
+            h[key] = massageHash(value,false)
+          # massage entries that are arrays...
+          elsif value.is_a? Array
+            # replace each item in the array...
+            value.map! do |item|
+              if item.is_a? Hash
+                next massageHash(item,false) # .. with a massaged hash
+              # serialize FHIR children correctly
+              elsif is_fhir_class?(item.class.name)
+                next massageHash(item, (key=='contained') ) # .. with a hash representation of an object
+              else
+                next item # .. or with the item itself (probably primitive data type)
+              end
+            end
+            # after massaging the array, remove empty arrays
+            if value.empty?
+              h.delete(key)
+            end
+          # remove empty attributes
+          elsif value.nil?
+            h.delete(key)
+          # massage AnyTypes
+          elsif value.class.name == 'FHIR::AnyType'
+            renamed["#{key}#{value.type}"] = value.value
+            renamed["#{key}#{value.type}"] = to_num(value.value) if value.type.downcase=='integer' || value.type.downcase=='decimal'
+            renamed["#{key}#{value.type}"] = massageHash(value.value,false) if is_fhir_class?(value.value.class.name)
+            h.delete(key)
+          # massage entries that are FHIR classes...
+          elsif is_fhir_class?(value.class.name)
+            h[key] = massageHash(value,false)
+          else
+            #puts "Ignoring '#{key}' inside '#{value.class.name}' of type '#{value.class.name}'"
+          end
+        end # eof h.each
 
         h.merge!(renamed) if !renamed.empty?
         

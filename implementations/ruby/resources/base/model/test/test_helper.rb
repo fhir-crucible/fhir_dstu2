@@ -39,16 +39,26 @@ class XMLHelper
         right = values[1]
         rejected << key if(Float(left) == Float(right)) rescue nil
         rejected << key if(DateTime.parse(left) == DateTime.parse(right)) rescue nil
-        rejected << key if left.squish == right.squish
-
+        rejected << key if left.gsub(/[[:space:]]/,'') == right.gsub(/[[:space:]]/,'')
       # ignore question marks in some of the XML
-      elsif (values.length == 1 && values[0].strip == '?????')
+      elsif (values.length == 1 && (values[0].strip == '?????' || values[0].gsub(/[[:space:]]/,'').size==0))
         rejected << key
       else
       end
     end
     xml_diff.reject! {|e| rejected.include? e[1].path }
     xml_diff
+  end
+
+  def self.get_path(node,stack=[])
+    return stack.reverse.join('/') if node.nil?
+    begin
+      id = node.element_children.select{|x|x.name='id'}.first.attributes['value'].value
+      stack << "[#{id}]"
+    rescue
+    end
+    stack << node.name
+    get_path(node.try(:parent),stack)
   end
 
 end

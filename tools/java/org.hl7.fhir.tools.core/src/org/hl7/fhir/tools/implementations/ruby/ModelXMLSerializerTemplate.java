@@ -183,18 +183,32 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
   private String getAnyValueFieldLine(String typeName, String originalTypeName) {
     return ""
         + "<%- if !model." + typeName + ".nil? -%>"
-        +   "<%- if FHIR::AnyType::PRIMITIVES.include? model." + typeName + ".type.downcase -%>"
+       
+        +   "<%- if FHIR::AnyType::PRIMITIVES.include?(model." + typeName + ".type.downcase) || FHIR::AnyType::DATE_TIMES.include?(model." + typeName + ".type.downcase) -%>"
+
         +     "<%- if model." + typeName + ".value.is_a?(Hash) -%>"
-        +       "<" + originalTypeName + "<%= model." + typeName + ".type %>" + " value=\"<%= model." + typeName + ".value[:value] %>\"/>"
-        +     "<%- else -%>"
-        +       "<" + originalTypeName + "<%= model." + typeName + ".type %>" + " value=\"<%= model." + typeName + ".value %>\"/>"
+        +       "<" + originalTypeName + "<%= model." + typeName + ".type %>" + " value=\"<%= model." + typeName + ".value[:value] %>\""
+        +       "<%- if model.has_primitive_extension?('" + typeName + "') -%>"
+        +         "><%- model.get_primitive_extension('" + typeName + "').each do |e| -%>"
+        +         "<%== e.to_xml(is_root: false, is_lowercase: true)  %>"
+        +         "<%- end -%>"               
+        +         "</"+ originalTypeName + "<%= model." + typeName + ".type %>" + ">"
+        +       "<%- else -%>"
+        +         "/>"
+        +       "<%- end -%>"       
+
+        +     "<%- else -%>"  
+        +       "<" + originalTypeName + "<%= model." + typeName + ".type %>" + " value=\"<%= model." + typeName + ".value %>\""
+        +       "<%- if model.has_primitive_extension?('" + typeName + "') -%>"
+        +         "><%- model.get_primitive_extension('" + typeName + "').each do |e| -%>"
+        +         "<%== e.to_xml(is_root: false, is_lowercase: true)  %>"
+        +         "<%- end -%>"               
+        +         "</"+ originalTypeName + "<%= model." + typeName + ".type %>" + ">"
+        +       "<%- else -%>"
+        +         "/>"
+        +       "<%- end -%>"              
         +     "<%- end -%>"
-        +   "<%- elsif FHIR::AnyType::DATE_TIMES.include? model." + typeName + ".type.downcase -%>"
-        +     "<%- if model." + typeName + ".value.is_a?(Hash) -%>"
-        +       "<" + originalTypeName + "<%= model." + typeName + ".type %>" + " value=\"<%= model." + typeName + ".value[:value] %>\"/>"
-        +     "<%- else -%>"
-        +       "<" + originalTypeName + "<%= model." + typeName + ".type %>" + " value=\"<%= model." + typeName + ".value %>\"/>"
-        +     "<%- end -%>"
+        
         +   "<%- else -%>"
         +     "<%- if model." + typeName + ".value.is_a?(Hash) -%>"
         +       "<%== model." + typeName + ".value[:value].to_xml(is_root: false, name: \"" + originalTypeName + "#{model." + typeName + ".type}\")%>"
@@ -207,9 +221,9 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
 
   private String getResourceFieldLine(String typeName, String originalTypeName) {
     return ""
-        + "<%- if !model." + typeName + "().nil? -%>"  
+        + "<%- if !model." + typeName + ".nil? -%>"  
         +   "<"+typeName+">"
-        +       "<%== model." + typeName + "().to_xml(is_root: false)%>"
+        +       "<%== model." + typeName + ".to_xml(is_root: false)%>"
         +   "</"+typeName+">"
         + "<%- elsif !model[\"" + typeName + "\".to_sym].nil? -%>"      
         +   "<"+typeName+">"
@@ -220,9 +234,9 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
 
   private String getIgnoredElementLine(String typeName) {
     return ""
-        + "<%- if !model." + typeName + "().nil? -%>"
-        +   "<%- if ((model." + typeName + "() =~ /^<" + typeName + "/) == 0) -%>"        
-        +     "<%== model." + typeName + "() %>"
+        + "<%- if !model." + typeName + ".nil? -%>"
+        +   "<%- if ((model." + typeName + " =~ /^<" + typeName + "/) == 0) -%>"        
+        +     "<%== model." + typeName + " %>"
         +   "<%- else -%>"
         +     "<" + typeName + " xmlns=\"http://www.w3.org/1999/xhtml\"><%== model." + typeName + "() %></" + typeName + ">"
         +   "<%- end -%>"  
@@ -235,15 +249,27 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
     
     if (multipleCardinality) {
       return ""
-          + "<%- if (model." + typeName + "() && !model." + typeName + ".empty?) -%>"
-          +   "<%- model." + typeName + "().each do |element| -%>"
-          +     "<" + originalTypeName + " value=\"<%= element %>\"/>"
+          + "<%- if (model." + typeName + " && !model." + typeName + ".empty?) -%>"
+          +   "<%- model." + typeName + ".each_with_index do |element,index| -%>"
+          +       "<" + originalTypeName + " value=\"<%= element %>\""
+          +       "<%- if model.has_primitive_extension?('" + typeName + "',index) -%>"
+          +         "><%== model.get_primitive_extension('" + typeName + "',index).to_xml(is_root: false, is_lowercase: true)  %>"
+          +         "</"+ originalTypeName + ">"
+          +       "<%- else -%>"
+          +         "/>"
+          +       "<%- end -%>"            
           +   "<%- end -%>"
           + "<%- end -%>";      
     } else {
       return ""
           + "<%- if !model." + typeName + "().nil? -%>"
-          +   "<" + originalTypeName + " value=\"<%= model." + typeName + "() %>\"/>"
+          +   "<" + originalTypeName + " value=\"<%= model." + typeName + " %>\""
+          +       "<%- if model.has_primitive_extension?('" + typeName + "') -%>"
+          +         "><%== model.get_primitive_extension('" + typeName + "').to_xml(is_root: false, is_lowercase: true)  %>"
+          +         "</"+ originalTypeName + ">"
+          +       "<%- else -%>"
+          +         "/>"
+          +       "<%- end -%>"  
           + "<%- end -%>";      
     }
   }
@@ -265,18 +291,34 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
     }
     if(multipleCardinality) {
       return ""
-          + "<%- if (!model." + typeName + "().nil? && !model." + typeName + ".empty?) -%>"
-          +   "<%- model." + typeName + "().each do |element| -%>"
+          + "<%- if (!model." + typeName + ".nil? && !model." + typeName + ".empty?) -%>"
+          +   "<%- model." + typeName + ".each_with_index do |element,index| -%>"
           +     "<%- if (!element.match(" + regex + ").nil?) -%>"
-          +       "<" + originalTypeName + " value=\"<%= element %>\"/>"
+          
+          +       "<" + originalTypeName + " value=\"<%= element %>\""
+          +       "<%- if model.has_primitive_extension?('" + typeName + "',index) -%>"
+          +         "><%== model.get_primitive_extension('" + typeName + "',index).to_xml(is_root: false, is_lowercase: true)  %>"
+          +         "</"+ originalTypeName + ">"
+          +       "<%- else -%>"
+          +         "/>"
+          +       "<%- end -%>"            
+          
           +     "<%- end -%>"
           +   "<%- end -%>"
           + "<%- end -%>";
     } else {
       return ""
-          + "<%- if !model." + typeName + "().nil? -%>"
-          +   "<%- if (!model." + typeName + "().match(" + regex + ").nil?) -%>"
-          +     "<" + originalTypeName + " value=\"<%= model." + typeName + " %>\"/>"
+          + "<%- if !model." + typeName + ".nil? -%>"
+          +   "<%- if (!model." + typeName + ".match(" + regex + ").nil?) -%>"
+          
+          +     "<" + originalTypeName + " value=\"<%= model." + typeName + " %>\""
+          +       "<%- if model.has_primitive_extension?('" + typeName + "') -%>"
+          +         "><%== model.get_primitive_extension('" + typeName + "').to_xml(is_root: false, is_lowercase: true)  %>"
+          +         "</"+ originalTypeName + ">"
+          +       "<%- else -%>"
+          +         "/>"
+          +       "<%- end -%>"           
+          
           +   "<%- end -%>"
           + "<%- end -%>";      
     }

@@ -148,7 +148,7 @@ module FHIR
                 pext = FHIR::PrimitiveExtension.new
                 pext['path'] = fixed
                 if value.is_a? Hash
-                  pext['extension'] = [ decodeExtension( value['extension'].first, depth+1 ) ]
+                  pext['extension'] = [ decodeExtension( value['extension'].first, depth+1 ) ] if value['extension'].try(:first)
                 elsif value.is_a? Array
                   pext['extension'] = value.map do | extension |
                     ext = nil
@@ -156,10 +156,12 @@ module FHIR
                     ext
                   end
                 end
-                obj['primitiveExtension'] = [] if obj['primitiveExtension'].nil?
-                obj['primitiveExtension'] << pext
+                if pext['extension']
+                  obj['primitiveExtension'] = [] if obj['primitiveExtension'].nil?
+                 obj['primitiveExtension'] << pext
+                end
               rescue Exception => e
-                binding.pry
+                # binding.pry
               end
             end
             next
@@ -265,7 +267,7 @@ module FHIR
           child.url = item['url']
         rescue Exception => e
           puts e.message
-          binding.pry
+          # binding.pry
         end
         item.keys.each do |ekey|
           if ekey.starts_with? 'value'

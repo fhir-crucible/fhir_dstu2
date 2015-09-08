@@ -5,8 +5,8 @@ module FHIR
     attr_accessor :type
     attr_accessor :value
 
-    PRIMITIVES = ["integer","decimal","string","uri","boolean","code","base64binary"]
-    DATE_TIMES = ["datetime","date","time","instant"]
+    PRIMITIVES = ['integer','positiveInt','unsignedInt','decimal','string','markdown','uri','oid','boolean','code','id','base64binary']
+    DATE_TIMES = ['datetime','date','time','instant']
 
     def initialize(type,value)
       @type = type

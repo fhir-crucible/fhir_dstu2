@@ -31,7 +31,7 @@ module FHIR
         end
 
         # remove "_id" attributes
-        h.delete("_id")
+        h.delete('_id')
 
         # hash for renamed attributes
         renamed = {}
@@ -116,7 +116,7 @@ module FHIR
         # <%== render :template => 'element', :locals => {model: model, is_resource: false} %>
         if !e.value.nil?
           any = e.value
-          if FHIR::AnyType::PRIMITIVES.include? e.value.type.downcase
+          if FHIR::AnyType::PRIMITIVES.any?{|x|x.downcase == e.value.type.downcase}
             # <value<%= model.valueType() %> value="<%= model.value()[:value] %>"/>
             x = any.value
             x = any.value[:value] if any.value.is_a? Hash
@@ -136,7 +136,7 @@ module FHIR
             else
               extension_hash["value#{e.value.type}"] = x
             end
-          elsif FHIR::AnyType::DATE_TIMES.include? e.value.type.downcase 
+          elsif FHIR::AnyType::DATE_TIMES.any?{|x|x.downcase == e.value.type.downcase}
             # <value<%= model.valueType() %> value="<%= model.value()[:value] %>"/>
             if any.value.is_a? Hash
               extension_hash["value#{e.value.type}"] = any.value[:value]

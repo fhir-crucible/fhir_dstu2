@@ -39,7 +39,7 @@ class XMLHelper
         right = values[1]
         rejected << key if(Float(left) == Float(right)) rescue nil
         rejected << key if(DateTime.parse(left) == DateTime.parse(right)) rescue nil
-        rejected << key if left.gsub(/[[:space:]]/,'') == right.gsub(/[[:space:]]/,'')
+        rejected << key if left.gsub(/[[:space:]]/,'').gsub(/[^\w]/,'') == right.gsub(/[[:space:]]/,'').gsub(/[^\w]/,'')
       # ignore question marks in some of the XML
       elsif (values.length == 1 && (values[0].strip == '?????' || values[0].gsub(/[[:space:]]/,'').size==0))
         rejected << key

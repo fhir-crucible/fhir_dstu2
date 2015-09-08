@@ -30,10 +30,14 @@ class RunConversionTest < Test::Unit::TestCase
 
   Dir.glob(example_json_files).each do | json_file |
     
-    json_basename = File.basename(json_file,'.json')
+    json_basename = File.basename(json_file,'.json')    
+    dir = File.dirname(json_file)
+    parent = dir[dir.index('publish')+7..-1].gsub('/','_')
+    parent = parent[1..-1] if parent[0]=='_'
+    
     json_string = File.open(json_file, 'r:bom|UTF-8', &:read)
     
-    xml_file = example_xml_files.find {|f| File.basename(f,'.xml') == json_basename }
+    xml_file = example_xml_files.find {|f| f == json_file.gsub('.json','.xml') }
     next if xml_file.nil?
     
     xml_string = File.open(xml_file, 'r:bom|UTF-8', &:read)
@@ -47,21 +51,21 @@ class RunConversionTest < Test::Unit::TestCase
     next if EXCLUDED_RESOURCES.include?(root_element)
 
     # Generate Test 1 - JSON conversions
-    define_method("test_#{json_basename}_json_diff") do
-      run_json_diff_test(json_basename,json_file)
+    define_method("test_#{parent}#{json_basename}_json_diff") do
+      run_json_diff_test("#{parent}#{json_basename}",json_file)
     end
     
     # Generate Test 2 - XML-to-JSON Ruby/Java correctness
-    define_method("test_#{json_basename}_xml_json_diff") do
-      run_xml_json_diff_test(json_basename,json_file,root_element,xml_file)
+    define_method("test_#{parent}#{json_basename}_xml_json_diff") do
+      run_xml_json_diff_test("#{parent}#{json_basename}",json_file,root_element,xml_file)
     end 
     
     # Generate Test 3 - XML-to-XML conversions
     # Ignore: This is done in diff_examples_test.rb
 
     # Generate Test 4 - JSON-to-XML conversions
-     define_method("test_#{json_basename}_json_xml_diff") do
-      run_json_xml_diff_test(json_basename,json_file,root_element,xml_file)
+     define_method("test_#{parent}#{json_basename}_json_xml_diff") do
+      run_json_xml_diff_test("#{parent}#{json_basename}",json_file,root_element,xml_file)
     end    
 
   end
@@ -74,7 +78,8 @@ class RunConversionTest < Test::Unit::TestCase
     
     example_json_string = File.open(example_json_file, 'r:bom|UTF-8', &:read)
     example_json_hash = JSON.parse(example_json_string)
-    
+    strip_out_fhir_comments!(example_json_hash)
+
     # Inflate the resource from Patient... it will inflate any FHIR Resource type
     obj = FHIR::Patient.from_fhir_json example_json_string
     parsed_json_string = obj.to_fhir_json
@@ -164,6 +169,24 @@ class RunConversionTest < Test::Unit::TestCase
     errors
   end
 
+  def strip_out_fhir_comments!(hash)
+    hash.each do |key,value|
+      delete_key = false
+      if key=='fhir_comments'
+        delete_key = true
+      # elsif key.starts_with('_')
+      elsif value.is_a?(Array)
+        value.each do |thing|
+          strip_out_fhir_comments!(thing) if thing.is_a?(Hash)
+        end 
+      elsif value.is_a?(Hash)
+        strip_out_fhir_comments!(value)
+        delete_key = value.empty?
+      end
+      hash.delete(key) if delete_key
+    end
+  end
+
   def is_a_date_or_time(value)
     return false if !value.is_a?(String)
     # when 'instant'
@@ -190,15 +213,15 @@ class RunConversionTest < Test::Unit::TestCase
     
     example_json_string = File.open(example_json_file, 'r:bom|UTF-8', &:read)
     example_json_hash = JSON.parse(example_json_string)
-    
+    strip_out_fhir_comments!(example_json_hash)
+
     # Inflate the resource from XML
     example_xml_string = File.open(example_xml_file, 'r:bom|UTF-8', &:read)
     obj = FHIR.const_get(root_element).from_xml example_xml_string
 
     parsed_json_string = obj.to_fhir_json
     parsed_json_hash = JSON.parse(parsed_json_string)
-    
-    #assert parsed_json_hash == example_json_hash
+    strip_out_fhir_comments!(parsed_json_hash)
     
     errors = nil
     longer = nil
@@ -276,6 +299,7 @@ class RunConversionTest < Test::Unit::TestCase
       File.open("#{ERROR_DIR_JX}/#{example_name}.diff", 'w') {|file| xml_diff.each {|change, node| file.write("#{change} #{node.to_s}\t\t#{node.path}\n")}}
       File.open("#{ERROR_DIR_JX}/#{example_name}.xml", 'w') {|file| file.write((Nokogiri.XML(output_xml_string) {|x| x.default_xml.noblanks}).to_xml(indent: 2))}
       File.open("#{ERROR_DIR_JX}/#{example_name}_ORIG.xml", 'w') {|file| file.write(canonical_xml)}
+      File.open("#{ERROR_DIR_JX}/#{example_name}_ORIG.json", 'w') {|file| file.write(example_json_string)}
     end
     assert xml_diff.empty?, "#{example_name}: #{xml_diff.length} differences in JSON-to-XML vs published XML"
   end 

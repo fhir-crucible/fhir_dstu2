@@ -3,9 +3,11 @@
 *validation.log
 *fhir-error-dump.txt
 schema
-implementations/*
-!implementations/ruby
 implementations/ruby/output
+implementations/javascript/
+implementations/objectivec/
+implementations/pascal/
+implementations/csharp/
 #.project
 ivy/
 publish/

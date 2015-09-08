@@ -55,7 +55,7 @@ Authored by: Eric M Haas  Health eData Inc.
 	</type>
 	<!--Patient is required from core -->
 	<subject>
-		<reference value="Patient/uslab-example1"/>
+		<reference value="Patient/patient-uslab-example1"/>
 		<display value="Todd Lerr"/>
 	</subject>
 	<!-- accession identifier - e.g. assigned by the labaratory when it is received.
@@ -74,7 +74,7 @@ Authored by: Eric M Haas  Health eData Inc.
 			<coding>
 				<system value="http://snomed.info/sct"/>
 				<!--EH: Note to balloters  -  this is to demonstrate use of source for body site not really needed for blood draw.-->
-				<code value=" 53120007"/>
+				<code value="53120007"/>
 				<display value="Arm"/>
 			</coding>
 			<!-- and or local code-->

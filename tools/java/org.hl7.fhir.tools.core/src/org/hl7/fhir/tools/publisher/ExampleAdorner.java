@@ -145,13 +145,15 @@ public class ExampleAdorner implements XhtmlGeneratorAdorner {
     } else {
       ExampleAdornerState s = (ExampleAdornerState) state;
       if (s.getState() == State.Element) {
+        if (s.definition.typeCode().equals("Resource") && (s.path.endsWith(".entry.resource") || s.path.endsWith(".contained")) && definitions.isResource(node.getNodeName())) // account for extra element
+          return new ExampleAdornerState(State.Element, s.path, definitions.getResourceByName(node.getNodeName()).getRoot(), "", "");
         String p = s.path+"."+node.getNodeName();
-        ElementDefn e = s.getDefinition().getElementByName(node.getLocalName(), true, definitions);
+        ElementDefn e = s.getDefinition().getElementByName(node.getLocalName(), true, definitions, "adorn example");
         if (e == null && definitions.hasElementDefn(s.getDefinition().typeCode())) {
           // well, we see if it's inherited...
           ElementDefn t = definitions.getElementDefn(s.getDefinition().typeCode());
           while (t != null && e == null) {
-            e = t.getElementByName(node.getLocalName(), true, definitions);
+            e = t.getElementByName(node.getLocalName(), true, definitions, "adorn example");
             if (e != null)
               p = t.getName()+"."+e.getName();
             else if (definitions.hasElementDefn(t.typeCode()))
@@ -199,9 +201,9 @@ public class ExampleAdorner implements XhtmlGeneratorAdorner {
         else
           return new ExampleAdornerState(State.Reference, s.path, s.getDefinition(), "", "");
       } else // if (s.getState() == State.Unknown) {
-        if (node.getNamespaceURI().equals("http://www.w3.org/1999/xhtml"))
-          return new ExampleAdornerState(State.Unknown, s.path, null, "Snipped for brevity");
-        else
+//        if (node.getNamespaceURI().equals("http://www.w3.org/1999/xhtml"))
+//          return new ExampleAdornerState(State.Unknown, s.path, null, "Snipped for brevity");
+//        else
           return new ExampleAdornerState(State.Unknown, s.path, null, "", "");
     }
   }
@@ -236,11 +238,13 @@ public class ExampleAdorner implements XhtmlGeneratorAdorner {
         else 
           return null;
       ElementDefn t = s.definition;
-      ElementDefn child = t.getElementByName(node.getNodeName(), true, definitions);
+      if (t.typeCode().equals("Resource") && (s.path.endsWith(".entry.resource") || s.path.endsWith(".contained")) && definitions.isResource(node.getNodeName()))
+        return null;        
+      ElementDefn child = t.getElementByName(node.getNodeName(), true, definitions, "adorn example");
       String p = child == null ? null : s.path+"."+child.getName();
       while (child == null && t != null && definitions.hasElementDefn(t.typeCode())) {
         t = definitions.getElementDefn(t.typeCode());
-        child = t.getElementByName(node.getNodeName(), true, definitions);
+        child = t.getElementByName(node.getNodeName(), true, definitions, "adorn example");
         if (child != null) {
           p = t.getName()+"."+child.getName();
         }

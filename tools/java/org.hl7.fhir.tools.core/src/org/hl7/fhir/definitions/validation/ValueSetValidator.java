@@ -13,9 +13,9 @@ import org.hl7.fhir.instance.model.ValueSet.ConceptDefinitionComponent;
 import org.hl7.fhir.instance.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.instance.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.instance.model.OperationOutcome.IssueType;
-import org.hl7.fhir.instance.utils.WorkerContext;
 import org.hl7.fhir.instance.validation.BaseValidator;
 import org.hl7.fhir.instance.validation.ValidationMessage;
+import org.hl7.fhir.tools.publisher.BuildWorkerContext;
 import org.hl7.fhir.utilities.Utilities;
 
 public class ValueSetValidator extends BaseValidator {
@@ -51,7 +51,7 @@ public class ValueSetValidator extends BaseValidator {
     }
   }
 
-  private WorkerContext context;
+  private BuildWorkerContext context;
   private List<String> fixups;
   private Set<ValueSet> handled = new HashSet<ValueSet>();
   private List<VSDuplicateList> duplicateList = new ArrayList<ValueSetValidator.VSDuplicateList>();
@@ -59,7 +59,7 @@ public class ValueSetValidator extends BaseValidator {
   private Set<String> valueSets = new HashSet<String>();
   private Set<String> codeSystems = new HashSet<String>();
 
-  public ValueSetValidator(WorkerContext context, List<String> fixups, Set<String> styleExemptions) {
+  public ValueSetValidator(BuildWorkerContext context, List<String> fixups, Set<String> styleExemptions) {
     this.context = context;
     this.fixups = fixups;
     this.styleExemptions = styleExemptions;
@@ -157,8 +157,9 @@ public class ValueSetValidator extends BaseValidator {
           vs.getCodeSystem().getSystem().startsWith("urn:") , "Unacceptable code system url "+vs.getCodeSystem().getSystem());
       
       Set<String> codes = new HashSet<String>();
-      if (rule(errors, IssueType.BUSINESSRULE, vs.getUserString("committee")+":ValueSet["+vs.getId()+"].codeSystem", vs.getCodeSystem().hasSystem(), "If a value set has a define, it must have a system")) {
-        rule(errors, IssueType.BUSINESSRULE, vs.getUserString("committee")+":ValueSet["+vs.getId()+"].codeSystem", vs.getCodeSystem().hasCaseSensitiveElement() && vs.getCodeSystem().getCaseSensitive(), 
+      if (rule(errors, IssueType.BUSINESSRULE, vs.getUserString("committee")+":ValueSet["+vs.getId()+"].codeSystem", vs.getCodeSystem().hasSystem(), "If a value set has an inline code system, it must have a system uri")) {
+        if (!vs.getId().startsWith("v2-")) 
+          rule(errors, IssueType.BUSINESSRULE, vs.getUserString("committee")+":ValueSet["+vs.getId()+"].codeSystem", vs.getCodeSystem().hasCaseSensitiveElement() && vs.getCodeSystem().getCaseSensitive(), 
             "Value set "+nameForErrors+" ("+vs.getName()+"): All value sets that define codes must mark them as case sensitive",
             "<a href=\""+vs.getUserString("path")+"\">Value set "+nameForErrors+" ("+vs.getName()+")</a>: All value sets that define codes must mark them as case sensitive");
         checkCodeCaseDuplicates(errors, nameForErrors, vs, codes, vs.getCodeSystem().getConcept());
@@ -284,7 +285,7 @@ public class ValueSetValidator extends BaseValidator {
         system.equals("http://www.pharmgkb.org") ||
         system.equals("http://www.radlex.org") ||
         system.equals("http://www.whocc.no/atc") ||
-        system.equals("http://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp?rpt=cvx") ||
+        system.equals("http://hl7.org/fhir/sid/cvx") ||
         system.equals("urn:ietf:bcp:47") ||
         system.equals("urn:iso:std:iso:11073:10101") ||
         system.equals("urn:iso:std:iso:3166") ||
@@ -317,7 +318,7 @@ public class ValueSetValidator extends BaseValidator {
   private boolean isValidCode(String code, String system) {
     ValueSet cs = context.getCodeSystems().get(system);
     if (cs == null) 
-      return context.getTerminologyServices().validateCode(system, code, null) == null;
+      return context.validateCode(system, code, null).isOk();
     else {
       if (!cs.hasCodeSystem())
         throw new Error("ValueSet "+cs.getName()+"/"+cs.getUrl()+" has no code system!");
@@ -338,7 +339,7 @@ public class ValueSetValidator extends BaseValidator {
   }
 
   private boolean canValidate(String system) {
-    return context.getCodeSystems().containsKey(system) || context.getTerminologyServices().supportsSystem(system);
+    return context.getCodeSystems().containsKey(system) || context.supportsSystem(system);
   }
 
   private void fixup(ValueSet vs) {

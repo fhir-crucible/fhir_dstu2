@@ -331,9 +331,17 @@ public class ToolingExtensions {
   }
 
   public static void setOID(ValueSetCodeSystemComponent define, String oid) throws Exception {
+    if (!oid.startsWith("urn:oid:"))
+      throw new Exception("Error in OID format");
+    if (oid.startsWith("urn:oid:urn:oid:"))
+      throw new Exception("Error in OID format");
     define.getExtension().add(Factory.newExtension(EXT_OID, Factory.newUri(oid), false));       
   }
   public static void setOID(ValueSet vs, String oid) throws Exception {
+    if (!oid.startsWith("urn:oid:"))
+      throw new Exception("Error in OID format");
+    if (oid.startsWith("urn:oid:urn:oid:"))
+      throw new Exception("Error in OID format");
     vs.getExtension().add(Factory.newExtension(EXT_OID, Factory.newUri(oid), false));       
   }
 
@@ -430,6 +438,16 @@ public class ToolingExtensions {
   }
 
   public static void removeExtension(DomainResource focus, String url) {
+    Iterator<Extension> i = focus.getExtension().iterator();
+    while (i.hasNext()) {
+      Extension e = i.next(); // must be called before you can call i.remove()
+      if (e.getUrl().equals(url)) {
+        i.remove();
+      }
+    }
+  }
+  
+  public static void removeExtension(Element focus, String url) {
     Iterator<Extension> i = focus.getExtension().iterator();
     while (i.hasNext()) {
       Extension e = i.next(); // must be called before you can call i.remove()

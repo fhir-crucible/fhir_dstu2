@@ -161,7 +161,8 @@ Notes:
 </p>
 <ul>
  <li>For all the types, the XML and JSON representations are the same except for different escaping in XML and JSON</li>
- <li>The regexes allow a broader set of values than are actually valid (e.g. leap years) so additional validation is needed</li>
+ <li>Boolean values can also be represented using coded values (such as <a href="v2/0136/index.html">HL7 v2 2 Table 0136</a>). See <a href="observation.html#valuex">Observation</a> for one such use</li>
+ <li>The regexes may allow a broader set of values than are actually valid (e.g. leap years) so additional validation is needed</li>
  <li>The precision of the decimal value has signficance:<a name="precision"> </a>
     <ul> 
       <li>e.g 0.010 is regarded as different to 0.01, and the original precision should be preserved</li>
@@ -192,7 +193,9 @@ The value is represented in XML as an attribute named "value":
 </pre>
 <p>
 For additional details, including how the internal identity and extensions are represented, see the <a href="xml.html">XML</a> and <a href="json.html">JSON</a> formats. 
-When the value is missing, it is not represented in the instance; the XML value attribute or the JSON property are not represented at all. 
+When the value is missing, it is not represented in the instance; the XML value attribute or the JSON property are not represented at all. This means that 
+in xml, attributes are never present with a length of 0 (value=""), and properties are never a 0 length string or null in JSON ("name" : "" it not valid). 
+(note: there is one specific <a href="json.html#null">use of the null</a> in the JSON represesntation).
 </p>
 <p>
 According to XML schema, leading and trailing whitespace in the value attribute is ignored for the types 
@@ -254,9 +257,17 @@ Some additional notes about the <code>markdown</code> datatype:
    so the content of the string should be readable without markdown processing, per merkdown philosophy</li>
  <li>The preferred markdown syntax is described at <a href="http://daringfireball.net/projects/markdown/syntax">http://daringfireball.net/projects/markdown/syntax</a>
    (see tests here: <a href="http://daringfireball.net/projects/downloads/MarkdownTest_1.0.zip">http://daringfireball.net/projects/downloads/MarkdownTest_1.0.zip</a>)</li> 
- <li>DSTU note: <a href="http://commonmark.org/">CommonMark</a> is a new arrival but may gain sufficient impetus to be preferred in a future version. 
-   Feedback on this is welcome</li>
 </ul>
+
+<blockquote class="dstu-note">
+<a name="dstu"> </a>
+<p>
+<b>DSTU Note:</b>  <a href="http://commonmark.org/">CommonMark</a> is a new arrival but may gain sufficient impetus to be preferred in a future version. 
+</p>
+<p>
+Feedback is welcome <a href="http://wiki.hl7.org/index.php?title=FHIR_Specification_Feedback_(DSTU_2)">here</a>.
+</p>
+</blockquote>
 
 <!-- 
 boolean: [%dtusage boolean%]
@@ -276,7 +287,7 @@ id: [%dtusage id%]
 -->
 <hr/>
 
-<a name="Types"/>
+<a name="Types"> </a><a name="complex"> </a>
 <h2>Complex Types</h2>
 
 <p>
@@ -890,7 +901,7 @@ If capturing a phone, fax or similar contact point, the value should be a proper
 <a href="http://www.itu.int/rec/T-REC-E.123-200102-I/e">ITU-T E.123</a>. 
 However, this is frequently not possible due to legacy data and/or clerical practices when recording contact details.
 For this reason, phone, fax, page and email addresses are not handled as formal URLS. For other kinds 
-of contacts, the <code>system</code> is "other" and the <code>value</code> SHOULD be a URL so that it's use can be determined automatically. Typical 
+of contacts, the <code>system</code> is "other" and the <code>value</code> SHOULD be a URL so that its use can be determined automatically. Typical 
 URL schemes used in the value are http(s) for web addresses, and URL schemes for various kinds of messaging systems.
 If the value is not a URL, then human interpretation will be required.
 </p>
@@ -955,7 +966,7 @@ This table summarises some common uses of the Timing Data Type criteria.
  <tr><td>Every 21 days for 1 hour</td> <td>1</td>         <td>hr</td>                   <td>1</td>                <td></td>                    <td>21</td>            <td>d</td>                  <td></td>                 <td></td>            <td></td></tr>
  <tr><td>Three times a week for ½ hour</td> <td>0.5</td>  <td>hr</td>                   <td>3</td>                <td></td>                    <td>1</td>             <td>wk</td>                 <td></td>                 <td></td>            <td></td></tr>
  <tr><td>With breakfast</td>     <td></td>                <td></td>                     <td></td>                 <td></td>                    <td></td>              <td></td>                   <td></td>                 <td>CM</td>          <td></td></tr>
- <tr><td>For 10 minutes before meals</td> <td>10</td>     <td>min</td>                  <td></td>                 <td></td>                    <td>10</td>            <td>min</td>                <td></td>                 <td>AC</td>          <td></td></tr>
+ <tr><td>For 5 minutes, 10 minutes before meals</td> <td>5</td>     <td>min</td>        <td></td>                 <td></td>                    <td>10</td>            <td>min</td>                <td></td>                 <td>AC</td>          <td></td></tr>
  <tr><td>TID, for 14 days</td>   <td></td>                <td></td>                     <td>3</td>                <td></td>                    <td>1</td>             <td>d</td>                  <td></td>                 <td></td>            <td>Duration = 14 days</td></tr>
  <tr><td>BID, start on 7/1/2015 at 1:00 PM</td> <td></td> <td></td>                     <td>2</td>                <td></td>                    <td>1</td>             <td>d</td>                  <td></td>                 <td></td>            <td>Period, low = 2015-07-01T13:00:00</td></tr>
  <tr><td></td>                   <td></td>                <td></td>                     <td></td>                 <td></td>                    <td></td>              <td></td>                   <td></td>                 <td></td>            <td></td></tr>
@@ -985,7 +996,7 @@ Signature
 See also <a href="datatypes-examples.html#Signature">Examples</a>, <a href="datatypes-definitions.html#Signature">Detailed Descriptions</a> and <a href="datatypes-mappings.html#Signature">Mappings</a>.
 </p>
 <p>
-A Signature holds an electronic representation of a signature and it's supporting context in a FHIR accessible form. 
+A Signature holds an electronic representation of a signature and its supporting context in a FHIR accessible form. 
 The signature may either be a cryptographic type (XML DigSig or a JWT), which is able to provide non-repudiation proof, or 
 it may be a graphical image that represents a signature or a signature process. 
 </p>
@@ -1084,7 +1095,6 @@ Some elements do not have a specified type. The type is represented by the wildc
  <li><a href="datatypes.html#time">time</a></li>
  <li><a href="datatypes.html#code">code</a></li>
  <li><a href="datatypes.html#oid">oid</a></li>
- <li><a href="datatypes.html#uuid">uuid</a></li>
  <li><a href="datatypes.html#id">id</a></li>
  <li><a href="datatypes.html#unsignedInt">unsignedInt</a></li>
  <li><a href="datatypes.html#positiveInt">positiveInt</a></li>

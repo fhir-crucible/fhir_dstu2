@@ -23,9 +23,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.hl7.fhir.instance.client.EFhirClientException;
-import org.hl7.fhir.instance.client.FHIRSimpleClient;
-import org.hl7.fhir.instance.client.IFHIRClient;
 import org.hl7.fhir.instance.formats.IParser.OutputStyle;
 import org.hl7.fhir.instance.formats.JsonParser;
 import org.hl7.fhir.instance.model.Bundle;
@@ -42,8 +39,11 @@ import org.hl7.fhir.instance.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.instance.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.instance.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.instance.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.instance.terminologies.ITerminologyServices;
 import org.hl7.fhir.instance.terminologies.ValueSetExpansionCache;
+import org.hl7.fhir.instance.utils.EOperationOutcome;
+import org.hl7.fhir.instance.utils.IWorkerContext.ValidationResult;
+import org.hl7.fhir.instance.utils.client.EFhirClientException;
+import org.hl7.fhir.instance.utils.client.FHIRToolingClient;
 import org.hl7.fhir.instance.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -54,7 +54,7 @@ import org.hl7.fhir.utilities.xml.XMLWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class SpecificationTerminologyServices implements ITerminologyServices {
+public class SpecificationTerminologyServices {
 
   public static class Concept {
     private String display; // preferred
@@ -86,7 +86,7 @@ public class SpecificationTerminologyServices implements ITerminologyServices {
   private boolean serverOk = false;
   private String cache;
   private String tsServer;
-  private IFHIRClient client; 
+  private FHIRToolingClient client; 
   
   public SpecificationTerminologyServices(String cache, String tsServer, Map<String, ValueSet> codeSystems) {
     super();
@@ -95,7 +95,7 @@ public class SpecificationTerminologyServices implements ITerminologyServices {
     this.codeSystems = codeSystems;
   }
 
-  @Override
+  
   public ConceptDefinitionComponent getCodeDefinition(String system, String code) {
     if (system == null)
       return null;
@@ -129,7 +129,7 @@ public class SpecificationTerminologyServices implements ITerminologyServices {
       response = queryForTerm(code);
     if (snomedCodes.containsKey(code))
       if (display == null || snomedCodes.get(code).has(display))
-        return null;
+        return new ValidationResult(new ConceptDefinitionComponent().setCode(code).setDisplay(display));
       else 
         return new ValidationResult(IssueSeverity.WARNING, "Snomed Display Name for "+code+" must be one of '"+snomedCodes.get(code).summary()+"'");
     
@@ -210,11 +210,12 @@ public class SpecificationTerminologyServices implements ITerminologyServices {
   private ValidationResult verifyLoinc(String code, String display) throws Exception {
     if (!loincCodes.containsKey(code))
       return new ValidationResult(IssueSeverity.ERROR, "Unknown Loinc Code "+code);
+    Concept lc = loincCodes.get(code);
     if (display == null)
-      return null;
-    if (!loincCodes.get(code).has(display))
-      return new ValidationResult(IssueSeverity.WARNING, "Loinc Display Name for "+code+" must be one of '"+loincCodes.get(code).summary()+"'");
-    return null;
+      return new ValidationResult(new ConceptDefinitionComponent().setCode(code).setDisplay(lc.display));
+    if (!lc.has(display))
+      return new ValidationResult(IssueSeverity.WARNING, "Loinc Display Name for "+code+" must be one of '"+lc.summary()+"'");
+    return new ValidationResult(new ConceptDefinitionComponent().setCode(code).setDisplay(lc.display));
   }
 
   private ValidationResult verifyCode(ValueSet vs, String code, String display) throws Exception {
@@ -223,10 +224,10 @@ public class SpecificationTerminologyServices implements ITerminologyServices {
       if (cc == null)
         return new ValidationResult(IssueSeverity.ERROR, "Unknown Code "+code+" in "+vs.getCodeSystem().getSystem());
       if (display == null)
-        return null;
+        return new ValidationResult(new ConceptDefinitionComponent().setCode(code).setDisplay(cc.getDisplay()));
       if (cc.hasDisplay()) {
         if (display.equalsIgnoreCase(cc.getDisplay()))
-          return null;
+          return new ValidationResult(new ConceptDefinitionComponent().setCode(code).setDisplay(cc.getDisplay()));
         return new ValidationResult(IssueSeverity.ERROR, "Display Name for "+code+" must be '"+cc.getDisplay()+"'");
       }
       return null;
@@ -235,17 +236,17 @@ public class SpecificationTerminologyServices implements ITerminologyServices {
       if (cc == null)
         return new ValidationResult(IssueSeverity.ERROR, "Unknown Code "+code+" in "+vs.getCodeSystem().getSystem());
       if (display == null)
-        return null;
+        return new ValidationResult(cc);
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
       if (cc.hasDisplay()) {
         b.append(cc.getDisplay());
         if (display.equalsIgnoreCase(cc.getDisplay()))
-          return null;
+          return new ValidationResult(cc);
       }
       for (ConceptDefinitionDesignationComponent ds : cc.getDesignation()) {
         b.append(ds.getValue());
         if (display.equalsIgnoreCase(ds.getValue()))
-          return null;
+          return new ValidationResult(cc);
       }
       return new ValidationResult(IssueSeverity.ERROR, "Display Name for "+code+" must be one of '"+b.toString()+"'");
     }
@@ -273,7 +274,7 @@ public class SpecificationTerminologyServices implements ITerminologyServices {
     return null;
   }
 
-  @Override
+  
   public ValidationResult validateCode(String system, String code, String display) {
     try {
       if (system.equals("http://snomed.info/sct"))
@@ -284,14 +285,14 @@ public class SpecificationTerminologyServices implements ITerminologyServices {
         return verifyCode(codeSystems.get(system), code, display);
       }
       if (system.startsWith("http://example.org"))
-        return null;
+        return new ValidationResult(new ConceptDefinitionComponent());
     } catch (Exception e) {
       return new ValidationResult(IssueSeverity.ERROR, "Error validating code \""+code+"\" in system \""+system+"\": "+e.getMessage());
     }
     return new ValidationResult(IssueSeverity.WARNING, "Unknown code system "+system);
   }
 
-  @Override
+  
   public boolean supportsSystem(String system) {
     return "http://snomed.info/sct".equals(system) || "http://loinc.org".equals(system) ;
   }
@@ -359,79 +360,10 @@ public class SpecificationTerminologyServices implements ITerminologyServices {
     }
   }
 
-
-  @Override
-  public boolean checkVS(ConceptSetComponent inc, String system, String code) {
-    try {
-      OperationOutcome op = checkVSOperation(inc, system, code);
-      boolean result = true;
-      for (OperationOutcomeIssueComponent issue : op.getIssue())
-        if (issue.getSeverity() == IssueSeverity.FATAL || issue.getSeverity() == IssueSeverity.ERROR)
-          result = false;
-      return result;
-    } catch (Exception e) {
-      return false;
-    }
-  }
-  
-  public OperationOutcome checkVSOperation(ConceptSetComponent inc, String system, String code) throws Exception {
-    ValueSet vs = new ValueSet();
-    vs.setCompose(new ValueSetComposeComponent());
-    vs.getCompose().getInclude().add(inc);
-    ByteArrayOutputStream b = new  ByteArrayOutputStream();
-    JsonParser parser = new JsonParser();
-    parser.setOutputStyle(OutputStyle.NORMAL);
-    parser.compose(b, vs);
-    b.close();
-    String hash = Integer.toString(new String(b.toByteArray()).hashCode())+"-vs-check";
-    String fn = Utilities.path(cache, hash+".json");
-    if (new File(fn).exists()) {
-      Resource r = parser.parse(new FileInputStream(fn));
-      if (r instanceof OperationOutcome)
-        throw new Exception(((OperationOutcome) r).getIssue().get(0).getDetails().getText());
-      else
-        return ((OperationOutcome) ((Bundle) r).getEntry().get(0).getResource());
-    }
-    vs.setUrl("urn:uuid:"+UUID.randomUUID().toString().toLowerCase()); // that's all we're going to set
-        
-    if (!triedServer || serverOk) {
-      try {
-        triedServer = true;
-        serverOk = false;
-        // for this, we use the FHIR client
-        IFHIRClient client = new FHIRSimpleClient();
-        client.initialize(tsServer);
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("_query", "validate");
-        params.put("system", system);
-        params.put("code", code);
-        Bundle result = client.searchPost(ValueSet.class, vs, params);
-        serverOk = true;
-        FileOutputStream s = new FileOutputStream(fn);
-        parser.compose(s, result);
-        s.close();
-        return ((OperationOutcome) result.getEntry().get(0).getResource());
-      } catch (EFhirClientException e) {
-        serverOk = true;
-        FileOutputStream s = new FileOutputStream(fn);
-        parser.compose(s, e.getServerErrors().get(0));
-        s.close();
-        throw new Exception(e.getServerErrors().get(0).getIssue().get(0).getDetails().getText());
-      } catch (Exception e) {
-        serverOk = false;
-        throw e;
-      }
-    } else
-      throw new Exception("Server is not available");
-  }
-
-  @Override
   public boolean verifiesSystem(String system) {
     return true;
   }
 
-  
-  @Override
   public ValueSetExpansionOutcome expand(ValueSet vs) {
     try {
       if (vs.hasExpansion()) {
@@ -467,7 +399,7 @@ public class SpecificationTerminologyServices implements ITerminologyServices {
     JsonParser parser = new JsonParser();
     Resource r = parser.parse(new FileInputStream(cacheFn));
     if (r instanceof OperationOutcome)
-      return new ValueSetExpansionOutcome(((OperationOutcome) r).getIssue().get(0).getDetails().getText());
+      return new ValueSetExpansionOutcome(((OperationOutcome) r).getIssue().get(0).getDiagnostics());
     else {
       vs.setExpansion(((ValueSet) r).getExpansion()); // because what is cached might be from a different value set
       return new ValueSetExpansionOutcome(vs);
@@ -482,13 +414,13 @@ public class SpecificationTerminologyServices implements ITerminologyServices {
         serverOk = false;
         // for this, we use the FHIR client
         if (client == null) {
-          client = new FHIRSimpleClient();
-          client.initialize(tsServer);
+          client = new FHIRToolingClient(tsServer);
         }
         Map<String, String> params = new HashMap<String, String>();
-        params.put("limit", "500");
+        params.put("_limit", PageProcessor.CODE_LIMIT_EXPANSION);
+        params.put("_incomplete", "true");
         params.put("profile", "http://www.healthintersections.com.au/fhir/expansion/no-details");
-        ValueSet result = client.expandValueset(vs);
+        ValueSet result = client.expandValueset(vs, params);
         serverOk = true;
         FileOutputStream s = new FileOutputStream(cacheFn);
         parser.compose(s, result);
@@ -504,7 +436,7 @@ public class SpecificationTerminologyServices implements ITerminologyServices {
           parser.compose(s, e.getServerErrors().get(0));
         s.close();
 
-        throw new Exception(e.getServerErrors().get(0).getIssue().get(0).getDetails().getText());
+        throw new Exception(e.getServerErrors().get(0).getIssue().get(0).getDiagnostics());
       } catch (Exception e) {
         serverOk = false;
         throw e;
@@ -535,7 +467,7 @@ public class SpecificationTerminologyServices implements ITerminologyServices {
 //    expandedVSCache = new ValueSetExpansionCache(workerContext, Utilities.path(folders.srcDir, "vscache"));
 //  ValueSetExpansionOutcome result = expandedVSCache.getExpander().expand(vs);
 //
-//  @Override
+//  
 //  public ValueSet expandVS(ValueSet vs) throws Exception {
 //    JsonParser parser = new JsonParser();
 //    parser.setOutputStyle(OutputStyle.NORMAL);
@@ -584,8 +516,8 @@ public class SpecificationTerminologyServices implements ITerminologyServices {
 //      throw new Exception("Server is not available");
 //  }
   
-  @Override
-  public ValueSetExpansionComponent expandVS(ConceptSetComponent inc) throws Exception {
+  
+  public ValueSetExpansionComponent expandVS(ConceptSetComponent inc) {
     ValueSet vs = new ValueSet();
     vs.setCompose(new ValueSetComposeComponent());
     vs.getCompose().getInclude().add(inc);

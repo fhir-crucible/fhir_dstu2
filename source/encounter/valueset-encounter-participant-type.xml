@@ -34,5 +34,23 @@
         <value value="_ParticipationAncillary"/>
       </filter>
     </include>
-  </compose>
+    <include>
+      <system value="http://hl7.org/fhir/v3/ParticipationType"/>
+      <concept>
+        <code value="SPRF"/>
+      </concept>
+      <concept>
+        <code value="PPRF"/>
+      </concept>
+      <concept>
+        <code value="PART"/>
+      </concept>
+    </include>
+    <exclude>
+      <system value="http://hl7.org/fhir/v3/ParticipationType"/>
+      <concept>
+        <code value="_ParticipationAncillary"/>
+      </concept>
+    </exclude>
+  </compose>  
 </ValueSet>

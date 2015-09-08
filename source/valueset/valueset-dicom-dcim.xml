@@ -3572,7 +3572,7 @@
     <concept>
       <code value="111135"/>
       <display value="Additional projections"/>
-      <definition value="Views not inclusive of MLO and CC (BI-RADS®)"/>
+      <definition value="Views not inclusive of MLO and CC (BI-RADS(R))"/>
     </concept>
     <concept>
       <code value="111136"/>
@@ -5853,17 +5853,17 @@
     <concept>
       <code value="111559"/>
       <display value="Weak family history of breast cancer"/>
-      <definition value="A patient&#39;s biological aunt, grandmother, or female cousin was diagnosed with breast cancer. Definition from BI-RADS®"/>
+      <definition value="A patient&#39;s biological aunt, grandmother, or female cousin was diagnosed with breast cancer. Definition from BI-RADS(R)"/>
     </concept>
     <concept>
       <code value="111560"/>
       <display value="Intermediate family history of breast cancer"/>
-      <definition value="A patient&#39;s biological mother or sister was diagnosed with breast cancer after they had gone through menopause. Definition from BI-RADS®"/>
+      <definition value="A patient&#39;s biological mother or sister was diagnosed with breast cancer after they had gone through menopause. Definition from BI-RADS(R)"/>
     </concept>
     <concept>
       <code value="111561"/>
       <display value="Very strong family history of breast cancer"/>
-      <definition value="A patient&#39;s biological mother or sister was diagnosed with breast cancer before they had gone through menopause, or more than one of the patient&#39;s first-degree relatives (biological mother or sister) were diagnosed with breast cancer after they had gone through menopause. Definition from BI-RADS®"/>
+      <definition value="A patient&#39;s biological mother or sister was diagnosed with breast cancer before they had gone through menopause, or more than one of the patient&#39;s first-degree relatives (biological mother or sister) were diagnosed with breast cancer after they had gone through menopause. Definition from BI-RADS(R)"/>
     </concept>
     <concept>
       <code value="111562"/>
@@ -16345,7 +16345,7 @@
     <concept>
       <code value="125902"/>
       <display value="Echovist"/>
-      <definition value="Echovist® ultrasonic contrast agent produced by Schering AG"/>
+      <definition value="Echovist(R) ultrasonic contrast agent produced by Schering AG"/>
     </concept>
     <concept>
       <code value="125903"/>
@@ -16355,7 +16355,7 @@
     <concept>
       <code value="125904"/>
       <display value="Levovist"/>
-      <definition value="Levovist® ultrasonic contrast agent produced by Schering AG"/>
+      <definition value="Levovist(R) ultrasonic contrast agent produced by Schering AG"/>
     </concept>
     <concept>
       <code value="125905"/>

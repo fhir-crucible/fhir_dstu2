@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Thu, Aug 13, 2015 06:30+1000 for FHIR v0.5.0
+// Generated on Tue, Sep 1, 2015 11:15+1000 for FHIR v1.0.0
 
 import java.util.*;
 
@@ -49,7 +49,7 @@ public class BodySite extends DomainResource {
     /**
      * The person to which the body site belongs.
      */
-    @Child(name = "patient", type = {Patient.class}, order=0, min=1, max=1)
+    @Child(name = "patient", type = {Patient.class}, order=0, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Patient", formalDefinition="The person to which the body site belongs." )
     protected Reference patient;
 
@@ -61,35 +61,35 @@ public class BodySite extends DomainResource {
     /**
      * Identifier for this instance of the anatomical location.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Bodysite identifier", formalDefinition="Identifier for this instance of the anatomical location." )
     protected List<Identifier> identifier;
 
     /**
      * Named anatomical location - ideally would be coded where possible.
      */
-    @Child(name = "code", type = {CodeableConcept.class}, order=2, min=0, max=1)
+    @Child(name = "code", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Named anatomical location", formalDefinition="Named anatomical location - ideally would be coded where possible." )
     protected CodeableConcept code;
 
     /**
      * Modifier to refine the anatomical location.  These include modifiers for laterality, relative location, directionality, number, and plane.
      */
-    @Child(name = "modifier", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "modifier", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Modification to location code", formalDefinition="Modifier to refine the anatomical location.  These include modifiers for laterality, relative location, directionality, number, and plane." )
     protected List<CodeableConcept> modifier;
 
     /**
      * Description of anatomical location.
      */
-    @Child(name = "description", type = {StringType.class}, order=4, min=0, max=1)
+    @Child(name = "description", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The Description of anatomical location", formalDefinition="Description of anatomical location." )
     protected StringType description;
 
     /**
      * Image or images used to identify a location.
      */
-    @Child(name = "image", type = {Attachment.class}, order=5, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "image", type = {Attachment.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Attached images", formalDefinition="Image or images used to identify a location." )
     protected List<Attachment> image;
 
@@ -422,6 +422,8 @@ public class BodySite extends DomainResource {
   public static final String SP_PATIENT = "patient";
   @SearchParamDefinition(name="code", path="BodySite.code", description="Named anatomical location", type="token" )
   public static final String SP_CODE = "code";
+  @SearchParamDefinition(name="identifier", path="BodySite.identifier", description="Identifier for this instance of the anatomical location", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
 
 }
 

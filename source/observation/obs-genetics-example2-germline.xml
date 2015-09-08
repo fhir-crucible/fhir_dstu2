@@ -6,7 +6,13 @@
     <valueString value="GRCh 37"/>
   </extension>
   <extension url="http://hl7.org/fhir/StructureDefinition/geneticsChromosome">
-    <valueString value="17"/>
+      <valueCodeableConcept>
+          <coding>
+              <system value="http://www.ncbi.nlm.nih.gov/gene"/>
+              <code value="NC_000017"/>
+          </coding>
+          <text value="Homo sapiens chromosome 17"/>
+      </valueCodeableConcept>
   </extension>
   <extension url="http://hl7.org/fhir/StructureDefinition/geneticsGenomicStart">
     <valueInteger value="41258504"/>
@@ -33,8 +39,15 @@
     <valueString value="c.181T&gt;G"/>
   </extension>
   <extension url="http://hl7.org/fhir/StructureDefinition/geneticsVariationId">
-    <valueCode value="ClinVar:17661"/>
+      <valueCodeableConcept>
+          <coding>
+              <system value="http://www.ncbi.nlm.nih.gov/clinvar"/>
+              <code value="17661"/>
+              <display value="c.181T&gt;G"/>
+          </coding>
+      </valueCodeableConcept>
   </extension>
+
   <extension url="http://hl7.org/fhir/StructureDefinition/geneticsDNARegionName">
     <valueString value="Exon 4"/>
   </extension>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Bundle xmlns="http://hl7.org/fhir">
+<Bundle xmlns="http://hl7.org/fhir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../schema/questionnaire.xsd">
   <id value="questionnaire-sdc-profile-example"/>
   <meta>
     <lastUpdated value="2014-05-15T17:25:15Z"/>
@@ -636,8 +636,9 @@
         <group>
           <linkId value="root"/>
           <title value="Medication or Other Substance"/>
+          <required value="true"/>
           <group>
-            <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire-sdc-specialGroup">
+            <extension url="http://hl7.org/fhir/StructureDefinition/sdc-questionnaire-specialGroup">
               <valueCode value="header"/>
             </extension>
             <linkId value="Medication/header"/>
@@ -1065,7 +1066,7 @@
             </group>
           </group>
           <group>
-            <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire-sdc-specialGroup">
+            <extension url="http://hl7.org/fhir/StructureDefinition/sdc-questionnaire-specialGroup">
               <valueCode value="footer"/>
             </extension>
             <linkId value="Medication/footer"/>
@@ -1250,8 +1251,9 @@
         <group>
           <linkId value="root"/>
           <title value="Healthcare Event Reporting Form (HERF) Hospital Version 1.2"/>
+          <required value="true"/>
           <group>
-            <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire-sdc-specialGroup">
+            <extension url="http://hl7.org/fhir/StructureDefinition/sdc-questionnaire-specialGroup">
               <valueCode value="header"/>
             </extension>
             <linkId value="HERF/header"/>
@@ -1496,7 +1498,7 @@
             <text value="OMB No. 0935-0143 Exp. Date 10/31/2014 Public reporting burden for the collection of information is estimated to average 10 minutes per response. An agency may not conduct or sponsor, and a person is not required to respond to, a collection of information unless it displays a currently valid OMB control number. Send comments regarding this burden estimate or any other aspect of this collection of information, including suggestions for reducing this burden, to: AHRQ Reports Clearance Officer, Attention: PRA, Paperwork Reduction Project (0935-0143), AHRQ, 540 Gaither Road, Room #5036, Rockville, MD 20850."/>
           </group>
           <group>
-            <extension url="http://hl7.org/fhir/StructureDefinition/questionnaire-sdc-specialGroup">
+            <extension url="http://hl7.org/fhir/StructureDefinition/sdc-questionnaire-specialGroup">
               <valueCode value="footer"/>
             </extension>
             <linkId value="HERF/footer"/>
@@ -1676,6 +1678,7 @@
         <group>
           <linkId value="root"/>
           <title value="Diagnosis NCI Standard Template"/>
+          <required value="true"/>
           <group>
             <linkId value="3921053v1.0"/>
             <title value="Mandatory Diagnosis Questions"/>
@@ -2296,6 +2299,7 @@
         <group>
           <linkId value="root"/>
           <title value="Demography NCI Standard Template"/>
+          <required value="true"/>
           <group>
             <linkId value="3702891v4.0"/>
             <title value="Mandatory Demography Questions"/>
@@ -11056,6 +11060,7 @@
         <group>
           <linkId value="root"/>
           <title value="Adverse Event/Serious Adverse Event CTCAE v4 NCI Standard Template"/>
+          <required value="true"/>
           <group>
             <linkId value="3556213v2.0"/>
             <title value="Mandatory Adverse Event Questions"/>

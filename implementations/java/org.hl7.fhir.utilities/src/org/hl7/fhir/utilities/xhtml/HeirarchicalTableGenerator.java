@@ -314,6 +314,17 @@ public class HeirarchicalTableGenerator  {
     for (Row r : model.getRows()) {
       renderRow(table, r, 0, new ArrayList<Boolean>(), corePrefix);
     }
+    if (model.getDocoRef() != null) {
+      tr = table.addTag("tr");
+      tc = tr.addTag("td");
+      tc.setAttribute("class", "heirarchy");
+      tc.setAttribute("colspan", Integer.toString(model.getTitles().size()));
+      tc.addTag("br");
+      XhtmlNode a = tc.addTag("a").setAttribute("title", "Legend for this format").setAttribute("href", model.getDocoRef());
+      if (model.getDocoImg() != null)
+        a.addTag("img").setAttribute("alt", "doco").setAttribute("style", "background-color: inherit").setAttribute("src", model.getDocoImg());
+      a.addText(" Documentation for this format");
+    }
     return table;
   }
 
@@ -499,23 +510,7 @@ public class HeirarchicalTableGenerator  {
 
 
   private void genImage(List<Boolean> indents, boolean hasChildren, OutputStream stream) throws IOException {
-	return;
-//	BufferedImage bi = new BufferedImage(800, 2, BufferedImage.TYPE_INT_ARGB);
-//    // i have no idea why this works to make these pixels transparent. It defies logic. 
-//    // But this combination of INT_ARGB and filling with grey magically worked when nothing else did. So it stays as is.
-//    Color grey = new Color(99,99,99,0); 
-//    for (int i = 0; i < 800; i++) {
-//      bi.setRGB(i, 0, grey.getRGB());
-//      bi.setRGB(i, 1, grey.getRGB());
-//    }
-//    Color black = new Color(0, 0, 0);
-//    for (int i = 0; i < indents.size(); i++) {
-//      if (!indents.get(i))
-//        bi.setRGB(12+(i*16), 0, black.getRGB());
-//    }
-//    if (hasChildren)
-//      bi.setRGB(12+(indents.size()*16), 0, black.getRGB());
-//    ImageIO.write(bi, "PNG", stream);
+	  return;
   }
 
   private String makeName(List<Boolean> indents) {

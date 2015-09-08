@@ -55,6 +55,8 @@ general references to pre-existing documents.
  <li><a href="document-example-dischargesummary.html">Example discharge summary</a>: <a href="document-example-dischargesummary.xml.html">XML</a> or <a href="document-example-dischargesummary.json.html">JSON</a></li>
 </ul>
 
+<a name="content"> </a>
+
 <h2>Document Content</h2>
 
 <p>
@@ -125,7 +127,7 @@ Once assembled into a bundle, the document is immutable - its content can never 
 and the document id can never be reused. Note that the document may be represented in either
 XML or JSON, and interconverted between these or have its character encoding changed, all
 the while remaining the same document. However the directly referenced content within the 
-document and the presentation of the document cannot change. Any additional
+document and the presentation of the document cannot change substantially (such that it changes the clinical meaning of the content). Any additional
 documents derived from the same composition SHALL have a different document id.
 </p>
 
@@ -198,6 +200,8 @@ to share their documents safely in a more general context, such as a regional
 or national EHR or a global personal health record.
 </p>
 
+<a name="profiles"> </a>
+
 <h2>Document Profiles</h2>
 
 <p>
@@ -217,6 +221,7 @@ element - see <a href="resource.html#meta">Profile Tags</a> for a discussion of 
 of this.
 </p>
 
+<a name="obligations"> </a>
 
 <h2>Document Handling Obligations</h2>
 <p>

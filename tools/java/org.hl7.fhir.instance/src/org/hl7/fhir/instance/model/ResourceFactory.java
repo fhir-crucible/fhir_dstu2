@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Thu, Aug 13, 2015 06:30+1000 for FHIR v0.5.0
+// Generated on Tue, Sep 1, 2015 11:15+1000 for FHIR v1.0.0
 
 public class ResourceFactory extends Factory {
 
@@ -62,10 +62,10 @@ public class ResourceFactory extends Factory {
             return new Appointment();
         if ("MedicationDispense".equals(name))
             return new MedicationDispense();
+        if ("DetectedIssue".equals(name))
+            return new DetectedIssue();
         if ("Slot".equals(name))
             return new Slot();
-        if ("Contraindication".equals(name))
-            return new Contraindication();
         if ("PaymentNotice".equals(name))
             return new PaymentNotice();
         if ("MedicationStatement".equals(name))
@@ -108,10 +108,10 @@ public class ResourceFactory extends Factory {
             return new OrderResponse();
         if ("ConceptMap".equals(name))
             return new ConceptMap();
-        if ("Practitioner".equals(name))
-            return new Practitioner();
         if ("ImagingStudy".equals(name))
             return new ImagingStudy();
+        if ("Practitioner".equals(name))
+            return new Practitioner();
         if ("CarePlan".equals(name))
             return new CarePlan();
         if ("Provenance".equals(name))
@@ -160,10 +160,10 @@ public class ResourceFactory extends Factory {
             return new List_();
         if ("DeviceUseStatement".equals(name))
             return new DeviceUseStatement();
-        if ("ImagingObjectSelection".equals(name))
-            return new ImagingObjectSelection();
         if ("Goal".equals(name))
             return new Goal();
+        if ("ImagingObjectSelection".equals(name))
+            return new ImagingObjectSelection();
         if ("OperationDefinition".equals(name))
             return new OperationDefinition();
         if ("NutritionOrder".equals(name))

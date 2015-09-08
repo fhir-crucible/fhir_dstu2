@@ -268,30 +268,30 @@
           <tr>
             
             <th>
-              <a href="familyhistory-daf.html">DAFFamilyHistory</a>
+              <a href="familymemberhistory-daf.html">DAFFamilyMemberHistory</a>
             </th>
             
             <td>
               
-              <a title="Allows discovery of DAFFamilyHistory resources based on different search criteria" href="#DAFFamilyHistorySearch">SHALL</a>
+              <a title="Allows discovery of DAFFamilyMemberHistory resources based on different search criteria" href="#DAFFamilyMemberHistorySearch">SHALL</a>
             
             </td>
             
             <td>
               
-              <a title="Allows retrieval of a specific DAFFamilyHistory by id" href="#DAFFamilyHistorySearch">SHALL</a>
+              <a title="Allows retrieval of a specific DAFFamilyMemberHistory by id" href="#DAFFamilyMemberHistorySearch">SHALL</a>
             
             </td>
             
             <td>
               
-              <a title="Allows retrieval of a historical version of a DAFFamilyHistory" href="#DAFFamilyHistorySearch">SHOULD</a>
+              <a title="Allows retrieval of a historical version of a DAFFamilyMemberHistory" href="#DAFFamilyMemberHistorySearch">SHOULD</a>
             
             </td>
             
             <td>
               
-              <a title="Allows review of changes to DAFFamilyHistory over time" href="#DAFFamilyHistorySearch">SHOULD</a>
+              <a title="Allows review of changes to DAFFamilyMemberHistory over time" href="#DAFFamilyMemberHistorySearch">SHOULD</a>
             
             </td>
           
@@ -332,30 +332,30 @@
           <tr>
             
             <th>
-              <a href="observation-daf-results.html">DAFLabResults</a>
+              <a href="observation-daf-results.html">DAFResults</a>
             </th>
             
             <td>
               
-              <a title="Allows discovery of DAFResults resources based on different search criteria" href="#DAFLabResultsSearch">SHALL</a>
+              <a title="Allows discovery of DAFResults resources based on different search criteria" href="#DAFResultsSearch">SHALL</a>
             
             </td>
             
             <td>
               
-              <a title="Allows retrieval of a specific DAFResults by id" href="#DAFLabResultsSearch">SHALL</a>
+              <a title="Allows retrieval of a specific DAFResults by id" href="#DAFResultsSearch">SHALL</a>
             
             </td>
             
             <td>
               
-              <a title="Allows retrieval of a historical version of a DAFResults" href="#DAFLabResultsSearch">SHOULD</a>
+              <a title="Allows retrieval of a historical version of a DAFResults" href="#DAFResultsSearch">SHOULD</a>
             
             </td>
             
             <td>
               
-              <a title="Allows review of changes to DAFResults over time" href="#DAFLabResultsSearch">SHOULD</a>
+              <a title="Allows review of changes to DAFResults over time" href="#DAFResultsSearch">SHOULD</a>
             
             </td>
           
@@ -1084,19 +1084,19 @@
 		  
           <tr>
 		    
-            <td id="DAFFamilyHistorySearch">DAFFamilyHistory</td>
+            <td id="DAFFamilyMemberHistorySearch">DAFFamilyMemberHistory</td>
 			
             <td>
 				
               <ul>
 					
                 <li>
-                  <a href="../familyhistory.html#search">identifier</a> - Search for FamilyHistory by identifiers (
+                  <a href="../familymemberhistory.html#search">identifier</a> - Search for FamilyMemberHistory by identifiers (
                   <a href="../search.html#token">token</a>)
                 </li>
 					
                 <li>
-                  <a href="../familyhistory.html#search">patient</a> - Search for FamilyHistory for a patient (
+                  <a href="../familymemberhistory.html#search">patient</a> - Search for FamilyMemberHistory for a patient (
                   <a href="../search.html#reference">reference</a>)
                 </li>
 					
@@ -1109,16 +1109,16 @@
                 <li>Chained parameter - patient.family</li>
 					
                 <li>
-                  <a href="../familyhistory.html#search">relationship</a> - Search based on FamilyHistory Relationship type (
+                  <a href="../familymemberhistory.html#search">relationship</a> - Search based on FamilyMemberHistory Relationship type (
                   <a href="../search.html#token">token</a>)
                 </li>
 					
                 <li>
-                  <a href="../familyhistory.html#search">familyhistorycondition</a> - Search based on the clinical condition of the related person (
+                  <a href="../familymemberhistory.html#search">familymemberhistorycondition</a> - Search based on the clinical condition of the related person (
                   <a href="../search.html#token">token</a>)
                 </li>
 					
-                <li>Include parameter - FamilyHistory.patient</li>
+                <li>Include parameter - FamilyMemberHistory.patient</li>
 				
               </ul>
 			
@@ -1206,12 +1206,12 @@
               <ul>
 					
                 <li>
-                  <a href="../observation.html#search">identifier</a> - Search for lab test by identifiers (
+                  <a href="../observation.html#search">identifier</a> - Search for test by identifiers (
                   <a href="../search.html#token">token</a>)
                 </li>
 					
                 <li>
-                  <a href="../observation.html#search">patient</a> - Search for lab test for a patient (
+                  <a href="../observation.html#search">patient</a> - Search for test for a patient (
                   <a href="../search.html#reference">reference</a>)
                 </li>
 					
@@ -1224,32 +1224,32 @@
                 <li>Chained parameter - patient.family</li>
 					
                 <li>
-                  <a href="../observation.html#search">code</a> - Search based on lab test code (
+                  <a href="../observation.html#search">code</a> - Search based on test code (
                   <a href="../search.html#token">token</a>)
                 </li>
 					
                 <li>
-                  <a href="../observation.html#search">value-concept</a> - Search for a lab test with a specific value which is a code (
+                  <a href="../observation.html#search">value-concept</a> - Search for a test with a specific value which is a code (
                   <a href="../search.html#token">token</a>)
                 </li>
 					
                 <li>
-                  <a href="../observation.html#search">value-quantity</a> - Search for a lab test with a value which is a quantity (
+                  <a href="../observation.html#search">value-quantity</a> - Search for a test with a value which is a quantity (
                   <a href="../search.html#quantity">quantity</a>)
                 </li>
 					
                 <li>
-                  <a href="../observation.html#search">code-value[x]</a> - Search for a lab test with a test name and value (
+                  <a href="../observation.html#search">code-value[x]</a> - Search for a test with a test name and value (
                   <a href="../search.html#composite">composite</a>)
                 </li>
 					
                 <li>
-                  <a href="../observation.html#search">date</a> - Search based on lab test obtained date (
+                  <a href="../observation.html#search">date</a> - Search based on test obtained date (
                   <a href="../search.html#date">date</a>)
                 </li>
 					
                 <li>
-                  <a href="../observation.html#search">encounter</a> - Search based on encounter resulting in the lab result (
+                  <a href="../observation.html#search">encounter</a> - Search based on encounter resulting in the result (
                   <a href="../search.html#reference">reference</a>)
                 </li>
 					
@@ -1731,57 +1731,57 @@
   <date value="2015-04-02"/>
   <description value="This profile defines the expected capabilities of the DAF Responder actor when conforming to the DAF FHIR implementation guide."/>
   <kind value="requirements"/>
-  <fhirVersion value="0.4.0"/>
+  <fhirVersion value="1.0.0"/>
   <acceptUnknown value="extensions"/>
   <format value="xml"/>
   <format value="json"/>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/patient-daf-dafpatient"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-patient"/>
   </profile>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/allergyintolerance-daf-dafallergyintolerance"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-allergyintolerance"/>
   </profile>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/diagnosticorder-daf-dafdiagnosticorder"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-diagnosticorder"/>
   </profile>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/diagnosticreport-daf-dafdiagnosticreport"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-diagnosticreport"/>
   </profile>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/encounter-daf-dafencounter"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-encounter"/>
   </profile>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/familyhistory-daf-daffamilyhistory"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-familymemberhistory"/>
   </profile>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/immunization-daf-dafimmunization"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-immunization"/>
   </profile>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/observation-daf-results-dafresultobscode"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-resultobscode"/>
   </profile>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/medication-daf-dafmedication"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-medication"/>
   </profile>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/medicationstatement-daf-dafmedicationstatement"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-medicationstatement"/>
   </profile>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/medicationadministration-daf-dafmedicationadministration"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-medicationadministration"/>
   </profile>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/condition-daf-dafcondition"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-condition"/>
   </profile>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/procedure-daf-dafprocedure"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-procedure"/>
   </profile>
   <profile>
     <reference value="http://hl7.org/fhir/StructureDefinition/observation-daf-smokingstatus-dafsmokingstatus"/>
   </profile>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/observation-daf-vitalsigns-dafvitalsigns"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-vitalsigns"/>
   </profile>
   <profile>
-    <reference value="http://hl7.org/fhir/StructureDefinition/list-daf-dafproblemlist"/>
+    <reference value="http://hl7.org/fhir/StructureDefinition/daf-problemlist"/>
   </profile>
   <rest>
     <mode value="server"/>
@@ -1792,7 +1792,7 @@
     <resource>
       <type value="Patient"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/patient-daf-dafpatient"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-patient"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
@@ -1946,7 +1946,7 @@
     <resource>
       <type value="AllergyIntolerance"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/allergyintolerance-daf-dafallergyintolerance"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-allergyintolerance"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
@@ -2048,7 +2048,7 @@
     <resource>
       <type value="DiagnosticOrder"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/diagnosticorder-daf-dafdiagnosticorder"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-diagnosticorder"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
@@ -2136,7 +2136,7 @@
     <resource>
       <type value="DiagnosticReport"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/diagnosticreport-daf-dafdiagnosticreport"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-diagnosticreport"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
@@ -2232,7 +2232,7 @@
     <resource>
       <type value="Encounter"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/encounter-daf-dafencounter"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-encounter"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
@@ -2315,39 +2315,39 @@
       </searchParam>
     </resource>
     <resource>
-      <type value="FamilyHistory"/>
+      <type value="FamilyMemberHistory"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/familyhistory-daf-daffamilyhistory"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-familymemberhistory"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
           <valueCode value="SHALL"/>
         </extension>
         <code value="search-type"/>
-        <documentation value="Allows discovery of existing DAFFamilyHistory resources using different search criteria"/>
+        <documentation value="Allows discovery of existing DAFFamilyMemberHistory resources using different search criteria"/>
       </interaction>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
           <valueCode value="SHALL"/>
         </extension>
         <code value="read"/>
-        <documentation value="Allows retrieval of a specific DAFFamilyHistory by id"/>
+        <documentation value="Allows retrieval of a specific DAFFamilyMemberHistory by id"/>
       </interaction>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
           <valueCode value="SHOULD"/>
         </extension>
         <code value="history-instance"/>
-        <documentation value="Allows review of changes to DAFFamilyHistory instance over time"/>
+        <documentation value="Allows review of changes to DAFFamilyMemberHistory instance over time"/>
       </interaction>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
           <valueCode value="SHOULD"/>
         </extension>
         <code value="vread"/>
-        <documentation value="Allows retrieval of a historical version of a DAFFamilyHistory instance"/>
+        <documentation value="Allows retrieval of a historical version of a DAFFamilyMemberHistory instance"/>
       </interaction>
-      <searchInclude value="FamilyHistory.patient"/>
+      <searchInclude value="FamilyMemberHistory.patient"/>
       <searchParam>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
           <valueCode value="SHALL"/>
@@ -2377,14 +2377,14 @@
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
           <valueCode value="SHALL"/>
         </extension>
-        <name value="familyhistorycondition"/>
+        <name value="familymemberhistorycondition"/>
         <type value="token"/>
       </searchParam>
     </resource>
     <resource>
       <type value="Immunization"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/immunization-daf-dafimmunization"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-immunization"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
@@ -2478,7 +2478,7 @@
     <resource>
       <type value="Observation"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/observation-daf-results-dafresultobscode"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-resultobscode"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
@@ -2569,7 +2569,7 @@
     <resource>
       <type value="Medication"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/medication-daf-dafmedication"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-medication"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
@@ -2639,7 +2639,7 @@
     <resource>
       <type value="MedicationStatement"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/medicationstatement-daf-dafmedicationstatement"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-medicationstatement"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
@@ -2709,7 +2709,7 @@
     <resource>
       <type value="MedicationAdministration"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/medicationadministration-daf-dafmedicationadministration"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-medicationadministration"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
@@ -2799,7 +2799,7 @@
     <resource>
       <type value="Condition"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/condition-daf-dafcondition"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-condition"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
@@ -2891,7 +2891,7 @@
     <resource>
       <type value="Procedure"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/procedure-daf-dafprocedure"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-procedure"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
@@ -2966,6 +2966,7 @@
         <chain value="encounter.type"/>
       </searchParam>
     </resource>
+    <!--
     <resource>
       <type value="SmokingStatus"/>
       <profile>
@@ -3037,7 +3038,7 @@
     <resource>
       <type value="DAFVitalSigns"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/observation-daf-vitalsigns-dafvitalsigns"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-vitalsigns"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">
@@ -3116,10 +3117,11 @@
         <chain value="patient.family"/>
       </searchParam>
     </resource>
+    -->
     <resource>
       <type value="List"/>
       <profile>
-        <reference value="http://hl7.org/fhir/StructureDefinition/list-daf-dafproblemlist"/>
+        <reference value="http://hl7.org/fhir/StructureDefinition/daf-problemlist"/>
       </profile>
       <interaction>
         <extension url="http://hl7.org/fhir/StructureDefinition/conformance-expectation">

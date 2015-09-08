@@ -2,17 +2,6 @@
 
 <!-- the build tool builds these from the designated snomed server, when it can -->
 <snomed>
-  <concept id=" 53120007" display="Upper limb structure (body structure)">
-    <display value="Arm"/>
-    <display value="Upper limb structure"/>
-    <display value="Upper limb structure (body structure)"/>
-    <display value="Upper extremity"/>
-    <display value="Upper extremity, NOS"/>
-    <display value="Upper limb, NOS"/>
-    <display value="Forelimb, NOS"/>
-    <display value="Upper limb"/>
-    <display value="Upper extremity, including shoulder, arm, forearm, wrist, and hand"/>
-  </concept>
   <concept id="10001005" display="Bacterial sepsis (disorder)">
     <display value="Bacterial septicemia"/>
     <display value="Bacterial septicemia, NOS"/>
@@ -511,6 +500,13 @@
     <display value="Urethral structure"/>
     <display value="Urethral structure (body structure)"/>
   </concept>
+  <concept id="14189004" display="Measles (disorder)">
+    <display value="Measles"/>
+    <display value="Rubeola"/>
+    <display value="Morbilli"/>
+    <display value="Measles without mention of complication"/>
+    <display value="Measles (disorder)"/>
+  </concept>
   <concept id="14745005" display="Hepatitis A virus vaccine (product)">
     <display value="Hepatitis A virus vaccine (product)"/>
     <display value="Hepatitis A vaccine"/>
@@ -566,6 +562,10 @@
     <display value="History/symptoms"/>
     <display value="History/symptoms (navigational concept)"/>
     <display value="History/symptoms (context-dependent category)"/>
+  </concept>
+  <concept id="160244002" display="No known allergies (situation)">
+    <display value="No Known Allergies"/>
+    <display value="NKA - No known allergies"/>
   </concept>
   <concept id="160670007" display="Diabetic diet (finding)">
     <display value="DD - Diabetic diet"/>
@@ -776,6 +776,7 @@
     <display value="Inpatient stay 9 days"/>
     <display value="Inpatient stay 9 days (finding)"/>
   </concept>
+  <concept id="1857005" display="Congenital rubella syndrome (disorder)"/>
   <concept id="188340000" display="Malignant tumor of craniopharyngeal duct (disorder)">
     <display value="Malignant tumor of craniopharyngeal duct"/>
     <display value="Malignant neoplasm of craniopharyngeal duct"/>
@@ -980,6 +981,10 @@
     <display value="Dietary fats and oils"/>
     <display value="Fats and oils"/>
     <display value="Fats and oils (substance)"/>
+  </concept>
+  <concept id="227037002" display="Fish - dietary (substance)">
+    <display value="Fish"/>
+    <display value="Fish - dietary"/>
   </concept>
   <concept id="227210005" display="Vegetables pulses herbs and spices (substance)">
     <display value="Vegetables pulses herbs and spices"/>
@@ -1680,6 +1685,10 @@
     <display value="Sphenoid bone"/>
     <display value="Entire sphenoid bone (body structure)"/>
   </concept>
+  <concept id="273384008" display="Consumer satisfaction questionnaire"/>
+  <concept id="273479001" display="General health questionnaire"/>
+  <concept id="273601006" display="Mental status questionnaire"/>
+  <concept id="273820006" display="Social support questionnaire"/>
   <concept id="273967009" display="Serum urea measurement (procedure)">
     <display value="Serum urea level"/>
     <display value="Serum urea measurement"/>
@@ -1724,6 +1733,14 @@
     <display value="Radiographic imaging"/>
     <display value="Radiology techniques"/>
     <display value="Radiographic imaging - action (qualifier value)"/>
+  </concept>
+  <concept id="27836007" display="Pertussis (disorder)">
+    <display value="Pertussis"/>
+    <display value="Whooping cough, NOS"/>
+    <display value="Infection due to Bordetella pertussis"/>
+    <display value="Whooping cough"/>
+    <display value="WC - Whooping cough"/>
+    <display value="Pertussis (disorder)"/>
   </concept>
   <concept id="278450005" display="Finger-prick sampling (procedure)">
     <display value="Finger stick"/>
@@ -1790,6 +1807,11 @@
     <display value="Meat"/>
     <display value="Meat (substance)"/>
   </concept>
+  <concept id="289169006" display="Exercising to lose weight (regime/therapy)">
+    <display value="Exercising to lose weight (regime/therapy)"/>
+    <display value="Exercising to lose weight"/>
+    <display value="Exercising to lose weight (procedure)"/>
+  </concept>
   <concept id="28995006" display="Treated with (attribute)">
     <display value="Treated with"/>
     <display value="TW"/>
@@ -1828,6 +1850,7 @@
     <display value="Lumbar spinal cerebrospinal fluid pathway"/>
     <display value="Lumbar spinal cerebrospinal fluid pathway (body structure)"/>
   </concept>
+  <concept id="304794009" display="Administrative form"/>
   <concept id="30549001" display="Removal of suture (procedure)">
     <display value="Removal of sutures"/>
     <display value="ROS - Removal of sutures"/>
@@ -1881,6 +1904,10 @@
     <display value="Phosphorus"/>
     <display value="Phosphorus, NOS"/>
     <display value="Phosphorus (substance)"/>
+  </concept>
+  <concept id="308283009" display="Discharge from hospital (procedure)">
+    <display value="Discharge from hospital"/>
+    <display value="Discharge from hospital (procedure)"/>
   </concept>
   <concept id="309049000" display="Lesion sample (specimen)">
     <display value="Lesion sample"/>
@@ -1981,6 +2008,11 @@
     <display value="5-FU"/>
     <display value="Fluorouracil (substance)"/>
   </concept>
+  <concept id="314079002" display="Hyperlipidemia screening test (procedure)">
+    <display value="Hyperlipidaemia screening test"/>
+    <display value="Hyperlipidemia screening test"/>
+    <display value="Hyperlipidemia screening test (procedure)"/>
+  </concept>
   <concept id="315619001" display="Family history of myocardial infarction in male relative of first degree, age known (situation)">
     <display value="Family history of myocardial infarction in male relative of first degree, age known (situation)"/>
     <display value="Family history of myocardial infarction in male relative of first degree, age known"/>
@@ -2063,6 +2095,13 @@
     <display value="Amoxycillin 250mg/5mL oral suspension"/>
     <display value="Amoxycillin 250mg/5mL oral suspension (substance)"/>
   </concept>
+  <concept id="32485007" display="Hospital admission (procedure)">
+    <display value="Admission to hospital"/>
+    <display value="Hospital admission"/>
+    <display value="Hospital admission, NOS"/>
+    <display value="Hospital admission (procedure)"/>
+    <display value="Performance of the steps necessary to admit a patient to a hospital"/>
+  </concept>
   <concept id="325267004" display="Tolbutamide 500mg tablet">
     <display value="Tolbutamide 500mg tablet (product)"/>
     <display value="Tolbutamide 500mg tablet"/>
@@ -2113,6 +2152,11 @@
   <concept id="331006" display="Hospital-based outpatient rheumatology clinic (environment)">
     <display value="Hospital-based outpatient rheumatology clinic"/>
     <display value="Hospital-based outpatient rheumatology clinic (environment)"/>
+  </concept>
+  <concept id="333346007" display="Silver nitrate 20% solution (product)">
+    <display value="Silver nitrate 20% solution (product)"/>
+    <display value="Silver nitrate 20% solution"/>
+    <display value="Silver nitrate 20% solution (substance)"/>
   </concept>
   <concept id="33463005" display="Liquid substance (substance)">
     <display value="Fluid"/>
@@ -2309,6 +2353,13 @@
     <display value="Legal married state"/>
     <display value="Legally married (finding)"/>
   </concept>
+  <concept id="36653000" display="Rubella (disorder)">
+    <display value="Rubella"/>
+    <display value="Rubella, NOS"/>
+    <display value="German measles"/>
+    <display value="Rubella without mention of complication"/>
+    <display value="Rubella (disorder)"/>
+  </concept>
   <concept id="36682004" display="Physiotherapist (occupation)">
     <display value="PT - Physiotherapist"/>
     <display value="Physical therapist"/>
@@ -2341,6 +2392,14 @@
     <display value="Left forearm"/>
     <display value="Entire left forearm (body structure)"/>
   </concept>
+  <concept id="36989005" display="Mumps (disorder)">
+    <display value="Mumps"/>
+    <display value="Mumps, NOS"/>
+    <display value="Epidemic parotitis"/>
+    <display value="Infectious parotitis"/>
+    <display value="Mumps without mention of complication"/>
+    <display value="Mumps (disorder)"/>
+  </concept>
   <concept id="371041009" display="Embolic stroke (disorder)">
     <display value="Embolic stroke (disorder)"/>
     <display value="Embolic stroke"/>
@@ -2352,6 +2411,11 @@
   <concept id="371924009" display="Moderate to severe (qualifier value)">
     <display value="Moderate to severe (qualifier value)"/>
     <display value="Moderate to severe"/>
+  </concept>
+  <concept id="372687004" display="Amoxicillin (substance)">
+    <display value="Amoxicillin (substance)"/>
+    <display value="Amoxicillin"/>
+    <display value="Amoxycillin"/>
   </concept>
   <concept id="3729002" display="Hospital-based outpatient pediatric clinic (environment)">
     <display value="Hospital-based outpatient paediatric clinic"/>
@@ -2478,6 +2542,14 @@
     <display value="Smear procedure (procedure)"/>
     <display value="Smear procedure"/>
   </concept>
+  <concept id="386216000" display="Human parturition, function (observable entity)">
+    <display value="Human parturition, function (observable entity)"/>
+    <display value="Human parturition, function"/>
+    <display value="Parturition"/>
+    <display value="Childbirth"/>
+    <display value="Pregnancy delivered"/>
+    <display value="Delivery"/>
+  </concept>
   <concept id="386359008" display="Administration of drug or medicament via oral route (procedure)">
     <display value="Medication administration: oral (procedure)"/>
     <display value="Medication administration: oral"/>
@@ -2533,6 +2605,13 @@
   <concept id="391040000" display="At risk of osteoporotic fracture">
     <display value="At risk of osteoporotic fracture (finding)"/>
     <display value="At risk of osteoporotic fracture"/>
+  </concept>
+  <concept id="392259005" display="Amoxicillin + clavulanate potassium 875mg/125mg tablet (product)">
+    <display value="Co-amoxiclav 875mg/125mg tablet (product)"/>
+    <display value="Co-amoxiclav 875mg/125mg tablet"/>
+    <display value="Amoxicillin + clavulanate potassium 875mg/125mg tablet (product)"/>
+    <display value="Amoxicillin + clavulanate potassium 875mg/125mg tablet"/>
+    <display value="Amoxicillin + clavulanic acid 875mg/125mg tablet"/>
   </concept>
   <concept id="39350007" display="Private physicians&#39; group office (environment)">
     <display value="Private physicians&#39; group office"/>
@@ -2849,6 +2928,11 @@
     <display value="Anaphylactic reaction"/>
     <display value="Anaphylaxis (disorder)"/>
   </concept>
+  <concept id="395938000" display="Clavulanate potassium (substance)">
+    <display value="Clavulanate potassium (substance)"/>
+    <display value="Clavulanate potassium"/>
+    <display value="Potassium clavulanate"/>
+  </concept>
   <concept id="39607008" display="Lung structure (body structure)">
     <display value="Lung structure"/>
     <display value="Lung"/>
@@ -2866,11 +2950,24 @@
     <display value="BAL procedure"/>
     <display value="BAL - Bronchoalveolar lavage"/>
   </concept>
+  <concept id="397430003" display="Diphtheria due to Corynebacterium diphtheriae (disorder)">
+    <display value="Diphtheria due to corynebacterium diphtheriae (disorder)"/>
+    <display value="Diphtheria due to corynebacterium diphtheriae"/>
+    <display value="Diphtheria due to Corynebacterium diphtheriae (disorder)"/>
+    <display value="Diphtheria due to Corynebacterium diphtheriae"/>
+  </concept>
   <concept id="39748002" display="Bilirubin, direct measurement (procedure)">
     <display value="Bilirubin, conjugated measurement, serum"/>
     <display value="Bilirubin, direct measurement"/>
     <display value="Bilirubin, conjugated measurement"/>
     <display value="Bilirubin, direct measurement (procedure)"/>
+  </concept>
+  <concept id="398102009" display="Acute poliomyelitis (disorder)">
+    <display value="Acute poliomyelitis (disorder)"/>
+    <display value="Acute poliomyelitis"/>
+    <display value="Polio"/>
+    <display value="PM - Poliomyelitis"/>
+    <display value="Poliomyelitis"/>
   </concept>
   <concept id="398124009" display="Drug container (physical object)">
     <display value="Drug container (physical object)"/>
@@ -2880,6 +2977,10 @@
     <display value="Diaphragmatic hernia"/>
     <display value="Diaphragmatic hernia, NOS"/>
     <display value="Diaphragmatic hernia (disorder)"/>
+  </concept>
+  <concept id="399067008" display="Lateral projection (qualifier value)">
+    <display value="Lateral projection (qualifier value)"/>
+    <display value="Lateral projection"/>
   </concept>
   <concept id="39913001" display="Residential school infirmary (environment)">
     <display value="Residential school infirmary"/>
@@ -3151,6 +3252,12 @@
     <display value="Instruction"/>
     <display value="Teaching"/>
     <display value="Procedure that is synonymous with those activities such as teaching, demonstration, instruction, explanation, and advice that aim to increase knowledge and skills, change behaviors, assist coping and increase adherence to treatment."/>
+  </concept>
+  <concept id="409137002" display="No known history of drug allergy (situation)">
+    <display value="NKDA - No known drug allergies"/>
+    <display value="No Known Drug Allergies"/>
+    <display value="No known history of drug allergy"/>
+    <display value="No known medicine allergy"/>
   </concept>
   <concept id="409519008" display="Contained casualty setting (environment)">
     <display value="Contained casualty setting (environment)"/>
@@ -3527,6 +3634,9 @@
     <display value="Heavy tobacco smoker"/>
     <display value="Current heavy tobacco smoker"/>
   </concept>
+  <concept id="428607008" display="No known environmental allergy (situation)">
+    <display value="No Known Environmental Allergy"/>
+  </concept>
   <concept id="428763004" display="Bacteremia due to Staphylococcus aureus (finding)">
     <display value="Bacteremia due to Staphylococcus aureus (disorder)"/>
     <display value="Bacteremia due to Staphylococcus aureus"/>
@@ -3551,11 +3661,18 @@
     <display value="Iron measurement, NOS"/>
     <display value="Iron measurement (procedure)"/>
   </concept>
+  <concept id="429625007" display="No known food allergies (situation)">
+    <display value="No Known Food Allergies"/>
+  </concept>
   <concept id="429858000" display="Computed tomography of head and neck (procedure)">
     <display value="Computed tomography of head and neck (procedure)"/>
     <display value="Computed tomography (CT) of head and neck"/>
     <display value="Computed tomography of head and neck"/>
     <display value="CT of head and neck"/>
+  </concept>
+  <concept id="429951000124103" display="Bacterial isolate specimen (specimen)">
+    <display value="Bacterial isolate specimen (specimen)"/>
+    <display value="Bacterial isolate specimen"/>
   </concept>
   <concept id="430268003" display="Specimen from bone (specimen)">
     <display value="Specimen from bone (specimen)"/>
@@ -3586,6 +3703,11 @@
   <concept id="434746001" display="Specimen vial (physical object)">
     <display value="Specimen vial (physical object)"/>
     <display value="Specimen vial"/>
+  </concept>
+  <concept id="435801000124108" display="Texture modified diet (regime/therapy)">
+    <display value="Texture modified diet (regime/therapy)"/>
+    <display value="Texture modified diet"/>
+    <display value="Alter the consistency of foods to optimize chewing and swallowing. (Source: Nutrition Care Manual, Academy of Nutrition and Dietetics 2013)."/>
   </concept>
   <concept id="438660002" display="Specimen from prosthetic device (specimen)">
     <display value="Specimen from prosthetic device (specimen)"/>
@@ -3720,6 +3842,12 @@
     <display value="Ground food (substance)"/>
     <display value="Ground food"/>
     <display value="Regular table foods ground into a soft, fine texture, using a baby food grinder or food chopper. Crispy or crunchy foods are not acceptable. Minimal chewing is required (Source: Academy of Nutrition and Dietetics Nutrition Informatics Committee 2013)."/>
+  </concept>
+  <concept id="442137000" display="Completion time of procedure (observable entity)">
+    <display value="Completion time of procedure"/>
+    <display value="Procedure end time"/>
+    <display value="Completion time of procedure (observable entity)"/>
+    <display value="Time when all instrument and sponge counts are completed and verified as correct, all post procedure radiological studies to be done in procedure room are completed, all dressings and drains are secured, and the physician or surgeons have completed all procedure related activities on the patient."/>
   </concept>
   <concept id="442651000124102" display="Adult formula (product)">
     <display value="Adult formula (product)"/>
@@ -3921,6 +4049,12 @@
     <display value="Tunneled central venous catheter (physical object)"/>
     <display value="Tunneled central venous catheter"/>
   </concept>
+  <concept id="445295009" display="Blood specimen with edetic acid (specimen)">
+    <display value="Blood specimen with edetic acid (specimen)"/>
+    <display value="Blood specimen with EDTA"/>
+    <display value="Blood specimen with edetic acid"/>
+    <display value="Blood specimen with ethylenediamine tetraacetic acid"/>
+  </concept>
   <concept id="445541000" display="Dry body weight (observable entity)">
     <display value="Dry body weight (observable entity)"/>
     <display value="Dry body weight"/>
@@ -3966,6 +4100,12 @@
     <display value="Smokes tobacco daily (finding)"/>
     <display value="Daily tobacco smoker"/>
     <display value="Current every day smoker"/>
+  </concept>
+  <concept id="45036003" display="Ultrasonography of abdomen (procedure)">
+    <display value="US abdominal scan"/>
+    <display value="Ultrasonography of abdomen"/>
+    <display value="Ultrasonography of abdomen, NOS"/>
+    <display value="Ultrasonography of abdomen (procedure)"/>
   </concept>
   <concept id="4558008" display="Anterior resection of rectum (procedure)">
     <display value="Anterior resection of rectum (procedure)"/>
@@ -4221,6 +4361,11 @@
     <display value="Hospital-based outpatient hematology clinic (environment)"/>
     <display value="Hospital-based outpatient hematology clinic"/>
   </concept>
+  <concept id="56342008" display="Temperature taking (procedure)">
+    <display value="Temperature taking (procedure)"/>
+    <display value="Temperature taking"/>
+    <display value="Temperature taking, NOS"/>
+  </concept>
   <concept id="57066004" display="Cisplatin (product)">
     <display value="Cisplatin (product)"/>
     <display value="Cisplatin product"/>
@@ -4447,6 +4592,7 @@
     <display value="Creatinine measurement, NOS"/>
     <display value="Creatinine measurement (procedure)"/>
   </concept>
+  <concept id="709410003" display="Haemophilus influenzae type b infection (disorder)"/>
   <concept id="71252005" display="Cervix uteri structure (body structure)">
     <display value="Uterine cervix"/>
     <display value="Uterine cervix, NOS"/>
@@ -4535,6 +4681,13 @@
     <display value="High"/>
     <display value="Elevated"/>
     <display value="High (qualifier value)"/>
+  </concept>
+  <concept id="76902006" display="Tetanus (disorder)">
+    <display value="Tetanus"/>
+    <display value="Lockjaw"/>
+    <display value="Infection due to Clostridium tetani"/>
+    <display value="Tetanus with trismus"/>
+    <display value="Tetanus (disorder)"/>
   </concept>
   <concept id="77068002" display="Cholesterol measurement (procedure)">
     <display value="Cholesterol measurement"/>

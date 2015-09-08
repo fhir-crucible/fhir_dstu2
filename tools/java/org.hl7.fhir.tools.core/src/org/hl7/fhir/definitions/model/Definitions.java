@@ -55,7 +55,21 @@ import org.hl7.fhir.instance.model.ValueSet;
  * @author Grahame
  * 
  */
-public class Definitions implements org.hl7.fhir.instance.utils.NameResolver {
+public class Definitions {
+
+  public class NamespacePair {
+
+    public String desc;
+    public String page;
+    private boolean notUnique;
+
+    public NamespacePair(String desc, String page, boolean notUnique) {
+      this.desc = desc;
+      this.page = page;
+      this.notUnique = notUnique;
+    }
+
+  }
 
   public class PageInformation {
 
@@ -160,6 +174,8 @@ public class Definitions implements org.hl7.fhir.instance.utils.NameResolver {
   private Map<String, String> typePages = new HashMap<String, String>();
   private Map<String, String> pageTitles = new HashMap<String, String>();
   private Map<String, Set<String>> searchRules = new HashMap<String, Set<String>>();
+  private Map<String, NamespacePair> redirectList = new HashMap<String, NamespacePair>();
+  
   
   // Returns the root TypeDefn of a CompositeType or Resource,
 	// excluding future Resources (as they don't have definitions yet).
@@ -356,6 +372,8 @@ public class Definitions implements org.hl7.fhir.instance.utils.NameResolver {
   private List<NamingSystem> namingSystems = new ArrayList<NamingSystem>();
   private Set<String> structuralPages = new HashSet<String>();
   private Map<String, PageInformation> pageInfo = new HashMap<String, Definitions.PageInformation>();
+  private Map<String, ConstraintStructure> profileIds = new HashMap<String, ConstraintStructure>();
+  private boolean loaded;
   
   public List<String> sortedResourceNames() {
     if (sortedNames == null) {
@@ -516,7 +534,7 @@ public class Definitions implements org.hl7.fhir.instance.utils.NameResolver {
       if (primitives.containsKey(value))
         return;
       String[] parts = value.split("\\.");
-      if (hasType(parts[0]) && getElementByPath(parts) != null)
+      if (hasType(parts[0]) && getElementByPath(parts, "check extension context") != null)
         return;
       
       throw new Error("The data type context '"+value+"' is not valid @ "+context);
@@ -529,7 +547,7 @@ public class Definitions implements org.hl7.fhir.instance.utils.NameResolver {
       String[] parts = value.split("\\.");
       if (sortedResourceNames().contains(value))
         return;
-      if (getElementByPath(parts) != null)
+      if (getElementByPath(parts, "check extension context") != null)
         return;
       
       throw new Error("The resource context '"+value+"' is not valid @ "+context);
@@ -538,7 +556,7 @@ public class Definitions implements org.hl7.fhir.instance.utils.NameResolver {
     
   }
 
-  private Object getElementByPath(String[] parts) throws Exception {
+  private Object getElementByPath(String[] parts, String purpose) throws Exception {
     ElementDefn e;
     try {
       e = getElementDefn(parts[0]);
@@ -549,7 +567,7 @@ public class Definitions implements org.hl7.fhir.instance.utils.NameResolver {
     while (e != null && i < parts.length) {
       if (e.getAcceptableGenericTypes().isEmpty() && hasType(e.typeCode()))
         e = getElementDefn(e.typeCode());
-      e = e.getElementByName(parts[i], true, this);
+      e = e.getElementByName(parts[i], true, this, purpose);
       i++;
     }
     return e;
@@ -571,7 +589,6 @@ public class Definitions implements org.hl7.fhir.instance.utils.NameResolver {
     return allBindings;
   }
 
-  @Override
   public boolean isResource(String name) {
     return hasResource(name);
   }
@@ -655,5 +672,42 @@ public class Definitions implements org.hl7.fhir.instance.utils.NameResolver {
     return w5list;
   }
 
+  public Map<String, ConstraintStructure> getProfileIds() {
+    return profileIds;
+  }
+
+  public boolean isLoaded() {
+    return loaded;
+  }
+
+  public void setLoaded(boolean loaded) {
+    this.loaded = loaded;
+  }
+
+  public void addNs(String url, String name, String page) throws Exception {
+    addNs(url, name, page, false);
+  }
   
+  public void addNs(String url, String name, String page, boolean notUnique) throws Exception {
+    if (!url.startsWith("http://hl7.org/fhir")) 
+      throw new Exception("namespace wrong: "+url);  
+    else if (redirectList == null) 
+      throw new Exception("namespace missed the boat");  
+    else if (!redirectList.containsKey(url)) 
+      redirectList.put(url, new NamespacePair(name, page, notUnique));
+    else if (!notUnique) {
+      if (redirectList.get(url).notUnique)
+        redirectList.put(url, new NamespacePair(name, page, notUnique));
+      else if (!redirectList.get(url).page.equals(page))
+        throw new Exception("namespace conflict: "+url+", page "+page+" vs "+redirectList.get(url).page);
+    }
+  }
+
+  public Map<String, NamespacePair> getRedirectList() {
+    return redirectList;
+  }
+  
+  public void clearRedirectList() {
+    redirectList = null;
+  }
 }

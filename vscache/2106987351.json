@@ -1,0 +1,1 @@
+{"resourceType":"ValueSet","expansion":{"identifier":"urn:uuid:16526d38-2fcd-4ba6-a6cb-8d04f3593b94","timestamp":"2015-08-24T23:42:18Z","contains":[{"system":"http://snomed.info/sct","code":"271336007","display":"Examination / signs"},{"system":"http://snomed.info/sct","code":"160237006","display":"History/symptoms"}]}}

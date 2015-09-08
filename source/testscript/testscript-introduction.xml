@@ -1,6 +1,8 @@
 <div xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml ../../schema/fhir-xhtml.xsd" xmlns="http://www.w3.org/1999/xhtml">
 
 <div>
+<a name="scope"> </a>
+
 <h2>Scope and Usage</h2>
 <p>
 The TestScript resource is used to define tests that can be executed on one or more FHIR servers. The TestScript resource would typically contain
@@ -29,13 +31,34 @@ It may not be possible to fully automate the latter goal (especially with regard
 </div>
 
 <div>
+<a name="bnr"> </a>
 <h2>Boundaries and Relationships</h2>
 <p>
-The TestScript resource should <b>NOT</b> be used to represent Clinical tests, Prescriptions, or any other Healthcare related concept. The TestScript resource is an infrastructure support resource used to represent standardized tests to determine an implementation's level of adherence to the FHIR specification.
+The TestScript resource should <b>NOT</b> be used to represent Clinical tests, Prescriptions, or any other Healthcare related concept. 
+The TestScript resource is an infrastructure support resource used to represent standardized tests to determine an 
+implementation's level of adherence to the FHIR specification.
 </p>
+<p>
+The TestScript resource relies is a part of the conformance framework; its purpose is to 
+test whether systems conform to a set of expectations. The expectations are expressed
+using a combination of the following resources:
+</p>
+<ul>
+  <li><a title="A value set specifies a set of codes drawn from one or more code systems." href="valueset.html">ValueSet</a> </li>
+  <li><a title="A statement of relationships from one set of concepts to one or more other concepts - either code systems or data elements, or classes in class models." href="conceptmap.html">ConceptMap</a> </li>
+  <li><a title="A definition of a FHIR structure. This resource is used to describe the underlying resources, data types defined in FHIR, and also for describing extensions, and constraints on resources and data types." href="structuredefinition.html">StructureDefinition</a> </li>
+  <li><a title="The formal description of a single piece of information that can be gathered and reported." href="dataelement.html">DataElement</a> </li>
+  <li><a title="A conformance statement is a set of capabilities of a FHIR Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation." href="conformance.html">Conformance</a> </li>
+  <li><a title="A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction)." href="operationdefinition.html">OperationDefinition</a> </li>
+  <li><a title="A Search Parameter that defines a named search item that can be used to search/filter on a resource." href="searchparameter.html">SearchParameter</a> </li>
+  <li><a title="A set of rules or how FHIR is used to solve a particular problem. This resource is used to gather all the parts of an implementation guide into a logical whole, and to publish a computable definition of all the parts." href="implementationguide.html">ImplementationGuide</a> </li>
+</ul>
+
 </div>
 
 <div>
+<a name="bnc"> </a>
+
 <h2>Background and Context</h2>
 <p>
 <h3>Background</h3>
@@ -75,21 +98,32 @@ Furthermore, the TestScript resource provides clear examples of the appropriate 
 
 <h3>Execution</h3>
 <h4>Workflow</h4>
+<p><b>Pre-Processing</b></p>
 <p>
   The TestScript execution workflow begins by determining if the test suite is appropriate for the server under test.  This can be determined by evaluating if the interactions listed in the TestScript metadata "capabilities" section are supported by the server's conformance resource.  If the capabilities are supported by the server, then the TestScript can be executed.  Otherwise, the TestScript as a whole or a specific test within the test script may be skipped depending on where the capabilties section is defined. See <a href="#howToSpecifiyCapabilities">How to specify metadata capabilities</a>.
 </p>
 <p>
   If the server supports the requirements of the TestScript instance, any specified fixtures are loaded or retrieved. If the fixtures are marked as 'autocreate' then they are automatically created on the server(s) under test using 'create' operations. If any of the autocreate operations fail, then the tests in the TestScript are skipped.
 </p>
+<p><b>Setup Execution</b></p>
 <p>
   After the fixtures are loaded and autocreates are executed, then the setup section is executed to establish the test suite environment.  The purpose of the setup section is typically to pre-load data (if it was not autocreated) required for the execution of the tests into the FHIR server under test.  The setup operations are executed once before all the tests are run (see <a href="#operation-execution">Operation Execution</a>). All operations in a setup section (including assertions) must complete successfully for the tests to be executed. If an assertion operation in the setup section fails, then execution and evaluation of the tests in the TestScript should be skipped. Technically, any operation (see the <a href="#operations-table">operations table</a> for a complete listing) can be included in the setup section, but typical operations will be create, update, read, and vread.
 </p>
 <p>
+  Due to the possibility that the setup actions are not required on the server under test, the TestScript execution workflow MAY provide the capability of skipping or ignoring the setup section of the TestScript.
+</p>
+<p><b>Test Execution</b></p>
+<p>
   Once setup is complete, each test is executed.  Tests contain a set of operations, and executing a test involves the evaluation of each operation listed in the test in the order defined by the test (see <a href="#operation-execution">Operation Execution</a> and the <a href="#operations-table">list of operations</a>).
 </p>
+<p><b>Teardown Execution</b></p>
 <p>
   After all the tests have completed execution, the teardown section is executed.  The purpose of the teardown section is to revert the FHIR server under test to a pre-test clean state.  This requires removing any resources or artifacts generated as part of test suite setup or test execution.  Technically, any operation (see the <a href="#operations-table">operations table</a> for a complete listing) can be included in the teardown section, but the most often used operation will be delete.  Assertions are not supported in the teardown section.
 </p>
+<p>
+  Due to the possibility that the teardown actions are not required on the server under test, the TestScript execution workflow MAY provide the capability of skipping or ignoring the teardown section of the TestScript.
+</p>
+<p><b>Post-Processing</b></p>
 <p>
   After the teardown section is executed, any fixtures that were marked 'autodelete' are removed from the server(s) under test. After this final stage, the execution of the TestScript is complete.
 </p>

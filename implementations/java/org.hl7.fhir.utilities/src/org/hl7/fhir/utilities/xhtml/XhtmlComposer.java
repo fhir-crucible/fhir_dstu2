@@ -107,8 +107,6 @@ public class XhtmlComposer {
       writeElement(indent, node);
     else if (node.getNodeType() == NodeType.Text)
       writeText(node);
-//    else
-//      throw new Exception("Unknown node type: "+node.getNodeType().toString());
   }
 
   private void writeText(XhtmlNode node) throws Exception {

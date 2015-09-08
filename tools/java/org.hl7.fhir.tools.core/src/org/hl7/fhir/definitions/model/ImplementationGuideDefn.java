@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hl7.fhir.definitions.generators.specification.ToolResourceUtilities;
 import org.hl7.fhir.instance.model.CodeType;
 import org.hl7.fhir.instance.model.ImplementationGuide;
 import org.hl7.fhir.instance.model.ImplementationGuide.GuidePageKind;
@@ -16,6 +17,10 @@ import org.hl7.fhir.instance.model.ValueSet;
 import org.hl7.fhir.instance.model.OperationOutcome.IssueType;
 import org.hl7.fhir.instance.validation.ValidationMessage;
 import org.hl7.fhir.instance.validation.ValidationMessage.Source;
+import org.hl7.fhir.utilities.xhtml.HeirarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HeirarchicalTableGenerator.Row;
+import org.hl7.fhir.utilities.xhtml.HeirarchicalTableGenerator.TableModel;
+import org.hl7.fhir.utilities.xhtml.HeirarchicalTableGenerator.Title;
 
 public class ImplementationGuideDefn {
 
@@ -45,11 +50,12 @@ public class ImplementationGuideDefn {
   private String code;
   private boolean core; 
   private String name;
-  private String page;
+  private String brief;
   private boolean review;
   private String source;
   private String ballot;
   private String fmm;
+  private String sectionId;
   private List<String> pageList = new ArrayList<String>();
   private List<String> imageList = new ArrayList<String>();
   private List<Example> examples = new ArrayList<Example>();
@@ -63,18 +69,19 @@ public class ImplementationGuideDefn {
   private ImplementationGuide ig;
   private List<ValidationMessage> issues;
   
-  public ImplementationGuideDefn(String committee, String code, String name, String page, String source, boolean review, String ballot, String fmm, boolean core, List<ValidationMessage> issues) {
+  public ImplementationGuideDefn(String committee, String code, String name, String brief, String source, boolean review, String ballot, String fmm, String sectionId, boolean core, List<ValidationMessage> issues) {
     super();
     this.code = code;
     this.name = name;
     this.source = source;
-    this.page = page;
+    this.brief = brief;
     this.review = review;
     this.committee = committee;
     this.fmm = fmm;
     this.ballot = ballot;
     this.core = core;
     this.issues = issues;
+    this.sectionId = sectionId;
   }
   
   public String getCode() {
@@ -88,9 +95,6 @@ public class ImplementationGuideDefn {
     this.name = name;
   }
 
-  public String getPage() {
-    return page;
-  }
   public boolean isReview() {
     return review;
   }
@@ -100,10 +104,6 @@ public class ImplementationGuideDefn {
 
   public String getSource() {
     return source;
-  }
-
-  public void setPage(String page) {
-    this.page = page;
   }
 
   public List<String> getPageList() {
@@ -200,7 +200,7 @@ public class ImplementationGuideDefn {
     if (!n.endsWith(".html")) // todo: do we need this? 
       n = n + ".html";
     
-    List<LinkTriple> path = determinePath(n);
+    List<LinkTriple> path = determinePath(n, type, crumbTitle);
     
     StringBuilder b = new StringBuilder();
     b.append("        <!-- "+pagename+" / "+type+" / "+crumbTitle+" -->\r\n");
@@ -216,13 +216,22 @@ public class ImplementationGuideDefn {
     return b.toString();
   }
 
-  private List<LinkTriple> determinePath(String n) {
+  private List<LinkTriple> determinePath(String n, String type, String crumbTitle) {
     List<LinkTriple> res = new ArrayList<ImplementationGuideDefn.LinkTriple>();
-    res.add(new LinkTriple(ig.getPage().getSource(), ig.getId().toUpperCase(), ig.getName()));
-    if (!n.equals(ig.getPage().getSource())) {
-      if (!findPage(n, res, ig.getPage().getPage())) {
-        issues.add(new ValidationMessage(Source.Publisher, IssueType.PROCESSING, code+"/"+n, "The page "+n+" is not assigned a bread crumb yet", IssueSeverity.WARNING));
-        res.add(new LinkTriple(null, "unsorted", "Work in Progress yet"));
+    if (type.equals("valueSet") && hasVSRegistry()) {
+      res.add(new LinkTriple(ig.getPage().getSource(), ig.getId().toUpperCase(), ig.getName()));
+      findPage(getVSRegistry().getSource(), res, ig.getPage().getPage());
+      res.add(new LinkTriple(null, crumbTitle, null));
+    } else if (type.startsWith("extension:")) {
+      res.add(new LinkTriple(ig.getPage().getSource(), ig.getId().toUpperCase(), ig.getName()));
+      res.add(new LinkTriple(null, "Extension Stuff", "Work in Progress yet"));
+    } else {
+      res.add(new LinkTriple(ig.getPage().getSource(), ig.getId().toUpperCase(), ig.getName()));
+      if (!n.equals(ig.getPage().getSource())) {
+        if (!findPage(n, res, ig.getPage().getPage())) {
+          issues.add(new ValidationMessage(Source.Publisher, IssueType.PROCESSING, code+"/"+n, "The page "+n+" is not assigned a bread crumb yet", IssueSeverity.WARNING));
+          res.add(new LinkTriple(null, "unsorted", "Work in Progress yet"));
+        }
       }
     }
     return res;
@@ -250,15 +259,21 @@ public class ImplementationGuideDefn {
     return isCore() ? "" : code+File.separator;
   }
 
+  public boolean hasVSRegistry() {
+    return getRegistryPage("ValueSet") != null;
+  }
   public ImplementationGuidePageComponent getVSRegistry() {
-    return getVSRegistryPage(ig.getPage().getPage());
+    return getRegistryPage("ValueSet");
+  }
+  public ImplementationGuidePageComponent getRegistryPage(String type) {
+    return getRegistryPage(ig.getPage().getPage(), type);
   }
 
-  private ImplementationGuidePageComponent getVSRegistryPage(List<ImplementationGuidePageComponent> pages) {
+  private ImplementationGuidePageComponent getRegistryPage(List<ImplementationGuidePageComponent> pages, String type) {
     for (ImplementationGuidePageComponent page : pages) {
-      if ((page.getKind().equals(GuidePageKind.LIST) || page.getKind().equals(GuidePageKind.DIRECTORY)) && hasType(page, "ValueSet")) 
+      if ((page.getKind().equals(GuidePageKind.LIST) || page.getKind().equals(GuidePageKind.DIRECTORY)) && hasType(page, type)) 
           return page;
-      ImplementationGuidePageComponent p = getVSRegistryPage(page.getPage());
+      ImplementationGuidePageComponent p = getRegistryPage(page.getPage(), type);
       if (p != null)
         return p;
     }
@@ -272,4 +287,116 @@ public class ImplementationGuideDefn {
     }
     return false;
   }
+
+  private ImplementationGuidePageComponent getPage(String n, ImplementationGuidePageComponent node) {
+    if (n.equals(node.getSource()))
+      return node;
+    for (ImplementationGuidePageComponent page : node.getPage()) {
+      ImplementationGuidePageComponent p = getPage(n, page);
+      if (p != null)
+        return p;
+    }
+    return null;
+  }
+
+  
+  public String getIndexPrefixForFile(String page, String logicalName) {
+    if (page.startsWith(code+"\\"))
+      page = page.substring(code.length()+1);
+    ImplementationGuidePageComponent p = getPage(page, ig.getPage());
+    if (p == null)
+      return sectionId+".??";
+    else
+      return p.getUserString(ToolResourceUtilities.NAME_PAGE_INDEX);
+  }
+
+  public String getPrefix() {
+    if (isCore())
+      return "";
+    else
+      return code+"/";
+  }
+
+  public List<ImplementationGuidePageComponent> getSpecialPages() {
+    List<ImplementationGuidePageComponent> res = new ArrayList<ImplementationGuide.ImplementationGuidePageComponent>();
+    if (ig != null)
+      listSpecialPages(res, ig.getPage().getPage());
+    return res;
+  }
+
+  private void listSpecialPages(List<ImplementationGuidePageComponent> res, List<ImplementationGuidePageComponent> pages) {
+    for (ImplementationGuidePageComponent page : pages) {
+      if (page.getKind() == GuidePageKind.TOC)
+        res.add(page);
+    }
+  }
+  
+  public TableModel genToc(HeirarchicalTableGenerator gen) {
+    TableModel model = gen.new TableModel();
+    
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), "Table Of Contents", null, null, 0));
+    addPage(gen, model.getRows(), ig.getPage());    
+    return model;
+
+   }
+
+  private void addPage(HeirarchicalTableGenerator gen, List<Row> rows, ImplementationGuidePageComponent page) {
+    Row row = gen.new Row();
+    rows.add(row);
+    row.setIcon(getIcon(page.getKind()), page.getKind().getDisplay());
+    
+    String ndx = page.getUserString(ToolResourceUtilities.NAME_PAGE_INDEX);
+    if (ndx == null)
+      ndx = "";
+    else
+      ndx = ndx + " ";
+    row.getCells().add(gen.new Cell("", page.getSource(), ndx + page.getName(), null, null));
+    for (ImplementationGuidePageComponent p : page.getPage()) {
+      addPage(gen, row.getSubRows(), p);
+    }
+  }
+
+  private String getIcon(GuidePageKind kind) {
+    switch (kind) {
+    case PAGE: return "icon-page.png";  
+    case EXAMPLE: return "icon-example.png"; 
+    case LIST: return "icon-list.gif";
+    case INCLUDE: return "icon-include.png";
+    case DIRECTORY: return "icon-directory.gif";
+    case DICTIONARY: return "icon-dictionary.png";
+    case TOC: return "icon-toc.png";
+    case RESOURCE: return "icon-resource.png";
+    default: return "icon-page.png";
+    }
+  }
+  
+  public void numberPages() {
+    ig.getPage().setUserData(ToolResourceUtilities.NAME_PAGE_INDEX, sectionId+".0");
+    numberPages(ig.getPage().getPage(), sectionId+".");
+  }
+
+  private void numberPages(List<ImplementationGuidePageComponent> list, String prefix) {
+    for (int i = 0; i < list.size(); i++) {
+      ImplementationGuidePageComponent page = list.get(i);
+      page.setUserData(ToolResourceUtilities.NAME_PAGE_INDEX, prefix+Integer.toString(i+1)+(page.hasPage() ? ".0" : ""));
+      numberPages(page.getPage(), prefix+Integer.toString(i+1)+".");
+    }
+  }
+
+  public String getBrief() {
+    return brief;
+  }
+
+  public String getHomePage() {
+    return ig == null ? null : code+"/"+ig.getPage().getSource();
+  }
+
+  public Example getExample(String rn, String id) {
+    for (Example e : examples) {
+      if (e.getResourceName().equals(rn) && e.getId().equals(id))
+        return e;
+    }
+    return null;
+  }
+
 }

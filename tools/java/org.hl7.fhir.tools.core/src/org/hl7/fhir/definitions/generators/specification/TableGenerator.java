@@ -1,5 +1,6 @@
 package org.hl7.fhir.definitions.generators.specification;
 
+import org.hl7.fhir.definitions.generators.specification.TableGenerator.RenderMode;
 import org.hl7.fhir.definitions.model.BindingSpecification;
 import org.hl7.fhir.definitions.model.BindingSpecification.BindingMethod;
 import org.hl7.fhir.definitions.model.ElementDefn;
@@ -14,6 +15,14 @@ import org.hl7.fhir.utilities.xhtml.HeirarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HeirarchicalTableGenerator.Row;
 
 public class TableGenerator extends BaseGenerator {
+  public enum RenderMode {
+    DATATYPE,
+    RESOURCE,
+    LOGICAL
+  }
+
+  private final boolean ADD_REFERENCE_TO_TABLE = true;
+  
   protected String dest; 
   protected String pageName;
   protected boolean inlineGraphics;
@@ -30,7 +39,7 @@ public class TableGenerator extends BaseGenerator {
   protected boolean dictLinks() {
     return pageName != null;
   }
-  protected Row genElement(ElementDefn e, HeirarchicalTableGenerator gen, boolean resource, String path, boolean isProfile, String prefix, boolean isLogical) throws Exception {
+  protected Row genElement(ElementDefn e, HeirarchicalTableGenerator gen, boolean resource, String path, boolean isProfile, String prefix, RenderMode mode) throws Exception {
     Row row = gen.new Row();
 
     row.setAnchor(path);
@@ -60,7 +69,10 @@ public class TableGenerator extends BaseGenerator {
       if (!e.getElements().isEmpty()) {
         row.getCells().add(gen.new Cell(null, null, path.contains(".") ? e.describeCardinality() : "", null, null)); 
         row.setIcon("icon_element.gif", HeirarchicalTableGenerator.TEXT_ICON_ELEMENT);
-        row.getCells().add(gen.new Cell(null, prefix+"element.html", "Element", null, null));   
+        if (mode == RenderMode.RESOURCE)
+          row.getCells().add(gen.new Cell(null, prefix+"backboneelement.html", "BackboneElement", null, null));
+        else
+          row.getCells().add(gen.new Cell(null, prefix+"element.html", "Element", null, null));   
       } else if (e.getTypes().size() == 1) {
         row.getCells().add(gen.new Cell(null, null, path.contains(".") ? e.describeCardinality() : "", null, null)); 
         String t = e.getTypes().get(0).getName();
@@ -71,6 +83,10 @@ public class TableGenerator extends BaseGenerator {
         } else if (t.equals("Reference")) {
           row.setIcon("icon_reference.png", HeirarchicalTableGenerator.TEXT_ICON_REFERENCE);
           c = gen.new Cell();
+          if (ADD_REFERENCE_TO_TABLE) {
+          c.getPieces().add(gen.new Piece(prefix+"references.html", "Reference", null));
+          c.getPieces().add(gen.new Piece(null, "(", null));
+          }
           boolean first = true;
           for (String rt : e.getTypes().get(0).getParams()) {
             if (!first)
@@ -81,6 +97,8 @@ public class TableGenerator extends BaseGenerator {
               c.getPieces().add(gen.new Piece(prefix+findPage(rt)+".html", rt, null));
             first = false;
           }
+          if (ADD_REFERENCE_TO_TABLE) 
+            c.getPieces().add(gen.new Piece(null, ")", null));
         } else if (definitions.getPrimitives().containsKey(t)) {
           row.setIcon("icon_primitive.png", HeirarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
           c = gen.new Cell(null, prefix+"datatypes.html#"+t, t, null, null);
@@ -124,7 +142,7 @@ public class TableGenerator extends BaseGenerator {
       cc.getPieces().add(gen.new Piece(null, inv.getEnglish(), inv.getId()).setStyle("font-style: italic"));
     }
 
-    if (isLogical) {
+    if (mode == RenderMode.LOGICAL) {
       String logical = e.getMappings().get("http://hl7.org/fhir/logical");
       Cell c = gen.new Cell();
       row.getCells().add(c);
@@ -144,6 +162,10 @@ public class TableGenerator extends BaseGenerator {
           choicerow.setIcon("icon_reference.png", HeirarchicalTableGenerator.TEXT_ICON_REFERENCE);
           Cell c = gen.new Cell();
           choicerow.getCells().add(c);
+          if (ADD_REFERENCE_TO_TABLE) {
+            c.getPieces().add(gen.new Piece(prefix+"references.html", "Reference", null));
+            c.getPieces().add(gen.new Piece(null, "(", null));
+          }
           boolean first = true;
           for (String rt : tr.getParams()) {
             if (!first)
@@ -151,6 +173,9 @@ public class TableGenerator extends BaseGenerator {
             c.getPieces().add(gen.new Piece(prefix+findPage(rt)+".html", rt, null));
             first = false;
           }
+          if (ADD_REFERENCE_TO_TABLE) 
+            c.getPieces().add(gen.new Piece(null, ")", null));
+          
         } else if (definitions.getPrimitives().containsKey(t)) {
           choicerow.getCells().add(gen.new Cell(null, null, e.getName().replace("[x]",  Utilities.capitalize(t)), definitions.getPrimitives().get(t).getDefinition(), null));
           choicerow.getCells().add(gen.new Cell());
@@ -178,7 +203,7 @@ public class TableGenerator extends BaseGenerator {
       }
     } else
       for (ElementDefn c : e.getElements())
-        row.getSubRows().add(genElement(c, gen, false, path+'.'+c.getName(), isProfile, prefix, isLogical));
+        row.getSubRows().add(genElement(c, gen, false, path+'.'+c.getName(), isProfile, prefix, mode));
     return row;
   }
 

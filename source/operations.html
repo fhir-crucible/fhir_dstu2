@@ -17,15 +17,18 @@
 <p>
 The <a href="http.html">RESTful API</a> defines a set of common interactions performed on
 a repository of typed resources (read, update, search, etc). These interactions follow
-the RESTful paradigm of managing state by Create/Read/Update/Delete actions on a set of identified
+the RESTful paradigm of managing state by <b>C</b>reate/<b>R</b>ead/<b>U</b>pdate/<b>D</b>elete actions on a set of identified
 resources. While this approach solves many use cases, there is some specific
 functionality that can be met more efficiently using an RPC-like paradigm,
-where named operations are performed with inputs and outputs. This specification
-describes a light operation framework that seamlessly extends the RESTful API.
+where named operations are performed with inputs and outputs (<b>E</b>xecute). Operations are used where the server
+needs to play an active role in formulating the content of the response, not merely return existing
+information, or where the intended purpose is to cause side effects - modification of existing
+resources, or creation of new resourcse. This specification describes a light operation framework that
+seamlessly extends the RESTful API.
 </p>
 <p>
 Operations have the following general properties:
-</p> 
+</p>
 <ul>
  <li>Each operation has a name</li>
  <li>Each operation has a list of 'in' and 'out' parameters</li>
@@ -35,6 +38,45 @@ Operations have the following general properties:
  <li>The operations may make use of the existing repository of resources in their definitions</li>
  <li>Operations are performed against a specific resource, a resource type, or the whole system</li>
 </ul>
+
+<a name="executing"> </a>
+<h3>Executing an Operation</h3>
+
+<p>
+Operations are (mostly) POSTs to a FHIR endpoint, where the name of the operations is prefixed by a “$” sign. For example:
+</p>
+<pre>
+ POST http://fhir.someserver.org/fhir/Patient/1/$everything
+</pre>
+<p>
+Whenever the operation is idempotent, and the parameters are all simple ones, 
+as is the case with the example above) it may be invoked using GET as well.
+</p>
+<p>
+Operations can be invoked on four types of FHIR endpoints:
+</p>
+<ul>
+ <li>The “base” FHIR service endpoint (e.g. http://fhir.someserver.org/fhir) – these are operations that operate on the full scale of the server. For example: return me all extensions known by this server</li>
+ <li>A resource type (e.g. http://fhir.someserver.org/fhir/Patient) – these operations operate across all instances of the given type</li>
+ <li>A resource instance (e.g. http://fhir.someserver.org/fhir/Patient/1) – for operations that involve a single instance, like the $everything operation above</li>
+ <li>A version of a resource instance (http://fhir.someserver.org/fhir/Patient/1/_history/4) – for operations that involve a specific version of a specific instance of FHIR data. This is a special case that only exists to allow manipulation of profile and tag metadata of past versions</li>
+</ul>
+<p>
+The body of the invocation contains a special infrastructure resource called <a href="parameters.html">Parameters</a>,
+which represents a collection of named parameters as &lt;key,value&gt; pairs, where the value may be any 
+primitive or complex datatype or even a full Resource. In addition it may include strings that are 
+formatted as the search parameter types.
+</p>
+<p>
+On completion, the operation returns another <code>Parameters</code> resource, this time containing one or 
+more output “parameters”. This means that a FHIR operation can take any parameter “in” and return a set of 
+result parameters “out”. Both the body of the POST and the returned result are always a Resource. 
+</p>
+<p>
+Some operations - ones with simple input types and a single output parameter named 'return' that is 
+a resource - can be invoked differently, by using a GET directly, with parameters as HTTP URL parameters. 
+In this case, the response is simply the resource that is the return value, with no Parameters resource.
+</p>
 
 <a name="defined"> </a>
 <h3>FHIR defined Operations</h3>
@@ -50,7 +92,7 @@ Notes:
 </ul>
 
 <a name="extensibility"> </a>
-<h3>Implementations Defined Operations</h3>
+<h3>Implementation Defined Operations</h3>
 <p>
 Implementations are able to define their own operations in addition to
 those defined here. Name clashes between operations defined
@@ -58,10 +100,10 @@ by different implementers can be resolved by use of the
 <a href="conformance.html">conformance statement</a>.
 </p>
 <p>
-In addition, the definition of these operations  or additional run time operations does not 
-prevent the use of other kinds of operations that are not dependent on and/or not integrated 
-with the RESTful API, as long as their addressing scheme does not clash with the scheme 
-defined herein.
+In addition, the definition of these operations  or additional run time operations does not
+prevent the use of other kinds of operations that are not dependent on and/or not integrated
+with the RESTful API, as long as their addressing scheme does not clash with the scheme
+defined here.
 </p>
 
 <a name="defining"> </a>
@@ -168,7 +210,7 @@ authenticate the client in response to an operation request.
 
 <p>
 In the general case, an operation response uses the same
-<a href="parameters.html">Parameters</a> format one or more
+<a href="parameters.html">Parameters</a> format whether there is one or more
 named parameters (the "out" parameters).
 </p>
 <p>
@@ -189,14 +231,17 @@ they will have no id property.
 
 <h3>Executing an Operation Asynchronously</h3>
 
+<blockquote class="dstu-note">
+<a name="dstu"> </a>
 <p>
-DSTU NOTE: there is no defined correct way to execute 
-operations asynchronously. See here for ongoing 
-<a href="http://wiki.hl7.org/index.php?title=FHIR_Asynchronous_Exchange">Discussion</a>
-of the options. The <a href="messaging.html#operations">messaging page</a>
+<b>DSTU Note:</b> there is no defined correct way to execute
+operations asynchronously. The <a href="messaging.html#operations">messaging page</a>
 describes a way to execute operations asynchronously using messages.
 </p>
-
+<p>
+Feedback/discussion <a href="http://wiki.hl7.org/index.php?title=FHIR_Asynchronous_Exchange">here</a>.
+</p>
+</blockquote>
 </div>
 
 [%file newfooter%]

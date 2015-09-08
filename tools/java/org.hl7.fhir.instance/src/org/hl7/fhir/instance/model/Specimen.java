@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Thu, Aug 13, 2015 06:30+1000 for FHIR v0.5.0
+// Generated on Tue, Sep 1, 2015 11:15+1000 for FHIR v1.0.0
 
 import java.util.*;
 
@@ -46,12 +46,112 @@ import org.hl7.fhir.instance.model.api.*;
 @ResourceDef(name="Specimen", profile="http://hl7.org/fhir/Profile/Specimen")
 public class Specimen extends DomainResource {
 
+    public enum SpecimenStatus {
+        /**
+         * The physical specimen is present and in good condition.
+         */
+        AVAILABLE, 
+        /**
+         * There is no physical specimen because it is either lost, destroyed or consumed.
+         */
+        UNAVAILABLE, 
+        /**
+         * The specimen cannot be used because of a quality issue such as a broken container, contamination, or too old.
+         */
+        UNSATISFACTORY, 
+        /**
+         * The specimen was entered in error and therefore nullified.
+         */
+        ENTEREDINERROR, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static SpecimenStatus fromCode(String codeString) throws Exception {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("available".equals(codeString))
+          return AVAILABLE;
+        if ("unavailable".equals(codeString))
+          return UNAVAILABLE;
+        if ("unsatisfactory".equals(codeString))
+          return UNSATISFACTORY;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        throw new Exception("Unknown SpecimenStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case AVAILABLE: return "available";
+            case UNAVAILABLE: return "unavailable";
+            case UNSATISFACTORY: return "unsatisfactory";
+            case ENTEREDINERROR: return "entered-in-error";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case AVAILABLE: return "http://hl7.org/fhir/specimen-status";
+            case UNAVAILABLE: return "http://hl7.org/fhir/specimen-status";
+            case UNSATISFACTORY: return "http://hl7.org/fhir/specimen-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/specimen-status";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case AVAILABLE: return "The physical specimen is present and in good condition.";
+            case UNAVAILABLE: return "There is no physical specimen because it is either lost, destroyed or consumed.";
+            case UNSATISFACTORY: return "The specimen cannot be used because of a quality issue such as a broken container, contamination, or too old.";
+            case ENTEREDINERROR: return "The specimen was entered in error and therefore nullified.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case AVAILABLE: return "Available";
+            case UNAVAILABLE: return "Unavailable";
+            case UNSATISFACTORY: return "Unsatisfactory";
+            case ENTEREDINERROR: return "Entered-in-error";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class SpecimenStatusEnumFactory implements EnumFactory<SpecimenStatus> {
+    public SpecimenStatus fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("available".equals(codeString))
+          return SpecimenStatus.AVAILABLE;
+        if ("unavailable".equals(codeString))
+          return SpecimenStatus.UNAVAILABLE;
+        if ("unsatisfactory".equals(codeString))
+          return SpecimenStatus.UNSATISFACTORY;
+        if ("entered-in-error".equals(codeString))
+          return SpecimenStatus.ENTEREDINERROR;
+        throw new IllegalArgumentException("Unknown SpecimenStatus code '"+codeString+"'");
+        }
+    public String toCode(SpecimenStatus code) {
+      if (code == SpecimenStatus.AVAILABLE)
+        return "available";
+      if (code == SpecimenStatus.UNAVAILABLE)
+        return "unavailable";
+      if (code == SpecimenStatus.UNSATISFACTORY)
+        return "unsatisfactory";
+      if (code == SpecimenStatus.ENTEREDINERROR)
+        return "entered-in-error";
+      return "?";
+      }
+    }
+
     @Block()
     public static class SpecimenCollectionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Person who collected the specimen.
          */
-        @Child(name = "collector", type = {Practitioner.class}, order=1, min=0, max=1)
+        @Child(name = "collector", type = {Practitioner.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Who collected the specimen", formalDefinition="Person who collected the specimen." )
         protected Reference collector;
 
@@ -63,35 +163,35 @@ public class Specimen extends DomainResource {
         /**
          * To communicate any details or issues encountered during the specimen collection procedure.
          */
-        @Child(name = "comment", type = {StringType.class}, order=2, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name = "comment", type = {StringType.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Collector comments", formalDefinition="To communicate any details or issues encountered during the specimen collection procedure." )
         protected List<StringType> comment;
 
         /**
          * Time when specimen was collected from subject - the physiologically relevant time.
          */
-        @Child(name = "collected", type = {DateTimeType.class, Period.class}, order=3, min=0, max=1)
+        @Child(name = "collected", type = {DateTimeType.class, Period.class}, order=3, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Collection time", formalDefinition="Time when specimen was collected from subject - the physiologically relevant time." )
         protected Type collected;
 
         /**
          * The quantity of specimen collected; for instance the volume of a blood sample, or the physical measurement of an anatomic pathology sample.
          */
-        @Child(name = "quantity", type = {SimpleQuantity.class}, order=4, min=0, max=1)
+        @Child(name = "quantity", type = {SimpleQuantity.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The quantity of specimen collected", formalDefinition="The quantity of specimen collected; for instance the volume of a blood sample, or the physical measurement of an anatomic pathology sample." )
         protected SimpleQuantity quantity;
 
         /**
          * A coded value specifying the technique that is used to perform the procedure.
          */
-        @Child(name = "method", type = {CodeableConcept.class}, order=5, min=0, max=1)
+        @Child(name = "method", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Technique used to perform collection", formalDefinition="A coded value specifying the technique that is used to perform the procedure." )
         protected CodeableConcept method;
 
         /**
          * Anatomical location from which the specimen was collected (if subject is a patient). This is the target site.  This element is not used for environmental specimens.
          */
-        @Child(name = "bodySite", type = {CodeableConcept.class}, order=6, min=0, max=1)
+        @Child(name = "bodySite", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Anatomical collection site", formalDefinition="Anatomical location from which the specimen was collected (if subject is a patient). This is the target site.  This element is not used for environmental specimens." )
         protected CodeableConcept bodySite;
 
@@ -380,21 +480,21 @@ public class Specimen extends DomainResource {
         /**
          * Textual description of procedure.
          */
-        @Child(name = "description", type = {StringType.class}, order=1, min=0, max=1)
+        @Child(name = "description", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Textual description of procedure", formalDefinition="Textual description of procedure." )
         protected StringType description;
 
         /**
          * A coded value specifying the procedure used to process the specimen.
          */
-        @Child(name = "procedure", type = {CodeableConcept.class}, order=2, min=0, max=1)
+        @Child(name = "procedure", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Indicates the treatment or processing step  applied to the specimen", formalDefinition="A coded value specifying the procedure used to process the specimen." )
         protected CodeableConcept procedure;
 
         /**
          * Material used in the processing step.
          */
-        @Child(name = "additive", type = {Substance.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name = "additive", type = {Substance.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Material used in the processing step", formalDefinition="Material used in the processing step." )
         protected List<Reference> additive;
         /**
@@ -599,42 +699,42 @@ public class Specimen extends DomainResource {
         /**
          * Id for container. There may be multiple; a manufacturer's bar code, lab assigned identifier, etc. The container ID may differ from the specimen id in some circumstances.
          */
-        @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Id for the container", formalDefinition="Id for container. There may be multiple; a manufacturer's bar code, lab assigned identifier, etc. The container ID may differ from the specimen id in some circumstances." )
         protected List<Identifier> identifier;
 
         /**
          * Textual description of the container.
          */
-        @Child(name = "description", type = {StringType.class}, order=2, min=0, max=1)
+        @Child(name = "description", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Textual description of the container", formalDefinition="Textual description of the container." )
         protected StringType description;
 
         /**
          * The type of container associated with the specimen (e.g. slide, aliquot, etc).
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=3, min=0, max=1)
+        @Child(name = "type", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Kind of container directly associated with specimen", formalDefinition="The type of container associated with the specimen (e.g. slide, aliquot, etc)." )
         protected CodeableConcept type;
 
         /**
          * The capacity (volume or other measure) the container may contain.
          */
-        @Child(name = "capacity", type = {SimpleQuantity.class}, order=4, min=0, max=1)
+        @Child(name = "capacity", type = {SimpleQuantity.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Container volume or size", formalDefinition="The capacity (volume or other measure) the container may contain." )
         protected SimpleQuantity capacity;
 
         /**
          * The quantity of specimen in the container; may be volume, dimensions, or other appropriate measurements, depending on the specimen type.
          */
-        @Child(name = "specimenQuantity", type = {SimpleQuantity.class}, order=5, min=0, max=1)
+        @Child(name = "specimenQuantity", type = {SimpleQuantity.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Quantity of specimen within container", formalDefinition="The quantity of specimen in the container; may be volume, dimensions, or other appropriate measurements, depending on the specimen type." )
         protected SimpleQuantity specimenQuantity;
 
         /**
          * Introduced substance to preserve, maintain or enhance the specimen. examples: Formalin, Citrate, EDTA.
          */
-        @Child(name = "additive", type = {CodeableConcept.class, Substance.class}, order=6, min=0, max=1)
+        @Child(name = "additive", type = {CodeableConcept.class, Substance.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Additive associated with container", formalDefinition="Introduced substance to preserve, maintain or enhance the specimen. examples: Formalin, Citrate, EDTA." )
         protected Type additive;
 
@@ -912,21 +1012,28 @@ public class Specimen extends DomainResource {
     /**
      * Id for specimen.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="External Identifier", formalDefinition="Id for specimen." )
     protected List<Identifier> identifier;
 
     /**
+     * The availability of the specimen.
+     */
+    @Child(name = "status", type = {CodeType.class}, order=1, min=0, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="available | unavailable | unsatisfactory | entered-in-error", formalDefinition="The availability of the specimen." )
+    protected Enumeration<SpecimenStatus> status;
+
+    /**
      * The kind of material that forms the specimen.
      */
-    @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1)
+    @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Kind of material that forms the specimen", formalDefinition="The kind of material that forms the specimen." )
     protected CodeableConcept type;
 
     /**
      * Reference to the parent (source) specimen which is used when the specimen was either derived from or a component of a another specimen.
      */
-    @Child(name = "parent", type = {Specimen.class}, order=2, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "parent", type = {Specimen.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Specimen from which this specimen originated", formalDefinition="Reference to the parent (source) specimen which is used when the specimen was either derived from or a component of a another specimen." )
     protected List<Reference> parent;
     /**
@@ -938,7 +1045,7 @@ public class Specimen extends DomainResource {
     /**
      * Where the specimen came from. This may be from the patient(s) or from the environment or a device.
      */
-    @Child(name = "subject", type = {Patient.class, Group.class, Device.class, Substance.class}, order=3, min=1, max=1)
+    @Child(name = "subject", type = {Patient.class, Group.class, Device.class, Substance.class}, order=4, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Where the specimen came from. This may be from the patient(s) or from the environment or a device", formalDefinition="Where the specimen came from. This may be from the patient(s) or from the environment or a device." )
     protected Reference subject;
 
@@ -950,39 +1057,39 @@ public class Specimen extends DomainResource {
     /**
      * The identifier assigned by the lab when accessioning specimen(s). This is not necessarily the same as the specimen identifier, depending on local lab procedures.
      */
-    @Child(name = "accessionIdentifier", type = {Identifier.class}, order=4, min=0, max=1)
+    @Child(name = "accessionIdentifier", type = {Identifier.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Identifier assigned by the lab", formalDefinition="The identifier assigned by the lab when accessioning specimen(s). This is not necessarily the same as the specimen identifier, depending on local lab procedures." )
     protected Identifier accessionIdentifier;
 
     /**
      * Time when specimen was received for processing or testing.
      */
-    @Child(name = "receivedTime", type = {DateTimeType.class}, order=5, min=0, max=1)
+    @Child(name = "receivedTime", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The time when specimen was received for processing", formalDefinition="Time when specimen was received for processing or testing." )
     protected DateTimeType receivedTime;
 
     /**
      * Details concerning the specimen collection.
      */
-    @Child(name = "collection", type = {}, order=6, min=0, max=1)
+    @Child(name = "collection", type = {}, order=7, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Collection details", formalDefinition="Details concerning the specimen collection." )
     protected SpecimenCollectionComponent collection;
 
     /**
      * Details concerning treatment and processing steps for the specimen.
      */
-    @Child(name = "treatment", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "treatment", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Treatment and processing step details", formalDefinition="Details concerning treatment and processing steps for the specimen." )
     protected List<SpecimenTreatmentComponent> treatment;
 
     /**
      * The container holding the specimen.  The recursive nature of containers; i.e. blood in tube in tray in rack is not addressed here.
      */
-    @Child(name = "container", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "container", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Direct container of specimen (tube/slide, etc)", formalDefinition="The container holding the specimen.  The recursive nature of containers; i.e. blood in tube in tray in rack is not addressed here." )
     protected List<SpecimenContainerComponent> container;
 
-    private static final long serialVersionUID = -1070246507L;
+    private static final long serialVersionUID = 1025605602L;
 
   /*
    * Constructor
@@ -1036,6 +1143,55 @@ public class Specimen extends DomainResource {
       if (this.identifier == null)
         this.identifier = new ArrayList<Identifier>();
       this.identifier.add(t);
+      return this;
+    }
+
+    /**
+     * @return {@link #status} (The availability of the specimen.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     */
+    public Enumeration<SpecimenStatus> getStatusElement() { 
+      if (this.status == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Specimen.status");
+        else if (Configuration.doAutoCreate())
+          this.status = new Enumeration<SpecimenStatus>(new SpecimenStatusEnumFactory()); // bb
+      return this.status;
+    }
+
+    public boolean hasStatusElement() { 
+      return this.status != null && !this.status.isEmpty();
+    }
+
+    public boolean hasStatus() { 
+      return this.status != null && !this.status.isEmpty();
+    }
+
+    /**
+     * @param value {@link #status} (The availability of the specimen.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     */
+    public Specimen setStatusElement(Enumeration<SpecimenStatus> value) { 
+      this.status = value;
+      return this;
+    }
+
+    /**
+     * @return The availability of the specimen.
+     */
+    public SpecimenStatus getStatus() { 
+      return this.status == null ? null : this.status.getValue();
+    }
+
+    /**
+     * @param value The availability of the specimen.
+     */
+    public Specimen setStatus(SpecimenStatus value) { 
+      if (value == null)
+        this.status = null;
+      else {
+        if (this.status == null)
+          this.status = new Enumeration<SpecimenStatus>(new SpecimenStatusEnumFactory());
+        this.status.setValue(value);
+      }
       return this;
     }
 
@@ -1343,6 +1499,7 @@ public class Specimen extends DomainResource {
       protected void listChildren(List<Property> childrenList) {
         super.listChildren(childrenList);
         childrenList.add(new Property("identifier", "Identifier", "Id for specimen.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        childrenList.add(new Property("status", "code", "The availability of the specimen.", 0, java.lang.Integer.MAX_VALUE, status));
         childrenList.add(new Property("type", "CodeableConcept", "The kind of material that forms the specimen.", 0, java.lang.Integer.MAX_VALUE, type));
         childrenList.add(new Property("parent", "Reference(Specimen)", "Reference to the parent (source) specimen which is used when the specimen was either derived from or a component of a another specimen.", 0, java.lang.Integer.MAX_VALUE, parent));
         childrenList.add(new Property("subject", "Reference(Patient|Group|Device|Substance)", "Where the specimen came from. This may be from the patient(s) or from the environment or a device.", 0, java.lang.Integer.MAX_VALUE, subject));
@@ -1361,6 +1518,7 @@ public class Specimen extends DomainResource {
           for (Identifier i : identifier)
             dst.identifier.add(i.copy());
         };
+        dst.status = status == null ? null : status.copy();
         dst.type = type == null ? null : type.copy();
         if (parent != null) {
           dst.parent = new ArrayList<Reference>();
@@ -1395,8 +1553,8 @@ public class Specimen extends DomainResource {
         if (!(other instanceof Specimen))
           return false;
         Specimen o = (Specimen) other;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(type, o.type, true) && compareDeep(parent, o.parent, true)
-           && compareDeep(subject, o.subject, true) && compareDeep(accessionIdentifier, o.accessionIdentifier, true)
+        return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(type, o.type, true)
+           && compareDeep(parent, o.parent, true) && compareDeep(subject, o.subject, true) && compareDeep(accessionIdentifier, o.accessionIdentifier, true)
            && compareDeep(receivedTime, o.receivedTime, true) && compareDeep(collection, o.collection, true)
            && compareDeep(treatment, o.treatment, true) && compareDeep(container, o.container, true);
       }
@@ -1408,15 +1566,15 @@ public class Specimen extends DomainResource {
         if (!(other instanceof Specimen))
           return false;
         Specimen o = (Specimen) other;
-        return compareValues(receivedTime, o.receivedTime, true);
+        return compareValues(status, o.status, true) && compareValues(receivedTime, o.receivedTime, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && (identifier == null || identifier.isEmpty()) && (type == null || type.isEmpty())
-           && (parent == null || parent.isEmpty()) && (subject == null || subject.isEmpty()) && (accessionIdentifier == null || accessionIdentifier.isEmpty())
-           && (receivedTime == null || receivedTime.isEmpty()) && (collection == null || collection.isEmpty())
-           && (treatment == null || treatment.isEmpty()) && (container == null || container.isEmpty())
-          ;
+        return super.isEmpty() && (identifier == null || identifier.isEmpty()) && (status == null || status.isEmpty())
+           && (type == null || type.isEmpty()) && (parent == null || parent.isEmpty()) && (subject == null || subject.isEmpty())
+           && (accessionIdentifier == null || accessionIdentifier.isEmpty()) && (receivedTime == null || receivedTime.isEmpty())
+           && (collection == null || collection.isEmpty()) && (treatment == null || treatment.isEmpty())
+           && (container == null || container.isEmpty());
       }
 
   @Override
@@ -1426,6 +1584,8 @@ public class Specimen extends DomainResource {
 
   @SearchParamDefinition(name="collector", path="Specimen.collection.collector", description="Who collected the specimen", type="reference" )
   public static final String SP_COLLECTOR = "collector";
+  @SearchParamDefinition(name="container-id", path="Specimen.container.identifier", description="The unique identifier associated with the specimen container", type="token" )
+  public static final String SP_CONTAINERID = "container-id";
   @SearchParamDefinition(name="patient", path="Specimen.subject", description="The patient the specimen comes from", type="reference" )
   public static final String SP_PATIENT = "patient";
   @SearchParamDefinition(name="bodysite", path="Specimen.collection.bodySite", description="The code for the body site from where the specimen originated", type="token" )
@@ -1436,8 +1596,6 @@ public class Specimen extends DomainResource {
   public static final String SP_COLLECTED = "collected";
   @SearchParamDefinition(name="subject", path="Specimen.subject", description="The subject of the specimen", type="reference" )
   public static final String SP_SUBJECT = "subject";
-  @SearchParamDefinition(name="containerid", path="Specimen.container.identifier", description="The unique identifier associated with the specimen container", type="token" )
-  public static final String SP_CONTAINERID = "containerid";
   @SearchParamDefinition(name="accession", path="Specimen.accessionIdentifier", description="The accession number associated with the specimen", type="token" )
   public static final String SP_ACCESSION = "accession";
   @SearchParamDefinition(name="parent", path="Specimen.parent", description="The parent of the specimen", type="reference" )

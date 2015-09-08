@@ -27,7 +27,7 @@
       <p>SNOMED CT is being used here as the example terminology.</p>
       
       
-      <p>This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (IHTSDO), and distributed by agreement between IHTSDO and HL7. Implementer use of SNOMED CT is not covered by this agreement</p>  
+      <p>This value set includes content from SNOMED CT, which is copyright (c) 2002+ International Health Terminology Standards Development Organisation (IHTSDO), and distributed by agreement between IHTSDO and HL7. Implementer use of SNOMED CT is not covered by this agreement</p>  
     
     
     </div>
@@ -42,7 +42,7 @@
     </telecom>
   </contact>
   <description value="This value set includes all Form codes from SNOMED CT - provided as an exemplar"/>
-  <copyright value="This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (IHTSDO), and distributed by agreement between IHTSDO and HL7. Implementer use of SNOMED CT is not covered by this agreement"/>
+  <copyright value="This value set includes content from SNOMED CT, which is copyright (c) 2002+ International Health Terminology Standards Development Organisation (IHTSDO), and distributed by agreement between IHTSDO and HL7. Implementer use of SNOMED CT is not covered by this agreement"/>
   <compose>
     <include>
       <system value="http://snomed.info/sct"/>
@@ -50,7 +50,7 @@
       <!--   SNOMED CT - Children of SCTID: xxxxxxxxxxxxx "route of administration value"   -->
         <property value="concept"/>
         <op value="is-a"/>
-        <value value="284009009"/>
+        <value value="421967003"/>
       </filter>
     </include>
   </compose>

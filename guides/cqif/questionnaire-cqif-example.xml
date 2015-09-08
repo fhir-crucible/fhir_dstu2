@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Questionnaire xmlns="http://hl7.org/fhir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../schema/fhir-single.xsd">
+<Questionnaire xmlns="http://hl7.org/fhir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../schema/questionnaire.xsd">
 	<!-- This example demonstrates the CQIF-Questionnaire profile of Questionnaire to represent dynamic logic in a Questionnaire -->
-	<id value="cqif-questionnaire-example"/>
+	<id value="questionnaire-cqif-example"/>
 	<meta>
-		<profile value="http://hl7.org/fhir/StructureDefinition/questionnaire-cqif-cqif-questionnaire"/>
+		<profile value="http://hl7.org/fhir/StructureDefinition/cqif-questionnaire"/>
 	</meta>
 	<text>
 		<status value="generated"/>
 		<div xmlns="http://www.w3.org/1999/xhtml">PHQ-9 Questionnaire with dynamic logic</div>
 	</text>
-	<extension url="http://hl7.org/fhir/StructureDefinition/basic-cqif-content">
+	<extension url="http://hl7.org/fhir/StructureDefinition/cqif-basic-content">
 		<valueAttachment>
-			<contentType value="application/elm+xml"/>
+			<contentType value="application/x-elm+xml"/>
 			<url value="http://elmrepository.org/PHQ-9Logic.elm"/>
 		</valueAttachment>
 	</extension>
@@ -31,6 +31,7 @@
 			<display value="PHQ-9 quick depression assessment panel:-:Pt:^Patient:-:Report.PHQ-9"/>
 		</concept>
 		<text value="Your responses to this questionnaire will help your doctor diagnose and manage your mental health. In responding to the question, please consider how often have you been bothered by any of the following problems over the last 2 weeks?"/>
+		<required value="true"/>
 		<question>
 			<linkId value="LittleInterest"/>
 			<concept>
@@ -135,6 +136,7 @@
 				<reference value="ValueSet/LOINCDepressionAnswersList"/>
 			</options>
 		</question>
+		<!-- ValidationFailure: Unknown LOINC code 44250-8
 		<question>
 			<linkId value="ThoughtsOfHurting"/>
 			<concept>
@@ -148,10 +150,13 @@
 				<reference value="ValueSet/LOINCDepressionAnswersList"/>
 			</options>
 		</question>
+		-->
 		<question>
-			<extension url="http://hl7.org/fhir/StructureDefinition/basic-cqif-expression">
+			<!-- ValidationFailure: Element matches more than one source
+			<extension url="http://hl7.org/fhir/StructureDefinition/cqif-basic-expression">
 				<valueString value="CalculateTotalScore"/>
 			</extension>
+			-->
 			<linkId value="TotalScore"/>
 			<concept>
 				<system value="http://loinc.org"/>

@@ -29617,7 +29617,7 @@
           <td>Echovist</td>
         
           
-          <td>Echovist® ultrasonic contrast agent produced by Schering AG</td>
+          <td>Echovist(R) ultrasonic contrast agent produced by Schering AG</td>
       
         
         </tr>  
@@ -29655,7 +29655,7 @@
           <td>Levovist</td>
         
           
-          <td>Levovist® ultrasonic contrast agent produced by Schering AG.</td>
+          <td>Levovist(R) ultrasonic contrast agent produced by Schering AG.</td>
       
         
         </tr>  
@@ -39632,7 +39632,7 @@
     <concept>
       <code value="125902"/>
       <display value="Echovist"/>
-      <definition value="Echovist® ultrasonic contrast agent produced by Schering AG"/>
+      <definition value="Echovist(R) ultrasonic contrast agent produced by Schering AG"/>
     </concept>
     <concept>
       <code value="125903"/>
@@ -39642,7 +39642,7 @@
     <concept>
       <code value="125904"/>
       <display value="Levovist"/>
-      <definition value="Levovist® ultrasonic contrast agent produced by Schering AG."/>
+      <definition value="Levovist(R) ultrasonic contrast agent produced by Schering AG."/>
     </concept>
     <concept>
       <code value="125905"/>

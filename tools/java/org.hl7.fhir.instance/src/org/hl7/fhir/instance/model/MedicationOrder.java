@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Thu, Aug 13, 2015 06:30+1000 for FHIR v0.5.0
+// Generated on Tue, Sep 1, 2015 11:15+1000 for FHIR v1.0.0
 
 import java.util.*;
 
@@ -41,7 +41,7 @@ import org.hl7.fhir.instance.model.annotations.Description;
 import org.hl7.fhir.instance.model.annotations.Block;
 import org.hl7.fhir.instance.model.api.*;
 /**
- * An order for both supply of the medication and the instructions for administration of the medication to a patient.
+ * An order for both supply of the medication and the instructions for administration of the medication to a patient. The resource is called "MedicationOrder" rather than "MedicationPrescription" to generalize the use across inpatient and outpatient settings as well as for care plans, etc.
  */
 @ResourceDef(name="MedicationOrder", profile="http://hl7.org/fhir/Profile/MedicationOrder")
 public class MedicationOrder extends DomainResource {
@@ -52,27 +52,23 @@ public class MedicationOrder extends DomainResource {
          */
         ACTIVE, 
         /**
-         * Actions implied by the prescription have been temporarily halted, but are expected to continue later.  May also be called "suspended".
+         * Actions implied by the prescription are to be temporarily halted, but are expected to continue later.  May also be called "suspended".
          */
         ONHOLD, 
         /**
-         * All actions that are implied by the prescription have occurred (this will rarely be made explicit).
+         * All actions that are implied by the prescription have occurred.
          */
         COMPLETED, 
         /**
-         * The prescription was entered in error and therefore nullified.
+         * The prescription was entered in error.
          */
         ENTEREDINERROR, 
         /**
-         * Actions implied by the prescription have been permanently halted, before all of them occurred.
+         * Actions implied by the prescription are to be permanently halted, before all of them occurred.
          */
         STOPPED, 
         /**
-         * The prescription was replaced by a newer one, which encompasses all the information in the previous one.
-         */
-        SUPERSEDED, 
-        /**
-         * The prescription is not yet 'actionable', i.e. it is a work in progress, required sign-off, need to be run through decision support.
+         * The prescription is not yet 'actionable', i.e. it is a work in progress, requires sign-off or verification, needs to be run through decision support process.
          */
         DRAFT, 
         /**
@@ -92,8 +88,6 @@ public class MedicationOrder extends DomainResource {
           return ENTEREDINERROR;
         if ("stopped".equals(codeString))
           return STOPPED;
-        if ("superseded".equals(codeString))
-          return SUPERSEDED;
         if ("draft".equals(codeString))
           return DRAFT;
         throw new Exception("Unknown MedicationOrderStatus code '"+codeString+"'");
@@ -105,32 +99,29 @@ public class MedicationOrder extends DomainResource {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case STOPPED: return "stopped";
-            case SUPERSEDED: return "superseded";
             case DRAFT: return "draft";
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case ACTIVE: return "http://hl7.org/fhir/medication-prescription-status";
-            case ONHOLD: return "http://hl7.org/fhir/medication-prescription-status";
-            case COMPLETED: return "http://hl7.org/fhir/medication-prescription-status";
-            case ENTEREDINERROR: return "http://hl7.org/fhir/medication-prescription-status";
-            case STOPPED: return "http://hl7.org/fhir/medication-prescription-status";
-            case SUPERSEDED: return "http://hl7.org/fhir/medication-prescription-status";
-            case DRAFT: return "http://hl7.org/fhir/medication-prescription-status";
+            case ACTIVE: return "http://hl7.org/fhir/medication-order-status";
+            case ONHOLD: return "http://hl7.org/fhir/medication-order-status";
+            case COMPLETED: return "http://hl7.org/fhir/medication-order-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/medication-order-status";
+            case STOPPED: return "http://hl7.org/fhir/medication-order-status";
+            case DRAFT: return "http://hl7.org/fhir/medication-order-status";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
             case ACTIVE: return "The prescription is 'actionable', but not all actions that are implied by it have occurred yet.";
-            case ONHOLD: return "Actions implied by the prescription have been temporarily halted, but are expected to continue later.  May also be called 'suspended'.";
-            case COMPLETED: return "All actions that are implied by the prescription have occurred (this will rarely be made explicit).";
-            case ENTEREDINERROR: return "The prescription was entered in error and therefore nullified.";
-            case STOPPED: return "Actions implied by the prescription have been permanently halted, before all of them occurred.";
-            case SUPERSEDED: return "The prescription was replaced by a newer one, which encompasses all the information in the previous one.";
-            case DRAFT: return "The prescription is not yet 'actionable', i.e. it is a work in progress, required sign-off, need to be run through decision support.";
+            case ONHOLD: return "Actions implied by the prescription are to be temporarily halted, but are expected to continue later.  May also be called \"suspended\".";
+            case COMPLETED: return "All actions that are implied by the prescription have occurred.";
+            case ENTEREDINERROR: return "The prescription was entered in error.";
+            case STOPPED: return "Actions implied by the prescription are to be permanently halted, before all of them occurred.";
+            case DRAFT: return "The prescription is not yet 'actionable', i.e. it is a work in progress, requires sign-off or verification, needs to be run through decision support process.";
             default: return "?";
           }
         }
@@ -141,7 +132,6 @@ public class MedicationOrder extends DomainResource {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered In Error";
             case STOPPED: return "Stopped";
-            case SUPERSEDED: return "Superseded";
             case DRAFT: return "Draft";
             default: return "?";
           }
@@ -163,8 +153,6 @@ public class MedicationOrder extends DomainResource {
           return MedicationOrderStatus.ENTEREDINERROR;
         if ("stopped".equals(codeString))
           return MedicationOrderStatus.STOPPED;
-        if ("superseded".equals(codeString))
-          return MedicationOrderStatus.SUPERSEDED;
         if ("draft".equals(codeString))
           return MedicationOrderStatus.DRAFT;
         throw new IllegalArgumentException("Unknown MedicationOrderStatus code '"+codeString+"'");
@@ -180,8 +168,6 @@ public class MedicationOrder extends DomainResource {
         return "entered-in-error";
       if (code == MedicationOrderStatus.STOPPED)
         return "stopped";
-      if (code == MedicationOrderStatus.SUPERSEDED)
-        return "superseded";
       if (code == MedicationOrderStatus.DRAFT)
         return "draft";
       return "?";
@@ -191,76 +177,78 @@ public class MedicationOrder extends DomainResource {
     @Block()
     public static class MedicationOrderDosageInstructionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Free text dosage instructions can be used for cases where the instructions are too complex to code. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication.
+         * Free text dosage instructions can be used for cases where the instructions are too complex to code.  The content of this attribute does not include the name or description of the medication. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication. It is expected that the text instructions will always be populated.  If the dosage.timing attribute is also populated, then the dosage.text should reflect the same information as the timing.
          */
-        @Child(name = "text", type = {StringType.class}, order=1, min=0, max=1)
-        @Description(shortDefinition="Dosage instructions expressed as text", formalDefinition="Free text dosage instructions can be used for cases where the instructions are too complex to code. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication." )
+        @Child(name = "text", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Dosage instructions expressed as text", formalDefinition="Free text dosage instructions can be used for cases where the instructions are too complex to code.  The content of this attribute does not include the name or description of the medication. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication. It is expected that the text instructions will always be populated.  If the dosage.timing attribute is also populated, then the dosage.text should reflect the same information as the timing." )
         protected StringType text;
 
         /**
          * Additional instructions such as "Swallow with plenty of water" which may or may not be coded.
          */
-        @Child(name = "additionalInstructions", type = {CodeableConcept.class}, order=2, min=0, max=1)
-        @Description(shortDefinition="Supplemental instructions - e.g. 'with meals'", formalDefinition="Additional instructions such as 'Swallow with plenty of water' which may or may not be coded." )
+        @Child(name = "additionalInstructions", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Supplemental instructions - e.g. \"with meals\"", formalDefinition="Additional instructions such as \"Swallow with plenty of water\" which may or may not be coded." )
         protected CodeableConcept additionalInstructions;
 
         /**
-         * The timing schedule for giving the medication to the patient.  The Schedule data type allows many different expressions, for example.  "Every  8 hours"; "Three times a day"; "1/2 an hour before breakfast for 10 days from 23-Dec 2011:";  "15 Oct 2013, 17 Oct 2013 and 1 Nov 2013".
+         * The timing schedule for giving the medication to the patient. The Schedule data type allows many different expressions, for example. "Every 8 hours"; "Three times a day"; "1/2 an hour before breakfast for 10 days from 23-Dec 2011:"; "15 Oct 2013, 17 Oct 2013 and 1 Nov 2013".  This attribute may not always be populated while the DosageInstruction.text is expected to be populated.  If both are populated, then the DosageInstruction.text should reflect the content of the Dosage.timing.
          */
-        @Child(name = "timing", type = {Timing.class}, order=3, min=0, max=1)
-        @Description(shortDefinition="When medication should be administered", formalDefinition="The timing schedule for giving the medication to the patient.  The Schedule data type allows many different expressions, for example.  'Every  8 hours'; 'Three times a day'; '1/2 an hour before breakfast for 10 days from 23-Dec 2011:';  '15 Oct 2013, 17 Oct 2013 and 1 Nov 2013'." )
+        @Child(name = "timing", type = {Timing.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="When medication should be administered", formalDefinition="The timing schedule for giving the medication to the patient. The Schedule data type allows many different expressions, for example. \"Every 8 hours\"; \"Three times a day\"; \"1/2 an hour before breakfast for 10 days from 23-Dec 2011:\"; \"15 Oct 2013, 17 Oct 2013 and 1 Nov 2013\".  This attribute may not always be populated while the DosageInstruction.text is expected to be populated.  If both are populated, then the DosageInstruction.text should reflect the content of the Dosage.timing." )
         protected Timing timing;
 
         /**
-         * If set to true or if specified as a CodeableConcept, indicates that the medication is only taken when needed within the specified schedule rather than at every scheduled dose.  If a CodeableConcept is present, it indicates the pre-condition for taking the Medication.
+         * Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).  
+
+Specifically if 'boolean' datatype is selected, then the following logic applies:  If set to True, this indicates that the medication is only taken when needed, within the specified schedule.
          */
-        @Child(name = "asNeeded", type = {BooleanType.class, CodeableConcept.class}, order=4, min=0, max=1)
-        @Description(shortDefinition="Take 'as needed' (for x)", formalDefinition="If set to true or if specified as a CodeableConcept, indicates that the medication is only taken when needed within the specified schedule rather than at every scheduled dose.  If a CodeableConcept is present, it indicates the pre-condition for taking the Medication." )
+        @Child(name = "asNeeded", type = {BooleanType.class, CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Take \"as needed\" (for x)", formalDefinition="Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).  \n\nSpecifically if 'boolean' datatype is selected, then the following logic applies:  If set to True, this indicates that the medication is only taken when needed, within the specified schedule." )
         protected Type asNeeded;
 
         /**
          * A coded specification of the anatomic site where the medication first enters the body.
          */
-        @Child(name = "site", type = {CodeableConcept.class}, order=5, min=0, max=1)
+        @Child(name = "site", type = {CodeableConcept.class, BodySite.class}, order=5, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Body site to administer to", formalDefinition="A coded specification of the anatomic site where the medication first enters the body." )
-        protected CodeableConcept site;
+        protected Type site;
 
         /**
          * A code specifying the route or physiological path of administration of a therapeutic agent into or onto a patient.
          */
-        @Child(name = "route", type = {CodeableConcept.class}, order=6, min=0, max=1)
+        @Child(name = "route", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="How drug should enter body", formalDefinition="A code specifying the route or physiological path of administration of a therapeutic agent into or onto a patient." )
         protected CodeableConcept route;
 
         /**
          * A coded value indicating the method by which the medication is introduced into or onto the body. Most commonly used for injections.  Examples:  Slow Push; Deep IV.  Terminologies used often pre-coordinate this term with the route and or form of administration.
          */
-        @Child(name = "method", type = {CodeableConcept.class}, order=7, min=0, max=1)
+        @Child(name = "method", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Technique for administering medication", formalDefinition="A coded value indicating the method by which the medication is introduced into or onto the body. Most commonly used for injections.  Examples:  Slow Push; Deep IV.  Terminologies used often pre-coordinate this term with the route and or form of administration." )
         protected CodeableConcept method;
 
         /**
          * The amount of therapeutic or other substance given at one administration event.
          */
-        @Child(name = "dose", type = {Range.class, SimpleQuantity.class}, order=8, min=0, max=1)
+        @Child(name = "dose", type = {Range.class, SimpleQuantity.class}, order=8, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Amount of medication per dose", formalDefinition="The amount of therapeutic or other substance given at one administration event." )
         protected Type dose;
 
         /**
-         * Identifies the speed with which the substance is introduced into the subject. Typically the rate for an infusion. 200ml in 2 hours.
+         * Identifies the speed with which the medication was or will be introduced into the patient. Typically the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time e.g. 500 ml per 2 hours.   Currently we do not specify a default of '1' in the denominator, but this is being discussed. Other examples: 200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours.
          */
-        @Child(name = "rate", type = {Ratio.class, Quantity.class, Range.class}, order=9, min=0, max=1)
-        @Description(shortDefinition="Amount of medication per unit of time", formalDefinition="Identifies the speed with which the substance is introduced into the subject. Typically the rate for an infusion. 200ml in 2 hours." )
+        @Child(name = "rate", type = {Ratio.class, Range.class}, order=9, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Amount of medication per unit of time", formalDefinition="Identifies the speed with which the medication was or will be introduced into the patient. Typically the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time e.g. 500 ml per 2 hours.   Currently we do not specify a default of '1' in the denominator, but this is being discussed. Other examples: 200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours." )
         protected Type rate;
 
         /**
          * The maximum total quantity of a therapeutic substance that may be administered to a subject over the period of time. E.g. 1000mg in 24 hours.
          */
-        @Child(name = "maxDosePerPeriod", type = {Ratio.class}, order=10, min=0, max=1)
+        @Child(name = "maxDosePerPeriod", type = {Ratio.class}, order=10, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Upper limit on medication per unit of time", formalDefinition="The maximum total quantity of a therapeutic substance that may be administered to a subject over the period of time. E.g. 1000mg in 24 hours." )
         protected Ratio maxDosePerPeriod;
 
-        private static final long serialVersionUID = -422348215L;
+        private static final long serialVersionUID = -1470136646L;
 
     /*
      * Constructor
@@ -270,7 +258,7 @@ public class MedicationOrder extends DomainResource {
       }
 
         /**
-         * @return {@link #text} (Free text dosage instructions can be used for cases where the instructions are too complex to code. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         * @return {@link #text} (Free text dosage instructions can be used for cases where the instructions are too complex to code.  The content of this attribute does not include the name or description of the medication. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication. It is expected that the text instructions will always be populated.  If the dosage.timing attribute is also populated, then the dosage.text should reflect the same information as the timing.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
          */
         public StringType getTextElement() { 
           if (this.text == null)
@@ -290,7 +278,7 @@ public class MedicationOrder extends DomainResource {
         }
 
         /**
-         * @param value {@link #text} (Free text dosage instructions can be used for cases where the instructions are too complex to code. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         * @param value {@link #text} (Free text dosage instructions can be used for cases where the instructions are too complex to code.  The content of this attribute does not include the name or description of the medication. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication. It is expected that the text instructions will always be populated.  If the dosage.timing attribute is also populated, then the dosage.text should reflect the same information as the timing.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
          */
         public MedicationOrderDosageInstructionComponent setTextElement(StringType value) { 
           this.text = value;
@@ -298,14 +286,14 @@ public class MedicationOrder extends DomainResource {
         }
 
         /**
-         * @return Free text dosage instructions can be used for cases where the instructions are too complex to code. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication.
+         * @return Free text dosage instructions can be used for cases where the instructions are too complex to code.  The content of this attribute does not include the name or description of the medication. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication. It is expected that the text instructions will always be populated.  If the dosage.timing attribute is also populated, then the dosage.text should reflect the same information as the timing.
          */
         public String getText() { 
           return this.text == null ? null : this.text.getValue();
         }
 
         /**
-         * @param value Free text dosage instructions can be used for cases where the instructions are too complex to code. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication.
+         * @param value Free text dosage instructions can be used for cases where the instructions are too complex to code.  The content of this attribute does not include the name or description of the medication. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication. It is expected that the text instructions will always be populated.  If the dosage.timing attribute is also populated, then the dosage.text should reflect the same information as the timing.
          */
         public MedicationOrderDosageInstructionComponent setText(String value) { 
           if (Utilities.noString(value))
@@ -343,7 +331,7 @@ public class MedicationOrder extends DomainResource {
         }
 
         /**
-         * @return {@link #timing} (The timing schedule for giving the medication to the patient.  The Schedule data type allows many different expressions, for example.  "Every  8 hours"; "Three times a day"; "1/2 an hour before breakfast for 10 days from 23-Dec 2011:";  "15 Oct 2013, 17 Oct 2013 and 1 Nov 2013".)
+         * @return {@link #timing} (The timing schedule for giving the medication to the patient. The Schedule data type allows many different expressions, for example. "Every 8 hours"; "Three times a day"; "1/2 an hour before breakfast for 10 days from 23-Dec 2011:"; "15 Oct 2013, 17 Oct 2013 and 1 Nov 2013".  This attribute may not always be populated while the DosageInstruction.text is expected to be populated.  If both are populated, then the DosageInstruction.text should reflect the content of the Dosage.timing.)
          */
         public Timing getTiming() { 
           if (this.timing == null)
@@ -359,7 +347,7 @@ public class MedicationOrder extends DomainResource {
         }
 
         /**
-         * @param value {@link #timing} (The timing schedule for giving the medication to the patient.  The Schedule data type allows many different expressions, for example.  "Every  8 hours"; "Three times a day"; "1/2 an hour before breakfast for 10 days from 23-Dec 2011:";  "15 Oct 2013, 17 Oct 2013 and 1 Nov 2013".)
+         * @param value {@link #timing} (The timing schedule for giving the medication to the patient. The Schedule data type allows many different expressions, for example. "Every 8 hours"; "Three times a day"; "1/2 an hour before breakfast for 10 days from 23-Dec 2011:"; "15 Oct 2013, 17 Oct 2013 and 1 Nov 2013".  This attribute may not always be populated while the DosageInstruction.text is expected to be populated.  If both are populated, then the DosageInstruction.text should reflect the content of the Dosage.timing.)
          */
         public MedicationOrderDosageInstructionComponent setTiming(Timing value) { 
           this.timing = value;
@@ -367,14 +355,18 @@ public class MedicationOrder extends DomainResource {
         }
 
         /**
-         * @return {@link #asNeeded} (If set to true or if specified as a CodeableConcept, indicates that the medication is only taken when needed within the specified schedule rather than at every scheduled dose.  If a CodeableConcept is present, it indicates the pre-condition for taking the Medication.)
+         * @return {@link #asNeeded} (Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).  
+
+Specifically if 'boolean' datatype is selected, then the following logic applies:  If set to True, this indicates that the medication is only taken when needed, within the specified schedule.)
          */
         public Type getAsNeeded() { 
           return this.asNeeded;
         }
 
         /**
-         * @return {@link #asNeeded} (If set to true or if specified as a CodeableConcept, indicates that the medication is only taken when needed within the specified schedule rather than at every scheduled dose.  If a CodeableConcept is present, it indicates the pre-condition for taking the Medication.)
+         * @return {@link #asNeeded} (Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).  
+
+Specifically if 'boolean' datatype is selected, then the following logic applies:  If set to True, this indicates that the medication is only taken when needed, within the specified schedule.)
          */
         public BooleanType getAsNeededBooleanType() throws Exception { 
           if (!(this.asNeeded instanceof BooleanType))
@@ -387,7 +379,9 @@ public class MedicationOrder extends DomainResource {
         }
 
         /**
-         * @return {@link #asNeeded} (If set to true or if specified as a CodeableConcept, indicates that the medication is only taken when needed within the specified schedule rather than at every scheduled dose.  If a CodeableConcept is present, it indicates the pre-condition for taking the Medication.)
+         * @return {@link #asNeeded} (Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).  
+
+Specifically if 'boolean' datatype is selected, then the following logic applies:  If set to True, this indicates that the medication is only taken when needed, within the specified schedule.)
          */
         public CodeableConcept getAsNeededCodeableConcept() throws Exception { 
           if (!(this.asNeeded instanceof CodeableConcept))
@@ -404,7 +398,9 @@ public class MedicationOrder extends DomainResource {
         }
 
         /**
-         * @param value {@link #asNeeded} (If set to true or if specified as a CodeableConcept, indicates that the medication is only taken when needed within the specified schedule rather than at every scheduled dose.  If a CodeableConcept is present, it indicates the pre-condition for taking the Medication.)
+         * @param value {@link #asNeeded} (Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).  
+
+Specifically if 'boolean' datatype is selected, then the following logic applies:  If set to True, this indicates that the medication is only taken when needed, within the specified schedule.)
          */
         public MedicationOrderDosageInstructionComponent setAsNeeded(Type value) { 
           this.asNeeded = value;
@@ -414,13 +410,34 @@ public class MedicationOrder extends DomainResource {
         /**
          * @return {@link #site} (A coded specification of the anatomic site where the medication first enters the body.)
          */
-        public CodeableConcept getSite() { 
-          if (this.site == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationOrderDosageInstructionComponent.site");
-            else if (Configuration.doAutoCreate())
-              this.site = new CodeableConcept(); // cc
+        public Type getSite() { 
           return this.site;
+        }
+
+        /**
+         * @return {@link #site} (A coded specification of the anatomic site where the medication first enters the body.)
+         */
+        public CodeableConcept getSiteCodeableConcept() throws Exception { 
+          if (!(this.site instanceof CodeableConcept))
+            throw new Exception("Type mismatch: the type CodeableConcept was expected, but "+this.site.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.site;
+        }
+
+        public boolean hasSiteCodeableConcept() throws Exception { 
+          return this.site instanceof CodeableConcept;
+        }
+
+        /**
+         * @return {@link #site} (A coded specification of the anatomic site where the medication first enters the body.)
+         */
+        public Reference getSiteReference() throws Exception { 
+          if (!(this.site instanceof Reference))
+            throw new Exception("Type mismatch: the type Reference was expected, but "+this.site.getClass().getName()+" was encountered");
+          return (Reference) this.site;
+        }
+
+        public boolean hasSiteReference() throws Exception { 
+          return this.site instanceof Reference;
         }
 
         public boolean hasSite() { 
@@ -430,7 +447,7 @@ public class MedicationOrder extends DomainResource {
         /**
          * @param value {@link #site} (A coded specification of the anatomic site where the medication first enters the body.)
          */
-        public MedicationOrderDosageInstructionComponent setSite(CodeableConcept value) { 
+        public MedicationOrderDosageInstructionComponent setSite(Type value) { 
           this.site = value;
           return this;
         }
@@ -529,14 +546,14 @@ public class MedicationOrder extends DomainResource {
         }
 
         /**
-         * @return {@link #rate} (Identifies the speed with which the substance is introduced into the subject. Typically the rate for an infusion. 200ml in 2 hours.)
+         * @return {@link #rate} (Identifies the speed with which the medication was or will be introduced into the patient. Typically the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time e.g. 500 ml per 2 hours.   Currently we do not specify a default of '1' in the denominator, but this is being discussed. Other examples: 200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours.)
          */
         public Type getRate() { 
           return this.rate;
         }
 
         /**
-         * @return {@link #rate} (Identifies the speed with which the substance is introduced into the subject. Typically the rate for an infusion. 200ml in 2 hours.)
+         * @return {@link #rate} (Identifies the speed with which the medication was or will be introduced into the patient. Typically the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time e.g. 500 ml per 2 hours.   Currently we do not specify a default of '1' in the denominator, but this is being discussed. Other examples: 200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours.)
          */
         public Ratio getRateRatio() throws Exception { 
           if (!(this.rate instanceof Ratio))
@@ -549,20 +566,7 @@ public class MedicationOrder extends DomainResource {
         }
 
         /**
-         * @return {@link #rate} (Identifies the speed with which the substance is introduced into the subject. Typically the rate for an infusion. 200ml in 2 hours.)
-         */
-        public Quantity getRateQuantity() throws Exception { 
-          if (!(this.rate instanceof Quantity))
-            throw new Exception("Type mismatch: the type Quantity was expected, but "+this.rate.getClass().getName()+" was encountered");
-          return (Quantity) this.rate;
-        }
-
-        public boolean hasRateQuantity() throws Exception { 
-          return this.rate instanceof Quantity;
-        }
-
-        /**
-         * @return {@link #rate} (Identifies the speed with which the substance is introduced into the subject. Typically the rate for an infusion. 200ml in 2 hours.)
+         * @return {@link #rate} (Identifies the speed with which the medication was or will be introduced into the patient. Typically the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time e.g. 500 ml per 2 hours.   Currently we do not specify a default of '1' in the denominator, but this is being discussed. Other examples: 200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours.)
          */
         public Range getRateRange() throws Exception { 
           if (!(this.rate instanceof Range))
@@ -579,7 +583,7 @@ public class MedicationOrder extends DomainResource {
         }
 
         /**
-         * @param value {@link #rate} (Identifies the speed with which the substance is introduced into the subject. Typically the rate for an infusion. 200ml in 2 hours.)
+         * @param value {@link #rate} (Identifies the speed with which the medication was or will be introduced into the patient. Typically the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time e.g. 500 ml per 2 hours.   Currently we do not specify a default of '1' in the denominator, but this is being discussed. Other examples: 200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours.)
          */
         public MedicationOrderDosageInstructionComponent setRate(Type value) { 
           this.rate = value;
@@ -612,15 +616,15 @@ public class MedicationOrder extends DomainResource {
 
         protected void listChildren(List<Property> childrenList) {
           super.listChildren(childrenList);
-          childrenList.add(new Property("text", "string", "Free text dosage instructions can be used for cases where the instructions are too complex to code. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication.", 0, java.lang.Integer.MAX_VALUE, text));
-          childrenList.add(new Property("additionalInstructions", "CodeableConcept", "Additional instructions such as 'Swallow with plenty of water' which may or may not be coded.", 0, java.lang.Integer.MAX_VALUE, additionalInstructions));
-          childrenList.add(new Property("timing", "Timing", "The timing schedule for giving the medication to the patient.  The Schedule data type allows many different expressions, for example.  'Every  8 hours'; 'Three times a day'; '1/2 an hour before breakfast for 10 days from 23-Dec 2011:';  '15 Oct 2013, 17 Oct 2013 and 1 Nov 2013'.", 0, java.lang.Integer.MAX_VALUE, timing));
-          childrenList.add(new Property("asNeeded[x]", "boolean|CodeableConcept", "If set to true or if specified as a CodeableConcept, indicates that the medication is only taken when needed within the specified schedule rather than at every scheduled dose.  If a CodeableConcept is present, it indicates the pre-condition for taking the Medication.", 0, java.lang.Integer.MAX_VALUE, asNeeded));
-          childrenList.add(new Property("site", "CodeableConcept", "A coded specification of the anatomic site where the medication first enters the body.", 0, java.lang.Integer.MAX_VALUE, site));
+          childrenList.add(new Property("text", "string", "Free text dosage instructions can be used for cases where the instructions are too complex to code.  The content of this attribute does not include the name or description of the medication. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication. It is expected that the text instructions will always be populated.  If the dosage.timing attribute is also populated, then the dosage.text should reflect the same information as the timing.", 0, java.lang.Integer.MAX_VALUE, text));
+          childrenList.add(new Property("additionalInstructions", "CodeableConcept", "Additional instructions such as \"Swallow with plenty of water\" which may or may not be coded.", 0, java.lang.Integer.MAX_VALUE, additionalInstructions));
+          childrenList.add(new Property("timing", "Timing", "The timing schedule for giving the medication to the patient. The Schedule data type allows many different expressions, for example. \"Every 8 hours\"; \"Three times a day\"; \"1/2 an hour before breakfast for 10 days from 23-Dec 2011:\"; \"15 Oct 2013, 17 Oct 2013 and 1 Nov 2013\".  This attribute may not always be populated while the DosageInstruction.text is expected to be populated.  If both are populated, then the DosageInstruction.text should reflect the content of the Dosage.timing.", 0, java.lang.Integer.MAX_VALUE, timing));
+          childrenList.add(new Property("asNeeded[x]", "boolean|CodeableConcept", "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).  \n\nSpecifically if 'boolean' datatype is selected, then the following logic applies:  If set to True, this indicates that the medication is only taken when needed, within the specified schedule.", 0, java.lang.Integer.MAX_VALUE, asNeeded));
+          childrenList.add(new Property("site[x]", "CodeableConcept|Reference(BodySite)", "A coded specification of the anatomic site where the medication first enters the body.", 0, java.lang.Integer.MAX_VALUE, site));
           childrenList.add(new Property("route", "CodeableConcept", "A code specifying the route or physiological path of administration of a therapeutic agent into or onto a patient.", 0, java.lang.Integer.MAX_VALUE, route));
           childrenList.add(new Property("method", "CodeableConcept", "A coded value indicating the method by which the medication is introduced into or onto the body. Most commonly used for injections.  Examples:  Slow Push; Deep IV.  Terminologies used often pre-coordinate this term with the route and or form of administration.", 0, java.lang.Integer.MAX_VALUE, method));
           childrenList.add(new Property("dose[x]", "Range|SimpleQuantity", "The amount of therapeutic or other substance given at one administration event.", 0, java.lang.Integer.MAX_VALUE, dose));
-          childrenList.add(new Property("rate[x]", "Ratio|Quantity|Range", "Identifies the speed with which the substance is introduced into the subject. Typically the rate for an infusion. 200ml in 2 hours.", 0, java.lang.Integer.MAX_VALUE, rate));
+          childrenList.add(new Property("rate[x]", "Ratio|Range", "Identifies the speed with which the medication was or will be introduced into the patient. Typically the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time e.g. 500 ml per 2 hours.   Currently we do not specify a default of '1' in the denominator, but this is being discussed. Other examples: 200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours.", 0, java.lang.Integer.MAX_VALUE, rate));
           childrenList.add(new Property("maxDosePerPeriod", "Ratio", "The maximum total quantity of a therapeutic substance that may be administered to a subject over the period of time. E.g. 1000mg in 24 hours.", 0, java.lang.Integer.MAX_VALUE, maxDosePerPeriod));
         }
 
@@ -674,39 +678,39 @@ public class MedicationOrder extends DomainResource {
   }
 
     @Block()
-    public static class MedicationOrderDispenseComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class MedicationOrderDispenseRequestComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Identifies the medication being administered. This is a link to a resource that represents the medication which may be the details of the medication or simply an attribute carrying a code that identifies the medication from a known list of medications.
          */
-        @Child(name = "medication", type = {CodeableConcept.class, Medication.class}, order=1, min=0, max=1)
+        @Child(name = "medication", type = {CodeableConcept.class, Medication.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Product to be supplied", formalDefinition="Identifies the medication being administered. This is a link to a resource that represents the medication which may be the details of the medication or simply an attribute carrying a code that identifies the medication from a known list of medications." )
         protected Type medication;
 
         /**
          * Design Comments: This indicates the validity period of a prescription (stale dating the Prescription)  It reflects the prescriber perspective for the validity of the prescription. Dispenses must not be made against the prescription outside of this period. The lower-bound of the Dispensing Window signifies the earliest date that the prescription can be filled for the first time. If an upper-bound is not specified then the Prescription is open-ended or will default to a stale-date based on regulations.  Rationale: Indicates when the Prescription becomes valid, and when it ceases to be a dispensable Prescription.
          */
-        @Child(name = "validityPeriod", type = {Period.class}, order=2, min=0, max=1)
+        @Child(name = "validityPeriod", type = {Period.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Time period supply is authorized for", formalDefinition="Design Comments: This indicates the validity period of a prescription (stale dating the Prescription)  It reflects the prescriber perspective for the validity of the prescription. Dispenses must not be made against the prescription outside of this period. The lower-bound of the Dispensing Window signifies the earliest date that the prescription can be filled for the first time. If an upper-bound is not specified then the Prescription is open-ended or will default to a stale-date based on regulations.  Rationale: Indicates when the Prescription becomes valid, and when it ceases to be a dispensable Prescription." )
         protected Period validityPeriod;
 
         /**
-         * An integer indicating the number of repeats of the Dispense.  UsageNotes: For example, the number of times the prescribed quantity is to be supplied including the initial standard fill.
+         * An integer indicating the number of additional times (aka refills or repeats) the patient can receive the prescribed medication.   Usage Notes: This integer does NOT include the original order dispense.   This means that if an order indicates dispense 30 tablets plus  "3 repeats", then the order can be dispensed a total of 4 times and the patient can receive a total of 120 tablets.
          */
-        @Child(name = "numberOfRepeatsAllowed", type = {PositiveIntType.class}, order=3, min=0, max=1)
-        @Description(shortDefinition="# of refills authorized", formalDefinition="An integer indicating the number of repeats of the Dispense.  UsageNotes: For example, the number of times the prescribed quantity is to be supplied including the initial standard fill." )
+        @Child(name = "numberOfRepeatsAllowed", type = {PositiveIntType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="# of refills authorized", formalDefinition="An integer indicating the number of additional times (aka refills or repeats) the patient can receive the prescribed medication.   Usage Notes: This integer does NOT include the original order dispense.   This means that if an order indicates dispense 30 tablets plus  \"3 repeats\", then the order can be dispensed a total of 4 times and the patient can receive a total of 120 tablets." )
         protected PositiveIntType numberOfRepeatsAllowed;
 
         /**
          * The amount that is to be dispensed for one fill.
          */
-        @Child(name = "quantity", type = {SimpleQuantity.class}, order=4, min=0, max=1)
+        @Child(name = "quantity", type = {SimpleQuantity.class}, order=4, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Amount of medication to supply per dispense", formalDefinition="The amount that is to be dispensed for one fill." )
         protected SimpleQuantity quantity;
 
         /**
          * Identifies the period time over which the supplied product is expected to be used, or the length of time the dispense is expected to last.  In some situations, this attribute may be used instead of quantity to identify the amount supplied by how long it is expected to last, rather than the physical quantity issued, e.g. 90 days supply of medication (based on an ordered dosage) When possible, it is always better to specify quantity, as this tends to be more precise. expectedSupplyDuration will always be an estimate that can be influenced by external factors.
          */
-        @Child(name = "expectedSupplyDuration", type = {Duration.class}, order=5, min=0, max=1)
+        @Child(name = "expectedSupplyDuration", type = {Duration.class}, order=5, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Days supply per dispense", formalDefinition="Identifies the period time over which the supplied product is expected to be used, or the length of time the dispense is expected to last.  In some situations, this attribute may be used instead of quantity to identify the amount supplied by how long it is expected to last, rather than the physical quantity issued, e.g. 90 days supply of medication (based on an ordered dosage) When possible, it is always better to specify quantity, as this tends to be more precise. expectedSupplyDuration will always be an estimate that can be influenced by external factors." )
         protected Duration expectedSupplyDuration;
 
@@ -715,7 +719,7 @@ public class MedicationOrder extends DomainResource {
     /*
      * Constructor
      */
-      public MedicationOrderDispenseComponent() {
+      public MedicationOrderDispenseRequestComponent() {
         super();
       }
 
@@ -759,7 +763,7 @@ public class MedicationOrder extends DomainResource {
         /**
          * @param value {@link #medication} (Identifies the medication being administered. This is a link to a resource that represents the medication which may be the details of the medication or simply an attribute carrying a code that identifies the medication from a known list of medications.)
          */
-        public MedicationOrderDispenseComponent setMedication(Type value) { 
+        public MedicationOrderDispenseRequestComponent setMedication(Type value) { 
           this.medication = value;
           return this;
         }
@@ -770,7 +774,7 @@ public class MedicationOrder extends DomainResource {
         public Period getValidityPeriod() { 
           if (this.validityPeriod == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationOrderDispenseComponent.validityPeriod");
+              throw new Error("Attempt to auto-create MedicationOrderDispenseRequestComponent.validityPeriod");
             else if (Configuration.doAutoCreate())
               this.validityPeriod = new Period(); // cc
           return this.validityPeriod;
@@ -783,18 +787,18 @@ public class MedicationOrder extends DomainResource {
         /**
          * @param value {@link #validityPeriod} (Design Comments: This indicates the validity period of a prescription (stale dating the Prescription)  It reflects the prescriber perspective for the validity of the prescription. Dispenses must not be made against the prescription outside of this period. The lower-bound of the Dispensing Window signifies the earliest date that the prescription can be filled for the first time. If an upper-bound is not specified then the Prescription is open-ended or will default to a stale-date based on regulations.  Rationale: Indicates when the Prescription becomes valid, and when it ceases to be a dispensable Prescription.)
          */
-        public MedicationOrderDispenseComponent setValidityPeriod(Period value) { 
+        public MedicationOrderDispenseRequestComponent setValidityPeriod(Period value) { 
           this.validityPeriod = value;
           return this;
         }
 
         /**
-         * @return {@link #numberOfRepeatsAllowed} (An integer indicating the number of repeats of the Dispense.  UsageNotes: For example, the number of times the prescribed quantity is to be supplied including the initial standard fill.). This is the underlying object with id, value and extensions. The accessor "getNumberOfRepeatsAllowed" gives direct access to the value
+         * @return {@link #numberOfRepeatsAllowed} (An integer indicating the number of additional times (aka refills or repeats) the patient can receive the prescribed medication.   Usage Notes: This integer does NOT include the original order dispense.   This means that if an order indicates dispense 30 tablets plus  "3 repeats", then the order can be dispensed a total of 4 times and the patient can receive a total of 120 tablets.). This is the underlying object with id, value and extensions. The accessor "getNumberOfRepeatsAllowed" gives direct access to the value
          */
         public PositiveIntType getNumberOfRepeatsAllowedElement() { 
           if (this.numberOfRepeatsAllowed == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationOrderDispenseComponent.numberOfRepeatsAllowed");
+              throw new Error("Attempt to auto-create MedicationOrderDispenseRequestComponent.numberOfRepeatsAllowed");
             else if (Configuration.doAutoCreate())
               this.numberOfRepeatsAllowed = new PositiveIntType(); // bb
           return this.numberOfRepeatsAllowed;
@@ -809,24 +813,24 @@ public class MedicationOrder extends DomainResource {
         }
 
         /**
-         * @param value {@link #numberOfRepeatsAllowed} (An integer indicating the number of repeats of the Dispense.  UsageNotes: For example, the number of times the prescribed quantity is to be supplied including the initial standard fill.). This is the underlying object with id, value and extensions. The accessor "getNumberOfRepeatsAllowed" gives direct access to the value
+         * @param value {@link #numberOfRepeatsAllowed} (An integer indicating the number of additional times (aka refills or repeats) the patient can receive the prescribed medication.   Usage Notes: This integer does NOT include the original order dispense.   This means that if an order indicates dispense 30 tablets plus  "3 repeats", then the order can be dispensed a total of 4 times and the patient can receive a total of 120 tablets.). This is the underlying object with id, value and extensions. The accessor "getNumberOfRepeatsAllowed" gives direct access to the value
          */
-        public MedicationOrderDispenseComponent setNumberOfRepeatsAllowedElement(PositiveIntType value) { 
+        public MedicationOrderDispenseRequestComponent setNumberOfRepeatsAllowedElement(PositiveIntType value) { 
           this.numberOfRepeatsAllowed = value;
           return this;
         }
 
         /**
-         * @return An integer indicating the number of repeats of the Dispense.  UsageNotes: For example, the number of times the prescribed quantity is to be supplied including the initial standard fill.
+         * @return An integer indicating the number of additional times (aka refills or repeats) the patient can receive the prescribed medication.   Usage Notes: This integer does NOT include the original order dispense.   This means that if an order indicates dispense 30 tablets plus  "3 repeats", then the order can be dispensed a total of 4 times and the patient can receive a total of 120 tablets.
          */
         public int getNumberOfRepeatsAllowed() { 
           return this.numberOfRepeatsAllowed == null || this.numberOfRepeatsAllowed.isEmpty() ? 0 : this.numberOfRepeatsAllowed.getValue();
         }
 
         /**
-         * @param value An integer indicating the number of repeats of the Dispense.  UsageNotes: For example, the number of times the prescribed quantity is to be supplied including the initial standard fill.
+         * @param value An integer indicating the number of additional times (aka refills or repeats) the patient can receive the prescribed medication.   Usage Notes: This integer does NOT include the original order dispense.   This means that if an order indicates dispense 30 tablets plus  "3 repeats", then the order can be dispensed a total of 4 times and the patient can receive a total of 120 tablets.
          */
-        public MedicationOrderDispenseComponent setNumberOfRepeatsAllowed(int value) { 
+        public MedicationOrderDispenseRequestComponent setNumberOfRepeatsAllowed(int value) { 
             if (this.numberOfRepeatsAllowed == null)
               this.numberOfRepeatsAllowed = new PositiveIntType();
             this.numberOfRepeatsAllowed.setValue(value);
@@ -839,7 +843,7 @@ public class MedicationOrder extends DomainResource {
         public SimpleQuantity getQuantity() { 
           if (this.quantity == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationOrderDispenseComponent.quantity");
+              throw new Error("Attempt to auto-create MedicationOrderDispenseRequestComponent.quantity");
             else if (Configuration.doAutoCreate())
               this.quantity = new SimpleQuantity(); // cc
           return this.quantity;
@@ -852,7 +856,7 @@ public class MedicationOrder extends DomainResource {
         /**
          * @param value {@link #quantity} (The amount that is to be dispensed for one fill.)
          */
-        public MedicationOrderDispenseComponent setQuantity(SimpleQuantity value) { 
+        public MedicationOrderDispenseRequestComponent setQuantity(SimpleQuantity value) { 
           this.quantity = value;
           return this;
         }
@@ -863,7 +867,7 @@ public class MedicationOrder extends DomainResource {
         public Duration getExpectedSupplyDuration() { 
           if (this.expectedSupplyDuration == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationOrderDispenseComponent.expectedSupplyDuration");
+              throw new Error("Attempt to auto-create MedicationOrderDispenseRequestComponent.expectedSupplyDuration");
             else if (Configuration.doAutoCreate())
               this.expectedSupplyDuration = new Duration(); // cc
           return this.expectedSupplyDuration;
@@ -876,7 +880,7 @@ public class MedicationOrder extends DomainResource {
         /**
          * @param value {@link #expectedSupplyDuration} (Identifies the period time over which the supplied product is expected to be used, or the length of time the dispense is expected to last.  In some situations, this attribute may be used instead of quantity to identify the amount supplied by how long it is expected to last, rather than the physical quantity issued, e.g. 90 days supply of medication (based on an ordered dosage) When possible, it is always better to specify quantity, as this tends to be more precise. expectedSupplyDuration will always be an estimate that can be influenced by external factors.)
          */
-        public MedicationOrderDispenseComponent setExpectedSupplyDuration(Duration value) { 
+        public MedicationOrderDispenseRequestComponent setExpectedSupplyDuration(Duration value) { 
           this.expectedSupplyDuration = value;
           return this;
         }
@@ -885,13 +889,13 @@ public class MedicationOrder extends DomainResource {
           super.listChildren(childrenList);
           childrenList.add(new Property("medication[x]", "CodeableConcept|Reference(Medication)", "Identifies the medication being administered. This is a link to a resource that represents the medication which may be the details of the medication or simply an attribute carrying a code that identifies the medication from a known list of medications.", 0, java.lang.Integer.MAX_VALUE, medication));
           childrenList.add(new Property("validityPeriod", "Period", "Design Comments: This indicates the validity period of a prescription (stale dating the Prescription)  It reflects the prescriber perspective for the validity of the prescription. Dispenses must not be made against the prescription outside of this period. The lower-bound of the Dispensing Window signifies the earliest date that the prescription can be filled for the first time. If an upper-bound is not specified then the Prescription is open-ended or will default to a stale-date based on regulations.  Rationale: Indicates when the Prescription becomes valid, and when it ceases to be a dispensable Prescription.", 0, java.lang.Integer.MAX_VALUE, validityPeriod));
-          childrenList.add(new Property("numberOfRepeatsAllowed", "positiveInt", "An integer indicating the number of repeats of the Dispense.  UsageNotes: For example, the number of times the prescribed quantity is to be supplied including the initial standard fill.", 0, java.lang.Integer.MAX_VALUE, numberOfRepeatsAllowed));
+          childrenList.add(new Property("numberOfRepeatsAllowed", "positiveInt", "An integer indicating the number of additional times (aka refills or repeats) the patient can receive the prescribed medication.   Usage Notes: This integer does NOT include the original order dispense.   This means that if an order indicates dispense 30 tablets plus  \"3 repeats\", then the order can be dispensed a total of 4 times and the patient can receive a total of 120 tablets.", 0, java.lang.Integer.MAX_VALUE, numberOfRepeatsAllowed));
           childrenList.add(new Property("quantity", "SimpleQuantity", "The amount that is to be dispensed for one fill.", 0, java.lang.Integer.MAX_VALUE, quantity));
           childrenList.add(new Property("expectedSupplyDuration", "Duration", "Identifies the period time over which the supplied product is expected to be used, or the length of time the dispense is expected to last.  In some situations, this attribute may be used instead of quantity to identify the amount supplied by how long it is expected to last, rather than the physical quantity issued, e.g. 90 days supply of medication (based on an ordered dosage) When possible, it is always better to specify quantity, as this tends to be more precise. expectedSupplyDuration will always be an estimate that can be influenced by external factors.", 0, java.lang.Integer.MAX_VALUE, expectedSupplyDuration));
         }
 
-      public MedicationOrderDispenseComponent copy() {
-        MedicationOrderDispenseComponent dst = new MedicationOrderDispenseComponent();
+      public MedicationOrderDispenseRequestComponent copy() {
+        MedicationOrderDispenseRequestComponent dst = new MedicationOrderDispenseRequestComponent();
         copyValues(dst);
         dst.medication = medication == null ? null : medication.copy();
         dst.validityPeriod = validityPeriod == null ? null : validityPeriod.copy();
@@ -905,9 +909,9 @@ public class MedicationOrder extends DomainResource {
       public boolean equalsDeep(Base other) {
         if (!super.equalsDeep(other))
           return false;
-        if (!(other instanceof MedicationOrderDispenseComponent))
+        if (!(other instanceof MedicationOrderDispenseRequestComponent))
           return false;
-        MedicationOrderDispenseComponent o = (MedicationOrderDispenseComponent) other;
+        MedicationOrderDispenseRequestComponent o = (MedicationOrderDispenseRequestComponent) other;
         return compareDeep(medication, o.medication, true) && compareDeep(validityPeriod, o.validityPeriod, true)
            && compareDeep(numberOfRepeatsAllowed, o.numberOfRepeatsAllowed, true) && compareDeep(quantity, o.quantity, true)
            && compareDeep(expectedSupplyDuration, o.expectedSupplyDuration, true);
@@ -917,9 +921,9 @@ public class MedicationOrder extends DomainResource {
       public boolean equalsShallow(Base other) {
         if (!super.equalsShallow(other))
           return false;
-        if (!(other instanceof MedicationOrderDispenseComponent))
+        if (!(other instanceof MedicationOrderDispenseRequestComponent))
           return false;
-        MedicationOrderDispenseComponent o = (MedicationOrderDispenseComponent) other;
+        MedicationOrderDispenseRequestComponent o = (MedicationOrderDispenseRequestComponent) other;
         return compareValues(numberOfRepeatsAllowed, o.numberOfRepeatsAllowed, true);
       }
 
@@ -936,14 +940,14 @@ public class MedicationOrder extends DomainResource {
         /**
          * A code signifying whether a different drug should be dispensed from what was prescribed.
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1)
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="generic | formulary +", formalDefinition="A code signifying whether a different drug should be dispensed from what was prescribed." )
         protected CodeableConcept type;
 
         /**
          * Indicates the reason for the substitution, or why substitution must or must not be performed.
          */
-        @Child(name = "reason", type = {CodeableConcept.class}, order=2, min=0, max=1)
+        @Child(name = "reason", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Why should substitution (not) be made", formalDefinition="Indicates the reason for the substitution, or why substitution must or must not be performed." )
         protected CodeableConcept reason;
 
@@ -1056,42 +1060,42 @@ public class MedicationOrder extends DomainResource {
     /**
      * External identifier - one that would be used by another non-FHIR system - for example a re-imbursement system might issue its own id for each prescription that is created.  This is particularly important where FHIR only provides part of an erntire workflow process where records have to be tracked through an entire system.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="External identifier", formalDefinition="External identifier - one that would be used by another non-FHIR system - for example a re-imbursement system might issue its own id for each prescription that is created.  This is particularly important where FHIR only provides part of an erntire workflow process where records have to be tracked through an entire system." )
     protected List<Identifier> identifier;
 
     /**
      * The date (and perhaps time) when the prescription was written.
      */
-    @Child(name = "dateWritten", type = {DateTimeType.class}, order=1, min=0, max=1)
+    @Child(name = "dateWritten", type = {DateTimeType.class}, order=1, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When prescription was authorized", formalDefinition="The date (and perhaps time) when the prescription was written." )
     protected DateTimeType dateWritten;
 
     /**
      * A code specifying the state of the order.  Generally this will be active or completed state.
      */
-    @Child(name = "status", type = {CodeType.class}, order=2, min=0, max=1)
-    @Description(shortDefinition="active | on-hold | completed | entered-in-error | stopped | superseded | draft", formalDefinition="A code specifying the state of the order.  Generally this will be active or completed state." )
+    @Child(name = "status", type = {CodeType.class}, order=2, min=0, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="active | on-hold | completed | entered-in-error | stopped | draft", formalDefinition="A code specifying the state of the order.  Generally this will be active or completed state." )
     protected Enumeration<MedicationOrderStatus> status;
 
     /**
      * The date (and perhaps time) when the prescription was stopped.
      */
-    @Child(name = "dateEnded", type = {DateTimeType.class}, order=3, min=0, max=1)
+    @Child(name = "dateEnded", type = {DateTimeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When prescription was stopped", formalDefinition="The date (and perhaps time) when the prescription was stopped." )
     protected DateTimeType dateEnded;
 
     /**
      * The reason why the prescription was stopped, if it was.
      */
-    @Child(name = "reasonEnded", type = {CodeableConcept.class}, order=4, min=0, max=1)
+    @Child(name = "reasonEnded", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Why prescription was stopped", formalDefinition="The reason why the prescription was stopped, if it was." )
     protected CodeableConcept reasonEnded;
 
     /**
      * A link to a resource representing the person to whom the medication will be given.
      */
-    @Child(name = "patient", type = {Patient.class}, order=5, min=0, max=1)
+    @Child(name = "patient", type = {Patient.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who prescription is for", formalDefinition="A link to a resource representing the person to whom the medication will be given." )
     protected Reference patient;
 
@@ -1103,7 +1107,7 @@ public class MedicationOrder extends DomainResource {
     /**
      * The healthcare professional responsible for authorizing the prescription.
      */
-    @Child(name = "prescriber", type = {Practitioner.class}, order=6, min=0, max=1)
+    @Child(name = "prescriber", type = {Practitioner.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who ordered the medication(s)", formalDefinition="The healthcare professional responsible for authorizing the prescription." )
     protected Reference prescriber;
 
@@ -1115,7 +1119,7 @@ public class MedicationOrder extends DomainResource {
     /**
      * A link to a resource that identifies the particular occurrence of contact between patient and health care provider.
      */
-    @Child(name = "encounter", type = {Encounter.class}, order=7, min=0, max=1)
+    @Child(name = "encounter", type = {Encounter.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Created during encounter / admission / stay", formalDefinition="A link to a resource that identifies the particular occurrence of contact between patient and health care provider." )
     protected Reference encounter;
 
@@ -1127,49 +1131,49 @@ public class MedicationOrder extends DomainResource {
     /**
      * Can be the reason or the indication for writing the prescription.
      */
-    @Child(name = "reason", type = {CodeableConcept.class, Condition.class}, order=8, min=0, max=1)
+    @Child(name = "reason", type = {CodeableConcept.class, Condition.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Reason or indication for writing the prescription", formalDefinition="Can be the reason or the indication for writing the prescription." )
     protected Type reason;
 
     /**
      * Extra information about the prescription that could not be conveyed by the other attributes.
      */
-    @Child(name = "note", type = {StringType.class}, order=9, min=0, max=1)
+    @Child(name = "note", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Information about the prescription", formalDefinition="Extra information about the prescription that could not be conveyed by the other attributes." )
     protected StringType note;
 
     /**
      * Identifies the medication being administered. This is a link to a resource that represents the medication which may be the details of the medication or simply an attribute carrying a code that identifies the medication from a known list of medications.
      */
-    @Child(name = "medication", type = {CodeableConcept.class, Medication.class}, order=10, min=1, max=1)
+    @Child(name = "medication", type = {CodeableConcept.class, Medication.class}, order=10, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Medication to be taken", formalDefinition="Identifies the medication being administered. This is a link to a resource that represents the medication which may be the details of the medication or simply an attribute carrying a code that identifies the medication from a known list of medications." )
     protected Type medication;
 
     /**
      * Indicates how the medication is to be used by the patient.
      */
-    @Child(name = "dosageInstruction", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "dosageInstruction", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="How medication should be taken", formalDefinition="Indicates how the medication is to be used by the patient." )
     protected List<MedicationOrderDosageInstructionComponent> dosageInstruction;
 
     /**
-     * Deals with details of the dispense part of the order.
+     * Indicates the specific details for the dispense or medication supply part of a medication order (also known as a Medication Prescription).  Note that this information is NOT always sent with the order.  There may be in some settings (e.g. hospitals) institutional or system support for completing the dispense details in the pharmacy department.
      */
-    @Child(name = "dispense", type = {}, order=12, min=0, max=1)
-    @Description(shortDefinition="Medication supply authorization", formalDefinition="Deals with details of the dispense part of the order." )
-    protected MedicationOrderDispenseComponent dispense;
+    @Child(name = "dispenseRequest", type = {}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Medication supply authorization", formalDefinition="Indicates the specific details for the dispense or medication supply part of a medication order (also known as a Medication Prescription).  Note that this information is NOT always sent with the order.  There may be in some settings (e.g. hospitals) institutional or system support for completing the dispense details in the pharmacy department." )
+    protected MedicationOrderDispenseRequestComponent dispenseRequest;
 
     /**
      * Indicates whether or not substitution can or should be part of the dispense. In some cases substitution must happen, in other cases substitution must not happen, and in others it does not matter. This block explains the prescriber's intent. If nothing is specified substitution may be done.
      */
-    @Child(name = "substitution", type = {}, order=13, min=0, max=1)
+    @Child(name = "substitution", type = {}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Any restrictions on medication substitution?", formalDefinition="Indicates whether or not substitution can or should be part of the dispense. In some cases substitution must happen, in other cases substitution must not happen, and in others it does not matter. This block explains the prescriber's intent. If nothing is specified substitution may be done." )
     protected MedicationOrderSubstitutionComponent substitution;
 
     /**
      * A link to a resource representing an earlier order or prescription that this order supersedes.
      */
-    @Child(name = "priorPrescription", type = {MedicationOrder.class}, order=14, min=0, max=1)
+    @Child(name = "priorPrescription", type = {MedicationOrder.class}, order=14, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="An order/prescription that this supersedes", formalDefinition="A link to a resource representing an earlier order or prescription that this order supersedes." )
     protected Reference priorPrescription;
 
@@ -1178,7 +1182,7 @@ public class MedicationOrder extends DomainResource {
      */
     protected MedicationOrder priorPrescriptionTarget;
 
-    private static final long serialVersionUID = 244755395L;
+    private static final long serialVersionUID = 619326051L;
 
   /*
    * Constructor
@@ -1718,26 +1722,26 @@ public class MedicationOrder extends DomainResource {
     }
 
     /**
-     * @return {@link #dispense} (Deals with details of the dispense part of the order.)
+     * @return {@link #dispenseRequest} (Indicates the specific details for the dispense or medication supply part of a medication order (also known as a Medication Prescription).  Note that this information is NOT always sent with the order.  There may be in some settings (e.g. hospitals) institutional or system support for completing the dispense details in the pharmacy department.)
      */
-    public MedicationOrderDispenseComponent getDispense() { 
-      if (this.dispense == null)
+    public MedicationOrderDispenseRequestComponent getDispenseRequest() { 
+      if (this.dispenseRequest == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MedicationOrder.dispense");
+          throw new Error("Attempt to auto-create MedicationOrder.dispenseRequest");
         else if (Configuration.doAutoCreate())
-          this.dispense = new MedicationOrderDispenseComponent(); // cc
-      return this.dispense;
+          this.dispenseRequest = new MedicationOrderDispenseRequestComponent(); // cc
+      return this.dispenseRequest;
     }
 
-    public boolean hasDispense() { 
-      return this.dispense != null && !this.dispense.isEmpty();
+    public boolean hasDispenseRequest() { 
+      return this.dispenseRequest != null && !this.dispenseRequest.isEmpty();
     }
 
     /**
-     * @param value {@link #dispense} (Deals with details of the dispense part of the order.)
+     * @param value {@link #dispenseRequest} (Indicates the specific details for the dispense or medication supply part of a medication order (also known as a Medication Prescription).  Note that this information is NOT always sent with the order.  There may be in some settings (e.g. hospitals) institutional or system support for completing the dispense details in the pharmacy department.)
      */
-    public MedicationOrder setDispense(MedicationOrderDispenseComponent value) { 
-      this.dispense = value;
+    public MedicationOrder setDispenseRequest(MedicationOrderDispenseRequestComponent value) { 
+      this.dispenseRequest = value;
       return this;
     }
 
@@ -1823,7 +1827,7 @@ public class MedicationOrder extends DomainResource {
         childrenList.add(new Property("note", "string", "Extra information about the prescription that could not be conveyed by the other attributes.", 0, java.lang.Integer.MAX_VALUE, note));
         childrenList.add(new Property("medication[x]", "CodeableConcept|Reference(Medication)", "Identifies the medication being administered. This is a link to a resource that represents the medication which may be the details of the medication or simply an attribute carrying a code that identifies the medication from a known list of medications.", 0, java.lang.Integer.MAX_VALUE, medication));
         childrenList.add(new Property("dosageInstruction", "", "Indicates how the medication is to be used by the patient.", 0, java.lang.Integer.MAX_VALUE, dosageInstruction));
-        childrenList.add(new Property("dispense", "", "Deals with details of the dispense part of the order.", 0, java.lang.Integer.MAX_VALUE, dispense));
+        childrenList.add(new Property("dispenseRequest", "", "Indicates the specific details for the dispense or medication supply part of a medication order (also known as a Medication Prescription).  Note that this information is NOT always sent with the order.  There may be in some settings (e.g. hospitals) institutional or system support for completing the dispense details in the pharmacy department.", 0, java.lang.Integer.MAX_VALUE, dispenseRequest));
         childrenList.add(new Property("substitution", "", "Indicates whether or not substitution can or should be part of the dispense. In some cases substitution must happen, in other cases substitution must not happen, and in others it does not matter. This block explains the prescriber's intent. If nothing is specified substitution may be done.", 0, java.lang.Integer.MAX_VALUE, substitution));
         childrenList.add(new Property("priorPrescription", "Reference(MedicationOrder)", "A link to a resource representing an earlier order or prescription that this order supersedes.", 0, java.lang.Integer.MAX_VALUE, priorPrescription));
       }
@@ -1851,7 +1855,7 @@ public class MedicationOrder extends DomainResource {
           for (MedicationOrderDosageInstructionComponent i : dosageInstruction)
             dst.dosageInstruction.add(i.copy());
         };
-        dst.dispense = dispense == null ? null : dispense.copy();
+        dst.dispenseRequest = dispenseRequest == null ? null : dispenseRequest.copy();
         dst.substitution = substitution == null ? null : substitution.copy();
         dst.priorPrescription = priorPrescription == null ? null : priorPrescription.copy();
         return dst;
@@ -1872,7 +1876,7 @@ public class MedicationOrder extends DomainResource {
            && compareDeep(status, o.status, true) && compareDeep(dateEnded, o.dateEnded, true) && compareDeep(reasonEnded, o.reasonEnded, true)
            && compareDeep(patient, o.patient, true) && compareDeep(prescriber, o.prescriber, true) && compareDeep(encounter, o.encounter, true)
            && compareDeep(reason, o.reason, true) && compareDeep(note, o.note, true) && compareDeep(medication, o.medication, true)
-           && compareDeep(dosageInstruction, o.dosageInstruction, true) && compareDeep(dispense, o.dispense, true)
+           && compareDeep(dosageInstruction, o.dosageInstruction, true) && compareDeep(dispenseRequest, o.dispenseRequest, true)
            && compareDeep(substitution, o.substitution, true) && compareDeep(priorPrescription, o.priorPrescription, true)
           ;
       }
@@ -1894,7 +1898,7 @@ public class MedicationOrder extends DomainResource {
            && (patient == null || patient.isEmpty()) && (prescriber == null || prescriber.isEmpty())
            && (encounter == null || encounter.isEmpty()) && (reason == null || reason.isEmpty()) && (note == null || note.isEmpty())
            && (medication == null || medication.isEmpty()) && (dosageInstruction == null || dosageInstruction.isEmpty())
-           && (dispense == null || dispense.isEmpty()) && (substitution == null || substitution.isEmpty())
+           && (dispenseRequest == null || dispenseRequest.isEmpty()) && (substitution == null || substitution.isEmpty())
            && (priorPrescription == null || priorPrescription.isEmpty());
       }
 

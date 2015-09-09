@@ -26,8 +26,10 @@ class DiffExamplesTest < Test::Unit::TestCase
     next if EXCLUDED_RESOURCES.include?(root_element)
 
     example_name = File.basename(example_file, ".xml")
-    define_method("test_#{example_name}") do
-      run_diff_test(root_element, example_file, example_name)
+    dir = File.dirname(example_file)
+    parent = dir[dir.index('publish')+7..-1].gsub('/','_')
+    define_method("test_#{parent}#{example_name}") do
+      run_diff_test(root_element, example_file, "#{parent}#{example_name}")
     end
   end
 

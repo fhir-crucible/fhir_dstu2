@@ -184,7 +184,7 @@ public class ModelXMLSerializerTemplate extends ResourceGenerator {
     return ""
         + "<%- if !model." + typeName + ".nil? -%>"
        
-        +   "<%- if FHIR::AnyType::PRIMITIVES.include?(model." + typeName + ".type.downcase) || FHIR::AnyType::DATE_TIMES.include?(model." + typeName + ".type.downcase) -%>"
+        +   "<%- if (FHIR::AnyType::PRIMITIVES.any?{|x|x.downcase == model." + typeName + ".type.downcase}) || (FHIR::AnyType::DATE_TIMES.any?{|x|x.downcase == model." + typeName + ".type.downcase}) -%>"
 
         +     "<%- if model." + typeName + ".value.is_a?(Hash) -%>"
         +       "<" + originalTypeName + "<%= model." + typeName + ".type %>" + " value=\"<%= model." + typeName + ".value[:value] %>\""

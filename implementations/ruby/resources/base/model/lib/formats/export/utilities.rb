@@ -84,7 +84,7 @@ module FHIR
           # massage AnyTypes
           elsif value.class.name == 'FHIR::AnyType'
             renamed["#{key}#{value.type}"] = value.value
-            renamed["#{key}#{value.type}"] = to_num(value.value) if value.type.downcase=='integer' || value.type.downcase=='decimal'
+            renamed["#{key}#{value.type}"] = to_num(value.value) if ['integer','positiveint','unsignedint','decimal'].include?(value.type.downcase)
             renamed["#{key}#{value.type}"] = massageHash(value.value,false) if is_fhir_class?(value.value.class.name)
             h.delete(key)
           # massage entries that are FHIR classes...
@@ -127,7 +127,7 @@ module FHIR
               else
                 extension_hash["value#{e.value.type}"] = (x=='true')
               end
-            elsif any.type.downcase == 'integer' || any.type.downcase == 'decimal'
+            elsif ['integer','positiveint','unsignedint','decimal'].include?(any.type.downcase)
               if x.is_a?(Fixnum) || x.is_a?(Float)
                 extension_hash["value#{e.value.type}"] = x
               else

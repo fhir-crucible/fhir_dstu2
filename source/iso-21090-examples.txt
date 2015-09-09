@@ -35,7 +35,7 @@ An attachment that  contains the plain text "this is binary content":
 
 A reference to a jpeg image on the web:
 <Attachment>
-  <mimeType>image/jpg</mimeType>
+  <mimeType>image/jpeg</mimeType>
   <url>http://www.tempuri.org/XXXXXXXXXXX</url>
 </Attachment>
 

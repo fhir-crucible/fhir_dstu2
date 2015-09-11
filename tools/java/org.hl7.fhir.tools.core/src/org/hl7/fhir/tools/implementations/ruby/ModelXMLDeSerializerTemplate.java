@@ -169,22 +169,20 @@ public class ModelXMLDeSerializerTemplate extends ResourceGenerator {
     
     private void addAnyElementLines(GenBlock block, String typeName) {
       block.ln("entry.xpath(\"./*[contains(local-name(),'"+typeName+"')]\").each do |e| ");
-      block.ln("  model."+typeName+"Type = e.name.gsub('"+typeName+"','')");
-      block.ln("  v = e.at_xpath('@value').try(:value)");
-      block.ln("  if v.nil? && is_fhir_class?(\"FHIR::#{model."+typeName+"Type}\")");
-      block.ln("    v = \"FHIR::#{model."+typeName+"Type}\".constantize.parse_xml_entry(e)");
+      block.ln("  datatype = e.name.gsub('"+typeName+"','')");
+      block.ln("  v = e.at_xpath('@value').try(:value)"); // TODO add primitive extension ingest on AnyType
+      block.ln("  if v.nil? && is_fhir_class?(\"FHIR::#{datatype}\")");
+      block.ln("    v = \"FHIR::#{datatype}\".constantize.parse_xml_entry(e)");
       block.ln("  end");
-      block.ln("  model."+typeName+" = {type: model."+typeName+"Type, value: v}");
+      block.ln("  model."+typeName+" = FHIR::AnyType.new(datatype,v)");
       block.ln("end");
     }
 
     private void addAnyResourceLines(GenBlock block, String typeName) {
       block.ln("entry.xpath(\"./fhir:resource/*\").each do |e|");
-      block.ln("  model.resourceType = e.name");
-      
+      block.ln("  model.resourceType = e.name");      
       block.ln("  v = \"FHIR::#{model.resourceType}\".constantize.parse_xml_entry(e) unless v");
       block.ln("  model.resource = v");
-      block.ln("  #model.resource = {type: model.resourceType, value: v}");
       block.ln("end");
     }
 
@@ -215,24 +213,16 @@ public class ModelXMLDeSerializerTemplate extends ResourceGenerator {
       return getValueFieldLine(typeName, originalTypeName, multipleCardinality, isXmlAttribute, null);
     }
     private String getValueFieldLine(String typeName, String originalTypeName, boolean multipleCardinality, boolean isXmlAttribute, String parseFunction) {
-      String parseFunctionOpen = "";
-      String parseFunctionClose = "";
-      if (parseFunction != null) {
-        parseFunctionOpen = parseFunction + "(";
-        parseFunctionClose = ")";
-      }
-      
-      String selector = "./fhir:"+originalTypeName+"/@value";
       if (isXmlAttribute) {
-        selector = "./@"+originalTypeName+"";
+        String selector = "./@"+originalTypeName+"";
+        return "set_model_data(model, '"+typeName+"', entry.at_xpath('"+selector+"').try(:value) )";
       }
       
       if (multipleCardinality) {
-        return "set_model_data(model, '"+typeName+"', entry.xpath('"+selector+"').map {|e| "+parseFunctionOpen+"e.value"+parseFunctionClose+" })";
+        return "parse_primitive_field(model,entry,'"+originalTypeName+"','"+typeName+"',true)";
       } else {
-        return "set_model_data(model, '"+typeName+"', "+parseFunctionOpen+"entry.at_xpath('"+selector+"').try(:value)"+parseFunctionClose+")";
+        return "parse_primitive_field(model,entry,'"+originalTypeName+"','"+typeName+"',false)";
       }
-      
     }
 
     

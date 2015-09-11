@@ -36,22 +36,21 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.hl7.fhir.instance.client.IFHIRClient;
-import org.hl7.fhir.instance.client.FHIRSimpleClient;
-import org.hl7.fhir.instance.formats.JsonParser;
 import org.hl7.fhir.instance.formats.IParser.OutputStyle;
+import org.hl7.fhir.instance.formats.JsonParser;
 import org.hl7.fhir.instance.formats.XmlParser;
 import org.hl7.fhir.instance.model.Constants;
-import org.hl7.fhir.instance.model.StructureDefinition;
 import org.hl7.fhir.instance.model.Resource;
-import org.hl7.fhir.instance.utils.ProfileUtilities;
-import org.hl7.fhir.instance.utils.WorkerContext;
+import org.hl7.fhir.instance.utils.SimpleWorkerContext;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.TextFile;
@@ -68,6 +67,10 @@ public class ToolsHelper {
         throw new Exception("Missing Command Parameter. Valid Commands: round, json, version, fragments, snapshot-maker");
       if (args[0].equals("round")) 
         self.executeRoundTrip(args);
+      else if (args[0].equals("test")) 
+        self.executeTest(args);
+      else if (args[0].equals("examples")) 
+        self.executeExamples(args);
       else if (args[0].equals("json")) 
         self.executeJson(args);
       else if (args[0].equals("cxml")) 
@@ -75,11 +78,11 @@ public class ToolsHelper {
       else if (args[0].equals("version")) 
         self.executeVersion(args);
       else if (args[0].equals("fragments")) 
-          self.executeFragments(args);
+        self.executeFragments(args);
       else if (args[0].equals("snapshot-maker")) 
         self.generateSnapshots(args);
       else 
-        throw new Exception("Unknown command '"+args[0]+"'. Valid Commands: round, json, version, fragments, snapshot-maker");
+        throw new Exception("Unknown command '"+args[0]+"'. Valid Commands: round, test, examples, json, cxml, version, fragments, snapshot-maker");
     } catch (Throwable e) {
       try {
         e.printStackTrace();
@@ -88,6 +91,19 @@ public class ToolsHelper {
         e1.printStackTrace();
       }
     }
+  }
+
+	private void executeExamples(String[] args) throws Exception {
+  	try {
+  		@SuppressWarnings("unchecked")
+  		List<String> lines = FileUtils.readLines(new File(args[1]), "UTF-8");
+  		String srcDir = lines.get(0);
+  		lines.remove(0);
+  		processExamples(srcDir, lines);
+  		TextFile.stringToFile("ok", Utilities.changeFileExt(args[1], ".out"));
+  	} catch (Exception e) {
+  		TextFile.stringToFile(e.getMessage(), Utilities.changeFileExt(args[1], ".out"));			
+  	}
   }
 
 	private void generateSnapshots(String[] args) throws Exception {
@@ -102,26 +118,23 @@ public class ToolsHelper {
 	  String address = args[1];
 	  String definitions = args[3];
 	  
-    WorkerContext context = WorkerContext.fromDefinitions(getDefinitions(definitions));
+    SimpleWorkerContext context = SimpleWorkerContext.fromDefinitions(getDefinitions(definitions));
 
-    if (address.startsWith("http:") || address.startsWith("http:")) {
-    	// this is on a restful interface
-    	String[] parts = address.split("\\/Profile\\/");
-    	if (parts.length != 2)
-    		throw new Exception("Unable to understand address of profile");
-    	IFHIRClient client = new FHIRSimpleClient();
-    	client.initialize(parts[0]);
-    	StructureDefinition profile = client.read(StructureDefinition.class, parts[1]);
-    	ProfileUtilities utils = new ProfileUtilities(context);
-    	StructureDefinition base = utils.getProfile(profile, profile.getBase());
-    	if (base == null)
-    		throw new Exception("Unable to resolve profile "+profile.getBase());
-    	utils.generateSnapshot(base, profile, address, profile.getName(), null);
-    	client.update(StructureDefinition.class, profile, parts[1]);
-    } else {
-    	throw new Exception("not done yet (address = "+address+")");
-    }
-
+//    if (address.startsWith("http:") || address.startsWith("http:")) {
+//    	// this is on a restful interface
+//    	String[] parts = address.split("\\/Profile\\/");
+//    	if (parts.length != 2)
+//    		throw new Exception("Unable to understand address of profile");
+//    	StructureDefinition profile = context.fetchResource(StructureDefinition.class, parts[1]);
+//    	ProfileUtilities utils = new ProfileUtilities(context);
+//    	StructureDefinition base = utils.getProfile(profile, profile.getBase());
+//    	if (base == null)
+//    		throw new Exception("Unable to resolve profile "+profile.getBase());
+//    	utils.generateSnapshot(base, profile, address, profile.getName(), null, null);
+//    	// client.update(StructureDefinition.class, profile, parts[1]);
+//    } else {
+    	throw new Exception("generating snapshots not done yet (address = "+address+")");
+//    }
 	}
 
   private Map<String, byte[]> getDefinitions(String definitions) throws Exception {
@@ -237,7 +250,6 @@ public class ToolsHelper {
       }
       s.append("</results>\r\n");
 
-      System.out.println("done (fail = "+Integer.toString(fail)+")");
       TextFile.stringToFile(s.toString(), args[2]);
     } catch (Exception e) {
       e.printStackTrace();
@@ -246,11 +258,11 @@ public class ToolsHelper {
   }
 
   public void executeRoundTrip(String[] args) throws Exception {
-	FileInputStream in;
-	File source = new CSFile(args[1]);
+    FileInputStream in;
+    File source = new CSFile(args[1]);
     File dest = new CSFile(args[2]);
     if (args.length >= 4) {
-    	Utilities.copyFile(args[1], args[3]);
+      Utilities.copyFile(args[1], args[3]);
     }
 
     if (!source.exists())        
@@ -263,9 +275,12 @@ public class ToolsHelper {
     ByteArrayOutputStream json = new ByteArrayOutputStream();
     parser.setOutputStyle(OutputStyle.PRETTY);
     parser.compose(json, rf);
+    json.close();
     TextFile.stringToFile(new String(json.toByteArray()), Utilities.changeFileExt(dest.getAbsolutePath(), ".json"));
     rf = pj.parse(new ByteArrayInputStream(json.toByteArray()));
-    new XmlParser().compose(new FileOutputStream(dest), rf, true);
+    FileOutputStream s = new FileOutputStream(dest);
+    new XmlParser().compose(s, rf, true);
+    s.close();
   }
 
   public String executeJson(String[] args) throws Exception {
@@ -282,12 +297,18 @@ public class ToolsHelper {
     Resource rf = p.parse(in);
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
-    json.compose(new FileOutputStream(dest), rf);
+    FileOutputStream s = new FileOutputStream(dest);
+    json.compose(s, rf);
+    s.close();
     json.setOutputStyle(OutputStyle.CANONICAL);
-    json.compose(new FileOutputStream(destc), rf);
+    s = new FileOutputStream(destc);
+    json.compose(s, rf);
+    s.close();
     json.setSuppressXhtml("Snipped for Brevity");
     json.setOutputStyle(OutputStyle.PRETTY);
-    json.compose(new FileOutputStream(destt), rf);
+    s = new FileOutputStream(destt);
+    json.compose(s, rf);
+    s.close();    
     return TextFile.fileToString(destt.getAbsolutePath());
   }
 
@@ -310,4 +331,88 @@ public class ToolsHelper {
     TextFile.stringToFile(org.hl7.fhir.instance.utils.Version.VERSION+":"+Constants.VERSION, args[1]);
   }
 
+  public void processExamples(String rootDir, Collection<String> list) throws Exception  {
+    for (String n : list) {
+      try {
+        String filename = rootDir + n + ".xml";
+        // 1. produce canonical XML
+        CSFileInputStream source = new CSFileInputStream(filename);
+        FileOutputStream dest = new FileOutputStream(Utilities.changeFileExt(filename, ".canonical.xml"));
+        XmlParser p = new XmlParser();
+        Resource r = p.parse(source);
+        XmlParser cxml = new XmlParser();
+        cxml.setOutputStyle(OutputStyle.CANONICAL);
+        cxml.compose(dest, r);
+
+        // 2. produce JSON
+        source = new CSFileInputStream(filename);
+        dest = new FileOutputStream(Utilities.changeFileExt(filename, ".json"));
+        r = p.parse(source);
+        JsonParser json = new JsonParser();
+        json.setOutputStyle(OutputStyle.PRETTY);
+        json.compose(dest, r);
+        json = new JsonParser();
+        json.setOutputStyle(OutputStyle.CANONICAL);
+        dest = new FileOutputStream(Utilities.changeFileExt(filename, ".canonical.json"));
+        json.compose(dest, r);
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new Exception("Error Processing "+n+".xml: "+e.getMessage(), e);
+      }
+    }
+  }
+
+  public void testRoundTrip(String rootDir, String tmpDir, Collection<String> names) throws Throwable {
+		try {
+  	System.err.println("Round trip from "+rootDir+" to "+tmpDir+":"+Integer.toString(names.size())+" files");
+    for (String n : names) {
+    	System.err.print("  "+n);
+      String source = rootDir + n + ".xml";
+      // String tmpJson = tmpDir + n + ".json";
+      String tmp = tmpDir + n.replace(File.separator, "-") + ".tmp";
+      String dest = tmpDir + n.replace(File.separator, "-") + ".java.xml";
+      
+      FileInputStream in = new FileInputStream(source);
+      XmlParser xp = new XmlParser();
+      Resource r = xp.parse(in);
+    	System.err.print(".");
+      JsonParser jp = new JsonParser();
+      FileOutputStream out = new FileOutputStream(tmp);
+      jp.setOutputStyle(OutputStyle.PRETTY);
+      jp.compose(out, r);
+      out.close();
+      r = null;
+    	System.err.print(".");
+      
+      in = new FileInputStream(tmp);
+    	System.err.print(",");
+  		r = jp.parse(in);
+    	System.err.print(".");
+      out = new FileOutputStream(dest);
+      new XmlParser().compose(out, r, true);
+    	System.err.println("!");
+      out.close();
+      r = null;
+      System.gc();
+    }
+		} catch (Throwable e) {
+			System.err.println("Error: "+e.getMessage());
+			throw e;
+    }
+  }
+
+  private void executeTest(String[] args) throws Throwable {
+  	try {
+  		@SuppressWarnings("unchecked")
+  		List<String> lines = FileUtils.readLines(new File(args[1]), "UTF-8");
+  		String srcDir = lines.get(0);
+  		lines.remove(0);
+  		String dstDir = lines.get(0).trim();
+  		lines.remove(0);
+  		testRoundTrip(srcDir, dstDir, lines);
+  		TextFile.stringToFile("ok", Utilities.changeFileExt(args[1], ".out"));
+  	} catch (Exception e) {
+  		TextFile.stringToFile(e.getMessage(), Utilities.changeFileExt(args[1], ".out"));			
+  	}
+  }
 }

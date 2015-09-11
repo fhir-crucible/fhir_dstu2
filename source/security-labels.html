@@ -12,6 +12,7 @@
 <div class="col-9">
 
 <h1>Security Labels</h1>
+<table class="cols"><tr><td id="wg"><a _target="blank" href="[%wg fhir%]">[%wgt fhir%]</a> Work Group</td><td id="fmm"><a href="resource.html#maturity">Maturity Level</a>: N/A</td><td id="ballot"><a href="help.html#status">Ballot Status</a>: <a href="history.html#pubs">DSTU 2</a></td></tr></table>
 
 <p>
 A security label is a <a href="datatypes.html#Coding">concept</a> attached to a resource 
@@ -63,6 +64,8 @@ use cases trading partners, and also a wider array of security labels
 that allow much finer grained management of the information.
 </p>
 
+<a name="rsl"> </a>
+
 <h2>Representing Security Labels</h2>
 
 <p>
@@ -70,7 +73,7 @@ A security label is represented as a <a href="datatypes.html#Coding">Coding</a>,
 following important properties:
 </p>
 <table>
-  <tr> <td>system</td> <td>The coding scheme from which label is taken (see <a href="terminologies-systems.html">code system uri</a>, and below) </td></tr>
+  <tr> <td>system</td> <td>The coding scheme from which label is taken (see <a href="terminologies-systems.html">code system URI</a>, and below) </td></tr>
   <tr> <td>code</td> <td>a code from the coding scheme that identifies the security label  and code is an value from the code system</td> </tr>
   <tr> <td>display</td> <td>The display form for the code (mostly for use when a system doesn't recognize the code)</td> </tr>
 </table>
@@ -137,16 +140,12 @@ jurisdictions, vendors and/or projects and used as appropriate. However, note th
  <li>Implementation guides and applications SHOULD always use the applicable label defined by the HCS if one exists</li>
 </ul>
 
-<a name="dstu"> </a>
-<blockquote>
 <p>
-DSTU Note: The use of security labels and the expression of common shared security 
-policies is currently a matter of ongoing discussion and development in several communities
-at this time. This is an area where there is likely to be substantial development 
-during trial use. 
+Note: The use of security labels and the expression of common shared security 
+policies is a matter of ongoing discussion and development in several communities
+at this time.  
 </p>
 
-</blockquote>
 <a name="core"> </a>
 <h2>Core Security Labels</h2>
 <p>
@@ -187,7 +186,7 @@ http://hl7.org/fhir/v3/Confidentiality, and http://hl7.org/fhir/v3/ActCode,
     Use on any resource to indicate that the subject/patient is a celebrity or well known to the staff in the institution.
     <br/>Notes:
     <ul>
-     <li>This may be applied to the <a href="patient.html">Patient</a> resource, with implied behavior for the <a href="extras.html#compartment">entire patient compartment</a>, or it may be applied to individual resources</li>
+     <li>This may be applied to the <a href="patient.html">Patient</a> resource, with implied behavior for the <a href="compartments.html#compartment">entire patient compartment</a>, or it may be applied to individual resources</li>
      <li>Resources affected by this label are more likely to be the subject of active audit maintenance or additional security policy</li>
     </ul>
    </td>
@@ -199,7 +198,7 @@ http://hl7.org/fhir/v3/Confidentiality, and http://hl7.org/fhir/v3/ActCode,
     being a celebrity.
     <br/>Notes:
     <ul>
-     <li>This may be applied to the <a href="patient.html">Patient</a> resource, with implied behavior for the <a href="extras.html#compartment">entire patient compartment</a>, or it may be applied to individual resources</li>
+     <li>This may be applied to the <a href="patient.html">Patient</a> resource, with implied behavior for the <a href="compartments.html#compartment">entire patient compartment</a>, or it may be applied to individual resources</li>
      <li>Resources affected by this label are (even) more likely to be the subject of active audit maintenance or additional security policy</li>
     </ul>
    </td>
@@ -231,7 +230,7 @@ http://hl7.org/fhir/v3/Confidentiality, and http://hl7.org/fhir/v3/ActCode,
      <br/> Notes:
      <ul>
       <li>Generally, this security label cascades logically; e.g. any <a href="diagnosticreport.html">Diagnostic Reports</a> produced because of a <a href="diagnosticorder.html">Diagnostic Order</a> with this security label should also have the same security label. </li>
-      <li>There may be additional labels classifying the diagnosis (such as into the categories above); such labels SHOULD always be accompanied by this label so that more systems will know that restrictions apply</li>
+      <li>There may be additional labels classifying the diagnosis; such labels SHOULD always be accompanied by this label so that more systems will know that restrictions apply</li>
     </ul>
    </td>
  </tr>
@@ -283,8 +282,11 @@ discussion of the issues involved in break-the-glass operations.
 </p>
 <p>
 When the operation occurs, it is represented as a security label on the 
-request, rather than on a resource, and so is represented differently,
-as a URL:
+request, rather than on a resource, and so is represented differently. 
+The break the glass tag needs to be used as part of an agreed policy 
+and protocol. FHIR does not attempt to define this policy or protocol, 
+it must be agreed on a implementation by implementation basis.
+For example as a URL:
 </p>
 <table class="grid">
  <tr>
@@ -304,18 +306,17 @@ HTTP/1.1 GET fhir/Patient/482735/condition
 Content-Type: text/xml
 Access-Control-Allow-Origin: *
 Last-Modified: Thu, 19 Nov 2013 07:07:32 +1100
-Content-Location: http://[server]/[path]/Patient/234124/_history/24
 ETag: 24
 Category: http://hl7.org/fhir/security-label#break-the-glass; scheme="http://hl7.org/fhir/tag/security"; label="Break The Glass"
 </pre>
 </div>
 
 <a name="hcs"> </a>
-<h2>Healthcare Classification System</h2>
+<h2>Healthcare Privacy and Security Classification System (HCS)</h2>
 
 <p>
 The security labels described above are a subset of the full set of security labels defined by the 
-HL7 Healthcare Classification System (HCS; ref todo). The HCS defines 5 categories of security 
+HL7 Healthcare Privacy and Security Classification System (HCS; ref todo). The HCS defines 5 categories of security 
 labels that may be applied to a resource:
 </p>
 
@@ -345,7 +346,7 @@ resource perceived as undesirable to share.
 IT resource by indicating that access and 
 use is restricted to members of a defined 
 community or project
-<br/>Note: this is a different use of "Compartment" to the <a href="extras.html#compartment">Patient Compartment</a> use.
+<br/>Note: this is a different use of "Compartment" to the <a href="compartments.html#compartment">Patient Compartment</a> use.
 <br/>Example Uses: Research, HR records
 </td> </tr>
 

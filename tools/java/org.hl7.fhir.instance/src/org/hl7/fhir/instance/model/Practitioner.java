@@ -29,128 +29,30 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
+// Generated on Tue, Sep 1, 2015 11:15+1000 for FHIR v1.0.0
 
 import java.util.*;
 
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.Enumerations.*;
 import org.hl7.fhir.instance.model.annotations.ResourceDef;
 import org.hl7.fhir.instance.model.annotations.SearchParamDefinition;
-import org.hl7.fhir.instance.model.annotations.Block;
 import org.hl7.fhir.instance.model.annotations.Child;
 import org.hl7.fhir.instance.model.annotations.Description;
+import org.hl7.fhir.instance.model.annotations.Block;
+import org.hl7.fhir.instance.model.api.*;
 /**
  * A person who is directly or indirectly involved in the provisioning of healthcare.
  */
 @ResourceDef(name="Practitioner", profile="http://hl7.org/fhir/Profile/Practitioner")
 public class Practitioner extends DomainResource {
 
-    public enum AdministrativeGender {
-        /**
-         * Male
-         */
-        MALE, 
-        /**
-         * Female
-         */
-        FEMALE, 
-        /**
-         * Other
-         */
-        OTHER, 
-        /**
-         * Unknown
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static AdministrativeGender fromCode(String codeString) throws Exception {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("male".equals(codeString))
-          return MALE;
-        if ("female".equals(codeString))
-          return FEMALE;
-        if ("other".equals(codeString))
-          return OTHER;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        throw new Exception("Unknown AdministrativeGender code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case MALE: return "male";
-            case FEMALE: return "female";
-            case OTHER: return "other";
-            case UNKNOWN: return "unknown";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case MALE: return "";
-            case FEMALE: return "";
-            case OTHER: return "";
-            case UNKNOWN: return "";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case MALE: return "Male";
-            case FEMALE: return "Female";
-            case OTHER: return "Other";
-            case UNKNOWN: return "Unknown";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case MALE: return "Male";
-            case FEMALE: return "Female";
-            case OTHER: return "Other";
-            case UNKNOWN: return "Unknown";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class AdministrativeGenderEnumFactory implements EnumFactory<AdministrativeGender> {
-    public AdministrativeGender fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("male".equals(codeString))
-          return AdministrativeGender.MALE;
-        if ("female".equals(codeString))
-          return AdministrativeGender.FEMALE;
-        if ("other".equals(codeString))
-          return AdministrativeGender.OTHER;
-        if ("unknown".equals(codeString))
-          return AdministrativeGender.UNKNOWN;
-        throw new IllegalArgumentException("Unknown AdministrativeGender code '"+codeString+"'");
-        }
-    public String toCode(AdministrativeGender code) {
-      if (code == AdministrativeGender.MALE)
-        return "male";
-      if (code == AdministrativeGender.FEMALE)
-        return "female";
-      if (code == AdministrativeGender.OTHER)
-        return "other";
-      if (code == AdministrativeGender.UNKNOWN)
-        return "unknown";
-      return "?";
-      }
-    }
-
     @Block()
-    public static class PractitionerPractitionerRoleComponent extends BackboneElement {
+    public static class PractitionerPractitionerRoleComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * The Organization where the Practitioner performs the roles associated.
          */
-        @Child(name ="managingOrganization", type={Organization.class}, order=1, min=0, max=1)
+        @Child(name = "managingOrganization", type = {Organization.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The Organization where the Practitioner performs the roles associated", formalDefinition="The Organization where the Practitioner performs the roles associated." )
         protected Reference managingOrganization;
 
@@ -162,28 +64,28 @@ public class Practitioner extends DomainResource {
         /**
          * Roles which this practitioner is authorized to perform for the organization.
          */
-        @Child(name ="role", type={CodeableConcept.class}, order=2, min=0, max=1)
+        @Child(name = "role", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Roles which this practitioner may perform", formalDefinition="Roles which this practitioner is authorized to perform for the organization." )
         protected CodeableConcept role;
 
         /**
          * Specific specialty of the practitioner.
          */
-        @Child(name ="specialty", type={CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name = "specialty", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Specific specialty of the practitioner", formalDefinition="Specific specialty of the practitioner." )
         protected List<CodeableConcept> specialty;
 
         /**
          * The period during which the person is authorized to act as a practitioner in these role(s) for the organization.
          */
-        @Child(name ="period", type={Period.class}, order=4, min=0, max=1)
+        @Child(name = "period", type = {Period.class}, order=4, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The period during which the practitioner is authorized to perform in these role(s)", formalDefinition="The period during which the person is authorized to act as a practitioner in these role(s) for the organization." )
         protected Period period;
 
         /**
          * The location(s) at which this practitioner provides care.
          */
-        @Child(name ="location", type={Location.class}, order=5, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name = "location", type = {Location.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="The location(s) at which this practitioner provides care", formalDefinition="The location(s) at which this practitioner provides care." )
         protected List<Reference> location;
         /**
@@ -195,7 +97,7 @@ public class Practitioner extends DomainResource {
         /**
          * The list of healthcare services that this worker provides for this role's Organization/Location(s).
          */
-        @Child(name ="healthcareService", type={HealthcareService.class}, order=6, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name = "healthcareService", type = {HealthcareService.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="The list of healthcare services that this worker provides for this role's Organization/Location(s)", formalDefinition="The list of healthcare services that this worker provides for this role's Organization/Location(s)." )
         protected List<Reference> healthcareService;
         /**
@@ -206,6 +108,9 @@ public class Practitioner extends DomainResource {
 
         private static final long serialVersionUID = -2146177018L;
 
+    /*
+     * Constructor
+     */
       public PractitionerPractitionerRoleComponent() {
         super();
       }
@@ -529,32 +434,32 @@ public class Practitioner extends DomainResource {
   }
 
     @Block()
-    public static class PractitionerQualificationComponent extends BackboneElement {
+    public static class PractitionerQualificationComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * An identifier that applies to this person's qualification in this role.
          */
-        @Child(name ="identifier", type={Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="An identifier for this qualification for the practitioner", formalDefinition="An identifier that applies to this person's qualification in this role." )
         protected List<Identifier> identifier;
 
         /**
          * Coded representation of the qualification.
          */
-        @Child(name ="code", type={CodeableConcept.class}, order=2, min=1, max=1)
+        @Child(name = "code", type = {CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Coded representation of the qualification", formalDefinition="Coded representation of the qualification." )
         protected CodeableConcept code;
 
         /**
          * Period during which the qualification is valid.
          */
-        @Child(name ="period", type={Period.class}, order=3, min=0, max=1)
+        @Child(name = "period", type = {Period.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Period during which the qualification is valid", formalDefinition="Period during which the qualification is valid." )
         protected Period period;
 
         /**
          * Organization that regulates and issues the qualification.
          */
-        @Child(name ="issuer", type={Organization.class}, order=4, min=0, max=1)
+        @Child(name = "issuer", type = {Organization.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Organization that regulates and issues the qualification", formalDefinition="Organization that regulates and issues the qualification." )
         protected Reference issuer;
 
@@ -565,10 +470,16 @@ public class Practitioner extends DomainResource {
 
         private static final long serialVersionUID = 1095219071L;
 
+    /*
+     * Constructor
+     */
       public PractitionerQualificationComponent() {
         super();
       }
 
+    /*
+     * Constructor
+     */
       public PractitionerQualificationComponent(CodeableConcept code) {
         super();
         this.code = code;
@@ -759,75 +670,85 @@ public class Practitioner extends DomainResource {
     /**
      * An identifier that applies to this person in this role.
      */
-    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A identifier for the person as this agent", formalDefinition="An identifier that applies to this person in this role." )
     protected List<Identifier> identifier;
 
     /**
+     * Whether this practitioner's record is in active use.
+     */
+    @Child(name = "active", type = {BooleanType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Whether this practitioner's record is in active use", formalDefinition="Whether this practitioner's record is in active use." )
+    protected BooleanType active;
+
+    /**
      * A name associated with the person.
      */
-    @Child(name ="name", type={HumanName.class}, order=1, min=0, max=1)
+    @Child(name = "name", type = {HumanName.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="A name associated with the person", formalDefinition="A name associated with the person." )
     protected HumanName name;
 
     /**
      * A contact detail for the practitioner, e.g. a telephone number or an email address.
      */
-    @Child(name ="telecom", type={ContactPoint.class}, order=2, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "telecom", type = {ContactPoint.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A contact detail for the practitioner", formalDefinition="A contact detail for the practitioner, e.g. a telephone number or an email address." )
     protected List<ContactPoint> telecom;
 
     /**
      * The postal address where the practitioner can be found or visited or to which mail can be delivered.
      */
-    @Child(name ="address", type={Address.class}, order=3, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "address", type = {Address.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Where practitioner can be found/visited", formalDefinition="The postal address where the practitioner can be found or visited or to which mail can be delivered." )
     protected List<Address> address;
 
     /**
      * Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.
      */
-    @Child(name ="gender", type={CodeType.class}, order=4, min=0, max=1)
+    @Child(name = "gender", type = {CodeType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="male | female | other | unknown", formalDefinition="Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes." )
     protected Enumeration<AdministrativeGender> gender;
 
     /**
      * The date of birth for the practitioner.
      */
-    @Child(name ="birthDate", type={DateType.class}, order=5, min=0, max=1)
-    @Description(shortDefinition="The date  of birth for the practitioner", formalDefinition="The date of birth for the practitioner." )
+    @Child(name = "birthDate", type = {DateType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="The date  on which the practitioner was born", formalDefinition="The date of birth for the practitioner." )
     protected DateType birthDate;
 
     /**
      * Image of the person.
      */
-    @Child(name ="photo", type={Attachment.class}, order=6, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "photo", type = {Attachment.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Image of the person", formalDefinition="Image of the person." )
     protected List<Attachment> photo;
 
     /**
      * The list of Roles/Organizations that the Practitioner is associated with.
      */
-    @Child(name ="practitionerRole", type={}, order=7, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "practitionerRole", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The list of Roles/Organizations that the Practitioner is associated with", formalDefinition="The list of Roles/Organizations that the Practitioner is associated with." )
     protected List<PractitionerPractitionerRoleComponent> practitionerRole;
 
     /**
      * Qualifications obtained by training and certification.
      */
-    @Child(name ="qualification", type={}, order=8, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "qualification", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Qualifications obtained by training and certification", formalDefinition="Qualifications obtained by training and certification." )
     protected List<PractitionerQualificationComponent> qualification;
 
     /**
      * A language the practitioner is able to use in patient communication.
      */
-    @Child(name ="communication", type={CodeableConcept.class}, order=9, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "communication", type = {CodeableConcept.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A language the practitioner is able to use in patient communication", formalDefinition="A language the practitioner is able to use in patient communication." )
     protected List<CodeableConcept> communication;
 
-    private static final long serialVersionUID = 781100268L;
+    private static final long serialVersionUID = 1066276346L;
 
+  /*
+   * Constructor
+   */
     public Practitioner() {
       super();
     }
@@ -869,6 +790,51 @@ public class Practitioner extends DomainResource {
       if (this.identifier == null)
         this.identifier = new ArrayList<Identifier>();
       this.identifier.add(t);
+      return this;
+    }
+
+    /**
+     * @return {@link #active} (Whether this practitioner's record is in active use.). This is the underlying object with id, value and extensions. The accessor "getActive" gives direct access to the value
+     */
+    public BooleanType getActiveElement() { 
+      if (this.active == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Practitioner.active");
+        else if (Configuration.doAutoCreate())
+          this.active = new BooleanType(); // bb
+      return this.active;
+    }
+
+    public boolean hasActiveElement() { 
+      return this.active != null && !this.active.isEmpty();
+    }
+
+    public boolean hasActive() { 
+      return this.active != null && !this.active.isEmpty();
+    }
+
+    /**
+     * @param value {@link #active} (Whether this practitioner's record is in active use.). This is the underlying object with id, value and extensions. The accessor "getActive" gives direct access to the value
+     */
+    public Practitioner setActiveElement(BooleanType value) { 
+      this.active = value;
+      return this;
+    }
+
+    /**
+     * @return Whether this practitioner's record is in active use.
+     */
+    public boolean getActive() { 
+      return this.active == null || this.active.isEmpty() ? false : this.active.getValue();
+    }
+
+    /**
+     * @param value Whether this practitioner's record is in active use.
+     */
+    public Practitioner setActive(boolean value) { 
+        if (this.active == null)
+          this.active = new BooleanType();
+        this.active.setValue(value);
       return this;
     }
 
@@ -1237,6 +1203,7 @@ public class Practitioner extends DomainResource {
       protected void listChildren(List<Property> childrenList) {
         super.listChildren(childrenList);
         childrenList.add(new Property("identifier", "Identifier", "An identifier that applies to this person in this role.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        childrenList.add(new Property("active", "boolean", "Whether this practitioner's record is in active use.", 0, java.lang.Integer.MAX_VALUE, active));
         childrenList.add(new Property("name", "HumanName", "A name associated with the person.", 0, java.lang.Integer.MAX_VALUE, name));
         childrenList.add(new Property("telecom", "ContactPoint", "A contact detail for the practitioner, e.g. a telephone number or an email address.", 0, java.lang.Integer.MAX_VALUE, telecom));
         childrenList.add(new Property("address", "Address", "The postal address where the practitioner can be found or visited or to which mail can be delivered.", 0, java.lang.Integer.MAX_VALUE, address));
@@ -1256,6 +1223,7 @@ public class Practitioner extends DomainResource {
           for (Identifier i : identifier)
             dst.identifier.add(i.copy());
         };
+        dst.active = active == null ? null : active.copy();
         dst.name = name == null ? null : name.copy();
         if (telecom != null) {
           dst.telecom = new ArrayList<ContactPoint>();
@@ -1303,9 +1271,9 @@ public class Practitioner extends DomainResource {
         if (!(other instanceof Practitioner))
           return false;
         Practitioner o = (Practitioner) other;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(name, o.name, true) && compareDeep(telecom, o.telecom, true)
-           && compareDeep(address, o.address, true) && compareDeep(gender, o.gender, true) && compareDeep(birthDate, o.birthDate, true)
-           && compareDeep(photo, o.photo, true) && compareDeep(practitionerRole, o.practitionerRole, true)
+        return compareDeep(identifier, o.identifier, true) && compareDeep(active, o.active, true) && compareDeep(name, o.name, true)
+           && compareDeep(telecom, o.telecom, true) && compareDeep(address, o.address, true) && compareDeep(gender, o.gender, true)
+           && compareDeep(birthDate, o.birthDate, true) && compareDeep(photo, o.photo, true) && compareDeep(practitionerRole, o.practitionerRole, true)
            && compareDeep(qualification, o.qualification, true) && compareDeep(communication, o.communication, true)
           ;
       }
@@ -1317,15 +1285,16 @@ public class Practitioner extends DomainResource {
         if (!(other instanceof Practitioner))
           return false;
         Practitioner o = (Practitioner) other;
-        return compareValues(gender, o.gender, true) && compareValues(birthDate, o.birthDate, true);
+        return compareValues(active, o.active, true) && compareValues(gender, o.gender, true) && compareValues(birthDate, o.birthDate, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && (identifier == null || identifier.isEmpty()) && (name == null || name.isEmpty())
-           && (telecom == null || telecom.isEmpty()) && (address == null || address.isEmpty()) && (gender == null || gender.isEmpty())
-           && (birthDate == null || birthDate.isEmpty()) && (photo == null || photo.isEmpty()) && (practitionerRole == null || practitionerRole.isEmpty())
-           && (qualification == null || qualification.isEmpty()) && (communication == null || communication.isEmpty())
-          ;
+        return super.isEmpty() && (identifier == null || identifier.isEmpty()) && (active == null || active.isEmpty())
+           && (name == null || name.isEmpty()) && (telecom == null || telecom.isEmpty()) && (address == null || address.isEmpty())
+           && (gender == null || gender.isEmpty()) && (birthDate == null || birthDate.isEmpty()) && (photo == null || photo.isEmpty())
+           && (practitionerRole == null || practitionerRole.isEmpty()) && (qualification == null || qualification.isEmpty())
+           && (communication == null || communication.isEmpty());
       }
 
   @Override
@@ -1333,32 +1302,46 @@ public class Practitioner extends DomainResource {
     return ResourceType.Practitioner;
    }
 
+  @SearchParamDefinition(name="phone", path="Practitioner.telecom(system=phone)", description="A value in a phone contact", type="token" )
+  public static final String SP_PHONE = "phone";
   @SearchParamDefinition(name="phonetic", path="Practitioner.name", description="A portion of either family or given name using some kind of phonetic matching algorithm", type="string" )
   public static final String SP_PHONETIC = "phonetic";
-  @SearchParamDefinition(name="communication", path="Practitioner.communication", description="One of the languages that the practitioner can communicate with", type="token" )
-  public static final String SP_COMMUNICATION = "communication";
   @SearchParamDefinition(name="location", path="Practitioner.practitionerRole.location", description="One of the locations at which this practitioner provides care", type="reference" )
   public static final String SP_LOCATION = "location";
+  @SearchParamDefinition(name="communication", path="Practitioner.communication", description="One of the languages that the practitioner can communicate with", type="token" )
+  public static final String SP_COMMUNICATION = "communication";
+  @SearchParamDefinition(name="address-country", path="Practitioner.address.country", description="A country specified in an address", type="string" )
+  public static final String SP_ADDRESSCOUNTRY = "address-country";
   @SearchParamDefinition(name="organization", path="Practitioner.practitionerRole.managingOrganization", description="The identity of the organization the practitioner represents / acts on behalf of", type="reference" )
   public static final String SP_ORGANIZATION = "organization";
-  @SearchParamDefinition(name="given", path="Practitioner.name", description="A portion of the given name", type="string" )
+  @SearchParamDefinition(name="address-city", path="Practitioner.address.city", description="A city specified in an address", type="string" )
+  public static final String SP_ADDRESSCITY = "address-city";
+  @SearchParamDefinition(name="address-state", path="Practitioner.address.state", description="A state specified in an address", type="string" )
+  public static final String SP_ADDRESSSTATE = "address-state";
+  @SearchParamDefinition(name="given", path="Practitioner.name.given", description="A portion of the given name", type="string" )
   public static final String SP_GIVEN = "given";
+  @SearchParamDefinition(name="email", path="Practitioner.telecom(system=email)", description="A value in an email contact", type="token" )
+  public static final String SP_EMAIL = "email";
   @SearchParamDefinition(name="address", path="Practitioner.address", description="An address in any kind of address/part", type="string" )
   public static final String SP_ADDRESS = "address";
-  @SearchParamDefinition(name="family", path="Practitioner.name", description="A portion of the family name", type="string" )
+  @SearchParamDefinition(name="address-use", path="Practitioner.address.use", description="A use code specified in an address", type="token" )
+  public static final String SP_ADDRESSUSE = "address-use";
+  @SearchParamDefinition(name="family", path="Practitioner.name.family", description="A portion of the family name", type="string" )
   public static final String SP_FAMILY = "family";
   @SearchParamDefinition(name="name", path="Practitioner.name", description="A portion of either family or given name", type="string" )
   public static final String SP_NAME = "name";
   @SearchParamDefinition(name="telecom", path="Practitioner.telecom", description="The value in any kind of contact", type="token" )
   public static final String SP_TELECOM = "telecom";
-  @SearchParamDefinition(name="gender", path="Practitioner.gender", description="Gender of the practitioner", type="token" )
-  public static final String SP_GENDER = "gender";
   @SearchParamDefinition(name="role", path="Practitioner.practitionerRole.role", description="The practitioner can perform this role at for the organization", type="token" )
   public static final String SP_ROLE = "role";
-  @SearchParamDefinition(name="identifier", path="Practitioner.identifier", description="A practitioner's Identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="gender", path="Practitioner.gender", description="Gender of the practitioner", type="token" )
+  public static final String SP_GENDER = "gender";
   @SearchParamDefinition(name="specialty", path="Practitioner.practitionerRole.specialty", description="The practitioner has this specailty at an organization", type="token" )
   public static final String SP_SPECIALTY = "specialty";
+  @SearchParamDefinition(name="identifier", path="Practitioner.identifier", description="A practitioner's Identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="address-postalcode", path="Practitioner.address.postalCode", description="A postalCode specified in an address", type="string" )
+  public static final String SP_ADDRESSPOSTALCODE = "address-postalcode";
 
 }
 

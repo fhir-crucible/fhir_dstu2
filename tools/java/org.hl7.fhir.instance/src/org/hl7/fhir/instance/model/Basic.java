@@ -29,15 +29,16 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
+// Generated on Tue, Sep 1, 2015 11:15+1000 for FHIR v1.0.0
 
 import java.util.*;
 
 import org.hl7.fhir.instance.model.annotations.ResourceDef;
 import org.hl7.fhir.instance.model.annotations.SearchParamDefinition;
-import org.hl7.fhir.instance.model.annotations.Block;
 import org.hl7.fhir.instance.model.annotations.Child;
 import org.hl7.fhir.instance.model.annotations.Description;
+import org.hl7.fhir.instance.model.annotations.Block;
+import org.hl7.fhir.instance.model.api.*;
 /**
  * Basic is used for handling concepts not yet defined in FHIR, narrative-only resources that don't map to an existing resource, and custom resources not appropriate for inclusion in the FHIR specification.
  */
@@ -47,22 +48,22 @@ public class Basic extends DomainResource {
     /**
      * Identifier assigned to the resource for business purposes, outside the context of FHIR.
      */
-    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Business identifier", formalDefinition="Identifier assigned to the resource for business purposes, outside the context of FHIR." )
     protected List<Identifier> identifier;
 
     /**
      * Identifies the 'type' of resource - equivalent to the resource name for other resources.
      */
-    @Child(name ="code", type={CodeableConcept.class}, order=1, min=1, max=1)
+    @Child(name = "code", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="Kind of Resource", formalDefinition="Identifies the 'type' of resource - equivalent to the resource name for other resources." )
     protected CodeableConcept code;
 
     /**
      * Identifies the patient, practitioner, device or any other resource that is the "focus" of this resoruce.
      */
-    @Child(name ="subject", type={}, order=2, min=0, max=1)
-    @Description(shortDefinition="Identifies the", formalDefinition="Identifies the patient, practitioner, device or any other resource that is the 'focus' of this resoruce." )
+    @Child(name = "subject", type = {}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Identifies the focus of this resource", formalDefinition="Identifies the patient, practitioner, device or any other resource that is the \"focus\" of this resoruce." )
     protected Reference subject;
 
     /**
@@ -73,7 +74,7 @@ public class Basic extends DomainResource {
     /**
      * Indicates who was responsible for creating the resource instance.
      */
-    @Child(name ="author", type={Practitioner.class, Patient.class, RelatedPerson.class}, order=3, min=0, max=1)
+    @Child(name = "author", type = {Practitioner.class, Patient.class, RelatedPerson.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who created", formalDefinition="Indicates who was responsible for creating the resource instance." )
     protected Reference author;
 
@@ -85,16 +86,22 @@ public class Basic extends DomainResource {
     /**
      * Identifies when the resource was first created.
      */
-    @Child(name ="created", type={DateType.class}, order=4, min=0, max=1)
+    @Child(name = "created", type = {DateType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When created", formalDefinition="Identifies when the resource was first created." )
     protected DateType created;
 
     private static final long serialVersionUID = 916539354L;
 
+  /*
+   * Constructor
+   */
     public Basic() {
       super();
     }
 
+  /*
+   * Constructor
+   */
     public Basic(CodeableConcept code) {
       super();
       this.code = code;
@@ -295,7 +302,7 @@ public class Basic extends DomainResource {
         super.listChildren(childrenList);
         childrenList.add(new Property("identifier", "Identifier", "Identifier assigned to the resource for business purposes, outside the context of FHIR.", 0, java.lang.Integer.MAX_VALUE, identifier));
         childrenList.add(new Property("code", "CodeableConcept", "Identifies the 'type' of resource - equivalent to the resource name for other resources.", 0, java.lang.Integer.MAX_VALUE, code));
-        childrenList.add(new Property("subject", "Reference(Any)", "Identifies the patient, practitioner, device or any other resource that is the 'focus' of this resoruce.", 0, java.lang.Integer.MAX_VALUE, subject));
+        childrenList.add(new Property("subject", "Reference(Any)", "Identifies the patient, practitioner, device or any other resource that is the \"focus\" of this resoruce.", 0, java.lang.Integer.MAX_VALUE, subject));
         childrenList.add(new Property("author", "Reference(Practitioner|Patient|RelatedPerson)", "Indicates who was responsible for creating the resource instance.", 0, java.lang.Integer.MAX_VALUE, author));
         childrenList.add(new Property("created", "date", "Identifies when the resource was first created.", 0, java.lang.Integer.MAX_VALUE, created));
       }
@@ -353,14 +360,16 @@ public class Basic extends DomainResource {
 
   @SearchParamDefinition(name="author", path="Basic.author", description="Who created", type="reference" )
   public static final String SP_AUTHOR = "author";
-  @SearchParamDefinition(name="patient", path="Basic.subject", description="Identifies the", type="reference" )
+  @SearchParamDefinition(name="patient", path="Basic.subject", description="Identifies the focus of this resource", type="reference" )
   public static final String SP_PATIENT = "patient";
   @SearchParamDefinition(name="created", path="Basic.created", description="When created", type="date" )
   public static final String SP_CREATED = "created";
-  @SearchParamDefinition(name="subject", path="Basic.subject", description="Identifies the", type="reference" )
+  @SearchParamDefinition(name="subject", path="Basic.subject", description="Identifies the focus of this resource", type="reference" )
   public static final String SP_SUBJECT = "subject";
   @SearchParamDefinition(name="code", path="Basic.code", description="Kind of Resource", type="token" )
   public static final String SP_CODE = "code";
+  @SearchParamDefinition(name="identifier", path="Basic.identifier", description="Business identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
 
 }
 

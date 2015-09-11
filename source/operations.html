@@ -12,15 +12,19 @@
 
 <a name="base"> </a>
 <h2>Extended Operations on the RESTful API</h2>
+<table class="cols"><tr><td id="wg"><a _target="blank" href="[%wg fhir%]">[%wgt fhir%]</a> Work Group</td><td id="fmm"><a href="resource.html#maturity">Maturity Level</a>: N/A</td><td id="ballot"><a href="help.html#status">Ballot Status</a>: <a href="history.html#pubs">DSTU 2</a></td></tr></table>
 
 <p>
 The <a href="http.html">RESTful API</a> defines a set of common interactions performed on
 a repository of typed resources (read, update, search, etc). These interactions follow
-the RESTful paradigm of managing state by Create/Read/Update/Delete actions on a set of identified
+the RESTful paradigm of managing state by <b>C</b>reate/<b>R</b>ead/<b>U</b>pdate/<b>D</b>elete actions on a set of identified
 resources. While this approach solves many use cases, there is some specific
 functionality that can be met more efficiently using an RPC-like paradigm,
-where named operations are performed with inputs and outputs. This specification
-describes a light operation framework that seamlessly extends the RESTful API.
+where named operations are performed with inputs and outputs (<b>E</b>xecute). Operations are used where the server
+needs to play an active role in formulating the content of the response, not merely return existing
+information, or where the intended purpose is to cause side effects - modification of existing
+resources, or creation of new resourcse. This specification describes a light operation framework that
+seamlessly extends the RESTful API.
 </p>
 <p>
 Operations have the following general properties:
@@ -34,6 +38,45 @@ Operations have the following general properties:
  <li>The operations may make use of the existing repository of resources in their definitions</li>
  <li>Operations are performed against a specific resource, a resource type, or the whole system</li>
 </ul>
+
+<a name="executing"> </a>
+<h3>Executing an Operation</h3>
+
+<p>
+Operations are (mostly) POSTs to a FHIR endpoint, where the name of the operations is prefixed by a “$” sign. For example:
+</p>
+<pre>
+ POST http://fhir.someserver.org/fhir/Patient/1/$everything
+</pre>
+<p>
+Whenever the operation is idempotent, and the parameters are all simple ones, 
+as is the case with the example above) it may be invoked using GET as well.
+</p>
+<p>
+Operations can be invoked on four types of FHIR endpoints:
+</p>
+<ul>
+ <li>The “base” FHIR service endpoint (e.g. http://fhir.someserver.org/fhir) – these are operations that operate on the full scale of the server. For example: return me all extensions known by this server</li>
+ <li>A resource type (e.g. http://fhir.someserver.org/fhir/Patient) – these operations operate across all instances of the given type</li>
+ <li>A resource instance (e.g. http://fhir.someserver.org/fhir/Patient/1) – for operations that involve a single instance, like the $everything operation above</li>
+ <li>A version of a resource instance (http://fhir.someserver.org/fhir/Patient/1/_history/4) – for operations that involve a specific version of a specific instance of FHIR data. This is a special case that only exists to allow manipulation of profile and tag metadata of past versions</li>
+</ul>
+<p>
+The body of the invocation contains a special infrastructure resource called <a href="parameters.html">Parameters</a>,
+which represents a collection of named parameters as &lt;key,value&gt; pairs, where the value may be any 
+primitive or complex datatype or even a full Resource. In addition it may include strings that are 
+formatted as the search parameter types.
+</p>
+<p>
+On completion, the operation returns another <code>Parameters</code> resource, this time containing one or 
+more output “parameters”. This means that a FHIR operation can take any parameter “in” and return a set of 
+result parameters “out”. Both the body of the POST and the returned result are always a Resource. 
+</p>
+<p>
+Some operations - ones with simple input types and a single output parameter named 'return' that is 
+a resource - can be invoked differently, by using a GET directly, with parameters as HTTP URL parameters. 
+In this case, the response is simply the resource that is the return value, with no Parameters resource.
+</p>
 
 <a name="defined"> </a>
 <h3>FHIR defined Operations</h3>
@@ -49,7 +92,7 @@ Notes:
 </ul>
 
 <a name="extensibility"> </a>
-<h3>Implementations Defined Operations</h3>
+<h3>Implementation Defined Operations</h3>
 <p>
 Implementations are able to define their own operations in addition to
 those defined here. Name clashes between operations defined
@@ -57,10 +100,10 @@ by different implementers can be resolved by use of the
 <a href="conformance.html">conformance statement</a>.
 </p>
 <p>
-In addition, the definition of these operations  or additional run time operations does not 
-prevent the use of other kinds of operations that are not dependent on and/or not integrated 
-with the RESTful API, as long as their addressing scheme does not clash with the scheme 
-defined herein.
+In addition, the definition of these operations  or additional run time operations does not
+prevent the use of other kinds of operations that are not dependent on and/or not integrated
+with the RESTful API, as long as their addressing scheme does not clash with the scheme
+defined here.
 </p>
 
 <a name="defining"> </a>
@@ -167,7 +210,7 @@ authenticate the client in response to an operation request.
 
 <p>
 In the general case, an operation response uses the same
-<a href="parameters.html">Parameters</a> format one or more
+<a href="parameters.html">Parameters</a> format whether there is one or more
 named parameters (the "out" parameters).
 </p>
 <p>
@@ -186,40 +229,19 @@ they will have no id property.
 
 <a name="asynchronous"> </a>
 
-<!-- todo: add async/sync to the operation definition -->
-
 <h3>Executing an Operation Asynchronously</h3>
 
+<blockquote class="dstu-note">
+<a name="dstu"> </a>
 <p>
-Operations can also be executed asynchronously. In this case, the
-requester sends a message requesting that an operation be executed,
-and the destination system subsequently sends a message back with
-the results of the operation.
+<b>DSTU Note:</b> there is no defined correct way to execute
+operations asynchronously. The <a href="messaging.html#operations">messaging page</a>
+describes a way to execute operations asynchronously using messages.
 </p>
 <p>
-Given the increased complexity of the asynchronous use case, the
-implementation has increased complexity. As a summary, asynchronous
-operations are performed like this:
+Feedback/discussion <a href="http://wiki.hl7.org/index.php?title=FHIR_Asynchronous_Exchange">here</a>.
 </p>
-<ul>
- <li>The requester contructs a message (a bundle with type = message)</li>
- <li>The message header has an event.system of http://blame-Lloyd.com/operations</li>
- <li>The event.code is the URL of the operation definition</li>
- <li>The message data item refers to a <a href="parameters.html">Parameters</a>
-  format that carries the in parameters for the operation. If there are no parameters,
-  the message SHOULD have no data element</li>
- <li>The sender accepts the message (see <a href="messaging.html#asynchronous">Asynchronous messaging</a>)</li>
- <li>When the operation has been executed, the processor sends back one or more messages</li>
- <li>Each message is a bundle of type = message that contains a message header that refers to the id of the original message</li>
- <li>If the operation fails, the MessageHeader.response.code must indicate failure, and an <a href="operationoutcome.html">OperationOutcome</a> SHOULD be returned as well</li>
- <li>If there is only one out parameter, which is a resource, and it has the name "return", then the data of the message is the return resource</li>
- <li>Else the message data will refer to a <a href="parameters.html">Parameters</a>
-  format that carries the out parameters for the operation. If there are no parameters,
-  the message SHOULD have no data element</li>
-</ul>
-<p>
-Todo: fill out with details and examples.
-</p>
+</blockquote>
 </div>
 
 [%file newfooter%]

@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -42,9 +43,10 @@ import java.util.Map;
 
 import org.hl7.fhir.definitions.model.Definitions;
 import org.hl7.fhir.definitions.model.ResourceDefn;
-import org.hl7.fhir.definitions.model.ElementDefn;
 import org.hl7.fhir.definitions.model.TypeDefn;
+import org.hl7.fhir.instance.validation.ValidationMessage;
 import org.hl7.fhir.tools.implementations.BaseGenerator;
+import org.hl7.fhir.tools.publisher.FolderManager;
 import org.hl7.fhir.tools.publisher.PlatformGenerator;
 import org.hl7.fhir.utilities.Logger;
 import org.hl7.fhir.utilities.TextFile;
@@ -88,12 +90,11 @@ public class RubyGenerator extends BaseGenerator implements PlatformGenerator {
     String resourcesBaseDir = Utilities.path(resourcesDir, "base");
     final String outputDir = Utilities.path(implDir, "output");
     
-    Map<String, String> dirs = new HashMap<String, String>() {{
-      put("controllerDir",         Utilities.path(outputDir, "server", "app", "controllers"));
-      put("modelDir",              Utilities.path(outputDir, "model", "lib", "models", "fhir"));
-      put("xmlTemplateDir",        Utilities.path(outputDir, "model", "lib", "formats", "export", "templates"));
-      put("deserializerDir",       Utilities.path(outputDir, "model", "lib", "formats", "import", "deserializers"));
-    }};
+    Map<String, String> dirs = new HashMap<String, String>();
+    dirs.put("controllerDir",         Utilities.path(outputDir, "server", "app", "controllers"));
+    dirs.put("modelDir",              Utilities.path(outputDir, "model", "lib", "models", "fhir"));
+    dirs.put("xmlTemplateDir",        Utilities.path(outputDir, "model", "lib", "formats", "export", "templates"));
+    dirs.put("deserializerDir",       Utilities.path(outputDir, "model", "lib", "formats", "import", "deserializers"));
     
     createDirStructrue(dirs);
     Utilities.copyDirectory(resourcesBaseDir, outputDir, null);
@@ -144,6 +145,7 @@ public class RubyGenerator extends BaseGenerator implements PlatformGenerator {
     zip.close();  
     
     System.out.println(ResourceGenerator.dataTypes);
+    System.err.println(ResourceGenerator.unhandledDataTypes);
   }
   
   private void createDirStructrue(Map<String, String> dirs) throws IOException {
@@ -195,20 +197,24 @@ public class RubyGenerator extends BaseGenerator implements PlatformGenerator {
   }
 
   @Override
-  public void loadAndSave(String rootDir, String sourceFile, String destFile) throws Exception {
-  }
-
-  @Override
   public void generate(org.hl7.fhir.definitions.ecore.fhir.Definitions definitions, String destDir, String implDir, String version, Date genDate, Logger logger, String svnRevision) throws Exception {
   }
 
   @Override
-  public boolean compile(String rootDir, List<String> errors, Logger logger) throws Exception {
+  public boolean compile(String rootDir, List<String> errors, Logger logger, List<ValidationMessage> issues) throws Exception {
     return false;
   }
 
   @Override
-  public String checkFragments(String rootDir, String fragmentsXml) throws Exception {
+  public void loadAndSave(FolderManager folders, String sourceFile, String destFile) throws Exception {
+  }
+
+  @Override
+  public void test(FolderManager folders, Collection<String> names) throws Exception {
+  }
+
+  @Override
+  public String checkFragments(FolderManager folders, String fragmentsXml) throws Exception {
     return null;
   }
 

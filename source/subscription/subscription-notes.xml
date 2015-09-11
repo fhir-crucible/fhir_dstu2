@@ -1,6 +1,7 @@
 <div xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml ../../schema/fhir-xhtml.xsd" xmlns="http://www.w3.org/1999/xhtml">
 
 
+<a name="safety"> </a>
 <h2>Safety and Security</h2>
 <p>
 Executing each of the channels documented below involves the server
@@ -19,6 +20,7 @@ Emails should generally be secured using some technique such as
 <a href="http://directproject.org/">Direct</a>.
 </p>
 
+<a name="errors"> </a>
 <h2>Managing Subscriptions and Errors</h2>
 <p>
 A subscription is defined by creating the subscription on the server.
@@ -58,6 +60,7 @@ deletes it at the specified time.
 </p>
  
 
+<a name="channels"> </a>
 <h2>Channels</h2>
 
 <h3>REST Hook</h3>
@@ -159,8 +162,10 @@ protocol is used to listen for notifications:
 
 <h3>Email/SMS</h3>
 
+<p>
 A client can register for its user to receive notifications by
 email:
+</p>
 
 <pre class="json">
   "channel": {
@@ -189,14 +194,38 @@ by the rules of the applicable jurisdictions.
 </pre>
 
 <p>
-Note: SMS messages are extremely limited in size, so payload should be set to false,
-and most servers will refuse to send payloads in SMS. 
+Note: SMS messages are extremely limited in size, so payload should be set to false
+Irrespective of size, most servers will refuse to send payloads in SMS for security 
+reasons. 
 </p>
 
 <h3>Messaging</h3>
 
 <p>
-Todo
+A client can register for its user to receive notifications by <a href="messaging.html">messaging</a>:
 </p>
+
+<pre class="json">
+  "channel": {
+    "type": "message",
+    "url": "http://ehr.example.org/fhir/$process-message"
+  }
+</pre>
+<p>
+For each matching resource, a server will send a message to the 
+nominated end-point. Most servers will require that the end-point
+is white-listed prior to allowing these kinds of subscriptions. 
+</p>
+<blockquote class="dstu-note">
+<a name="dstu"> </a>
+<p>
+<b>DSTU Note:</b>  The details of the message - mainly the event code - are 
+still be to resolved during the trial use.
+</p>
+<p>
+Feedback is welcome <a href="http://wiki.hl7.org/index.php?title=FHIR_Specification_Feedback_(DSTU_2)">here</a>.
+</p>
+</blockquote>
+
 
 </div>

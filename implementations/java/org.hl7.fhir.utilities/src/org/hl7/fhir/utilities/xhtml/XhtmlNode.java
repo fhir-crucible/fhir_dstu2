@@ -28,6 +28,7 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 package org.hl7.fhir.utilities.xhtml;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,10 +88,11 @@ public class XhtmlNode {
     return content;
   }
 
-  public void setContent(String content) {
+  public XhtmlNode setContent(String content) {
     if (!(nodeType != NodeType.Text || nodeType != NodeType.Comment)) 
       throw new Error("Wrong node type");
     this.content = content;
+    return this;
   }
 
   public XhtmlNode addTag(String name)
@@ -219,6 +221,10 @@ public class XhtmlNode {
     return this;
   }
 
+  public boolean hasAttribute(String name) {
+    return getAttributes().containsKey(name);
+  }
+
   public String getAttribute(String name) {
     return getAttributes().get(name);
   }
@@ -279,4 +285,67 @@ public class XhtmlNode {
 			return false;
 		return e1.equalsDeep(e2);
   }
+	
+	
+	public String getValueAsString() {
+		if (isEmpty()) {
+			return null;
+		}
+		try {
+			return new XhtmlComposer().compose(this);
+		} catch (Exception e) {
+			// TODO: composer shouldn't throw exception like this
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void setValueAsString(String theValue) throws IllegalArgumentException {
+		this.Attributes = null;
+		this.childNodes = null;
+		this.content = null;
+		this.name = null;
+		this.nodeType= null;
+		if (theValue == null) {
+			return;
+		}
+		
+		String val = theValue.trim();
+		if (theValue == null || theValue.isEmpty()) {
+			return;
+		}
+		
+		if (!val.startsWith("<")) {
+			val = "<div>" + val + "</div>";
+		}
+		if (val.startsWith("<?") && val.endsWith("?>")) {
+			return;
+		}
+
+		try {
+			// TODO: this is ugly
+			XhtmlNode fragment = new XhtmlParser().parseFragment(val);
+			this.Attributes = fragment.Attributes;
+			this.childNodes = fragment.childNodes;
+			this.content = fragment.content;
+			this.name = fragment.name;
+			this.nodeType= fragment.nodeType;
+		} catch (Exception e) {
+			// TODO: composer shouldn't throw exception like this
+			throw new RuntimeException(e);
+		}
+		
+	}
+
+  public XhtmlNode getElementByIndex(int i) {
+    int c = 0;
+    for (XhtmlNode n : childNodes)
+      if (n.getNodeType() == NodeType.Element) {
+        if (c == i)
+          return n;
+        else
+          c++;
+      }
+    return null;
+  }
+
 }

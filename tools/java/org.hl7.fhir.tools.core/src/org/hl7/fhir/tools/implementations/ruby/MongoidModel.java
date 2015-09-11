@@ -46,7 +46,6 @@ import org.hl7.fhir.definitions.model.ElementDefn;
 import org.hl7.fhir.definitions.model.ResourceDefn;
 import org.hl7.fhir.definitions.model.TypeRef;
 import org.hl7.fhir.tools.implementations.GenBlock;
-import org.hl7.fhir.tools.implementations.ruby.ResourceGenerator.FieldType;
 
 public class MongoidModel extends ResourceGenerator {
  
@@ -171,11 +170,10 @@ public class MongoidModel extends ResourceGenerator {
         typeRef = nestedElement.getTypes().get(0);
       }
       String typeName = generateTypeName(nestedElement, typeRef);
-      if(nestedElement.hasBinding() && nestedElement.hasBindingName()) {
-        BindingSpecification binding = this.definitions.getBindingByName(nestedElement.getBindingName());
-        if(binding!=null && binding.getCodes()!=null && (binding.getCodes().size() > 0) ) {
+      if(nestedElement.hasBinding() && nestedElement.getBinding().getName() != null) {
+        if(nestedElement.getBinding().getAllCodes()!=null && nestedElement.getBinding().getAllCodes().size() > 0) {          
           List<String> codes = new ArrayList<String>();
-          for(DefinedCode code : binding.getCodes())
+          for(DefinedCode code : nestedElement.getBinding().getAllCodes())
           {
             codes.add( code.getCode() );
           }
@@ -197,7 +195,7 @@ public class MongoidModel extends ResourceGenerator {
           sb.setLength(0);
           sb.append(key).append(": [");
           for(String code : codes) {
-            sb.append(" \"").append(code).append("\",");
+            sb.append(" \'").append(code).append("\',");
           }
           sb.setLength( sb.length() - 1 );
           sb.append(" ]");
@@ -216,8 +214,10 @@ public class MongoidModel extends ResourceGenerator {
   private void generateMultipleTypes(GenBlock block, ElementDefn elementDefinition ) {
     
     Map<String,List<String>> multipleTypes = new HashMap<String,List<String>>();
+    List<String> anyTypes = new ArrayList<String>();
+    
     for (ElementDefn nestedElement : elementDefinition.getElements()) {
-      if(nestedElement.getTypes()!=null && nestedElement.getTypes().size() > 1) {
+      if(nestedElement.getTypes()!=null && nestedElement.getTypes().size() > 0) {
         String name = nestedElement.getName();
         if(name.endsWith("[x]")) {
           name = name.substring(0, name.length()-3);
@@ -226,9 +226,12 @@ public class MongoidModel extends ResourceGenerator {
         for (TypeRef typeRef : nestedElement.getTypes()) {
           String typeName = generateTypeName(nestedElement, typeRef);
           t.add(typeName);
+          if(FieldType.ANY == FieldType.getFieldType(typeRef.getName())) {
+            anyTypes.add(name);
+          }
         }
-        multipleTypes.put(name, t);
-      }
+        if(t.size() > 1) multipleTypes.put(name, t);
+      }    
     }
     
     if(!multipleTypes.isEmpty()) {
@@ -243,7 +246,7 @@ public class MongoidModel extends ResourceGenerator {
           sb.setLength(0);
           sb.append(key).append(": [");
           for(String type : types) {
-            sb.append(" \"").append(type).append("\",");
+            sb.append(" \'").append(type).append("\',");
           }
           sb.setLength( sb.length() - 1 );
           sb.append(" ]");
@@ -256,6 +259,18 @@ public class MongoidModel extends ResourceGenerator {
       block.es();
       block.ln("}");
       block.ln();      
+    }
+    
+    if(!anyTypes.isEmpty()) {
+      StringBuffer sb = new StringBuffer();
+      sb.append("ANY_TYPES = [");
+      for(String attribute : anyTypes) {
+        sb.append(" \'").append(attribute).append("\',");
+      }
+      sb.setLength( sb.length() - 1 );
+      sb.append(" ]");
+      block.ln( sb.toString() );
+      block.ln();
     }    
   }
 
@@ -280,12 +295,11 @@ public class MongoidModel extends ResourceGenerator {
     
     switch (fieldType) {
     case ANY:
-      block.ln(getValueFieldLine(typeName+"Type", "String", multipleCardinality));
-      block.ln("attr_accessor :"+typeName);
-      block.ln("# " + getValueFieldLine(typeName, "FHIR::AnyType", multipleCardinality));
+      block.ln(getValueFieldLine(typeName, "FHIR::AnyType", multipleCardinality));
       break;
     case BINARY:
-      block.ln(getValueFieldLine(typeName, "Moped::BSON::Binary", multipleCardinality));
+      block.ln(getValueFieldLine(typeName, "String", multipleCardinality));
+      // TODO Add base64 validator? regex plus length%4==0
       break;
     case BOOLEAN:
       block.ln(getValueFieldLine(typeName, "Boolean", multipleCardinality));
@@ -325,9 +339,9 @@ public class MongoidModel extends ResourceGenerator {
       break;
     case CODE:
       block.ln(getValueFieldLine(typeName, "String", multipleCardinality));
-      if(elementDefinition.hasBinding() && elementDefinition.hasBindingName()) {
-        BindingSpecification binding = this.definitions.getBindingByName(elementDefinition.getBindingName());
-        if(binding!=null && binding.getCodes()!=null && (binding.getCodes().size() > 0) ) {
+      if(elementDefinition.hasBinding() && elementDefinition.getBinding().getName()!=null) {
+        BindingSpecification binding = this.definitions.getCommonBindings().get(elementDefinition.getBinding().getName());
+        if(binding!=null && binding.getAllCodes()!=null && (binding.getAllCodes().size() > 0) ) {
           sb = new StringBuilder();
           sb.append("validates :").append(typeName).append(", :inclusion => { in: VALID_CODES[:");
           sb.append(typeName).append("]");

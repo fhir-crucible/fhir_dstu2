@@ -13,6 +13,7 @@
 
 <a name="base"> </a>
 <h3>_filter Parameter</h3>
+<table class="cols"><tr><td id="wg"><a _target="blank" href="[%wg fhir%]">[%wgt fhir%]</a> Work Group</td><td id="fmm"><a href="resource.html#maturity">Maturity Level</a>: N/A</td><td id="ballot"><a href="help.html#status">Ballot Status</a>: <a href="history.html#pubs">DSTU 2</a></td></tr></table>
 
 <a name="intro"> </a>
 <h4>Introduction</h4>
@@ -108,9 +109,22 @@ dateChar     = DIGIT / "T" / "-" / "." / "+"
 <td>gt / lt / ge / le</td>
 <td>A value in the set is (greater than, less than, greater or equal, less or equal)  the given value</td>
 </tr>
+ <tr>
+	<td>ap</td>
+	<td>A value in the set isis approximately the same as this value.<br/> 
+	Note that the recommended value for the approximation is 10% of the stated value (or for a date, 10% of the gap between now and the date), but systems may choose other values where appropriate</td>
+ </tr>
 <tr>
-<td>pr</td>
-<td>The set is empty or not (value is false or true)</td>
+ <td>sa</td>
+ <td>The value starts after the specified value</td>
+</tr>
+<tr>
+ <td>eb</td>
+ <td>The value ends before the specified value</td>
+</tr>
+<tr>
+ <td>pr</td>
+ <td>The set is empty or not (value is false or true)</td>
 </tr>
 <tr>
 <td>po</td>
@@ -138,7 +152,10 @@ dateChar     = DIGIT / "T" / "-" / "." / "+"
 </tr>
 </tbody>
 </table>
-
+<p>
+For detailed rules about the operators eq, ne, le, ge, lt, gt, sa, and eb see 
+<a href="search.html#prefix">Search Prefixes</a>.
+</p>
 
 <p>The interpretation of the operation depends on the type of the search parameter it is being evaulated against. This table contains those details:</p>
 <table class="grid">
@@ -331,8 +348,6 @@ search parameter "related-type", and "target" to the search parameter "related-t
 </ul>
 
 </div>
-
-[%onthispage Search/Query#base|Standard Parameters#standard|Managing Returned Resources#return|Conformance#conformance|Advanced Query#advanced|Managing Search Results#currency%]
 
 [%file newfooter%]
 </body>

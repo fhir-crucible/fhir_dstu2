@@ -29,7 +29,7 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
+// Generated on Tue, Sep 1, 2015 11:15+1000 for FHIR v1.0.0
 
 import java.util.*;
 
@@ -38,68 +38,76 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.instance.model.annotations.Child;
 import org.hl7.fhir.instance.model.annotations.Description;
 import org.hl7.fhir.instance.model.annotations.DatatypeDef;
+import org.hl7.fhir.instance.model.annotations.Block;
+import org.hl7.fhir.instance.model.api.*;
 /**
  * A series of measurements taken by a device, with upper and lower limits. There may be more than one dimension in the data.
  */
 @DatatypeDef(name="SampledData")
-public class SampledData extends Type {
+public class SampledData extends Type implements ICompositeType {
 
     /**
      * The base quantity that a measured value of zero represents. In addition, this provides the units of the entire measurement series.
      */
-    @Child(name ="origin", type={Quantity.class}, order=0, min=1, max=1)
+    @Child(name = "origin", type = {SimpleQuantity.class}, order=0, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Zero value and units", formalDefinition="The base quantity that a measured value of zero represents. In addition, this provides the units of the entire measurement series." )
-    protected Quantity origin;
+    protected SimpleQuantity origin;
 
     /**
      * The length of time between sampling times, measured in milliseconds.
      */
-    @Child(name ="period", type={DecimalType.class}, order=1, min=1, max=1)
+    @Child(name = "period", type = {DecimalType.class}, order=1, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Number of milliseconds between samples", formalDefinition="The length of time between sampling times, measured in milliseconds." )
     protected DecimalType period;
 
     /**
      * A correction factor that is applied to the sampled data points before they are added to the origin.
      */
-    @Child(name ="factor", type={DecimalType.class}, order=2, min=0, max=1)
+    @Child(name = "factor", type = {DecimalType.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Multiply data by this before adding to origin", formalDefinition="A correction factor that is applied to the sampled data points before they are added to the origin." )
     protected DecimalType factor;
 
     /**
      * The lower limit of detection of the measured points. This is needed if any of the data points have the value "L" (lower than detection limit).
      */
-    @Child(name ="lowerLimit", type={DecimalType.class}, order=3, min=0, max=1)
-    @Description(shortDefinition="Lower limit of detection", formalDefinition="The lower limit of detection of the measured points. This is needed if any of the data points have the value 'L' (lower than detection limit)." )
+    @Child(name = "lowerLimit", type = {DecimalType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Lower limit of detection", formalDefinition="The lower limit of detection of the measured points. This is needed if any of the data points have the value \"L\" (lower than detection limit)." )
     protected DecimalType lowerLimit;
 
     /**
      * The upper limit of detection of the measured points. This is needed if any of the data points have the value "U" (higher than detection limit).
      */
-    @Child(name ="upperLimit", type={DecimalType.class}, order=4, min=0, max=1)
-    @Description(shortDefinition="Upper limit of detection", formalDefinition="The upper limit of detection of the measured points. This is needed if any of the data points have the value 'U' (higher than detection limit)." )
+    @Child(name = "upperLimit", type = {DecimalType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Upper limit of detection", formalDefinition="The upper limit of detection of the measured points. This is needed if any of the data points have the value \"U\" (higher than detection limit)." )
     protected DecimalType upperLimit;
 
     /**
      * The number of sample points at each time point. If this value is greater than one, then the dimensions will be interlaced - all the sample points for a point in time will be recorded at once.
      */
-    @Child(name ="dimensions", type={PositiveIntType.class}, order=5, min=1, max=1)
+    @Child(name = "dimensions", type = {PositiveIntType.class}, order=5, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Number of sample points at each time point", formalDefinition="The number of sample points at each time point. If this value is greater than one, then the dimensions will be interlaced - all the sample points for a point in time will be recorded at once." )
     protected PositiveIntType dimensions;
 
     /**
      * A series of data points which are decimal values separated by a single space (character u20). The special values "E" (error), "L" (below detection limit) and "U" (above detection limit) can also be used in place of a decimal value.
      */
-    @Child(name ="data", type={StringType.class}, order=6, min=1, max=1)
-    @Description(shortDefinition="Decimal values with spaces, or 'E' | 'U' | 'L'", formalDefinition="A series of data points which are decimal values separated by a single space (character u20). The special values 'E' (error), 'L' (below detection limit) and 'U' (above detection limit) can also be used in place of a decimal value." )
+    @Child(name = "data", type = {StringType.class}, order=6, min=1, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Decimal values with spaces, or \"E\" | \"U\" | \"L\"", formalDefinition="A series of data points which are decimal values separated by a single space (character u20). The special values \"E\" (error), \"L\" (below detection limit) and \"U\" (above detection limit) can also be used in place of a decimal value." )
     protected StringType data;
 
-    private static final long serialVersionUID = -1984181262L;
+    private static final long serialVersionUID = -1763278368L;
 
+  /*
+   * Constructor
+   */
     public SampledData() {
       super();
     }
 
-    public SampledData(Quantity origin, DecimalType period, PositiveIntType dimensions, StringType data) {
+  /*
+   * Constructor
+   */
+    public SampledData(SimpleQuantity origin, DecimalType period, PositiveIntType dimensions, StringType data) {
       super();
       this.origin = origin;
       this.period = period;
@@ -110,12 +118,12 @@ public class SampledData extends Type {
     /**
      * @return {@link #origin} (The base quantity that a measured value of zero represents. In addition, this provides the units of the entire measurement series.)
      */
-    public Quantity getOrigin() { 
+    public SimpleQuantity getOrigin() { 
       if (this.origin == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create SampledData.origin");
         else if (Configuration.doAutoCreate())
-          this.origin = new Quantity(); // cc
+          this.origin = new SimpleQuantity(); // cc
       return this.origin;
     }
 
@@ -126,7 +134,7 @@ public class SampledData extends Type {
     /**
      * @param value {@link #origin} (The base quantity that a measured value of zero represents. In addition, this provides the units of the entire measurement series.)
      */
-    public SampledData setOrigin(Quantity value) { 
+    public SampledData setOrigin(SimpleQuantity value) { 
       this.origin = value;
       return this;
     }
@@ -415,13 +423,13 @@ public class SampledData extends Type {
 
       protected void listChildren(List<Property> childrenList) {
         super.listChildren(childrenList);
-        childrenList.add(new Property("origin", "Quantity", "The base quantity that a measured value of zero represents. In addition, this provides the units of the entire measurement series.", 0, java.lang.Integer.MAX_VALUE, origin));
+        childrenList.add(new Property("origin", "SimpleQuantity", "The base quantity that a measured value of zero represents. In addition, this provides the units of the entire measurement series.", 0, java.lang.Integer.MAX_VALUE, origin));
         childrenList.add(new Property("period", "decimal", "The length of time between sampling times, measured in milliseconds.", 0, java.lang.Integer.MAX_VALUE, period));
         childrenList.add(new Property("factor", "decimal", "A correction factor that is applied to the sampled data points before they are added to the origin.", 0, java.lang.Integer.MAX_VALUE, factor));
-        childrenList.add(new Property("lowerLimit", "decimal", "The lower limit of detection of the measured points. This is needed if any of the data points have the value 'L' (lower than detection limit).", 0, java.lang.Integer.MAX_VALUE, lowerLimit));
-        childrenList.add(new Property("upperLimit", "decimal", "The upper limit of detection of the measured points. This is needed if any of the data points have the value 'U' (higher than detection limit).", 0, java.lang.Integer.MAX_VALUE, upperLimit));
+        childrenList.add(new Property("lowerLimit", "decimal", "The lower limit of detection of the measured points. This is needed if any of the data points have the value \"L\" (lower than detection limit).", 0, java.lang.Integer.MAX_VALUE, lowerLimit));
+        childrenList.add(new Property("upperLimit", "decimal", "The upper limit of detection of the measured points. This is needed if any of the data points have the value \"U\" (higher than detection limit).", 0, java.lang.Integer.MAX_VALUE, upperLimit));
         childrenList.add(new Property("dimensions", "positiveInt", "The number of sample points at each time point. If this value is greater than one, then the dimensions will be interlaced - all the sample points for a point in time will be recorded at once.", 0, java.lang.Integer.MAX_VALUE, dimensions));
-        childrenList.add(new Property("data", "string", "A series of data points which are decimal values separated by a single space (character u20). The special values 'E' (error), 'L' (below detection limit) and 'U' (above detection limit) can also be used in place of a decimal value.", 0, java.lang.Integer.MAX_VALUE, data));
+        childrenList.add(new Property("data", "string", "A series of data points which are decimal values separated by a single space (character u20). The special values \"E\" (error), \"L\" (below detection limit) and \"U\" (above detection limit) can also be used in place of a decimal value.", 0, java.lang.Integer.MAX_VALUE, data));
       }
 
       public SampledData copy() {

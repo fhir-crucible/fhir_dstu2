@@ -5,22 +5,22 @@
     <div xmlns="http://www.w3.org/1999/xhtml">
     </div>
   </text>
-  <name>
+  <code>
     <coding>
       <system value="http://mater.org.au/brisbane/pathology/tests"/>
       <code value="Mblcl"/>
       <display value="Blood Cultures"/>
     </coding>
-  </name>
+  </code>
   <status value="partial"/>
-  <issued value="2013-10-07T17:18:16"/>
+  <issued value="2013-10-07T17:18:16Z"/>
   <subject>
     <reference value="Patient/example"/>
   </subject>
   <performer>
     <reference value="Organization/acme-lab"/>
   </performer>
-  <diagnosticDateTime value="2013-03-04T18:00:00"/>
+  <effectiveDateTime value="2013-03-04T18:00:00"/>
     <group>
       <code>
         <text value="Streptococcus lactis"/>

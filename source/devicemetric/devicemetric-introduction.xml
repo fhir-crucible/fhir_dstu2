@@ -1,6 +1,7 @@
 <div xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml ../../schema/fhir-xhtml.xsd" xmlns="http://www.w3.org/1999/xhtml">
 
 <div>
+<a name="scope"> </a>
 <h2>Scope and Usage</h2>
 <p>
 The DeviceMetric resource describes mandatory static properties that characterize a direct or derived, quantitative or qualitative biosignal measurement, setting, or calculation produced by a medical device. 
@@ -10,11 +11,12 @@ The DeviceMetric resource can also be used to describe the non-static but highly
 Note:
 </p>
 <p>
-For the initial scope, this DeviceMetric resource is only applicable to describe a single metric represents in the containment tree that is produced by the context scanner in any medical device that implements or derives from the ISO/IEEE 11073 standard.
+For the initial scope, this DeviceMetric resource is only applicable to describe a single metric node in the containment tree that is produced by the context scanner in any medical device that implements or derives from the ISO/IEEE 11073 standard.
 </p>
 </div>
 
 <div>
+<a name="bnr"> </a>
 <h2>Boundaries and Relationships</h2>
 <p>
 There are two related resources

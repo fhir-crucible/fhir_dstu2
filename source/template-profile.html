@@ -27,6 +27,8 @@ This profile was published on <%date%> <%status%> by <%author%>.
 <%profile.review%>
 </p>
 
+<%profile.intro%>
+
 <%profile.datadictionary%>
 
 <a name="profile"> </a>
@@ -35,7 +37,7 @@ Formal Views of Profile Content
 </h4>
 
 <p>
-<a href="profiling.html">Description of Profiles, Differentials, Snapshots, and how the XML and JSON presentations work</a>.
+<a href="<%level%>profiling.html">Description of Profiles, Differentials, Snapshots, and how the XML and JSON presentations work</a>.
 </p>
 
 <div id="tabs">
@@ -127,8 +129,7 @@ Formal Views of Profile Content
 </div>
   
 <p>&nbsp;</p>  
-<p>Other representations of profile: <!-- <a href="<%name%>.sch">Schematron</a> (todo), <a href="<%name%>.questionnaire.html">Questionnaire</a>--> (todo)</p>
-
+<p>Other representations of profile: <%schematron%></p>
 
 <a name="tx"> </a>
 <%profile.tx%>
@@ -142,8 +143,8 @@ Formal Views of Profile Content
 
 <%file newfooter%>
 
-<script src="external/jquery/jquery.js"> </script>
-<script src="jquery-ui.min.js"> </script>
+<script src="<%level%>external/jquery/jquery.js"> </script>
+<script src="<%level%>jquery-ui.min.js"> </script>
 <script>
 try {
   var currentTabIndex = sessionStorage.getItem('fhir-resource-tab-index');

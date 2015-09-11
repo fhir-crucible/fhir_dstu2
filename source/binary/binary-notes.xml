@@ -31,7 +31,7 @@ malicious or malformed content. For more details see <a href="security.html#narr
 <a name="binary"> </a>
 <h3>Binary Support</h3>
 <p>
-FHIR servers can choose to support <a href="extras.html#binary">Binary Resources</a>
+FHIR servers can choose to support <a href="compartments.html#binary">Binary Resources</a>
 at the end point [base]/Binary. The binary end-point accepts
 any kind of content, such as images and other media, documents (CDA, 
 PDF, Word etc.), plain text, XML or anything else, and stores the 
@@ -63,7 +63,6 @@ Content-Type: text/xml
 Access-Control-Allow-Origin: *
 Last-Modified: Thu, 24 Oct 2013 00:41:55 +0000
 ETag: 1
-Content-Location: http://[server]/[path]/Binary/4/_history/1
 
 &lt;ClinicalDocument xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
   xmlns=&quot;urn:hl7-org:v3&quot;xmlns:cda=&quot;urn:hl7-org:v3&quot;&gt;

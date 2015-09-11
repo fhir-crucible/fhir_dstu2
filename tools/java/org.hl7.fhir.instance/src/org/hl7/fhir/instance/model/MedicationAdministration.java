@@ -29,23 +29,24 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
+// Generated on Tue, Sep 1, 2015 11:15+1000 for FHIR v1.0.0
 
 import java.util.*;
 
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.instance.model.annotations.ResourceDef;
 import org.hl7.fhir.instance.model.annotations.SearchParamDefinition;
-import org.hl7.fhir.instance.model.annotations.Block;
 import org.hl7.fhir.instance.model.annotations.Child;
 import org.hl7.fhir.instance.model.annotations.Description;
+import org.hl7.fhir.instance.model.annotations.Block;
+import org.hl7.fhir.instance.model.api.*;
 /**
- * Describes the event of a patient consuming or otherwise being administered a medication.  This may be as simple as swallowing a tablet or it may be a long running infusion.Related resources tie this event to the authorizing prescription, and the specific encounter between patient and health care practitioner.
+ * Describes the event of a patient consuming or otherwise being administered a medication.  This may be as simple as swallowing a tablet or it may be a long running infusion.  Related resources tie this event to the authorizing prescription, and the specific encounter between patient and health care practitioner.
  */
 @ResourceDef(name="MedicationAdministration", profile="http://hl7.org/fhir/Profile/MedicationAdministration")
 public class MedicationAdministration extends DomainResource {
 
-    public enum MedicationAdminStatus {
+    public enum MedicationAdministrationStatus {
         /**
          * The administration has started but has not yet completed.
          */
@@ -70,7 +71,7 @@ public class MedicationAdministration extends DomainResource {
          * added to help the parsers
          */
         NULL;
-        public static MedicationAdminStatus fromCode(String codeString) throws Exception {
+        public static MedicationAdministrationStatus fromCode(String codeString) throws Exception {
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("in-progress".equals(codeString))
@@ -83,7 +84,7 @@ public class MedicationAdministration extends DomainResource {
           return ENTEREDINERROR;
         if ("stopped".equals(codeString))
           return STOPPED;
-        throw new Exception("Unknown MedicationAdminStatus code '"+codeString+"'");
+        throw new Exception("Unknown MedicationAdministrationStatus code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
@@ -97,18 +98,18 @@ public class MedicationAdministration extends DomainResource {
         }
         public String getSystem() {
           switch (this) {
-            case INPROGRESS: return "";
-            case ONHOLD: return "";
-            case COMPLETED: return "";
-            case ENTEREDINERROR: return "";
-            case STOPPED: return "";
+            case INPROGRESS: return "http://hl7.org/fhir/medication-admin-status";
+            case ONHOLD: return "http://hl7.org/fhir/medication-admin-status";
+            case COMPLETED: return "http://hl7.org/fhir/medication-admin-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/medication-admin-status";
+            case STOPPED: return "http://hl7.org/fhir/medication-admin-status";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
             case INPROGRESS: return "The administration has started but has not yet completed.";
-            case ONHOLD: return "Actions implied by the administration have been temporarily halted, but are expected to continue later. May also be called 'suspended'.";
+            case ONHOLD: return "Actions implied by the administration have been temporarily halted, but are expected to continue later. May also be called \"suspended\".";
             case COMPLETED: return "All actions that are implied by the administration have occurred.";
             case ENTEREDINERROR: return "The administration was entered in error and therefore nullified.";
             case STOPPED: return "Actions implied by the administration have been permanently halted, before all of them occurred.";
@@ -120,91 +121,94 @@ public class MedicationAdministration extends DomainResource {
             case INPROGRESS: return "In Progress";
             case ONHOLD: return "On Hold";
             case COMPLETED: return "Completed";
-            case ENTEREDINERROR: return "Entered In Error";
+            case ENTEREDINERROR: return "Entered in Error";
             case STOPPED: return "Stopped";
             default: return "?";
           }
         }
     }
 
-  public static class MedicationAdminStatusEnumFactory implements EnumFactory<MedicationAdminStatus> {
-    public MedicationAdminStatus fromCode(String codeString) throws IllegalArgumentException {
+  public static class MedicationAdministrationStatusEnumFactory implements EnumFactory<MedicationAdministrationStatus> {
+    public MedicationAdministrationStatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("in-progress".equals(codeString))
-          return MedicationAdminStatus.INPROGRESS;
+          return MedicationAdministrationStatus.INPROGRESS;
         if ("on-hold".equals(codeString))
-          return MedicationAdminStatus.ONHOLD;
+          return MedicationAdministrationStatus.ONHOLD;
         if ("completed".equals(codeString))
-          return MedicationAdminStatus.COMPLETED;
+          return MedicationAdministrationStatus.COMPLETED;
         if ("entered-in-error".equals(codeString))
-          return MedicationAdminStatus.ENTEREDINERROR;
+          return MedicationAdministrationStatus.ENTEREDINERROR;
         if ("stopped".equals(codeString))
-          return MedicationAdminStatus.STOPPED;
-        throw new IllegalArgumentException("Unknown MedicationAdminStatus code '"+codeString+"'");
+          return MedicationAdministrationStatus.STOPPED;
+        throw new IllegalArgumentException("Unknown MedicationAdministrationStatus code '"+codeString+"'");
         }
-    public String toCode(MedicationAdminStatus code) {
-      if (code == MedicationAdminStatus.INPROGRESS)
+    public String toCode(MedicationAdministrationStatus code) {
+      if (code == MedicationAdministrationStatus.INPROGRESS)
         return "in-progress";
-      if (code == MedicationAdminStatus.ONHOLD)
+      if (code == MedicationAdministrationStatus.ONHOLD)
         return "on-hold";
-      if (code == MedicationAdminStatus.COMPLETED)
+      if (code == MedicationAdministrationStatus.COMPLETED)
         return "completed";
-      if (code == MedicationAdminStatus.ENTEREDINERROR)
+      if (code == MedicationAdministrationStatus.ENTEREDINERROR)
         return "entered-in-error";
-      if (code == MedicationAdminStatus.STOPPED)
+      if (code == MedicationAdministrationStatus.STOPPED)
         return "stopped";
       return "?";
       }
     }
 
     @Block()
-    public static class MedicationAdministrationDosageComponent extends BackboneElement {
+    public static class MedicationAdministrationDosageComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Free text dosage instructions can be used for cases where the instructions are too complex to code. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication.
          */
-        @Child(name ="text", type={StringType.class}, order=1, min=0, max=1)
+        @Child(name = "text", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Dosage Instructions", formalDefinition="Free text dosage instructions can be used for cases where the instructions are too complex to code. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication." )
         protected StringType text;
 
         /**
          * A coded specification of the anatomic site where the medication first entered the body.  E.g. "left arm".
          */
-        @Child(name ="site", type={CodeableConcept.class}, order=2, min=0, max=1)
-        @Description(shortDefinition="Body site administered to", formalDefinition="A coded specification of the anatomic site where the medication first entered the body.  E.g. 'left arm'." )
-        protected CodeableConcept site;
+        @Child(name = "site", type = {CodeableConcept.class, BodySite.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Body site administered to", formalDefinition="A coded specification of the anatomic site where the medication first entered the body.  E.g. \"left arm\"." )
+        protected Type site;
 
         /**
          * A code specifying the route or physiological path of administration of a therapeutic agent into or onto the patient.   E.g. topical, intravenous, etc.
          */
-        @Child(name ="route", type={CodeableConcept.class}, order=3, min=0, max=1)
+        @Child(name = "route", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Path of substance into body", formalDefinition="A code specifying the route or physiological path of administration of a therapeutic agent into or onto the patient.   E.g. topical, intravenous, etc." )
         protected CodeableConcept route;
 
         /**
-         * A coded value indicating the method by which the medication was introduced into or onto the body. Most commonly used for injections.  Examples:  Slow Push; Deep IV.Terminologies used often pre-coordinate this term with the route and or form of administration.
+         * A coded value indicating the method by which the medication is intended to be or was introduced into or on the body.  This attribute will most often NOT be populated.  It is most commonly used for injections.  Examples: Slow Push, Deep IV.  One of the reasons this attribute is not used often, is that the method is often pre-coordinated with the route and/or form of administration.  This means the codes used in route or form may pre-coordinate the method in the route code or the form code.  The implementation decision about what coding system to use for route or form code will determine how frequently the method code will be populated e.g. if route or form code pre-coordinate method code, then this attribute will not be populated often; if there is no pre-coordination then method code may  be used frequently.
          */
-        @Child(name ="method", type={CodeableConcept.class}, order=4, min=0, max=1)
-        @Description(shortDefinition="How drug was administered", formalDefinition="A coded value indicating the method by which the medication was introduced into or onto the body. Most commonly used for injections.  Examples:  Slow Push; Deep IV.\r\rTerminologies used often pre-coordinate this term with the route and or form of administration." )
+        @Child(name = "method", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="How drug was administered", formalDefinition="A coded value indicating the method by which the medication is intended to be or was introduced into or on the body.  This attribute will most often NOT be populated.  It is most commonly used for injections.  Examples: Slow Push, Deep IV.  One of the reasons this attribute is not used often, is that the method is often pre-coordinated with the route and/or form of administration.  This means the codes used in route or form may pre-coordinate the method in the route code or the form code.  The implementation decision about what coding system to use for route or form code will determine how frequently the method code will be populated e.g. if route or form code pre-coordinate method code, then this attribute will not be populated often; if there is no pre-coordination then method code may  be used frequently." )
         protected CodeableConcept method;
 
         /**
          * The amount of the medication given at one administration event.   Use this value when the administration is essentially an instantaneous event such as a swallowing a tablet or giving an injection.
          */
-        @Child(name ="quantity", type={Quantity.class}, order=5, min=0, max=1)
+        @Child(name = "quantity", type = {SimpleQuantity.class}, order=5, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Amount administered in one dose", formalDefinition="The amount of the medication given at one administration event.   Use this value when the administration is essentially an instantaneous event such as a swallowing a tablet or giving an injection." )
-        protected Quantity quantity;
+        protected SimpleQuantity quantity;
 
         /**
-         * Identifies the speed with which the medication was introduced into the patient. Typically the rate for an infusion e.g. 200ml in 2 hours.  May also expressed as a rate per unit of time such as 100ml per hour - the duration is then not specified, or is specified in the quantity.
+         * Identifies the speed with which the medication was or will be introduced into the patient.  Typically the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time e.g. 500 ml per 2 hours.  Currently we do not specify a default of '1' in the denominator, but this is being discussed.  Other examples:  200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours.
          */
-        @Child(name ="rate", type={Ratio.class}, order=6, min=0, max=1)
-        @Description(shortDefinition="Dose quantity per unit of time", formalDefinition="Identifies the speed with which the medication was introduced into the patient. Typically the rate for an infusion e.g. 200ml in 2 hours.  May also expressed as a rate per unit of time such as 100ml per hour - the duration is then not specified, or is specified in the quantity." )
-        protected Ratio rate;
+        @Child(name = "rate", type = {Ratio.class, Range.class}, order=6, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Dose quantity per unit of time", formalDefinition="Identifies the speed with which the medication was or will be introduced into the patient.  Typically the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time e.g. 500 ml per 2 hours.  Currently we do not specify a default of '1' in the denominator, but this is being discussed.  Other examples:  200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours." )
+        protected Type rate;
 
-        private static final long serialVersionUID = -358534919L;
+        private static final long serialVersionUID = -1772198879L;
 
+    /*
+     * Constructor
+     */
       public MedicationAdministrationDosageComponent() {
         super();
       }
@@ -261,13 +265,34 @@ public class MedicationAdministration extends DomainResource {
         /**
          * @return {@link #site} (A coded specification of the anatomic site where the medication first entered the body.  E.g. "left arm".)
          */
-        public CodeableConcept getSite() { 
-          if (this.site == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationAdministrationDosageComponent.site");
-            else if (Configuration.doAutoCreate())
-              this.site = new CodeableConcept(); // cc
+        public Type getSite() { 
           return this.site;
+        }
+
+        /**
+         * @return {@link #site} (A coded specification of the anatomic site where the medication first entered the body.  E.g. "left arm".)
+         */
+        public CodeableConcept getSiteCodeableConcept() throws Exception { 
+          if (!(this.site instanceof CodeableConcept))
+            throw new Exception("Type mismatch: the type CodeableConcept was expected, but "+this.site.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.site;
+        }
+
+        public boolean hasSiteCodeableConcept() throws Exception { 
+          return this.site instanceof CodeableConcept;
+        }
+
+        /**
+         * @return {@link #site} (A coded specification of the anatomic site where the medication first entered the body.  E.g. "left arm".)
+         */
+        public Reference getSiteReference() throws Exception { 
+          if (!(this.site instanceof Reference))
+            throw new Exception("Type mismatch: the type Reference was expected, but "+this.site.getClass().getName()+" was encountered");
+          return (Reference) this.site;
+        }
+
+        public boolean hasSiteReference() throws Exception { 
+          return this.site instanceof Reference;
         }
 
         public boolean hasSite() { 
@@ -277,7 +302,7 @@ public class MedicationAdministration extends DomainResource {
         /**
          * @param value {@link #site} (A coded specification of the anatomic site where the medication first entered the body.  E.g. "left arm".)
          */
-        public MedicationAdministrationDosageComponent setSite(CodeableConcept value) { 
+        public MedicationAdministrationDosageComponent setSite(Type value) { 
           this.site = value;
           return this;
         }
@@ -307,7 +332,7 @@ public class MedicationAdministration extends DomainResource {
         }
 
         /**
-         * @return {@link #method} (A coded value indicating the method by which the medication was introduced into or onto the body. Most commonly used for injections.  Examples:  Slow Push; Deep IV.Terminologies used often pre-coordinate this term with the route and or form of administration.)
+         * @return {@link #method} (A coded value indicating the method by which the medication is intended to be or was introduced into or on the body.  This attribute will most often NOT be populated.  It is most commonly used for injections.  Examples: Slow Push, Deep IV.  One of the reasons this attribute is not used often, is that the method is often pre-coordinated with the route and/or form of administration.  This means the codes used in route or form may pre-coordinate the method in the route code or the form code.  The implementation decision about what coding system to use for route or form code will determine how frequently the method code will be populated e.g. if route or form code pre-coordinate method code, then this attribute will not be populated often; if there is no pre-coordination then method code may  be used frequently.)
          */
         public CodeableConcept getMethod() { 
           if (this.method == null)
@@ -323,7 +348,7 @@ public class MedicationAdministration extends DomainResource {
         }
 
         /**
-         * @param value {@link #method} (A coded value indicating the method by which the medication was introduced into or onto the body. Most commonly used for injections.  Examples:  Slow Push; Deep IV.Terminologies used often pre-coordinate this term with the route and or form of administration.)
+         * @param value {@link #method} (A coded value indicating the method by which the medication is intended to be or was introduced into or on the body.  This attribute will most often NOT be populated.  It is most commonly used for injections.  Examples: Slow Push, Deep IV.  One of the reasons this attribute is not used often, is that the method is often pre-coordinated with the route and/or form of administration.  This means the codes used in route or form may pre-coordinate the method in the route code or the form code.  The implementation decision about what coding system to use for route or form code will determine how frequently the method code will be populated e.g. if route or form code pre-coordinate method code, then this attribute will not be populated often; if there is no pre-coordination then method code may  be used frequently.)
          */
         public MedicationAdministrationDosageComponent setMethod(CodeableConcept value) { 
           this.method = value;
@@ -333,12 +358,12 @@ public class MedicationAdministration extends DomainResource {
         /**
          * @return {@link #quantity} (The amount of the medication given at one administration event.   Use this value when the administration is essentially an instantaneous event such as a swallowing a tablet or giving an injection.)
          */
-        public Quantity getQuantity() { 
+        public SimpleQuantity getQuantity() { 
           if (this.quantity == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create MedicationAdministrationDosageComponent.quantity");
             else if (Configuration.doAutoCreate())
-              this.quantity = new Quantity(); // cc
+              this.quantity = new SimpleQuantity(); // cc
           return this.quantity;
         }
 
@@ -349,21 +374,42 @@ public class MedicationAdministration extends DomainResource {
         /**
          * @param value {@link #quantity} (The amount of the medication given at one administration event.   Use this value when the administration is essentially an instantaneous event such as a swallowing a tablet or giving an injection.)
          */
-        public MedicationAdministrationDosageComponent setQuantity(Quantity value) { 
+        public MedicationAdministrationDosageComponent setQuantity(SimpleQuantity value) { 
           this.quantity = value;
           return this;
         }
 
         /**
-         * @return {@link #rate} (Identifies the speed with which the medication was introduced into the patient. Typically the rate for an infusion e.g. 200ml in 2 hours.  May also expressed as a rate per unit of time such as 100ml per hour - the duration is then not specified, or is specified in the quantity.)
+         * @return {@link #rate} (Identifies the speed with which the medication was or will be introduced into the patient.  Typically the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time e.g. 500 ml per 2 hours.  Currently we do not specify a default of '1' in the denominator, but this is being discussed.  Other examples:  200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours.)
          */
-        public Ratio getRate() { 
-          if (this.rate == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationAdministrationDosageComponent.rate");
-            else if (Configuration.doAutoCreate())
-              this.rate = new Ratio(); // cc
+        public Type getRate() { 
           return this.rate;
+        }
+
+        /**
+         * @return {@link #rate} (Identifies the speed with which the medication was or will be introduced into the patient.  Typically the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time e.g. 500 ml per 2 hours.  Currently we do not specify a default of '1' in the denominator, but this is being discussed.  Other examples:  200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours.)
+         */
+        public Ratio getRateRatio() throws Exception { 
+          if (!(this.rate instanceof Ratio))
+            throw new Exception("Type mismatch: the type Ratio was expected, but "+this.rate.getClass().getName()+" was encountered");
+          return (Ratio) this.rate;
+        }
+
+        public boolean hasRateRatio() throws Exception { 
+          return this.rate instanceof Ratio;
+        }
+
+        /**
+         * @return {@link #rate} (Identifies the speed with which the medication was or will be introduced into the patient.  Typically the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time e.g. 500 ml per 2 hours.  Currently we do not specify a default of '1' in the denominator, but this is being discussed.  Other examples:  200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours.)
+         */
+        public Range getRateRange() throws Exception { 
+          if (!(this.rate instanceof Range))
+            throw new Exception("Type mismatch: the type Range was expected, but "+this.rate.getClass().getName()+" was encountered");
+          return (Range) this.rate;
+        }
+
+        public boolean hasRateRange() throws Exception { 
+          return this.rate instanceof Range;
         }
 
         public boolean hasRate() { 
@@ -371,9 +417,9 @@ public class MedicationAdministration extends DomainResource {
         }
 
         /**
-         * @param value {@link #rate} (Identifies the speed with which the medication was introduced into the patient. Typically the rate for an infusion e.g. 200ml in 2 hours.  May also expressed as a rate per unit of time such as 100ml per hour - the duration is then not specified, or is specified in the quantity.)
+         * @param value {@link #rate} (Identifies the speed with which the medication was or will be introduced into the patient.  Typically the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time e.g. 500 ml per 2 hours.  Currently we do not specify a default of '1' in the denominator, but this is being discussed.  Other examples:  200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours.)
          */
-        public MedicationAdministrationDosageComponent setRate(Ratio value) { 
+        public MedicationAdministrationDosageComponent setRate(Type value) { 
           this.rate = value;
           return this;
         }
@@ -381,11 +427,11 @@ public class MedicationAdministration extends DomainResource {
         protected void listChildren(List<Property> childrenList) {
           super.listChildren(childrenList);
           childrenList.add(new Property("text", "string", "Free text dosage instructions can be used for cases where the instructions are too complex to code. When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication.", 0, java.lang.Integer.MAX_VALUE, text));
-          childrenList.add(new Property("site", "CodeableConcept", "A coded specification of the anatomic site where the medication first entered the body.  E.g. 'left arm'.", 0, java.lang.Integer.MAX_VALUE, site));
+          childrenList.add(new Property("site[x]", "CodeableConcept|Reference(BodySite)", "A coded specification of the anatomic site where the medication first entered the body.  E.g. \"left arm\".", 0, java.lang.Integer.MAX_VALUE, site));
           childrenList.add(new Property("route", "CodeableConcept", "A code specifying the route or physiological path of administration of a therapeutic agent into or onto the patient.   E.g. topical, intravenous, etc.", 0, java.lang.Integer.MAX_VALUE, route));
-          childrenList.add(new Property("method", "CodeableConcept", "A coded value indicating the method by which the medication was introduced into or onto the body. Most commonly used for injections.  Examples:  Slow Push; Deep IV.\r\rTerminologies used often pre-coordinate this term with the route and or form of administration.", 0, java.lang.Integer.MAX_VALUE, method));
-          childrenList.add(new Property("quantity", "Quantity", "The amount of the medication given at one administration event.   Use this value when the administration is essentially an instantaneous event such as a swallowing a tablet or giving an injection.", 0, java.lang.Integer.MAX_VALUE, quantity));
-          childrenList.add(new Property("rate", "Ratio", "Identifies the speed with which the medication was introduced into the patient. Typically the rate for an infusion e.g. 200ml in 2 hours.  May also expressed as a rate per unit of time such as 100ml per hour - the duration is then not specified, or is specified in the quantity.", 0, java.lang.Integer.MAX_VALUE, rate));
+          childrenList.add(new Property("method", "CodeableConcept", "A coded value indicating the method by which the medication is intended to be or was introduced into or on the body.  This attribute will most often NOT be populated.  It is most commonly used for injections.  Examples: Slow Push, Deep IV.  One of the reasons this attribute is not used often, is that the method is often pre-coordinated with the route and/or form of administration.  This means the codes used in route or form may pre-coordinate the method in the route code or the form code.  The implementation decision about what coding system to use for route or form code will determine how frequently the method code will be populated e.g. if route or form code pre-coordinate method code, then this attribute will not be populated often; if there is no pre-coordination then method code may  be used frequently.", 0, java.lang.Integer.MAX_VALUE, method));
+          childrenList.add(new Property("quantity", "SimpleQuantity", "The amount of the medication given at one administration event.   Use this value when the administration is essentially an instantaneous event such as a swallowing a tablet or giving an injection.", 0, java.lang.Integer.MAX_VALUE, quantity));
+          childrenList.add(new Property("rate[x]", "Ratio|Range", "Identifies the speed with which the medication was or will be introduced into the patient.  Typically the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time e.g. 500 ml per 2 hours.  Currently we do not specify a default of '1' in the denominator, but this is being discussed.  Other examples:  200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours.", 0, java.lang.Integer.MAX_VALUE, rate));
         }
 
       public MedicationAdministrationDosageComponent copy() {
@@ -433,21 +479,21 @@ public class MedicationAdministration extends DomainResource {
     /**
      * External identifier - FHIR will generate its own internal IDs (probably URLs) which do not need to be explicitly managed by the resource.  The identifier here is one that would be used by another non-FHIR system - for example an automated medication pump would provide a record each time it operated; an administration while the patient was off the ward might be made with a different system and entered after the event.  Particularly important if these records have to be updated.
      */
-    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="External identifier", formalDefinition="External identifier - FHIR will generate its own internal IDs (probably URLs) which do not need to be explicitly managed by the resource.  The identifier here is one that would be used by another non-FHIR system - for example an automated medication pump would provide a record each time it operated; an administration while the patient was off the ward might be made with a different system and entered after the event.  Particularly important if these records have to be updated." )
     protected List<Identifier> identifier;
 
     /**
      * Will generally be set to show that the administration has been completed.  For some long running administrations such as infusions it is possible for an administration to be started but not completed or it may be paused while some other process is under way.
      */
-    @Child(name ="status", type={CodeType.class}, order=1, min=1, max=1)
+    @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="in-progress | on-hold | completed | entered-in-error | stopped", formalDefinition="Will generally be set to show that the administration has been completed.  For some long running administrations such as infusions it is possible for an administration to be started but not completed or it may be paused while some other process is under way." )
-    protected Enumeration<MedicationAdminStatus> status;
+    protected Enumeration<MedicationAdministrationStatus> status;
 
     /**
      * The person or animal to whom the medication was given.
      */
-    @Child(name ="patient", type={Patient.class}, order=2, min=1, max=1)
+    @Child(name = "patient", type = {Patient.class}, order=2, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who received medication?", formalDefinition="The person or animal to whom the medication was given." )
     protected Reference patient;
 
@@ -459,19 +505,19 @@ public class MedicationAdministration extends DomainResource {
     /**
      * The individual who was responsible for giving the medication to the patient.
      */
-    @Child(name ="practitioner", type={Practitioner.class}, order=3, min=0, max=1)
+    @Child(name = "practitioner", type = {Practitioner.class, Patient.class, RelatedPerson.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who administered substance?", formalDefinition="The individual who was responsible for giving the medication to the patient." )
     protected Reference practitioner;
 
     /**
      * The actual object that is the target of the reference (The individual who was responsible for giving the medication to the patient.)
      */
-    protected Practitioner practitionerTarget;
+    protected Resource practitionerTarget;
 
     /**
      * The visit or admission the or other contact between patient and health care provider the medication administration was performed as part of.
      */
-    @Child(name ="encounter", type={Encounter.class}, order=4, min=0, max=1)
+    @Child(name = "encounter", type = {Encounter.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Encounter administered as part of", formalDefinition="The visit or admission the or other contact between patient and health care provider the medication administration was performed as part of." )
     protected Reference encounter;
 
@@ -483,59 +529,54 @@ public class MedicationAdministration extends DomainResource {
     /**
      * The original request, instruction or authority to perform the administration.
      */
-    @Child(name ="prescription", type={MedicationPrescription.class}, order=5, min=0, max=1)
+    @Child(name = "prescription", type = {MedicationOrder.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Order administration performed against", formalDefinition="The original request, instruction or authority to perform the administration." )
     protected Reference prescription;
 
     /**
      * The actual object that is the target of the reference (The original request, instruction or authority to perform the administration.)
      */
-    protected MedicationPrescription prescriptionTarget;
+    protected MedicationOrder prescriptionTarget;
 
     /**
      * Set this to true if the record is saying that the medication was NOT administered.
      */
-    @Child(name ="wasNotGiven", type={BooleanType.class}, order=6, min=0, max=1)
+    @Child(name = "wasNotGiven", type = {BooleanType.class}, order=6, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="True if medication not administered", formalDefinition="Set this to true if the record is saying that the medication was NOT administered." )
     protected BooleanType wasNotGiven;
 
     /**
      * A code indicating why the administration was not performed.
      */
-    @Child(name ="reasonNotGiven", type={CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "reasonNotGiven", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Reason administration not performed", formalDefinition="A code indicating why the administration was not performed." )
     protected List<CodeableConcept> reasonNotGiven;
 
     /**
      * A code indicating why the medication was given.
      */
-    @Child(name ="reasonGiven", type={CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "reasonGiven", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Reason administration performed", formalDefinition="A code indicating why the medication was given." )
     protected List<CodeableConcept> reasonGiven;
 
     /**
-     * An interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true).  For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.
+     * A specific date/time or interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true). For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.
      */
-    @Child(name ="effectiveTime", type={DateTimeType.class, Period.class}, order=9, min=1, max=1)
-    @Description(shortDefinition="Start and end time of administration", formalDefinition="An interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true).  For many administrations, such as swallowing a tablet the use of dateTime is more appropriate." )
+    @Child(name = "effectiveTime", type = {DateTimeType.class, Period.class}, order=9, min=1, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Start and end time of administration", formalDefinition="A specific date/time or interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true). For many administrations, such as swallowing a tablet the use of dateTime is more appropriate." )
     protected Type effectiveTime;
 
     /**
      * Identifies the medication that was administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.
      */
-    @Child(name ="medication", type={Medication.class}, order=10, min=0, max=1)
+    @Child(name = "medication", type = {CodeableConcept.class, Medication.class}, order=10, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="What was administered?", formalDefinition="Identifies the medication that was administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications." )
-    protected Reference medication;
-
-    /**
-     * The actual object that is the target of the reference (Identifies the medication that was administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.)
-     */
-    protected Medication medicationTarget;
+    protected Type medication;
 
     /**
      * The device used in administering the medication to the patient.  E.g. a particular infusion pump.
      */
-    @Child(name ="device", type={Device.class}, order=11, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "device", type = {Device.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Device used to administer", formalDefinition="The device used in administering the medication to the patient.  E.g. a particular infusion pump." )
     protected List<Reference> device;
     /**
@@ -547,28 +588,35 @@ public class MedicationAdministration extends DomainResource {
     /**
      * Extra information about the medication administration that is not conveyed by the other attributes.
      */
-    @Child(name ="note", type={StringType.class}, order=12, min=0, max=1)
+    @Child(name = "note", type = {StringType.class}, order=12, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Information about the administration", formalDefinition="Extra information about the medication administration that is not conveyed by the other attributes." )
     protected StringType note;
 
     /**
-     * Indicates how the medication is/was used by the patient.
+     * Describes the medication dosage information details e.g. dose, rate, site, route, etc.
      */
-    @Child(name ="dosage", type={}, order=13, min=0, max=1)
-    @Description(shortDefinition="Details of how medication was taken", formalDefinition="Indicates how the medication is/was used by the patient." )
+    @Child(name = "dosage", type = {}, order=13, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Details of how medication was taken", formalDefinition="Describes the medication dosage information details e.g. dose, rate, site, route, etc." )
     protected MedicationAdministrationDosageComponent dosage;
 
-    private static final long serialVersionUID = 1898346148L;
+    private static final long serialVersionUID = -669616345L;
 
+  /*
+   * Constructor
+   */
     public MedicationAdministration() {
       super();
     }
 
-    public MedicationAdministration(Enumeration<MedicationAdminStatus> status, Reference patient, Type effectiveTime) {
+  /*
+   * Constructor
+   */
+    public MedicationAdministration(Enumeration<MedicationAdministrationStatus> status, Reference patient, Type effectiveTime, Type medication) {
       super();
       this.status = status;
       this.patient = patient;
       this.effectiveTime = effectiveTime;
+      this.medication = medication;
     }
 
     /**
@@ -614,12 +662,12 @@ public class MedicationAdministration extends DomainResource {
     /**
      * @return {@link #status} (Will generally be set to show that the administration has been completed.  For some long running administrations such as infusions it is possible for an administration to be started but not completed or it may be paused while some other process is under way.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<MedicationAdminStatus> getStatusElement() { 
+    public Enumeration<MedicationAdministrationStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create MedicationAdministration.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<MedicationAdminStatus>(new MedicationAdminStatusEnumFactory()); // bb
+          this.status = new Enumeration<MedicationAdministrationStatus>(new MedicationAdministrationStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -634,7 +682,7 @@ public class MedicationAdministration extends DomainResource {
     /**
      * @param value {@link #status} (Will generally be set to show that the administration has been completed.  For some long running administrations such as infusions it is possible for an administration to be started but not completed or it may be paused while some other process is under way.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public MedicationAdministration setStatusElement(Enumeration<MedicationAdminStatus> value) { 
+    public MedicationAdministration setStatusElement(Enumeration<MedicationAdministrationStatus> value) { 
       this.status = value;
       return this;
     }
@@ -642,16 +690,16 @@ public class MedicationAdministration extends DomainResource {
     /**
      * @return Will generally be set to show that the administration has been completed.  For some long running administrations such as infusions it is possible for an administration to be started but not completed or it may be paused while some other process is under way.
      */
-    public MedicationAdminStatus getStatus() { 
+    public MedicationAdministrationStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value Will generally be set to show that the administration has been completed.  For some long running administrations such as infusions it is possible for an administration to be started but not completed or it may be paused while some other process is under way.
      */
-    public MedicationAdministration setStatus(MedicationAdminStatus value) { 
+    public MedicationAdministration setStatus(MedicationAdministrationStatus value) { 
         if (this.status == null)
-          this.status = new Enumeration<MedicationAdminStatus>(new MedicationAdminStatusEnumFactory());
+          this.status = new Enumeration<MedicationAdministrationStatus>(new MedicationAdministrationStatusEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -727,19 +775,14 @@ public class MedicationAdministration extends DomainResource {
     /**
      * @return {@link #practitioner} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The individual who was responsible for giving the medication to the patient.)
      */
-    public Practitioner getPractitionerTarget() { 
-      if (this.practitionerTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MedicationAdministration.practitioner");
-        else if (Configuration.doAutoCreate())
-          this.practitionerTarget = new Practitioner(); // aa
+    public Resource getPractitionerTarget() { 
       return this.practitionerTarget;
     }
 
     /**
      * @param value {@link #practitioner} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The individual who was responsible for giving the medication to the patient.)
      */
-    public MedicationAdministration setPractitionerTarget(Practitioner value) { 
+    public MedicationAdministration setPractitionerTarget(Resource value) { 
       this.practitionerTarget = value;
       return this;
     }
@@ -815,19 +858,19 @@ public class MedicationAdministration extends DomainResource {
     /**
      * @return {@link #prescription} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The original request, instruction or authority to perform the administration.)
      */
-    public MedicationPrescription getPrescriptionTarget() { 
+    public MedicationOrder getPrescriptionTarget() { 
       if (this.prescriptionTarget == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create MedicationAdministration.prescription");
         else if (Configuration.doAutoCreate())
-          this.prescriptionTarget = new MedicationPrescription(); // aa
+          this.prescriptionTarget = new MedicationOrder(); // aa
       return this.prescriptionTarget;
     }
 
     /**
      * @param value {@link #prescription} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The original request, instruction or authority to perform the administration.)
      */
-    public MedicationAdministration setPrescriptionTarget(MedicationPrescription value) { 
+    public MedicationAdministration setPrescriptionTarget(MedicationOrder value) { 
       this.prescriptionTarget = value;
       return this;
     }
@@ -958,14 +1001,14 @@ public class MedicationAdministration extends DomainResource {
     }
 
     /**
-     * @return {@link #effectiveTime} (An interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true).  For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.)
+     * @return {@link #effectiveTime} (A specific date/time or interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true). For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.)
      */
     public Type getEffectiveTime() { 
       return this.effectiveTime;
     }
 
     /**
-     * @return {@link #effectiveTime} (An interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true).  For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.)
+     * @return {@link #effectiveTime} (A specific date/time or interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true). For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.)
      */
     public DateTimeType getEffectiveTimeDateTimeType() throws Exception { 
       if (!(this.effectiveTime instanceof DateTimeType))
@@ -973,8 +1016,12 @@ public class MedicationAdministration extends DomainResource {
       return (DateTimeType) this.effectiveTime;
     }
 
+    public boolean hasEffectiveTimeDateTimeType() throws Exception { 
+      return this.effectiveTime instanceof DateTimeType;
+    }
+
     /**
-     * @return {@link #effectiveTime} (An interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true).  For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.)
+     * @return {@link #effectiveTime} (A specific date/time or interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true). For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.)
      */
     public Period getEffectiveTimePeriod() throws Exception { 
       if (!(this.effectiveTime instanceof Period))
@@ -982,12 +1029,16 @@ public class MedicationAdministration extends DomainResource {
       return (Period) this.effectiveTime;
     }
 
+    public boolean hasEffectiveTimePeriod() throws Exception { 
+      return this.effectiveTime instanceof Period;
+    }
+
     public boolean hasEffectiveTime() { 
       return this.effectiveTime != null && !this.effectiveTime.isEmpty();
     }
 
     /**
-     * @param value {@link #effectiveTime} (An interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true).  For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.)
+     * @param value {@link #effectiveTime} (A specific date/time or interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true). For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.)
      */
     public MedicationAdministration setEffectiveTime(Type value) { 
       this.effectiveTime = value;
@@ -997,13 +1048,34 @@ public class MedicationAdministration extends DomainResource {
     /**
      * @return {@link #medication} (Identifies the medication that was administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.)
      */
-    public Reference getMedication() { 
-      if (this.medication == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MedicationAdministration.medication");
-        else if (Configuration.doAutoCreate())
-          this.medication = new Reference(); // cc
+    public Type getMedication() { 
       return this.medication;
+    }
+
+    /**
+     * @return {@link #medication} (Identifies the medication that was administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.)
+     */
+    public CodeableConcept getMedicationCodeableConcept() throws Exception { 
+      if (!(this.medication instanceof CodeableConcept))
+        throw new Exception("Type mismatch: the type CodeableConcept was expected, but "+this.medication.getClass().getName()+" was encountered");
+      return (CodeableConcept) this.medication;
+    }
+
+    public boolean hasMedicationCodeableConcept() throws Exception { 
+      return this.medication instanceof CodeableConcept;
+    }
+
+    /**
+     * @return {@link #medication} (Identifies the medication that was administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.)
+     */
+    public Reference getMedicationReference() throws Exception { 
+      if (!(this.medication instanceof Reference))
+        throw new Exception("Type mismatch: the type Reference was expected, but "+this.medication.getClass().getName()+" was encountered");
+      return (Reference) this.medication;
+    }
+
+    public boolean hasMedicationReference() throws Exception { 
+      return this.medication instanceof Reference;
     }
 
     public boolean hasMedication() { 
@@ -1013,28 +1085,8 @@ public class MedicationAdministration extends DomainResource {
     /**
      * @param value {@link #medication} (Identifies the medication that was administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.)
      */
-    public MedicationAdministration setMedication(Reference value) { 
+    public MedicationAdministration setMedication(Type value) { 
       this.medication = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #medication} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifies the medication that was administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.)
-     */
-    public Medication getMedicationTarget() { 
-      if (this.medicationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MedicationAdministration.medication");
-        else if (Configuration.doAutoCreate())
-          this.medicationTarget = new Medication(); // aa
-      return this.medicationTarget;
-    }
-
-    /**
-     * @param value {@link #medication} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifies the medication that was administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.)
-     */
-    public MedicationAdministration setMedicationTarget(Medication value) { 
-      this.medicationTarget = value;
       return this;
     }
 
@@ -1149,7 +1201,7 @@ public class MedicationAdministration extends DomainResource {
     }
 
     /**
-     * @return {@link #dosage} (Indicates how the medication is/was used by the patient.)
+     * @return {@link #dosage} (Describes the medication dosage information details e.g. dose, rate, site, route, etc.)
      */
     public MedicationAdministrationDosageComponent getDosage() { 
       if (this.dosage == null)
@@ -1165,7 +1217,7 @@ public class MedicationAdministration extends DomainResource {
     }
 
     /**
-     * @param value {@link #dosage} (Indicates how the medication is/was used by the patient.)
+     * @param value {@link #dosage} (Describes the medication dosage information details e.g. dose, rate, site, route, etc.)
      */
     public MedicationAdministration setDosage(MedicationAdministrationDosageComponent value) { 
       this.dosage = value;
@@ -1177,17 +1229,17 @@ public class MedicationAdministration extends DomainResource {
         childrenList.add(new Property("identifier", "Identifier", "External identifier - FHIR will generate its own internal IDs (probably URLs) which do not need to be explicitly managed by the resource.  The identifier here is one that would be used by another non-FHIR system - for example an automated medication pump would provide a record each time it operated; an administration while the patient was off the ward might be made with a different system and entered after the event.  Particularly important if these records have to be updated.", 0, java.lang.Integer.MAX_VALUE, identifier));
         childrenList.add(new Property("status", "code", "Will generally be set to show that the administration has been completed.  For some long running administrations such as infusions it is possible for an administration to be started but not completed or it may be paused while some other process is under way.", 0, java.lang.Integer.MAX_VALUE, status));
         childrenList.add(new Property("patient", "Reference(Patient)", "The person or animal to whom the medication was given.", 0, java.lang.Integer.MAX_VALUE, patient));
-        childrenList.add(new Property("practitioner", "Reference(Practitioner)", "The individual who was responsible for giving the medication to the patient.", 0, java.lang.Integer.MAX_VALUE, practitioner));
+        childrenList.add(new Property("practitioner", "Reference(Practitioner|Patient|RelatedPerson)", "The individual who was responsible for giving the medication to the patient.", 0, java.lang.Integer.MAX_VALUE, practitioner));
         childrenList.add(new Property("encounter", "Reference(Encounter)", "The visit or admission the or other contact between patient and health care provider the medication administration was performed as part of.", 0, java.lang.Integer.MAX_VALUE, encounter));
-        childrenList.add(new Property("prescription", "Reference(MedicationPrescription)", "The original request, instruction or authority to perform the administration.", 0, java.lang.Integer.MAX_VALUE, prescription));
+        childrenList.add(new Property("prescription", "Reference(MedicationOrder)", "The original request, instruction or authority to perform the administration.", 0, java.lang.Integer.MAX_VALUE, prescription));
         childrenList.add(new Property("wasNotGiven", "boolean", "Set this to true if the record is saying that the medication was NOT administered.", 0, java.lang.Integer.MAX_VALUE, wasNotGiven));
         childrenList.add(new Property("reasonNotGiven", "CodeableConcept", "A code indicating why the administration was not performed.", 0, java.lang.Integer.MAX_VALUE, reasonNotGiven));
         childrenList.add(new Property("reasonGiven", "CodeableConcept", "A code indicating why the medication was given.", 0, java.lang.Integer.MAX_VALUE, reasonGiven));
-        childrenList.add(new Property("effectiveTime[x]", "dateTime|Period", "An interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true).  For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.", 0, java.lang.Integer.MAX_VALUE, effectiveTime));
-        childrenList.add(new Property("medication", "Reference(Medication)", "Identifies the medication that was administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.", 0, java.lang.Integer.MAX_VALUE, medication));
+        childrenList.add(new Property("effectiveTime[x]", "dateTime|Period", "A specific date/time or interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true). For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.", 0, java.lang.Integer.MAX_VALUE, effectiveTime));
+        childrenList.add(new Property("medication[x]", "CodeableConcept|Reference(Medication)", "Identifies the medication that was administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.", 0, java.lang.Integer.MAX_VALUE, medication));
         childrenList.add(new Property("device", "Reference(Device)", "The device used in administering the medication to the patient.  E.g. a particular infusion pump.", 0, java.lang.Integer.MAX_VALUE, device));
         childrenList.add(new Property("note", "string", "Extra information about the medication administration that is not conveyed by the other attributes.", 0, java.lang.Integer.MAX_VALUE, note));
-        childrenList.add(new Property("dosage", "", "Indicates how the medication is/was used by the patient.", 0, java.lang.Integer.MAX_VALUE, dosage));
+        childrenList.add(new Property("dosage", "", "Describes the medication dosage information details e.g. dose, rate, site, route, etc.", 0, java.lang.Integer.MAX_VALUE, dosage));
       }
 
       public MedicationAdministration copy() {
@@ -1272,7 +1324,7 @@ public class MedicationAdministration extends DomainResource {
     return ResourceType.MedicationAdministration;
    }
 
-  @SearchParamDefinition(name="medication", path="MedicationAdministration.medication", description="Return administrations of this medication", type="reference" )
+  @SearchParamDefinition(name="medication", path="MedicationAdministration.medicationReference", description="Return administrations of this medication resource", type="reference" )
   public static final String SP_MEDICATION = "medication";
   @SearchParamDefinition(name="effectivetime", path="MedicationAdministration.effectiveTime[x]", description="Date administration happened (or did not happen)", type="date" )
   public static final String SP_EFFECTIVETIME = "effectivetime";
@@ -1288,6 +1340,8 @@ public class MedicationAdministration extends DomainResource {
   public static final String SP_DEVICE = "device";
   @SearchParamDefinition(name="notgiven", path="MedicationAdministration.wasNotGiven", description="Administrations that were not made", type="token" )
   public static final String SP_NOTGIVEN = "notgiven";
+  @SearchParamDefinition(name="code", path="MedicationAdministration.medicationCodeableConcept", description="Return administrations of this medication code", type="token" )
+  public static final String SP_CODE = "code";
   @SearchParamDefinition(name="encounter", path="MedicationAdministration.encounter", description="Return administrations that share this encounter", type="reference" )
   public static final String SP_ENCOUNTER = "encounter";
   @SearchParamDefinition(name="identifier", path="MedicationAdministration.identifier", description="Return administrations with this external identity", type="token" )

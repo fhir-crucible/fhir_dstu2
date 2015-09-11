@@ -1,27 +1,47 @@
 package org.hl7.fhir.definitions.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class W5Entry {
 
-  private String Description;
+  private String code;
+  private String description;
   private boolean display;
+  private Set<String> subClasses = new HashSet<String>();
   
   
-  public W5Entry(String description, boolean display) {
+  public W5Entry(String code, String description, boolean display, String subclasses) {
     super();
-    Description = description;
+    this.code = code;
+    this.description = description;
     this.display = display;
+    if (subclasses != null) {
+      String[] parts = subclasses.split("\\,");
+      for (String s : parts)
+        subClasses.add(s);
+    }
   }
   public String getDescription() {
-    return Description;
+    return description;
   }
   public void setDescription(String description) {
-    Description = description;
+    this.description = description;
   }
   public boolean isDisplay() {
     return display;
   }
   public void setDisplay(boolean display) {
     this.display = display;
+  }
+  public String getCode() {
+    return code;
+  }
+  public void setCode(String code) {
+    this.code = code;
+  }
+  public Set<String> getSubClasses() {
+    return subClasses;
   }
   
   

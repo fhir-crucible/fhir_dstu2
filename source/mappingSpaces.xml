@@ -75,7 +75,7 @@
       The provenance resource is based on known practices in the
       HL7 implementation space, particularly those found in the 
       v2 EVN segment, the v3 ControlAct Wrapper, the CDA header, and 
-      HE ATNA (<a href="http://www.rfc3881.net">RFC 3881</a>).
+      IHE ATNA.
       The conceptual model underlying the design is the <a href="http://www.w3.org/2011/prov/wiki/Main_Page">W3C
       provenance Specification</a>. Though the content and format
       of the resource is designed to meet specific requirements for FHIR, 
@@ -101,16 +101,6 @@
     <sort>11</sort>
   </space>
   <space>
-    <url>http://loinc.org/downloads</url>
-    <columnName>LOINC Mapping</columnName>
-    <title>LOINC Internal structure</title>
-    <id>loincstruc</id>
-    <preamble>
-      <p>The internal LOINC structures as named in the LOINC Access database columns</p>
-    </preamble>
-    <sort>12</sort>
-  </space>
-  <space>
     <url>http://metadata-standards.org/11179/</url>
     <columnName>11179 Mapping</columnName>
     <title>ISO 11179</title>
@@ -122,6 +112,7 @@
     </preamble>
     <sort>13</sort>
   </space>
+
   <space>
     <url>http://wiki.ihe.net/index.php?title=Data_Element_Exchange</url>
     <columnName>IHE DEX mapping</columnName>
@@ -185,5 +176,39 @@
     <id>qdm</id>
     <sort>21</sort>
   </space>
-  
+  <space>
+    <url>http://hl7.org/orim</url>
+    <columnName>ORIM Mapping</columnName>
+    <title>Ontological RIM Mapping</title>
+    <id>orim</id>
+    <sort>22</sort>
+  </space>
+  <space>
+    <url>http://hl7.org/fhir/w5</url>
+    <columnName>...don't use...</columnName>
+    <title>W5 Mapping</title>
+    <id>w5</id>
+    <sort>23</sort>
+  </space>
+  <space>
+    <url>http://hl7.org/fhir/logical</url>
+    <columnName>Logical Mapping</columnName>
+    <title>Logical Mapping</title>
+    <id>logical</id>
+    <sort>24</sort>
+  </space>
+  <space>
+    <url>http://hl7.org/fhir/auditevent</url>
+    <columnName>Auditevent Mapping</columnName>
+    <title>FHIR AuditEvent</title>
+    <id>fhirauditevent</id>
+    <sort>25</sort>
+  </space>
+  <space>
+    <url>http://hl7.org/fhir/provenance</url>
+    <columnName>Provenance Mapping</columnName>
+    <title>FHIR Provenance</title>
+    <id>fhirprovenance</id>
+    <sort>26</sort>
+  </space>
 </mappingSpaces>

@@ -24,6 +24,7 @@ public abstract class ResourceGenerator {
   protected Definitions definitions;
   protected boolean xmlAttributeAsField = true;
   public static Set<String> dataTypes = new HashSet<String>();
+  public static Set<String> unhandledDataTypes = new HashSet<String>();
 
   protected static final String REGEX_DATE = "/\\A[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1]))?)?\\Z/";;
   protected static final String REGEX_TIME = "/\\A([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?\\Z/";
@@ -41,9 +42,9 @@ public abstract class ResourceGenerator {
     TIME("time"),
     INSTANT("instant"),
     CODE("code"),
-    STRING("string", "uri", "id", "oid", "idref"),
+    STRING("string", "uri", "id", "oid", "idref", "markdown"),
     RESOURCE("Resource"),
-    QUANTITY("Age", "Count", "Duration", "Money"),
+    QUANTITY("Age", "Distance", "SimpleQuantity", "Count", "Duration", "Money"),
     IGNORED("xhtml","div"),
     REFERENCE(),
     EMBEDDED();
@@ -61,6 +62,7 @@ public abstract class ResourceGenerator {
           return fieldType;
         }
       }
+      unhandledDataTypes.add(elementType);
       return found;
     }
   }  
@@ -170,7 +172,11 @@ public abstract class ResourceGenerator {
     if (elementDefinition.getTypes().size() > 1) {
       String typeName = type.getName();
       typeName = Character.toUpperCase(typeName.charAt(0)) + typeName.substring(1);
-      elementName += typeName;
+      if(FieldType.QUANTITY == FieldType.getFieldType(typeName)) {
+        elementName += "Quantity";
+      } else {
+        elementName += typeName;        
+      }
     }
     
     if (!fixTypes) { 
@@ -191,6 +197,8 @@ public abstract class ResourceGenerator {
       elementName = "fhirIdentity";
     } else if (elementName.equals("modifier")) {
       elementName = "fhirModifier";
+    } else if (elementName.equals("validated")) {
+      elementName = "fhirValidated";
     }
 
     return elementName;

@@ -2,8 +2,8 @@
 
 <div>
 
+<a name="scope"> </a>
 <h2>Scope and Usage</h2>
-<p><b>This is a candidate resource not yet formally proposed (or approved)</b></p>
 
 <p>
 The subscription resource is used to define a push based subscription 
@@ -31,6 +31,7 @@ the entire resource creates security concerns that must be managed by the server
 </div>
 
 <div>
+<a name="bnr"> </a>
 <h2>Boundaries and Relationships</h2>
 <p>
 Once a subscription is created, any newly created or updated resources 
@@ -44,7 +45,7 @@ a resource is updated so that it no longer meets the criteria.
 </p>
 <p>
 As an alternative to subscriptions, the RESTful API describes a 
-polling-based subscription method using <a href="extras.html#bundle">bundles</a> 
+polling-based subscription method using <a href="compartments.html#bundle">bundles</a> 
 and the <a href="http.html#history">history operation</a>. This method 
 of polling allows for a much tighter relationship between the client and 
 the server that doesn't involve missing updates and/or deletes. 

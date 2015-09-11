@@ -1,0 +1,20 @@
+***************
+*** 59,64 ****
+      <td>QICore has its own ballot</td>
+    </tr>
+    <tr>
+      <td><a href="sdc.html">Structured Data Capture</a></td>
+      <td>A U.S. Realm guide for making use of <a href="dataelement.html">Data Elements</a>, 
+        <a href="questionnaire.html">Questionnaires</a> and <a href="questionnaireanswers.html">QuestionnaireAnswers</a> to
+--- 59,69 ----
+      <td>QICore has its own ballot</td>
+    </tr>
+    <tr>
++     <td><a href="qif.html">Quality Improvement Framework</a></td>
++     <td>An implementation guide for making use of FHIR resources in clinical quality measures and clinical decision support applications. Developed for the U.S. Realm, but more broadly applicable.</td>
++     <td>QIF has its own ballot</td>
++   </tr>
++   <tr>
+      <td><a href="sdc.html">Structured Data Capture</a></td>
+      <td>A U.S. Realm guide for making use of <a href="dataelement.html">Data Elements</a>, 
+        <a href="questionnaire.html">Questionnaires</a> and <a href="questionnaireanswers.html">QuestionnaireAnswers</a> to

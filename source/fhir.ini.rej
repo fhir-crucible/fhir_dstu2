@@ -1,0 +1,23 @@
+***************
+*** 319,327 ****
+  cqmf=Clinical Quality Measure Framework
+  ihe=IHE Profiles
+  hspc=Healthcare Services Platform Consortium
+  
+  [ig-pages]
+  cqf=qicore.html
+  uslab=uslabreport.html
+  daf=daf.html
+  ccda=
+--- 319,329 ----
+  cqmf=Clinical Quality Measure Framework
+  ihe=IHE Profiles
+  hspc=Healthcare Services Platform Consortium
++ qif=Quality Improvement Framework
+  
+  [ig-pages]
+  cqf=qicore.html
++ qif=qif.html
+  uslab=uslabreport.html
+  daf=daf.html
+  ccda=

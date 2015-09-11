@@ -36,6 +36,7 @@ import java.io.Writer;
 
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
+import org.w3c.dom.Element;
 
 public class XhtmlComposer {
 
@@ -95,6 +96,7 @@ public class XhtmlComposer {
   }
 
   private void writeNode(String indent, XhtmlNode node) throws Exception {
+	if(node == null) return;
     if (node.getNodeType() == NodeType.Comment)
       writeComment(indent, node);
     else if (node.getNodeType() == NodeType.DocType)
@@ -105,8 +107,6 @@ public class XhtmlComposer {
       writeElement(indent, node);
     else if (node.getNodeType() == NodeType.Text)
       writeText(node);
-    else
-      throw new Exception("Unknown node type: "+node.getNodeType().toString());
   }
 
   private void writeText(XhtmlNode node) throws Exception {
@@ -219,10 +219,10 @@ public class XhtmlComposer {
   private void composeElement(IXMLWriter xml, XhtmlNode node) throws Exception {
     for (String n : node.getAttributes().keySet())
       xml.attribute(n, node.getAttributes().get(n));
-    xml.open(XHTML_NS, node.getName());
+    xml.enter(XHTML_NS, node.getName());
     for (XhtmlNode n : node.getChildNodes())
       compose(xml, n);
-    xml.close(XHTML_NS, node.getName());
+    xml.exit(XHTML_NS, node.getName());
   }
 
   public String composePlainText(XhtmlNode x) {
@@ -270,6 +270,31 @@ public class XhtmlComposer {
       return lastWS;
     } else
       return lastWS;
+  }
+
+  public void compose(Element div, XhtmlNode x) {
+    for (XhtmlNode child : x.getChildNodes()) {
+      appendChild(div, child);
+    }
+  }
+
+  private void appendChild(Element e, XhtmlNode node) {
+    if (node.getNodeType() == NodeType.Comment)
+      e.appendChild(e.getOwnerDocument().createComment(node.getContent()));
+    else if (node.getNodeType() == NodeType.DocType)
+      throw new Error("not done yet");
+    else if (node.getNodeType() == NodeType.Instruction)
+      e.appendChild(e.getOwnerDocument().createProcessingInstruction("", node.getContent()));
+    else if (node.getNodeType() == NodeType.Text)
+      e.appendChild(e.getOwnerDocument().createTextNode(node.getContent()));
+    else if (node.getNodeType() == NodeType.Element) {
+      Element child = e.getOwnerDocument().createElementNS(XHTML_NS, node.getName());
+      e.appendChild(child);
+      for (XhtmlNode c : node.getChildNodes()) {
+        appendChild(child, c);
+      }
+    } else
+      throw new Error("Unknown node type: "+node.getNodeType().toString());
   }
   
 }

@@ -39,7 +39,7 @@
   <diagnosis>
     <sequence value="1"/>
     <diagnosis>
-	  <system value="http://hl7.org/fhir/icd-10"/>
+	  <system value="http://hl7.org/fhir/sid/icd-10"/>
       <code value="123457"/>
     </diagnosis>
   </diagnosis>
@@ -62,11 +62,11 @@
  <item>
    <sequence value="1"/>
    <type>
-     <system value="http://hl7.org/fhir/actinvoicegroupcode"/>
-     <code value="group"/>
+     <system value="http://hl7.org/fhir/v3/ActCode"/>
+     <code value="FRAMEING"/> <!-- was group changed by GG to be valid -->
    </type>
    <provider>
-     <reference value="Practitioner/1"/>
+     <reference value="Practitioner/example"/>
    </provider>
    <diagnosisLinkId value="1"/>
    <service>
@@ -76,19 +76,19 @@
    <serviceDate value="2015-05-16"/>  <!-- Start Date -->
    <unitPrice>
      <value value="9000.00"/>
-     <system value="urn:std:iso:4217"/>
+     <system value="urn:iso:std:iso:4217"/>
      <code value="USD"/> 
    </unitPrice> 
    <net>
      <value value="9000.00"/>
-     <system value="urn:std:iso:4217"/>
+     <system value="urn:iso:std:iso:4217"/>
      <code value="USD"/> 
    </net> 
    <detail>
      <sequence value="1"/> <!-- Exam Fee -->
      <type>
-       <system value="http://hl7.org/fhir/actinvoicegroupcode"/>
-       <code value="service"/>
+       <system value="http://hl7.org/fhir/v3/ActCode"/>
+       <code value="CSINV"/> <!-- was service, changed by GG to be valid -->
      </type>
      <service>
        <system value="http://hl7.org/fhir/oralservicecodes"/>
@@ -96,20 +96,20 @@
      </service>
      <unitPrice>
        <value value="1000.00"/>
-       <system value="urn:std:iso:4217"/>
+       <system value="urn:iso:std:iso:4217"/>
        <code value="USD"/> 
      </unitPrice> 
      <net>
        <value value="1000.00"/>
-       <system value="urn:std:iso:4217"/>
+       <system value="urn:iso:std:iso:4217"/>
        <code value="USD"/> 
      </net> 
    </detail>
    <detail>
      <sequence value="2"/> <!-- Diagnostic Fee -->
      <type>
-       <system value="http://hl7.org/fhir/actinvoicegroupcode"/>
-       <code value="service"/>
+       <system value="http://hl7.org/fhir/v3/ActCode"/>
+       <code value="CSINV"/> <!-- was service, changed by GG to be valid -->
      </type>
      <service>
        <system value="http://hl7.org/fhir/oralservicecodes"/>
@@ -117,20 +117,20 @@
      </service>
      <unitPrice>
        <value value="1500.00"/>
-       <system value="urn:std:iso:4217"/>
+       <system value="urn:iso:std:iso:4217"/>
        <code value="USD"/> 
      </unitPrice> 
      <net>
        <value value="1500.00"/>
-       <system value="urn:std:iso:4217"/>
+       <system value="urn:iso:std:iso:4217"/>
        <code value="USD"/> 
      </net> 
    </detail>
    <detail>
      <sequence value="3"/> <!-- Initial Payment -->
      <type>
-       <system value="http://hl7.org/fhir/actinvoicegroupcode"/>
-       <code value="service"/>
+       <system value="http://hl7.org/fhir/v3/ActCode"/>
+       <code value="CSINV"/> <!-- was service, changed by GG to be valid -->
      </type>
      <service>
        <system value="http://hl7.org/fhir/oralservicecodes"/>
@@ -138,20 +138,20 @@
      </service>
      <unitPrice>
        <value value="500.00"/>
-       <system value="urn:std:iso:4217"/>
+       <system value="urn:iso:std:iso:4217"/>
        <code value="USD"/> 
      </unitPrice> 
      <net>
        <value value="500.00"/>
-       <system value="urn:std:iso:4217"/>
+       <system value="urn:iso:std:iso:4217"/>
        <code value="USD"/> 
      </net> 
    </detail>
    <detail>
      <sequence value="4"/> <!-- Duration in Months -->
      <type>
-       <system value="http://hl7.org/fhir/actinvoicegroupcode"/>
-       <code value="service"/>
+       <system value="http://hl7.org/fhir/v3/ActCode"/>
+       <code value="CSINV"/> <!-- was service, changed by GG to be valid -->
      </type>
      <service>
        <system value="http://hl7.org/fhir/oralservicecodes"/>
@@ -164,8 +164,8 @@
    <detail>
      <sequence value="5"/> <!-- Periodic Payments -->
      <type>
-       <system value="http://hl7.org/fhir/actinvoicegroupcode"/>
-       <code value="service"/>
+       <system value="http://hl7.org/fhir/v3/ActCode"/>
+       <code value="CSINV"/> <!-- was service, changed by GG to be valid -->
      </type>
      <service>
        <system value="http://hl7.org/fhir/oralservicecodes"/>
@@ -176,12 +176,12 @@
      </quantity>  
      <unitPrice>
        <value value="250.00"/>
-       <system value="urn:std:iso:4217"/>
+       <system value="urn:iso:std:iso:4217"/>
        <code value="USD"/> 
      </unitPrice> 
      <net>
        <value value="250.00"/>
-       <system value="urn:std:iso:4217"/>
+       <system value="urn:iso:std:iso:4217"/>
        <code value="USD"/> 
      </net> 
    </detail>
@@ -193,7 +193,7 @@
      <code value="service"/>
    </type>
    <provider>
-     <reference value="Practitioner/1"/>
+     <reference value="Practitioner/example"/>
    </provider>
    <service>
      <system value="http://hl7.org/fhir/oralservicecodes"/>
@@ -202,12 +202,12 @@
    <serviceDate value="2014-08-16"/>
    <unitPrice>
      <value value="105.00"/>
-     <system value="urn:std:iso:4217"/>
+     <system value="urn:iso:std:iso:4217"/>
      <code value="USD"/> 
    </unitPrice> 
    <net>
      <value value="105.00"/>
-     <system value="urn:std:iso:4217"/>
+     <system value="urn:iso:std:iso:4217"/>
      <code value="USD"/> 
    </net> 
    <bodySite>
@@ -226,7 +226,7 @@
      <code value="group"/>
    </type>
    <provider>
-     <reference value="Practitioner/1"/>
+     <reference value="Practitioner/example"/>
    </provider>
    <service>
      <system value="http://hl7.org/fhir/oralservicecodes"/>
@@ -235,12 +235,12 @@
    <serviceDate value="2014-08-16"/>
    <unitPrice>
      <value value="1100.00"/>
-     <system value="urn:std:iso:4217"/>
+     <system value="urn:iso:std:iso:4217"/>
      <code value="USD"/> 
    </unitPrice> 
    <net>
      <value value="1100.00"/>
-     <system value="urn:std:iso:4217"/>
+     <system value="urn:iso:std:iso:4217"/>
      <code value="USD"/> 
    </net> 
    <bodySite>
@@ -258,12 +258,12 @@
      </service>
      <unitPrice>
        <value value="750.00"/>
-       <system value="urn:std:iso:4217"/>
+       <system value="urn:iso:std:iso:4217"/>
        <code value="USD"/> 
      </unitPrice> 
      <net>
        <value value="750.00"/>
-       <system value="urn:std:iso:4217"/>
+       <system value="urn:iso:std:iso:4217"/>
        <code value="USD"/> 
      </net> 
    </detail>
@@ -278,12 +278,12 @@
      </service>
      <unitPrice>
        <value value="350.00"/>
-       <system value="urn:std:iso:4217"/>
+       <system value="urn:iso:std:iso:4217"/>
        <code value="USD"/> 
      </unitPrice> 
      <net>
        <value value="350.00"/>
-       <system value="urn:std:iso:4217"/>
+       <system value="urn:iso:std:iso:4217"/>
        <code value="USD"/> 
      </net> 
    </detail>

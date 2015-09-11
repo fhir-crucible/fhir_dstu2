@@ -31,13 +31,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hl7.fhir.definitions.model.Definitions;
 import org.hl7.fhir.definitions.model.TypeRef;
+import org.hl7.fhir.tools.publisher.BuildWorkerContext;
 
 public class TypeParser {
 
 
-	public List<TypeRef> parse(String n, boolean inProfile, String profileExtensionBase, Definitions definitions) throws Exception {
+	public List<TypeRef> parse(String n, boolean inProfile, String profileExtensionBase, BuildWorkerContext resolver, boolean allowElement) throws Exception {
 		ArrayList<TypeRef> a = new ArrayList<TypeRef>();
 
 		if (n == null || n.equals("") || n.startsWith("!"))
@@ -85,10 +85,17 @@ public class TypeParser {
 					throw new Exception("Missing '}' in data type definition: " + typeList[i]);
 				}
 				String pt = typeString.substring(startPos + 1, endPos).trim();
-				if (pt.startsWith("#"))
-				  pt = profileExtensionBase + pt.substring(1);
+        typeString = typeString.substring(0, startPos);
+				if (pt.startsWith("#")) {
+				  // what to do here depends on what it refers to 
+				  if (typeString.equals("Extension"))
+				    pt = profileExtensionBase + pt.substring(1);
+				  else if (typeString.startsWith("Reference"))
+            pt = pt.substring(1).toLowerCase();
+				  else
+				    throw new Exception("Unhandled case");				    
+				}
 				t.setProfile(pt);
-				typeString = typeString.substring(0, startPos);
 			}
 			
 			if (typeString.contains("(")) {
@@ -100,7 +107,7 @@ public class TypeParser {
 				String[] params = typeString.substring(startPos + 1, endPos).split(",");
 				for (int j=0;j<params.length;j++) {
 	        if (typeString.startsWith("Reference("))
-	          if (inProfile && !definitions.hasResource(params[j].trim()) && !"Any".equals(params[j].trim()))
+	          if (inProfile && !resolver.isResource(params[j].trim()) && !"Any".equals(params[j].trim()))
 	            throw new Exception("Unknown resource "+params[j].trim());
 					t.getParams().add(params[j].trim());
 				}
@@ -108,9 +115,12 @@ public class TypeParser {
 			}
 			
 			t.setName(typeString.trim());
+			if (t.getName().equals("Element") && !allowElement)
+			  throw new Exception("The type 'Element' is illegal in this context");
 			a.add(t);
 		}
 
 		return a;
-	}	
+	}
+
 }

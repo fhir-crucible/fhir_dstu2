@@ -29,54 +29,61 @@ package org.hl7.fhir.instance.model;
   
 */
 
-// Generated on Thu, Apr 2, 2015 22:35+1100 for FHIR v0.5.0
+// Generated on Tue, Sep 1, 2015 11:15+1000 for FHIR v1.0.0
 
 import java.util.*;
 
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.instance.model.annotations.ResourceDef;
 import org.hl7.fhir.instance.model.annotations.SearchParamDefinition;
-import org.hl7.fhir.instance.model.annotations.Block;
 import org.hl7.fhir.instance.model.annotations.Child;
 import org.hl7.fhir.instance.model.annotations.Description;
+import org.hl7.fhir.instance.model.annotations.Block;
+import org.hl7.fhir.instance.model.api.*;
 /**
  * A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).
  */
 @ResourceDef(name="Appointment", profile="http://hl7.org/fhir/Profile/Appointment")
 public class Appointment extends DomainResource {
 
-    public enum Appointmentstatus {
+    public enum AppointmentStatus {
         /**
-         * Some or all of the participant(s) have not finalized their acceptance of the appointment request.
+         * None of the participant(s) have finalized their acceptance of the appointment request, and the start/end time may not be set yet
+         */
+        PROPOSED, 
+        /**
+         * Some or all of the participant(s) have not finalized their acceptance of the appointment request
          */
         PENDING, 
         /**
-         * All participant(s) have been considered and the appointment is confirmed to go ahead at the date/times specified.
+         * All participant(s) have been considered and the appointment is confirmed to go ahead at the date/times specified
          */
         BOOKED, 
         /**
-         * Some of the patients have arrived.
+         * Some of the patients have arrived
          */
         ARRIVED, 
         /**
-         * This appointment has completed and may have resulted in an encounter.
+         * This appointment has completed and may have resulted in an encounter
          */
         FULFILLED, 
         /**
-         * The appointment has been cancelled.
+         * The appointment has been cancelled
          */
         CANCELLED, 
         /**
-         * Some or all of the participant(s) have not/did not appear for the appointment (usually the patient).
+         * Some or all of the participant(s) have not/did not appear for the appointment (usually the patient)
          */
         NOSHOW, 
         /**
          * added to help the parsers
          */
         NULL;
-        public static Appointmentstatus fromCode(String codeString) throws Exception {
+        public static AppointmentStatus fromCode(String codeString) throws Exception {
             if (codeString == null || "".equals(codeString))
                 return null;
+        if ("proposed".equals(codeString))
+          return PROPOSED;
         if ("pending".equals(codeString))
           return PENDING;
         if ("booked".equals(codeString))
@@ -89,10 +96,11 @@ public class Appointment extends DomainResource {
           return CANCELLED;
         if ("noshow".equals(codeString))
           return NOSHOW;
-        throw new Exception("Unknown Appointmentstatus code '"+codeString+"'");
+        throw new Exception("Unknown AppointmentStatus code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
+            case PROPOSED: return "proposed";
             case PENDING: return "pending";
             case BOOKED: return "booked";
             case ARRIVED: return "arrived";
@@ -104,28 +112,31 @@ public class Appointment extends DomainResource {
         }
         public String getSystem() {
           switch (this) {
-            case PENDING: return "";
-            case BOOKED: return "";
-            case ARRIVED: return "";
-            case FULFILLED: return "";
-            case CANCELLED: return "";
-            case NOSHOW: return "";
+            case PROPOSED: return "http://hl7.org/fhir/appointmentstatus";
+            case PENDING: return "http://hl7.org/fhir/appointmentstatus";
+            case BOOKED: return "http://hl7.org/fhir/appointmentstatus";
+            case ARRIVED: return "http://hl7.org/fhir/appointmentstatus";
+            case FULFILLED: return "http://hl7.org/fhir/appointmentstatus";
+            case CANCELLED: return "http://hl7.org/fhir/appointmentstatus";
+            case NOSHOW: return "http://hl7.org/fhir/appointmentstatus";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case PENDING: return "Some or all of the participant(s) have not finalized their acceptance of the appointment request.";
-            case BOOKED: return "All participant(s) have been considered and the appointment is confirmed to go ahead at the date/times specified.";
-            case ARRIVED: return "Some of the patients have arrived.";
-            case FULFILLED: return "This appointment has completed and may have resulted in an encounter.";
-            case CANCELLED: return "The appointment has been cancelled.";
-            case NOSHOW: return "Some or all of the participant(s) have not/did not appear for the appointment (usually the patient).";
+            case PROPOSED: return "None of the participant(s) have finalized their acceptance of the appointment request, and the start/end time may not be set yet";
+            case PENDING: return "Some or all of the participant(s) have not finalized their acceptance of the appointment request";
+            case BOOKED: return "All participant(s) have been considered and the appointment is confirmed to go ahead at the date/times specified";
+            case ARRIVED: return "Some of the patients have arrived";
+            case FULFILLED: return "This appointment has completed and may have resulted in an encounter";
+            case CANCELLED: return "The appointment has been cancelled";
+            case NOSHOW: return "Some or all of the participant(s) have not/did not appear for the appointment (usually the patient)";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
+            case PROPOSED: return "Proposed";
             case PENDING: return "Pending";
             case BOOKED: return "Booked";
             case ARRIVED: return "Arrived";
@@ -137,60 +148,64 @@ public class Appointment extends DomainResource {
         }
     }
 
-  public static class AppointmentstatusEnumFactory implements EnumFactory<Appointmentstatus> {
-    public Appointmentstatus fromCode(String codeString) throws IllegalArgumentException {
+  public static class AppointmentStatusEnumFactory implements EnumFactory<AppointmentStatus> {
+    public AppointmentStatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
+        if ("proposed".equals(codeString))
+          return AppointmentStatus.PROPOSED;
         if ("pending".equals(codeString))
-          return Appointmentstatus.PENDING;
+          return AppointmentStatus.PENDING;
         if ("booked".equals(codeString))
-          return Appointmentstatus.BOOKED;
+          return AppointmentStatus.BOOKED;
         if ("arrived".equals(codeString))
-          return Appointmentstatus.ARRIVED;
+          return AppointmentStatus.ARRIVED;
         if ("fulfilled".equals(codeString))
-          return Appointmentstatus.FULFILLED;
+          return AppointmentStatus.FULFILLED;
         if ("cancelled".equals(codeString))
-          return Appointmentstatus.CANCELLED;
+          return AppointmentStatus.CANCELLED;
         if ("noshow".equals(codeString))
-          return Appointmentstatus.NOSHOW;
-        throw new IllegalArgumentException("Unknown Appointmentstatus code '"+codeString+"'");
+          return AppointmentStatus.NOSHOW;
+        throw new IllegalArgumentException("Unknown AppointmentStatus code '"+codeString+"'");
         }
-    public String toCode(Appointmentstatus code) {
-      if (code == Appointmentstatus.PENDING)
+    public String toCode(AppointmentStatus code) {
+      if (code == AppointmentStatus.PROPOSED)
+        return "proposed";
+      if (code == AppointmentStatus.PENDING)
         return "pending";
-      if (code == Appointmentstatus.BOOKED)
+      if (code == AppointmentStatus.BOOKED)
         return "booked";
-      if (code == Appointmentstatus.ARRIVED)
+      if (code == AppointmentStatus.ARRIVED)
         return "arrived";
-      if (code == Appointmentstatus.FULFILLED)
+      if (code == AppointmentStatus.FULFILLED)
         return "fulfilled";
-      if (code == Appointmentstatus.CANCELLED)
+      if (code == AppointmentStatus.CANCELLED)
         return "cancelled";
-      if (code == Appointmentstatus.NOSHOW)
+      if (code == AppointmentStatus.NOSHOW)
         return "noshow";
       return "?";
       }
     }
 
-    public enum Participantrequired {
+    public enum ParticipantRequired {
         /**
-         * The participant is required to attend the appointment.
+         * The participant is required to attend the appointment
          */
         REQUIRED, 
         /**
-         * The participant may optionally attend the appointment.
+         * The participant may optionally attend the appointment
          */
         OPTIONAL, 
         /**
-         * The participant is excluded from the appointment, and may not be informed of the appointment taking place. (appointment is about them, not for them - such as 2 doctors discussing results about a patient's test).
+         * The participant is excluded from the appointment, and may not be informed of the appointment taking place. (appointment is about them, not for them - such as 2 doctors discussing results about a patient's test)
          */
         INFORMATIONONLY, 
         /**
          * added to help the parsers
          */
         NULL;
-        public static Participantrequired fromCode(String codeString) throws Exception {
+        public static ParticipantRequired fromCode(String codeString) throws Exception {
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("required".equals(codeString))
@@ -199,7 +214,7 @@ public class Appointment extends DomainResource {
           return OPTIONAL;
         if ("information-only".equals(codeString))
           return INFORMATIONONLY;
-        throw new Exception("Unknown Participantrequired code '"+codeString+"'");
+        throw new Exception("Unknown ParticipantRequired code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
@@ -211,17 +226,17 @@ public class Appointment extends DomainResource {
         }
         public String getSystem() {
           switch (this) {
-            case REQUIRED: return "";
-            case OPTIONAL: return "";
-            case INFORMATIONONLY: return "";
+            case REQUIRED: return "http://hl7.org/fhir/participantrequired";
+            case OPTIONAL: return "http://hl7.org/fhir/participantrequired";
+            case INFORMATIONONLY: return "http://hl7.org/fhir/participantrequired";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case REQUIRED: return "The participant is required to attend the appointment.";
-            case OPTIONAL: return "The participant may optionally attend the appointment.";
-            case INFORMATIONONLY: return "The participant is excluded from the appointment, and may not be informed of the appointment taking place. (appointment is about them, not for them - such as 2 doctors discussing results about a patient's test).";
+            case REQUIRED: return "The participant is required to attend the appointment";
+            case OPTIONAL: return "The participant may optionally attend the appointment";
+            case INFORMATIONONLY: return "The participant is excluded from the appointment, and may not be informed of the appointment taking place. (appointment is about them, not for them - such as 2 doctors discussing results about a patient's test)";
             default: return "?";
           }
         }
@@ -235,52 +250,52 @@ public class Appointment extends DomainResource {
         }
     }
 
-  public static class ParticipantrequiredEnumFactory implements EnumFactory<Participantrequired> {
-    public Participantrequired fromCode(String codeString) throws IllegalArgumentException {
+  public static class ParticipantRequiredEnumFactory implements EnumFactory<ParticipantRequired> {
+    public ParticipantRequired fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("required".equals(codeString))
-          return Participantrequired.REQUIRED;
+          return ParticipantRequired.REQUIRED;
         if ("optional".equals(codeString))
-          return Participantrequired.OPTIONAL;
+          return ParticipantRequired.OPTIONAL;
         if ("information-only".equals(codeString))
-          return Participantrequired.INFORMATIONONLY;
-        throw new IllegalArgumentException("Unknown Participantrequired code '"+codeString+"'");
+          return ParticipantRequired.INFORMATIONONLY;
+        throw new IllegalArgumentException("Unknown ParticipantRequired code '"+codeString+"'");
         }
-    public String toCode(Participantrequired code) {
-      if (code == Participantrequired.REQUIRED)
+    public String toCode(ParticipantRequired code) {
+      if (code == ParticipantRequired.REQUIRED)
         return "required";
-      if (code == Participantrequired.OPTIONAL)
+      if (code == ParticipantRequired.OPTIONAL)
         return "optional";
-      if (code == Participantrequired.INFORMATIONONLY)
+      if (code == ParticipantRequired.INFORMATIONONLY)
         return "information-only";
       return "?";
       }
     }
 
-    public enum Participationstatus {
+    public enum ParticipationStatus {
         /**
-         * The participant has accepted the appointment.
+         * The participant has accepted the appointment
          */
         ACCEPTED, 
         /**
-         * The participant has declined the appointment and will not participate in the appointment.
+         * The participant has declined the appointment and will not participate in the appointment
          */
         DECLINED, 
         /**
-         * The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur.
+         * The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur
          */
         TENTATIVE, 
         /**
-         * The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses.
+         * The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses
          */
         NEEDSACTION, 
         /**
          * added to help the parsers
          */
         NULL;
-        public static Participationstatus fromCode(String codeString) throws Exception {
+        public static ParticipationStatus fromCode(String codeString) throws Exception {
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("accepted".equals(codeString))
@@ -291,7 +306,7 @@ public class Appointment extends DomainResource {
           return TENTATIVE;
         if ("needs-action".equals(codeString))
           return NEEDSACTION;
-        throw new Exception("Unknown Participationstatus code '"+codeString+"'");
+        throw new Exception("Unknown ParticipationStatus code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
@@ -304,19 +319,19 @@ public class Appointment extends DomainResource {
         }
         public String getSystem() {
           switch (this) {
-            case ACCEPTED: return "";
-            case DECLINED: return "";
-            case TENTATIVE: return "";
-            case NEEDSACTION: return "";
+            case ACCEPTED: return "http://hl7.org/fhir/participationstatus";
+            case DECLINED: return "http://hl7.org/fhir/participationstatus";
+            case TENTATIVE: return "http://hl7.org/fhir/participationstatus";
+            case NEEDSACTION: return "http://hl7.org/fhir/participationstatus";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case ACCEPTED: return "The participant has accepted the appointment.";
-            case DECLINED: return "The participant has declined the appointment and will not participate in the appointment.";
-            case TENTATIVE: return "The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur.";
-            case NEEDSACTION: return "The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses.";
+            case ACCEPTED: return "The participant has accepted the appointment";
+            case DECLINED: return "The participant has declined the appointment and will not participate in the appointment";
+            case TENTATIVE: return "The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur";
+            case NEEDSACTION: return "The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses";
             default: return "?";
           }
         }
@@ -331,47 +346,47 @@ public class Appointment extends DomainResource {
         }
     }
 
-  public static class ParticipationstatusEnumFactory implements EnumFactory<Participationstatus> {
-    public Participationstatus fromCode(String codeString) throws IllegalArgumentException {
+  public static class ParticipationStatusEnumFactory implements EnumFactory<ParticipationStatus> {
+    public ParticipationStatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("accepted".equals(codeString))
-          return Participationstatus.ACCEPTED;
+          return ParticipationStatus.ACCEPTED;
         if ("declined".equals(codeString))
-          return Participationstatus.DECLINED;
+          return ParticipationStatus.DECLINED;
         if ("tentative".equals(codeString))
-          return Participationstatus.TENTATIVE;
+          return ParticipationStatus.TENTATIVE;
         if ("needs-action".equals(codeString))
-          return Participationstatus.NEEDSACTION;
-        throw new IllegalArgumentException("Unknown Participationstatus code '"+codeString+"'");
+          return ParticipationStatus.NEEDSACTION;
+        throw new IllegalArgumentException("Unknown ParticipationStatus code '"+codeString+"'");
         }
-    public String toCode(Participationstatus code) {
-      if (code == Participationstatus.ACCEPTED)
+    public String toCode(ParticipationStatus code) {
+      if (code == ParticipationStatus.ACCEPTED)
         return "accepted";
-      if (code == Participationstatus.DECLINED)
+      if (code == ParticipationStatus.DECLINED)
         return "declined";
-      if (code == Participationstatus.TENTATIVE)
+      if (code == ParticipationStatus.TENTATIVE)
         return "tentative";
-      if (code == Participationstatus.NEEDSACTION)
+      if (code == ParticipationStatus.NEEDSACTION)
         return "needs-action";
       return "?";
       }
     }
 
     @Block()
-    public static class AppointmentParticipantComponent extends BackboneElement {
+    public static class AppointmentParticipantComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Role of participant in the appointment.
          */
-        @Child(name ="type", type={CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED)
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Role of participant in the appointment", formalDefinition="Role of participant in the appointment." )
         protected List<CodeableConcept> type;
 
         /**
          * A Person, Location/HealthcareService or Device that is participating in the appointment.
          */
-        @Child(name ="actor", type={Patient.class, Practitioner.class, RelatedPerson.class, Device.class, HealthcareService.class, Location.class}, order=2, min=0, max=1)
+        @Child(name = "actor", type = {Patient.class, Practitioner.class, RelatedPerson.class, Device.class, HealthcareService.class, Location.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="A Person, Location/HealthcareService or Device that is participating in the appointment", formalDefinition="A Person, Location/HealthcareService or Device that is participating in the appointment." )
         protected Reference actor;
 
@@ -383,24 +398,30 @@ public class Appointment extends DomainResource {
         /**
          * Is this participant required to be present at the meeting. This covers a use-case where 2 doctors need to meet to discuss the results for a specific patient, and the patient is not required to be present.
          */
-        @Child(name ="required", type={CodeType.class}, order=3, min=0, max=1)
+        @Child(name = "required", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="required | optional | information-only", formalDefinition="Is this participant required to be present at the meeting. This covers a use-case where 2 doctors need to meet to discuss the results for a specific patient, and the patient is not required to be present." )
-        protected Enumeration<Participantrequired> required;
+        protected Enumeration<ParticipantRequired> required;
 
         /**
          * Participation status of the Patient.
          */
-        @Child(name ="status", type={CodeType.class}, order=4, min=1, max=1)
+        @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="accepted | declined | tentative | needs-action", formalDefinition="Participation status of the Patient." )
-        protected Enumeration<Participationstatus> status;
+        protected Enumeration<ParticipationStatus> status;
 
-        private static final long serialVersionUID = -1009855227L;
+        private static final long serialVersionUID = -1620552507L;
 
+    /*
+     * Constructor
+     */
       public AppointmentParticipantComponent() {
         super();
       }
 
-      public AppointmentParticipantComponent(Enumeration<Participationstatus> status) {
+    /*
+     * Constructor
+     */
+      public AppointmentParticipantComponent(Enumeration<ParticipationStatus> status) {
         super();
         this.status = status;
       }
@@ -487,12 +508,12 @@ public class Appointment extends DomainResource {
         /**
          * @return {@link #required} (Is this participant required to be present at the meeting. This covers a use-case where 2 doctors need to meet to discuss the results for a specific patient, and the patient is not required to be present.). This is the underlying object with id, value and extensions. The accessor "getRequired" gives direct access to the value
          */
-        public Enumeration<Participantrequired> getRequiredElement() { 
+        public Enumeration<ParticipantRequired> getRequiredElement() { 
           if (this.required == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create AppointmentParticipantComponent.required");
             else if (Configuration.doAutoCreate())
-              this.required = new Enumeration<Participantrequired>(new ParticipantrequiredEnumFactory()); // bb
+              this.required = new Enumeration<ParticipantRequired>(new ParticipantRequiredEnumFactory()); // bb
           return this.required;
         }
 
@@ -507,7 +528,7 @@ public class Appointment extends DomainResource {
         /**
          * @param value {@link #required} (Is this participant required to be present at the meeting. This covers a use-case where 2 doctors need to meet to discuss the results for a specific patient, and the patient is not required to be present.). This is the underlying object with id, value and extensions. The accessor "getRequired" gives direct access to the value
          */
-        public AppointmentParticipantComponent setRequiredElement(Enumeration<Participantrequired> value) { 
+        public AppointmentParticipantComponent setRequiredElement(Enumeration<ParticipantRequired> value) { 
           this.required = value;
           return this;
         }
@@ -515,19 +536,19 @@ public class Appointment extends DomainResource {
         /**
          * @return Is this participant required to be present at the meeting. This covers a use-case where 2 doctors need to meet to discuss the results for a specific patient, and the patient is not required to be present.
          */
-        public Participantrequired getRequired() { 
+        public ParticipantRequired getRequired() { 
           return this.required == null ? null : this.required.getValue();
         }
 
         /**
          * @param value Is this participant required to be present at the meeting. This covers a use-case where 2 doctors need to meet to discuss the results for a specific patient, and the patient is not required to be present.
          */
-        public AppointmentParticipantComponent setRequired(Participantrequired value) { 
+        public AppointmentParticipantComponent setRequired(ParticipantRequired value) { 
           if (value == null)
             this.required = null;
           else {
             if (this.required == null)
-              this.required = new Enumeration<Participantrequired>(new ParticipantrequiredEnumFactory());
+              this.required = new Enumeration<ParticipantRequired>(new ParticipantRequiredEnumFactory());
             this.required.setValue(value);
           }
           return this;
@@ -536,12 +557,12 @@ public class Appointment extends DomainResource {
         /**
          * @return {@link #status} (Participation status of the Patient.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
          */
-        public Enumeration<Participationstatus> getStatusElement() { 
+        public Enumeration<ParticipationStatus> getStatusElement() { 
           if (this.status == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create AppointmentParticipantComponent.status");
             else if (Configuration.doAutoCreate())
-              this.status = new Enumeration<Participationstatus>(new ParticipationstatusEnumFactory()); // bb
+              this.status = new Enumeration<ParticipationStatus>(new ParticipationStatusEnumFactory()); // bb
           return this.status;
         }
 
@@ -556,7 +577,7 @@ public class Appointment extends DomainResource {
         /**
          * @param value {@link #status} (Participation status of the Patient.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
          */
-        public AppointmentParticipantComponent setStatusElement(Enumeration<Participationstatus> value) { 
+        public AppointmentParticipantComponent setStatusElement(Enumeration<ParticipationStatus> value) { 
           this.status = value;
           return this;
         }
@@ -564,16 +585,16 @@ public class Appointment extends DomainResource {
         /**
          * @return Participation status of the Patient.
          */
-        public Participationstatus getStatus() { 
+        public ParticipationStatus getStatus() { 
           return this.status == null ? null : this.status.getValue();
         }
 
         /**
          * @param value Participation status of the Patient.
          */
-        public AppointmentParticipantComponent setStatus(Participationstatus value) { 
+        public AppointmentParticipantComponent setStatus(ParticipationStatus value) { 
             if (this.status == null)
-              this.status = new Enumeration<Participationstatus>(new ParticipationstatusEnumFactory());
+              this.status = new Enumeration<ParticipationStatus>(new ParticipationStatusEnumFactory());
             this.status.setValue(value);
           return this;
         }
@@ -631,63 +652,70 @@ public class Appointment extends DomainResource {
     /**
      * This records identifiers associated with this appointment concern that are defined by business processed and/ or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).
      */
-    @Child(name ="identifier", type={Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="External Ids for this item", formalDefinition="This records identifiers associated with this appointment concern that are defined by business processed and/ or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation)." )
     protected List<Identifier> identifier;
 
     /**
      * The overall status of the Appointment. Each of the participants has their own participation status which indicates their involvement in the process, however this status indicates the shared status.
      */
-    @Child(name ="status", type={CodeType.class}, order=1, min=1, max=1)
-    @Description(shortDefinition="pending | booked | arrived | fulfilled | cancelled | noshow", formalDefinition="The overall status of the Appointment. Each of the participants has their own participation status which indicates their involvement in the process, however this status indicates the shared status." )
-    protected Enumeration<Appointmentstatus> status;
+    @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="proposed | pending | booked | arrived | fulfilled | cancelled | noshow", formalDefinition="The overall status of the Appointment. Each of the participants has their own participation status which indicates their involvement in the process, however this status indicates the shared status." )
+    protected Enumeration<AppointmentStatus> status;
 
     /**
      * The type of appointment that is being booked (This may also be associated with participants for location, and/or a HealthcareService).
      */
-    @Child(name ="type", type={CodeableConcept.class}, order=2, min=0, max=1)
+    @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The type of appointment that is being booked", formalDefinition="The type of appointment that is being booked (This may also be associated with participants for location, and/or a HealthcareService)." )
     protected CodeableConcept type;
 
     /**
      * The reason that this appointment is being scheduled, this is more clinical than administrative.
      */
-    @Child(name ="reason", type={CodeableConcept.class}, order=3, min=0, max=1)
+    @Child(name = "reason", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The reason that this appointment is being scheduled, this is more clinical than administrative", formalDefinition="The reason that this appointment is being scheduled, this is more clinical than administrative." )
     protected CodeableConcept reason;
 
     /**
      * The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).
      */
-    @Child(name ="priority", type={UnsignedIntType.class}, order=4, min=0, max=1)
+    @Child(name = "priority", type = {UnsignedIntType.class}, order=4, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority)", formalDefinition="The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority)." )
     protected UnsignedIntType priority;
 
     /**
      * The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.
      */
-    @Child(name ="description", type={StringType.class}, order=5, min=0, max=1)
+    @Child(name = "description", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field", formalDefinition="The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field." )
     protected StringType description;
 
     /**
      * Date/Time that the appointment is to take place.
      */
-    @Child(name ="start", type={InstantType.class}, order=6, min=1, max=1)
+    @Child(name = "start", type = {InstantType.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date/Time that the appointment is to take place", formalDefinition="Date/Time that the appointment is to take place." )
     protected InstantType start;
 
     /**
      * Date/Time that the appointment is to conclude.
      */
-    @Child(name ="end", type={InstantType.class}, order=7, min=1, max=1)
+    @Child(name = "end", type = {InstantType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date/Time that the appointment is to conclude", formalDefinition="Date/Time that the appointment is to conclude." )
     protected InstantType end;
 
     /**
+     * Number of minutes that the appointment is to take. This can be less than the duration between the start and end times (where actual time of appointment is only an estimate or is a planned appointment request).
+     */
+    @Child(name = "minutesDuration", type = {PositiveIntType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Number of minutes that the appointment is to take. This can be less than the duration between the start and end times (where actual time of appointment is only an estimate or is a planned appointment request)", formalDefinition="Number of minutes that the appointment is to take. This can be less than the duration between the start and end times (where actual time of appointment is only an estimate or is a planned appointment request)." )
+    protected PositiveIntType minutesDuration;
+
+    /**
      * The slot that this appointment is filling. If provided then the schedule will not be provided as slots are not recursive, and the start/end values MUST be the same as from the slot.
      */
-    @Child(name ="slot", type={Slot.class}, order=8, min=0, max=Child.MAX_UNLIMITED)
+    @Child(name = "slot", type = {Slot.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The slot that this appointment is filling. If provided then the schedule will not be provided as slots are not recursive, and the start/end values MUST be the same as from the slot", formalDefinition="The slot that this appointment is filling. If provided then the schedule will not be provided as slots are not recursive, and the start/end values MUST be the same as from the slot." )
     protected List<Reference> slot;
     /**
@@ -699,40 +727,32 @@ public class Appointment extends DomainResource {
     /**
      * Additional comments about the appointment.
      */
-    @Child(name ="comment", type={StringType.class}, order=9, min=0, max=1)
+    @Child(name = "comment", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Additional comments about the appointment", formalDefinition="Additional comments about the appointment." )
     protected StringType comment;
 
     /**
-     * An Order that lead to the creation of this appointment.
-     */
-    @Child(name ="order", type={Order.class}, order=10, min=0, max=1)
-    @Description(shortDefinition="An Order that lead to the creation of this appointment", formalDefinition="An Order that lead to the creation of this appointment." )
-    protected Reference order;
-
-    /**
-     * The actual object that is the target of the reference (An Order that lead to the creation of this appointment.)
-     */
-    protected Order orderTarget;
-
-    /**
      * List of participants involved in the appointment.
      */
-    @Child(name ="participant", type={}, order=11, min=1, max=Child.MAX_UNLIMITED)
+    @Child(name = "participant", type = {}, order=11, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="List of participants involved in the appointment", formalDefinition="List of participants involved in the appointment." )
     protected List<AppointmentParticipantComponent> participant;
 
-    private static final long serialVersionUID = -1809603254L;
+    private static final long serialVersionUID = -1403944125L;
 
+  /*
+   * Constructor
+   */
     public Appointment() {
       super();
     }
 
-    public Appointment(Enumeration<Appointmentstatus> status, InstantType start, InstantType end) {
+  /*
+   * Constructor
+   */
+    public Appointment(Enumeration<AppointmentStatus> status) {
       super();
       this.status = status;
-      this.start = start;
-      this.end = end;
     }
 
     /**
@@ -778,12 +798,12 @@ public class Appointment extends DomainResource {
     /**
      * @return {@link #status} (The overall status of the Appointment. Each of the participants has their own participation status which indicates their involvement in the process, however this status indicates the shared status.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<Appointmentstatus> getStatusElement() { 
+    public Enumeration<AppointmentStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Appointment.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<Appointmentstatus>(new AppointmentstatusEnumFactory()); // bb
+          this.status = new Enumeration<AppointmentStatus>(new AppointmentStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -798,7 +818,7 @@ public class Appointment extends DomainResource {
     /**
      * @param value {@link #status} (The overall status of the Appointment. Each of the participants has their own participation status which indicates their involvement in the process, however this status indicates the shared status.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Appointment setStatusElement(Enumeration<Appointmentstatus> value) { 
+    public Appointment setStatusElement(Enumeration<AppointmentStatus> value) { 
       this.status = value;
       return this;
     }
@@ -806,16 +826,16 @@ public class Appointment extends DomainResource {
     /**
      * @return The overall status of the Appointment. Each of the participants has their own participation status which indicates their involvement in the process, however this status indicates the shared status.
      */
-    public Appointmentstatus getStatus() { 
+    public AppointmentStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value The overall status of the Appointment. Each of the participants has their own participation status which indicates their involvement in the process, however this status indicates the shared status.
      */
-    public Appointment setStatus(Appointmentstatus value) { 
+    public Appointment setStatus(AppointmentStatus value) { 
         if (this.status == null)
-          this.status = new Enumeration<Appointmentstatus>(new AppointmentstatusEnumFactory());
+          this.status = new Enumeration<AppointmentStatus>(new AppointmentStatusEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -1001,9 +1021,13 @@ public class Appointment extends DomainResource {
      * @param value Date/Time that the appointment is to take place.
      */
     public Appointment setStart(Date value) { 
+      if (value == null)
+        this.start = null;
+      else {
         if (this.start == null)
           this.start = new InstantType();
         this.start.setValue(value);
+      }
       return this;
     }
 
@@ -1046,9 +1070,58 @@ public class Appointment extends DomainResource {
      * @param value Date/Time that the appointment is to conclude.
      */
     public Appointment setEnd(Date value) { 
+      if (value == null)
+        this.end = null;
+      else {
         if (this.end == null)
           this.end = new InstantType();
         this.end.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #minutesDuration} (Number of minutes that the appointment is to take. This can be less than the duration between the start and end times (where actual time of appointment is only an estimate or is a planned appointment request).). This is the underlying object with id, value and extensions. The accessor "getMinutesDuration" gives direct access to the value
+     */
+    public PositiveIntType getMinutesDurationElement() { 
+      if (this.minutesDuration == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Appointment.minutesDuration");
+        else if (Configuration.doAutoCreate())
+          this.minutesDuration = new PositiveIntType(); // bb
+      return this.minutesDuration;
+    }
+
+    public boolean hasMinutesDurationElement() { 
+      return this.minutesDuration != null && !this.minutesDuration.isEmpty();
+    }
+
+    public boolean hasMinutesDuration() { 
+      return this.minutesDuration != null && !this.minutesDuration.isEmpty();
+    }
+
+    /**
+     * @param value {@link #minutesDuration} (Number of minutes that the appointment is to take. This can be less than the duration between the start and end times (where actual time of appointment is only an estimate or is a planned appointment request).). This is the underlying object with id, value and extensions. The accessor "getMinutesDuration" gives direct access to the value
+     */
+    public Appointment setMinutesDurationElement(PositiveIntType value) { 
+      this.minutesDuration = value;
+      return this;
+    }
+
+    /**
+     * @return Number of minutes that the appointment is to take. This can be less than the duration between the start and end times (where actual time of appointment is only an estimate or is a planned appointment request).
+     */
+    public int getMinutesDuration() { 
+      return this.minutesDuration == null || this.minutesDuration.isEmpty() ? 0 : this.minutesDuration.getValue();
+    }
+
+    /**
+     * @param value Number of minutes that the appointment is to take. This can be less than the duration between the start and end times (where actual time of appointment is only an estimate or is a planned appointment request).
+     */
+    public Appointment setMinutesDuration(int value) { 
+        if (this.minutesDuration == null)
+          this.minutesDuration = new PositiveIntType();
+        this.minutesDuration.setValue(value);
       return this;
     }
 
@@ -1163,50 +1236,6 @@ public class Appointment extends DomainResource {
     }
 
     /**
-     * @return {@link #order} (An Order that lead to the creation of this appointment.)
-     */
-    public Reference getOrder() { 
-      if (this.order == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Appointment.order");
-        else if (Configuration.doAutoCreate())
-          this.order = new Reference(); // cc
-      return this.order;
-    }
-
-    public boolean hasOrder() { 
-      return this.order != null && !this.order.isEmpty();
-    }
-
-    /**
-     * @param value {@link #order} (An Order that lead to the creation of this appointment.)
-     */
-    public Appointment setOrder(Reference value) { 
-      this.order = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #order} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (An Order that lead to the creation of this appointment.)
-     */
-    public Order getOrderTarget() { 
-      if (this.orderTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Appointment.order");
-        else if (Configuration.doAutoCreate())
-          this.orderTarget = new Order(); // aa
-      return this.orderTarget;
-    }
-
-    /**
-     * @param value {@link #order} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (An Order that lead to the creation of this appointment.)
-     */
-    public Appointment setOrderTarget(Order value) { 
-      this.orderTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #participant} (List of participants involved in the appointment.)
      */
     public List<AppointmentParticipantComponent> getParticipant() { 
@@ -1256,9 +1285,9 @@ public class Appointment extends DomainResource {
         childrenList.add(new Property("description", "string", "The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.", 0, java.lang.Integer.MAX_VALUE, description));
         childrenList.add(new Property("start", "instant", "Date/Time that the appointment is to take place.", 0, java.lang.Integer.MAX_VALUE, start));
         childrenList.add(new Property("end", "instant", "Date/Time that the appointment is to conclude.", 0, java.lang.Integer.MAX_VALUE, end));
+        childrenList.add(new Property("minutesDuration", "positiveInt", "Number of minutes that the appointment is to take. This can be less than the duration between the start and end times (where actual time of appointment is only an estimate or is a planned appointment request).", 0, java.lang.Integer.MAX_VALUE, minutesDuration));
         childrenList.add(new Property("slot", "Reference(Slot)", "The slot that this appointment is filling. If provided then the schedule will not be provided as slots are not recursive, and the start/end values MUST be the same as from the slot.", 0, java.lang.Integer.MAX_VALUE, slot));
         childrenList.add(new Property("comment", "string", "Additional comments about the appointment.", 0, java.lang.Integer.MAX_VALUE, comment));
-        childrenList.add(new Property("order", "Reference(Order)", "An Order that lead to the creation of this appointment.", 0, java.lang.Integer.MAX_VALUE, order));
         childrenList.add(new Property("participant", "", "List of participants involved in the appointment.", 0, java.lang.Integer.MAX_VALUE, participant));
       }
 
@@ -1277,13 +1306,13 @@ public class Appointment extends DomainResource {
         dst.description = description == null ? null : description.copy();
         dst.start = start == null ? null : start.copy();
         dst.end = end == null ? null : end.copy();
+        dst.minutesDuration = minutesDuration == null ? null : minutesDuration.copy();
         if (slot != null) {
           dst.slot = new ArrayList<Reference>();
           for (Reference i : slot)
             dst.slot.add(i.copy());
         };
         dst.comment = comment == null ? null : comment.copy();
-        dst.order = order == null ? null : order.copy();
         if (participant != null) {
           dst.participant = new ArrayList<AppointmentParticipantComponent>();
           for (AppointmentParticipantComponent i : participant)
@@ -1305,8 +1334,8 @@ public class Appointment extends DomainResource {
         Appointment o = (Appointment) other;
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(type, o.type, true)
            && compareDeep(reason, o.reason, true) && compareDeep(priority, o.priority, true) && compareDeep(description, o.description, true)
-           && compareDeep(start, o.start, true) && compareDeep(end, o.end, true) && compareDeep(slot, o.slot, true)
-           && compareDeep(comment, o.comment, true) && compareDeep(order, o.order, true) && compareDeep(participant, o.participant, true)
+           && compareDeep(start, o.start, true) && compareDeep(end, o.end, true) && compareDeep(minutesDuration, o.minutesDuration, true)
+           && compareDeep(slot, o.slot, true) && compareDeep(comment, o.comment, true) && compareDeep(participant, o.participant, true)
           ;
       }
 
@@ -1318,16 +1347,17 @@ public class Appointment extends DomainResource {
           return false;
         Appointment o = (Appointment) other;
         return compareValues(status, o.status, true) && compareValues(priority, o.priority, true) && compareValues(description, o.description, true)
-           && compareValues(start, o.start, true) && compareValues(end, o.end, true) && compareValues(comment, o.comment, true)
-          ;
+           && compareValues(start, o.start, true) && compareValues(end, o.end, true) && compareValues(minutesDuration, o.minutesDuration, true)
+           && compareValues(comment, o.comment, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && (identifier == null || identifier.isEmpty()) && (status == null || status.isEmpty())
            && (type == null || type.isEmpty()) && (reason == null || reason.isEmpty()) && (priority == null || priority.isEmpty())
            && (description == null || description.isEmpty()) && (start == null || start.isEmpty()) && (end == null || end.isEmpty())
-           && (slot == null || slot.isEmpty()) && (comment == null || comment.isEmpty()) && (order == null || order.isEmpty())
-           && (participant == null || participant.isEmpty());
+           && (minutesDuration == null || minutesDuration.isEmpty()) && (slot == null || slot.isEmpty())
+           && (comment == null || comment.isEmpty()) && (participant == null || participant.isEmpty())
+          ;
       }
 
   @Override
@@ -1335,8 +1365,6 @@ public class Appointment extends DomainResource {
     return ResourceType.Appointment;
    }
 
-  @SearchParamDefinition(name="partstatus", path="Appointment.participant.status", description="The Participation status of the subject, or other participant on the appointment. Can be used to locate participants that have not responded to meeting requests.", type="token" )
-  public static final String SP_PARTSTATUS = "partstatus";
   @SearchParamDefinition(name="patient", path="Appointment.participant.actor", description="One of the individuals of the appointment is this patient", type="reference" )
   public static final String SP_PATIENT = "patient";
   @SearchParamDefinition(name="practitioner", path="Appointment.participant.actor", description="One of the individuals of the appointment is this practitioner", type="reference" )
@@ -1345,10 +1373,14 @@ public class Appointment extends DomainResource {
   public static final String SP_LOCATION = "location";
   @SearchParamDefinition(name="status", path="Appointment.status", description="The overall status of the appointment", type="token" )
   public static final String SP_STATUS = "status";
+  @SearchParamDefinition(name="part-status", path="Appointment.participant.status", description="The Participation status of the subject, or other participant on the appointment. Can be used to locate participants that have not responded to meeting requests.", type="token" )
+  public static final String SP_PARTSTATUS = "part-status";
   @SearchParamDefinition(name="actor", path="Appointment.participant.actor", description="Any one of the individuals participating in the appointment", type="reference" )
   public static final String SP_ACTOR = "actor";
   @SearchParamDefinition(name="date", path="Appointment.start", description="Appointment date/time.", type="date" )
   public static final String SP_DATE = "date";
+  @SearchParamDefinition(name="identifier", path="Appointment.identifier", description="An Identifier of the Appointment", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
 
 }
 

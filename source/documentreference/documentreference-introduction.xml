@@ -1,6 +1,7 @@
 <div xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml ../../schema/fhir-xhtml.xsd" xmlns="http://www.w3.org/1999/xhtml">
 
 <div>
+<a name="scope"> </a>
 <h2>Scope and Usage</h2>
 <p> 
 A document reference resource is used to describe a document that is made available to a healthcare system. 
@@ -9,7 +10,7 @@ author etc), can be displayed to the user, and has defined update management. Th
 used with any document format that has a recognized mime type, and that conforms to this definition.
 </p>
 <p>
-Typically, Document Reference Resources are used in document indexing systems, such as IHE XDS (see the <a href="xds.html">XDS specific profile</a>),
+Typically, Document Reference Resources are used in document indexing systems, such as <a href="http://wiki.ihe.net/index.php?title=Cross-Enterprise_Document_Sharing">IHE XDS</a> (see the <a href="xds.html">XDS specific profile</a>),
 and are used to refer to:
 </p>
 <ul>
@@ -21,6 +22,7 @@ and are used to refer to:
 </div>
 
 <div>
+<a name="bnr"> </a>
 <h2>Boundaries and Relationships</h2>
 <p>
 FHIR defines both a <a href="documents.html">document format</a> and this document reference. FHIR documents are for documents 
@@ -34,6 +36,18 @@ stored on some other server system. The document reference is also able to addre
 by a service call such as an XDS.b RetrieveDocumentSet, or a DICOM exchange, or a v2 message query, though 
 the way each of these service calls works must be specified in some external standard or other documentation.
 </p>
+<p>
+A <code>DocumentReference</code> describes some other document. This means that there are two sets of 
+provenance information relevant here: the provenance of the document, and the provenance of the document
+reference. Sometimes, the provenance information is closely related, as when the document producer also 
+produces the DocumentReference, but in other workflows, the document reference is generated later by
+other actors. In the <code>DocumentReference</code> resource, the <a href="resource.html#Meta">meta</a>
+content refers to the provenance of the reference itself, while the content described below concerns
+the document it references. Like all resources, there is overlap between the information in the 
+resource directly, and in the general <a href="provenance.html">Provenance</a> resource. This is 
+discussed as <a href="provenance.html#overlap">part of the description of the Provenance resource</a>.
+</p>
+
 </div>
 
 </div>

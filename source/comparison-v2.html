@@ -15,6 +15,7 @@
 [%cmpheader v2%]
 
 <h2>HL7 Version 2</h2>
+<table class="cols"><tr><td id="wg"><a _target="blank" href="[%wg fhir%]">[%wgt fhir%]</a> Work Group</td><td id="fmm"><a href="resource.html#maturity">Maturity Level</a>: N/A</td><td id="ballot"><a href="help.html#status">Ballot Status</a>: <a href="history.html#pubs">DSTU 2</a></td></tr></table>
 <a name="V2"> </a>
 <p>
 HL7 version 2 (V2) was HL7's first information exchange standard and is one of its most 
@@ -56,9 +57,9 @@ The V2 approach to granularity emphasizes re-use of "patterns" of information.  
 route information are not useful on their own, but they are useful in many circumstances.  Due to the 
 3-level nesting limit, separate segments are also required for data structures that would otherwise nest 
 too deeply.  FHIR takes a different approach to reusability, focusing on objects that can be maintained 
-independently.  The <a href="medicationprescription.html">MedicationPrescription</a> resource encompasses 
+independently.  The <a href="medicationorder.html">MedicationOrder</a> resource encompasses 
 all of the aspects of the above segments, with the exception of some of the workflow aspects of ORC which 
-is handled by the <a href="order.html">Order</a> resource.  The <a href="medicationprescription.html">MedicationPrescription</a> 
+is handled by the <a href="order.html">Order</a> resource.  The <a href="medicationorder.html">MedicationOrder</a> 
 resource is itself complex, having nested structures for dosage instructions, dispensing instructions, etc. 
 that are not simple data types.
 </p>
@@ -166,7 +167,7 @@ information needed/available.  This creates two challenges:
 multiple resource instances - often 10s or even 100s of resource instances.  To maintain consistency 
 with the V2 messaging paradigm, all resource data will typically be sent over the wire as part of the 
 FHIR message rather than being sent by reference as would be typical in a RESTful implementation.  
-However, FHIR provides two different ways of communicating the resources as part of the message <a href="extras.html#bundle">bundle</a>: 
+However, FHIR provides two different ways of communicating the resources as part of the message <a href="compartments.html#bundle">bundle</a>: 
 they can either be sent as "fully identified" resources (direct entries in the bundle with their 
 own identity, and able to be the subject of independent transactions), or they can be sent as <a href="references.html#contained">contained</a> 
 resources, meaning they are only identified relative to another resources and cannot be retrieved or 

@@ -1,5 +1,6 @@
 <div xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml ../../schema/fhir-xhtml.xsd" xmlns="http://www.w3.org/1999/xhtml">
 
+<a name="why"> </a>
 <h2>Why not custom resources?</h2>
 <p>
 Technically, nothing prevents implementers from going off and defining their own resources containing
@@ -43,10 +44,11 @@ handling custom resource requirements in a safe manner may be explored.  Ideas a
 strategies for managing this issue are welcome.
 </p>
 
+<a name="docs"> </a>
 <h2>Documents and narrative-only resources</h2>
 <p>
 Documents are constructed of sections, where a key part of each section is the narrative.  The narratives
-are stitched together to form the overall text of the document.  Many documentsections will correspond neatly to
+are stitched together to form the overall text of the document.  Many document sections will correspond neatly to
 resources that are already defined - <a href="list.html">List</a>, <a href="diagnosticreport.html">DiagnosticReport</a>,
 <a href="familymemberhistory.html">FamilyMemberHistory</a>, etc.  However, oddly enough, alignment with FHIR resources isn't
 always top of mind when clinicians and others design documents and some sections won't neatly align with the
@@ -62,6 +64,7 @@ fully encode pieces of the free-form narrative found in the Basic resource.  If 
 for the meaning of the content, extensions can also be used.
 </p>
 
+<a name="bp"> </a>
 <h2>Best practices for using 'Basic'</h2>
 <p>
 There are several good practices to follow when making use of the Basic resource:
@@ -79,7 +82,7 @@ There are several good practices to follow when making use of the Basic resource
   specification can be addressed</li>
   
   <li>If it is necessary to make use of the Basic resource, try to use one of the HL7-defined codes for
-  resource type or submit your requirement for a new type for inclusion in the HL7 vocabulary, as this will
+  resource type or submit your requirement for a new type for inclusion in the HL7 vocabulary (using the <a target="_blank" href="http://gforge.hl7.org/gf/project/fhir/tracker/?action=TrackerItemAdd&amp;tracker_id=677">Propose a change</a> link), as this will
   increase the likelihood of interoperability.  Alternate code systems are conformant, but are less likely to
   be recognized or re-used across the healthcare implementation space.</li>
   
@@ -91,6 +94,7 @@ There are several good practices to follow when making use of the Basic resource
   Profile can also be used to define additional search criteria appropriate for the resource.</li>
 </ol>
 
+<a name="ref"> </a>
 <h2>Referencing Basic resources</h2>
 <p>
 None of the standard resources will have direct references to Basic, aside from those that allow linking to

@@ -13,14 +13,15 @@
 <div class="col-9">
 <%dtheader mappings%>
 <h2>Data Type Mappings</h2>
+<table class="cols"><tr><td id="wg"><a _target="blank" href="[%wg fhir%]">[%wgt fhir%]</a> Work Group</td><td id="fmm"><a href="resource.html#maturity">Maturity Level</a>: N/A</td><td id="ballot"><a href="help.html#status">Ballot Status</a>: <a href="history.html#pubs">DSTU 2</a></td></tr></table>
 
 <p>This page provides mappings for the data types. There are mappings to HL7 v2, v3, and (where appropriate) vCard.</p>
 
 <p><b>Table of Contents</b></p>
 <table class="grid">
  <tr>
-  <td><b>Primitive Types</b><br/>[%diagram datatypes/allprimitivetypes.diagram%]</td>
-  <td><b>Complex Types</b><br/>[%diagram datatypes/alltypes.diagram%]</td>
+  <td><b>Primitive Types</b><br/>[%diagram datatypes/allprimitivetypes.diagram 1%]</td>
+  <td><b>Complex Types</b><br/>[%diagram datatypes/alltypes.diagram 2%]</td>
  </tr>
 </table>
 
@@ -90,6 +91,8 @@ See also <a href="datatypes.html#CodeableConcept">Base Definition</a>, <a href="
 
 <a name="Quantity"> </a>
 <a name="quantity"> </a>
+<a name="SimpleQuantity"> </a>
+<a name="simplequantity"> </a>
 <a name="age"> </a>
 <a name="distance"> </a>
 <a name="duration"> </a>
@@ -168,18 +171,6 @@ See also <a href="datatypes.html#Address">Base Definition</a>, <a href="datatype
 
 <%dtmappings Address%>
 
-<div class="mapping">
-<p><b><a href="http://tools.ietf.org/html/rfc6350">vCard</a> Mappings</b></p>
-<ul>
- <li>Address.text = vCard "ADDRESS" "LABEL" parameter</li>
- <li>Address.use = vCard "TYPE" parameter</li>
- <li>Address.line = vCard "street" list component</li>
- <li>Address.city = vCard "locality" list component</li>
- <li>Address.state = vCard "region" list component</li>
- <li>Address.zip = vCard "code" list component</li>
- <li>Address.country = vCard "country" list component</li>
-</ul>
-</div>
 
 <a name="ContactPoint"> </a>
 <a name="contactpoint"> </a>
@@ -200,13 +191,23 @@ See also <a href="datatypes.html#Timing">Base Definition</a>, <a href="datatypes
 <%dtmappings Timing%>
 
 <a name="Signature"> </a>
-<a name="timing"> </a>
+<a name="signature"> </a>
 <h3 style="margin-bottom: 1px">Signature</h3>
 <p style="background-color: gainsboro; padding: 4px; margin-top: 0px">
 See also <a href="datatypes.html#Signature">Base Definition</a>, <a href="datatypes-examples.html#Signature">Examples</a> and <a href="datatypes-definitions.html#Signature">Detailed Descriptions</a>.
 </p>
 
 <%dtmappings Signature%>
+
+<a name="Annotation"> </a>
+<a name="annotation"> </a>
+<h3 style="margin-bottom: 1px">Annotation</h3>
+<p style="background-color: gainsboro; padding: 4px; margin-top: 0px">
+See also <a href="datatypes.html#Annotation">Base Definition</a>, <a href="datatypes-examples.html#Annotation">Examples</a> and <a href="datatypes-definitions.html#Annotation">Detailed Descriptions</a>.
+</p>
+
+<%dtmappings Annotation%>
+
 
 </div>
 

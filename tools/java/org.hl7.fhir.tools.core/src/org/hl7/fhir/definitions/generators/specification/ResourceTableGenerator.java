@@ -12,14 +12,15 @@ public class ResourceTableGenerator extends TableGenerator {
     super(dest, page, pageName == null ? null : pageName.toLowerCase(), inlineGraphics);
   }
 
-  public XhtmlNode generate(ElementDefn e) throws Exception {
+  public XhtmlNode generate(ElementDefn e, String prefix) throws Exception {
     HeirarchicalTableGenerator gen = new HeirarchicalTableGenerator(dest, inlineGraphics);
-    TableModel model = gen.initNormalTable();
+    RenderMode mode = e.typeCode().equals("Logical") ? RenderMode.LOGICAL : RenderMode.RESOURCE;
+    TableModel model = gen.initNormalTable(prefix, mode == RenderMode.LOGICAL);
 
     
-    model.getRows().add(genElement(e, gen, true, e.getName(), false));
+    model.getRows().add(genElement(e, gen, true, e.getName(), false, prefix, mode));
     
-    return gen.generate(model);
+    return gen.generate(model, prefix);
   }
 
  

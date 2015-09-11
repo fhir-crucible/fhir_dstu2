@@ -29,7 +29,6 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 public class Invariant {
 
-  private String name;
   private String context;
   private String english;
   private String ocl;
@@ -37,6 +36,8 @@ public class Invariant {
   private String id;
   private String fixedName; // when the invariant is only one one of a set of choices
   private String severity;
+  private String turtle;
+  private String requirements;
   
   public String getId()
   {
@@ -48,12 +49,13 @@ public class Invariant {
 	  this.id = id;
   }
   
-  public String getName() {
-    return name;
+
+  public String getRequirements() {
+    return requirements;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setRequirements(String requirements) {
+    this.requirements = requirements;
   }
 
   public String getContext() {
@@ -102,6 +104,14 @@ public class Invariant {
 
   public void setSeverity(String value) {
     this.severity = value;    
+  }
+
+  public String getTurtle() {
+    return turtle;
+  }
+
+  public void setTurtle(String turtle) {
+    this.turtle = turtle;
   }
 
   

@@ -49,29 +49,35 @@ public class SchemaGenerator {
   private String genDate;
   private String version;
 
-  public void generate(Definitions definitions, IniFile ini, String tmpResDir, String xsdDir, String dstDir, String srcDir, String version, String genDate) throws Exception {
+  public void generate(Definitions definitions, IniFile ini, String tmpResDir, String xsdDir, String dstDir, String srcDir, String version, String genDate, boolean forCodeGeneration) throws Exception {
 	  this.genDate = genDate;
 	  this.version = version;
 
-	  File dir = new CSFile(xsdDir);
-	  for (File f : dir.listFiles()) {
-		  if (!f.isDirectory())
-			  f.delete();
+	  if (!forCodeGeneration) {
+	    File dir = new CSFile(xsdDir);
+	    File[] list = dir.listFiles();
+	    if (list != null) {
+	      for (File f : list) {
+	        if (!f.isDirectory())
+	          f.delete();
+	      }
+	    }
 	  }
 
-	  XSDBaseGenerator xsdb = new XSDBaseGenerator(new OutputStreamWriter(new FileOutputStream(new CSFile(xsdDir+"fhir-base.xsd")), "UTF-8"));
+	  XSDBaseGenerator xsdb = new XSDBaseGenerator(new OutputStreamWriter(new FileOutputStream(new CSFile(xsdDir+"fhir-base.xsd")), "UTF-8"), forCodeGeneration);
 	  xsdb.setDefinitions(definitions);
 	  xsdb.generate(version, genDate, true);
 	  xsdb.getWriter().close();
 
     List<String> names = new ArrayList<String>();
     names.addAll(definitions.getResources().keySet());
+    names.add("Parameters");
     Collections.sort(names);
     for (String name : names) {
-      ResourceDefn root = definitions.getResources().get(name);
-		  XSDGenerator sgen = new XSDGenerator(new OutputStreamWriter(new FileOutputStream(new CSFile(xsdDir+root.getName().toLowerCase()+".xsd"))), definitions);
+      ResourceDefn root = definitions.getResourceByName(name);
+		  XSDGenerator sgen = new XSDGenerator(new OutputStreamWriter(new FileOutputStream(new CSFile(xsdDir+root.getName().toLowerCase()+".xsd")), "UTF-8"), definitions, forCodeGeneration);
 		  sgen.setDataTypes(definitions.getKnownTypes());
-		  sgen.generate(root.getRoot(), definitions.getBindings(), version, genDate, true);
+		  sgen.generate(root.getRoot(), version, genDate, true);
 		  sgen.getWriter().close();
 	  }
 
@@ -87,10 +93,10 @@ public class SchemaGenerator {
 	      + "xmlns:xml=\"http://www.w3.org/XML/1998/namespace\" targetNamespace=\"http://hl7.org/fhir\" elementFormDefault=\"qualified\" version=\""+version+"\">\r\n");
 	  single.write("  <!-- Note: When using this schema with some tools, it may also be necessary to declare xmlns:xml=\"http://www.w3.org/XML/1998/namespace\", however this causes performance issues with other tools and thus is not in the base schemas. -->\r\n");
 
-    xsdb = new XSDBaseGenerator(single);
+    xsdb = new XSDBaseGenerator(single, forCodeGeneration);
     xsdb.setDefinitions(definitions);
     xsdb.generate(version, genDate, false);
-
+ 
 //    single.write("  <xs:simpleType name=\"ResourceNamesPlusBinary\">\r\n");
 //    single.write("    <xs:union memberTypes=\"ResourceType\">\r\n");
 //    single.write("      <xs:simpleType>\r\n");
@@ -111,10 +117,10 @@ public class SchemaGenerator {
 //    single.write("  <xs:element name=\"Binary\" type=\"Binary\"/>\r\n");
 //  
     for (String name : names) {
-      ResourceDefn root = definitions.getResources().get(name);
-      XSDGenerator sgen = new XSDGenerator(single, definitions);
+      ResourceDefn root = definitions.getResourceByName(name);
+      XSDGenerator sgen = new XSDGenerator(single, definitions, forCodeGeneration);
       sgen.setDataTypes(definitions.getKnownTypes());
-      sgen.generate(root.getRoot(), definitions.getBindings(), version, genDate, false);
+      sgen.generate(root.getRoot(), version, genDate, false);
     }
 
     single.write("</xs:schema>\r\n");
@@ -125,13 +131,17 @@ public class SchemaGenerator {
 		  xsd = processSchemaIncludes(definitions, n, xsd, false);
 		  TextFile.stringToFile(xsd, xsdDir + n);
 	  }
-    produceCombinedSchema(definitions, xsdDir, dstDir, srcDir);
 
-	  dir = new CSFile(xsdDir);
-	  for (File f : dir.listFiles()) {
-		  if (!f.isDirectory())
-			  Utilities.copyFile(f, new CSFile(dstDir+f.getName()));
-	  }
+    if (!forCodeGeneration) {
+      produceCombinedSchema(definitions, xsdDir, dstDir, srcDir);
+      
+      File dir = new CSFile(xsdDir);
+      File[] list = dir.listFiles();
+      for (File f : list) {
+        if (!f.isDirectory())
+          Utilities.copyFile(f, new CSFile(dstDir+f.getName()));
+      }
+    }
   }
 
   private void produceCombinedSchema(Definitions definitions, String xsdDir, String dstDir, String srcDir) throws Exception {
@@ -143,6 +153,7 @@ public class SchemaGenerator {
   private String processSchemaIncludes(Definitions definitions, String filename, String src, boolean singleMode) throws Exception {
     List<String> names = new ArrayList<String>();
     names.addAll(definitions.getResources().keySet());
+    names.add("Parameters");
     Collections.sort(names);
     while (src.contains("<!--%") || src.contains("<%"))
     {
@@ -198,13 +209,16 @@ public class SchemaGenerator {
         if (com[1].equals("resource")) {
           values = definitions.getKnownResources().values();          
         } else {
-          values = definitions.getBindingByName(com[1]).getCodes();
+          throw new Error("fix this");
+//          values = definitions.getBindingByName(com[1]).getCodes();
         }
         StringBuilder enums = new StringBuilder();
         for (DefinedCode c : values) {
           enums.append("        <xs:enumeration value=\""+c.getCode()+"\">\r\n");
           enums.append("          <xs:annotation>\r\n");
-          enums.append("            <xs:documentation>"+Utilities.escapeXml(c.getDefinition())+"</xs:documentation>\r\n");
+          enums.append("            <xs:documentation xml:lang=\"en\">"+Utilities.escapeXml(c.getDefinition())+"</xs:documentation>\r\n");
+          for (String l : c.getLangs().keySet())
+            enums.append("            <xs:documentation xml:lang=\""+l+"\">"+Utilities.escapeXml(c.getLangs().get(l))+"</xs:documentation>\r\n");
           enums.append("          </xs:annotation>\r\n");
           enums.append("        </xs:enumeration>\r\n");
         }

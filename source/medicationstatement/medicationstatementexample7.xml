@@ -17,10 +17,10 @@
     <reference value="Patient/example" />
   </informationSource>
   <dateAsserted value="2015-02-22"/>
-  <status value="in-progress" />
-  <wasNotGiven value="false"/>
+  <status value="active" />
+  <wasNotTaken value="false"/>
 <effectiveDateTime value="2015-05-23"></effectiveDateTime>
-  <medication> <!-- Linked to a RESOURCE Medication -->
+  <medicationReference> <!-- Linked to a RESOURCE Medication -->
     <reference value="Medication/MedicationExample12"/>
-  </medication> 
+  </medicationReference> 
 </MedicationStatement>

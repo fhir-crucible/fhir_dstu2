@@ -46,6 +46,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
+import com.github.rjeschke.txtmark.Processor;
+
 public class XhtmlGenerator {
 
 	private static final int LINE_LIMIT = 85;
@@ -77,7 +79,7 @@ public class XhtmlGenerator {
     adorn = true; // till the xml trick is working
     
     FileOutputStream outs = new FileOutputStream(xhtml);
-    OutputStreamWriter out = new OutputStreamWriter(outs);
+    OutputStreamWriter out = new OutputStreamWriter(outs, "UTF-8");
     
     out.write("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\r\n");
     out.write("<head>\r\n");
@@ -136,7 +138,7 @@ public class XhtmlGenerator {
   public void generate(Document doc, OutputStream xhtml, String name, String desc, int level, boolean adorn, String filename) throws Exception {
     adorn = true; // till the xml trick is working
     
-		OutputStreamWriter out = new OutputStreamWriter(xhtml);
+		OutputStreamWriter out = new OutputStreamWriter(xhtml, "UTF-8");
 		
     out.write("<div class=\"example\">\r\n");
     out.write("<p>"+Utilities.escapeXml(desc)+"</p>\r\n"); 
@@ -196,11 +198,25 @@ public class XhtmlGenerator {
   }
 
   private void writeComment(Writer out, Comment node, int level) throws DOMException, IOException {
-    out.write("<span class=\"xmlcomment\">&lt;!-- "+escapeHtml(Utilities.escapeXml(node.getTextContent()), level)+" --&gt;</span>");
+    String cmt = node.getTextContent();
+    if (cmt.contains(":md:"))
+      cmt = processMarkdown(cmt.replace(":md:", ""));
+    else
+      cmt = escapeHtml(cmt, level);
+    out.write("<span class=\"xmlcomment\">&lt;!-- "+cmt+" --&gt;</span>");
   }
 
   private void writeCommentPlain(Writer out, Comment node, int level) throws DOMException, IOException {
-    out.write("<!-- "+Utilities.escapeXml(node.getTextContent())+" -->");
+    String cmt = node.getTextContent();
+    if (cmt.contains(":md:"))
+      cmt = processMarkdown(cmt.replace(":md:", ""));
+    else
+      cmt = Utilities.escapeXml(cmt);
+    out.write("<!-- "+cmt+" -->");
+  }
+
+  private String processMarkdown(String text) {
+    return Processor.process(text);
   }
 
   private void writeText(Writer out, Text node, int level) throws DOMException, IOException {
@@ -212,7 +228,11 @@ public class XhtmlGenerator {
   }
 
   private void writeElement(Writer out, Element node, XhtmlGeneratorAdornerState state, int level) throws Exception {
-    out.write("<span class=\"xmltag\">&lt;"+node.getNodeName()+"</span>");
+    String link = adorner == null ? null : adorner.getLink(this, state, node);
+    if (link != null)
+      out.write("<span class=\"xmltag\">&lt;<a href=\""+link+"\" class=\"xmltag\">"+node.getNodeName()+"</a></span>");
+    else
+      out.write("<span class=\"xmltagred\">&lt;"+node.getNodeName()+"</span>");
     if (node.hasAttributes()) {
       out.write("<span class=\"xmlattr\">");
       XhtmlGeneratorAdornerState newstate = adorner == null ? new XhtmlGeneratorAdornerState("", "") : adorner.getState(this, state, node);
@@ -238,7 +258,10 @@ public class XhtmlGenerator {
 
         out.write(newstate.getSuffix());
       }
-      out.write("<span class=\"xmltag\">&lt;/"+node.getNodeName()+"&gt;</span>");
+      if (link != null)
+        out.write("<span class=\"xmltag\">&lt;/<a href=\""+link+"\" class=\"xmltag\">"+node.getNodeName()+"</a>&gt;</span>");
+      else
+        out.write("<span class=\"xmltag\">&lt;/"+node.getNodeName()+"&gt;</span>");
     }
     else 
       out.write("<span class=\"xmltag\">/&gt;</span>");

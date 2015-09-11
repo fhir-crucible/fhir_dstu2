@@ -12,8 +12,9 @@
         <type><text value="BIG-nummer"/></type>
         <system value="https://www.bigregister.nl/"/>
         <value value="12345678902"/>
-    </identifier> 
-    <name><!--The name of the practitioner-->
+    </identifier>
+	<active value="true"/>
+	<name><!--The name of the practitioner-->
         <use value="official"/>
         <text value="Luigi Maas"/>
         <family value="Maas"/>
@@ -37,7 +38,7 @@
     <gender value="male" /><!--The practitioner's administrative gender-->
     <birthDate value="1960-06-12"/>
 <!--    <photo>    
-        <reference value="Media/@LM-203.bmp"/>
+        <reference value="Media/LM-203.bmp"/>
         <display value="Picture_Luigi_Maas"/>
     </photo>-->
 		<practitionerRole>

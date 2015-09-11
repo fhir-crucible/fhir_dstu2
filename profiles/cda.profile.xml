@@ -5,7 +5,6 @@
     <lastUpdated value="2014-11-05T20:31:00Z"/>
   </meta>
   <type value="document"/>
-  <base value="http://hl7.org/fhir/StructureDefinition"/>
   <entry>
     <resource>
       <Composition>
@@ -51,7 +50,7 @@
         <!-- build tool to fill out narrative -->
         <url value="http://hl7.org/fhir/StructureDefinition/cda-clinicaldocument"/>
         <name value="ClinicalDocument"/>
-        <publisher value="HL7 FHIR Project"/>
+        <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
         <contact>
           <telecom>
             <system value="url"/>
@@ -310,11 +309,10 @@
             </type>
             <isModifier value="false"/>
             <binding>
-              <name value="CompositionAttestationMode"/>
               <strength value="required"/>
               <description value="The way in which a person authenticated a composition"/>
               <valueSetReference>
-                <reference value="http://hl7.org/fhir/vs/composition-attestation-mode"/>
+                <reference value="http://hl7.org/fhir/ValueSet/composition-attestation-mode"/>
               </valueSetReference>
             </binding>
             <mapping>
@@ -451,11 +449,10 @@
             </type>
             <isModifier value="false"/>
             <binding>
-              <name value="DocumentEventType"/>
               <strength value="required"/>
               <description value="This list of codes represents the main clinical acts being documented"/>
               <valueSetReference>
-                <reference value="http://hl7.org/fhir/v3/vs/ActCode"/>
+                <reference value="http://hl7.org/fhir/ValueSet/v3-ActCode"/>
               </valueSetReference>
             </binding>
             <mapping>
@@ -535,7 +532,6 @@
             <max value="*"/>
             <constraint>
               <key value="2"/>
-              <name value="Section Rule"/>
               <severity value="error"/>
               <human value="A section SHALL have content or one or more sections, but not both."/>
               <xpath value="exists(f:content) != exists(f:section)"/>
@@ -606,11 +602,10 @@
             </type>
             <isModifier value="false"/>
             <binding>
-              <name value="CompositionSectionType"/>
               <strength value="required"/>
               <description value="Classification of a composition / document"/>
               <valueSetReference>
-                <reference value="http://hl7.org/fhir/vs/doc-section-codes"/>
+                <reference value="http://hl7.org/fhir/ValueSet/doc-section-codes"/>
               </valueSetReference>
             </binding>
             <mapping>
@@ -707,7 +702,7 @@
         <!-- build tool to fill out narrative -->
         <url value="http://hl7.org/fhir/StructureDefinition/cda-patient-role"/>
         <name value="PatientRole"/>
-        <publisher value="HL7 FHIR Project"/>
+        <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
         <contact>
           <telecom>
             <system value="url"/>
@@ -1139,7 +1134,7 @@
         <!-- build tool to fill out narrative -->
         <url value="http://hl7.org/fhir/StructureDefinition/cda-organization"/>
         <name value="Organization"/>
-        <publisher value="HL7 FHIR Project"/>
+        <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
         <contact>
     <telecom>
           <system value="url"/>
@@ -1210,9 +1205,8 @@
             <min value="0"/>
             <max value="1"/>
             <binding>
-              <name value="OrganizationIndustryClass"/>
               <strength value="extensible"/>
-              <valueSetUri value="http://hl7.org/fhir/v3/vs/OrganizationIndustryClass"/>
+              <valueSetUri value="http://hl7.org/fhir/ValueSet/v3-OrganizationIndustryClass"/>
             </binding>
             <mapping>
               <identity value="cda"/>
@@ -1327,7 +1321,7 @@
         <!-- build tool to fill out narrative -->
         <url value="http://hl7.org/fhir/StructureDefinition/cda-location"/>
         <name value="Location"/>
-        <publisher value="HL7 FHIR Project"/>
+        <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
         <contact>
     <telecom>
           <system value="url"/>
@@ -1435,14 +1429,14 @@
     <resource>
       <!-- CDA inFulFillmentOf -->
       <StructureDefinition xmlns="http://hl7.org/fhir">
-        <id value="cda-inFulFillmentOf"/>
+        <id value="cda-inFulFillmentOfDxOrder"/>
         <meta>
           <lastUpdated value="2014-11-05T20:31:00Z"/>
         </meta>
         <!-- build tool to fill out narrative -->
-        <url value="http://hl7.org/fhir/StructureDefinition/cda-inFulFillmentOf"/>
+        <url value="http://hl7.org/fhir/StructureDefinition/cda-inFulFillmentOfDxOrder"/>
         <name value="inFulFillmentOfDiagnosticOrder"/>
-        <publisher value="HL7 FHIR Project"/>
+        <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
         <contact>
     <telecom>
           <system value="url"/>
@@ -1614,7 +1608,7 @@
       </meta>
       <url value="http://hl7.org/fhir/StructureDefinition/cda-language-preference"/>
       <name value="CDA Language Preference"/>
-      <publisher value="HL7 FHIR Project"/>
+      <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
       <contact>
         <telecom>
           <system value="url"/>
@@ -1664,7 +1658,7 @@
       </meta>
       <url value="http://hl7.org/fhir/StructureDefinition/cda-language-proficiency"/>
       <name value="CDA Language Proficiency"/>
-      <publisher value="HL7 FHIR Project"/>
+      <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
       <contact>
         <telecom>
           <system value="url"/>
@@ -1700,9 +1694,8 @@
             <code value="CodeableConcept"/>
           </type>
           <binding>
-            <name value="LanguageAbiliityProficiency"/>
             <strength value="extensible"/>
-            <valueSetUri value="http://hl7.org/fhir/v3/vs/LanguageAbilityProficiency"/>
+            <valueSetUri value="http://hl7.org/fhir/ValueSet/v3-LanguageAbilityProficiency"/>
           </binding>
         </element>
       </differential>
@@ -1719,7 +1712,7 @@
       </meta>
       <url value="http://hl7.org/fhir/StructureDefinition/cda-language-mode"/>
       <name value="CDA Language Mode"/>
-      <publisher value="HL7 FHIR Project"/>
+      <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
       <contact>
         <telecom>
           <system value="url"/>
@@ -1755,9 +1748,8 @@
             <code value="CodeableConcept"/>
           </type>
           <binding>
-            <name value="LanguageAbiliityMode"/>
             <strength value="extensible"/>
-            <valueSetUri value="http://hl7.org/fhir/v3/vs/LanguageAbilityMode"/>
+            <valueSetUri value="http://hl7.org/fhir/ValueSet/v3-LanguageAbilityMode"/>
           </binding>
         </element>
       </differential>
@@ -1774,7 +1766,7 @@
       </meta>
       <url value="http://hl7.org/fhir/StructureDefinition/cda-guardian-id"/>
       <name value="CDA Guardian Identifier"/>
-      <publisher value="HL7 FHIR Project"/>
+      <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
       <contact>
         <telecom>
           <system value="url"/>
@@ -1824,7 +1816,7 @@
       </meta>
       <url value="http://hl7.org/fhir/StructureDefinition/cda-birthplace"/>
       <name value="CDA Birthplace"/>
-      <publisher value="HL7 FHIR Project"/>
+      <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
       <contact>
         <telecom>
           <system value="url"/>
@@ -1875,7 +1867,7 @@
       </meta>
       <url value="http://hl7.org/fhir/StructureDefinition/cda-org-partof-effectivetime"/>
       <name value="CDA Organization Relationship Effective time"/>
-      <publisher value="HL7 FHIR Project"/>
+      <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
       <contact>
         <telecom>
           <system value="url"/>
@@ -1925,7 +1917,7 @@
       </meta>
       <url value="http://hl7.org/fhir/StructureDefinition/cda-org-partof-statuscode"/>
       <name value="CDA Organization Relationship Status"/>
-      <publisher value="HL7 FHIR Project"/>
+      <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
       <contact>
         <telecom>
           <system value="url"/>
@@ -1961,9 +1953,8 @@
             <code value="CodeableConcept"/>
           </type>
           <binding>
-            <name value="RoleStatus"/>
             <strength value="required"/>
-            <valueSetUri value="http://hl7.org/fhir/v3/vs/RoleStatus"/>
+            <valueSetUri value="http://hl7.org/fhir/ValueSet/v3-RoleStatus"/>
           </binding>
         </element>
       </differential>
@@ -1980,7 +1971,7 @@
       </meta>
       <url value="http://hl7.org/fhir/StructureDefinition/cda-org-partof-code"/>
       <name value="CDA Organization Relationship Type"/>
-      <publisher value="HL7 FHIR Project"/>
+      <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
       <contact>
         <telecom>
           <system value="url"/>
@@ -2016,9 +2007,8 @@
             <code value="CodeableConcept"/>
           </type>
           <binding>
-            <name value="RoleCode"/>
             <strength value="extensible"/>
-            <valueSetUri value="http://hl7.org/fhir/v3/vs/RoleCode"/>
+            <valueSetUri value="http://hl7.org/fhir/ValueSet/v3-RoleCode"/>
           </binding>
         </element>
       </differential>
@@ -2035,7 +2025,7 @@
       </meta>
       <url value="http://hl7.org/fhir/StructureDefinition/cda-whole-organization"/>
       <name value="CDA Organizational Parent"/>
-      <publisher value="HL7 FHIR Project"/>
+      <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
       <contact>
         <telecom>
           <system value="url"/>
@@ -2082,7 +2072,7 @@
       </meta>
       <url value="http://hl7.org/fhir/StructureDefinition/cda-inFulFillmentOf"/>
       <name value="CDA In Fulfillment of"/>
-      <publisher value="HL7 FHIR Project"/>
+      <publisher value="Health Level Seven International (Structured Documents - CDA on FHIR)"/>
       <contact>
     <telecom>
         <system value="url"/>

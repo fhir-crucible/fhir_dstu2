@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -25,7 +26,7 @@ public abstract class ResourceGenerator {
   protected boolean xmlAttributeAsField = true;
   public static Set<String> dataTypes = new HashSet<String>();
   public static Set<String> unhandledDataTypes = new HashSet<String>();
-
+  
   protected static final String REGEX_DATE = "/\\A[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1]))?)?\\Z/";;
   protected static final String REGEX_TIME = "/\\A([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?\\Z/";
   protected static final String REGEX_DATETIME = "/\\A[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?\\Z/";
@@ -210,6 +211,5 @@ public abstract class ResourceGenerator {
     }
     return false;
   }
-
 
 }

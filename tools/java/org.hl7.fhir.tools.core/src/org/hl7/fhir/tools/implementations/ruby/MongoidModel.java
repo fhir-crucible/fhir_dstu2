@@ -49,8 +49,11 @@ import org.hl7.fhir.tools.implementations.GenBlock;
 
 public class MongoidModel extends ResourceGenerator {
  
+  private ValueSetProcessor valueSetProcessor = null;
+  
   public MongoidModel(String name, Definitions definitions, File outputFile) {
     super(name, definitions, outputFile);
+    valueSetProcessor = new ValueSetProcessor(definitions);
   }
 
   @Override
@@ -164,6 +167,8 @@ public class MongoidModel extends ResourceGenerator {
   private void generateValidCodes(GenBlock block, ElementDefn elementDefinition ) {
     
     Map<String,List<String>> validCodes = new HashMap<String,List<String>>();
+    Map<String,String> specialCodes = new HashMap<String,String>();
+    
     for (ElementDefn nestedElement : elementDefinition.getElements()) {
       TypeRef typeRef = null;
       if(nestedElement.getTypes()!=null && nestedElement.getTypes().size() > 0) {
@@ -171,17 +176,28 @@ public class MongoidModel extends ResourceGenerator {
       }
       String typeName = generateTypeName(nestedElement, typeRef);
       if(nestedElement.hasBinding() && nestedElement.getBinding().getName() != null) {
-        if(nestedElement.getBinding().getAllCodes()!=null && nestedElement.getBinding().getAllCodes().size() > 0) {          
+        List<DefinedCode> definedCodes = valueSetProcessor.getAllCodes(nestedElement.getBinding().getValueSet());
+        if(definedCodes!=null && definedCodes.size() > 0) {          
           List<String> codes = new ArrayList<String>();
-          for(DefinedCode code : nestedElement.getBinding().getAllCodes())
+          for(DefinedCode code : definedCodes)
           {
             codes.add( code.getCode() );
           }
           validCodes.put(typeName, codes);
+        } else if(typeRef.getName().equals("code")) {
+          specialCodes.put(typeName, nestedElement.getBinding().getName());         
+          String path = "\t" + this.name;
+          if(!elementDefinition.getName().equals(this.name)) {
+            path += "." + elementDefinition.getName();
+          }
+          RubyGenerator.messages.add(path + "." + typeName + " -- " + typeRef.getName() + " -- " + nestedElement.getBinding().getName());
         }
       }
     }
     
+    RubyGenerator.undefinedValueSets.addAll(valueSetProcessor.undefinedValueSets);
+    RubyGenerator.emptyValueSets.addAll(valueSetProcessor.emptyValueSets);
+
     if(!validCodes.isEmpty()) {
       block.ln();
       block.ln("VALID_CODES = {");
@@ -209,6 +225,26 @@ public class MongoidModel extends ResourceGenerator {
       block.ln("}");
       block.ln();      
     }    
+    
+    if(!specialCodes.isEmpty()) {
+      block.ln("SPECIAL_CODES = {");
+      block.bs();
+      StringBuffer sb = new StringBuffer();
+      Iterator<String> keys = specialCodes.keySet().iterator();
+      while( keys.hasNext() ) {
+        String key = keys.next();
+        String value = specialCodes.get(key);
+        sb.setLength(0);
+        sb.append(key).append(": \'").append(value).append("\'");
+        if(keys.hasNext()) {
+          sb.append(",");
+        }
+        block.ln( sb.toString() );          
+      }
+      block.es();
+      block.ln("}");
+      block.ln();      
+    } 
   }
   
   private void generateMultipleTypes(GenBlock block, ElementDefn elementDefinition ) {
@@ -339,19 +375,20 @@ public class MongoidModel extends ResourceGenerator {
       break;
     case CODE:
       block.ln(getValueFieldLine(typeName, "String", multipleCardinality));
-      if(elementDefinition.hasBinding() && elementDefinition.getBinding().getName()!=null) {
-        BindingSpecification binding = this.definitions.getCommonBindings().get(elementDefinition.getBinding().getName());
-        if(binding!=null && binding.getAllCodes()!=null && (binding.getAllCodes().size() > 0) ) {
-          sb = new StringBuilder();
-          sb.append("validates :").append(typeName).append(", :inclusion => { in: VALID_CODES[:");
-          sb.append(typeName).append("]");
-          if(requiredField) {
-            sb.append(" }");
-          } else {
-            sb.append(", :allow_nil => true }");
-          }
-          block.ln(sb.toString());
+      if( (elementDefinition.hasBinding()) && 
+          (elementDefinition.getBinding().getName()!=null) &&  
+          (valueSetProcessor.getAllCodes(elementDefinition.getBinding().getValueSet()).size() > 0) )
+      {
+            
+        sb = new StringBuilder();
+        sb.append("validates :").append(typeName).append(", :inclusion => { in: VALID_CODES[:");
+        sb.append(typeName).append("]");
+        if(requiredField) {
+          sb.append(" }");
+        } else {
+          sb.append(", :allow_nil => true }");
         }
+        block.ln(sb.toString());
       }      
       break;      
     case STRING:

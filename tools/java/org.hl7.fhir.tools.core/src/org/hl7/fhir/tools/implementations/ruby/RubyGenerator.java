@@ -35,15 +35,19 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.definitions.model.Definitions;
 import org.hl7.fhir.definitions.model.ResourceDefn;
 import org.hl7.fhir.definitions.model.TypeDefn;
+import org.hl7.fhir.instance.model.ValueSet;
 import org.hl7.fhir.instance.validation.ValidationMessage;
 import org.hl7.fhir.tools.implementations.BaseGenerator;
 import org.hl7.fhir.tools.publisher.FolderManager;
@@ -57,7 +61,11 @@ import org.stringtemplate.v4.ST;
 public class RubyGenerator extends BaseGenerator implements PlatformGenerator {
   
   public static char SEPARATOR = File.separatorChar;
-
+  
+  protected static List<String> messages = new ArrayList<String>();
+  protected static Set<String> undefinedValueSets = new HashSet<String>();
+  protected static Set<String> emptyValueSets = new HashSet<String>();
+  
   @Override
   public String getName() {
     return "ruby";
@@ -85,6 +93,10 @@ public class RubyGenerator extends BaseGenerator implements PlatformGenerator {
 
   @Override
   public void generate(Definitions definitions, String destDir, String implDir, String version, Date genDate, Logger logger, String svnRevision) throws Exception {
+    
+    ValueSetProcessor vsp = new ValueSetProcessor(definitions);
+    ValueSet vs = vsp.findValueSet("http://hl7.org/fhir/v3/ParticipationType");
+    System.out.println(vsp.getAllCodes(vs));
     
     String resourcesDir = Utilities.path(implDir, "resources");
     String resourcesBaseDir = Utilities.path(resourcesDir, "base");
@@ -121,15 +133,6 @@ public class RubyGenerator extends BaseGenerator implements PlatformGenerator {
       generateXMLSerializerTemplate(name, dirs.get("xmlTemplateDir"), definitions);
       generateXMLDeSerializerTemplate(name, dirs.get("deserializerDir"), definitions);
     }
-    
-//    Map<String, ResourceDefn> base = definitions.getBaseResources();
-//    for(String name: base.keySet()){
-//      System.out.println("BASE RESOURCE: " + name);
-//      generateMongoidModel(name, dirs.get("modelDir"), definitions);
-//      generateXMLSerializerTemplate(name, dirs.get("xmlTemplateDir"), definitions);
-//      generateXMLDeSerializerTemplate(name, dirs.get("deserializerDir"), definitions);
-//    }
-
 
     String genericControllerTemplate = TextFile.fileToString(Utilities.path(resourcesDir, "templates", "generic_controller.rb.st"));
     Map<String, ResourceDefn> namesAndDefinitions = definitions.getResources();
@@ -144,8 +147,22 @@ public class RubyGenerator extends BaseGenerator implements PlatformGenerator {
     zip.addFolder(implDir, "mongoid", false);
     zip.close();  
     
-    System.out.println(ResourceGenerator.dataTypes);
-    System.err.println(ResourceGenerator.unhandledDataTypes);
+    System.out.println("------------ UNABLE TO FIND CODES FOR: -----------");
+    for(String msg: messages) {
+      System.out.println(msg);
+    }
+    System.out.println("--------------------------------------------------");
+    
+    System.out.println("Undefined Value Sets: " + RubyGenerator.undefinedValueSets.size());
+    System.out.println("Undefined Value Sets: " + RubyGenerator.undefinedValueSets);
+    System.out.println("Empty Value Sets:     " + RubyGenerator.emptyValueSets.size());
+    System.out.println("Empty Value Sets:     " + RubyGenerator.emptyValueSets);
+    
+    System.out.println("Processed Data Types: " + ResourceGenerator.dataTypes.size());
+    System.out.println("Processed Data Types: " + ResourceGenerator.dataTypes);
+    ResourceGenerator.unhandledDataTypes.removeAll(ResourceGenerator.dataTypes);
+    System.out.println("Unhandled Data Types: " + ResourceGenerator.unhandledDataTypes.size());
+    System.out.println("Unhandled Data Types: " + ResourceGenerator.unhandledDataTypes);
   }
   
   private void createDirStructrue(Map<String, String> dirs) throws IOException {

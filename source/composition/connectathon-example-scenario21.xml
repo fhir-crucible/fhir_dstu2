@@ -12,6 +12,7 @@
 	<type value="document"/>
 	<!-- The composition -->
 	<entry>
+		<fullUrl value="https://example.com/base/Composition/1046bb61-c258-44e5-96a5-a5bae6b180fe"/>
 		<resource>
 			<Composition xmlns="http://hl7.org/fhir">
 				<id value="1046bb61-c258-44e5-96a5-a5bae6b180fe"/>
@@ -107,6 +108,7 @@
 	</entry>
 	<!-- Chief Complaint  -->
 	<entry>
+		<fullUrl value="https://example.com/base/Condition/nz-sample1"/>
 		<resource>
 			<Condition xmlns="http://hl7.org/fhir">
 				<id value="nz-sample1"/>
@@ -134,6 +136,7 @@
 	</entry>
 	<!-- Assement (The clincial note) -->
 	<entry>
+		<fullUrl value="https://example.com/base/Observation/100"/>
 		<resource>
 			<!-- Sample content only -->
 			<Observation xmlns="http://hl7.org/fhir">
@@ -160,6 +163,7 @@
 	</entry>
 	<!-- Physical exam - the blood pressure -->
 	<entry>
+		<fullUrl value="https://example.com/base/List/pe100"/>
 		<resource>
 			<!-- Sample content only -->
 			<List xmlns="http://hl7.org/fhir">
@@ -190,6 +194,7 @@
 	</entry>
 	<!-- Systolic BP -->
 	<entry>
+		<fullUrl value="https://example.com/base/Observation/syst"/>
 		<resource>
 			<Observation xmlns="http://hl7.org/fhir">
 				<id value="syst"/>
@@ -218,6 +223,7 @@
 	</entry>
 	<!-- Diastolic BP -->
 	<entry>
+		<fullUrl value="https://example.com/base/Observation/dias"/>
 		<resource>
 			<Observation xmlns="http://hl7.org/fhir">
 				<id value="dias"/>
@@ -246,6 +252,7 @@
 	</entry>
 	<!-- Medication List -->
 	<entry>
+		<fullUrl value="https://example.com/base/List/110"/>
 		<resource>
 			<!-- Sample content only -->
 			<List xmlns="http://hl7.org/fhir">
@@ -276,6 +283,7 @@
 	</entry>
 	<!-- First Medication -->
 	<entry>
+		<fullUrl value="https://example.com/base/MedicationOrder/nz-medsample1"/>
 		<resource>
 			<!-- Sample content only -->
 			<MedicationOrder xmlns="http://hl7.org/fhir">
@@ -296,6 +304,7 @@
 	</entry>
 	<!-- Second Medication -->
 	<entry>
+		<fullUrl value="https://example.com/base/MedicationOrder/nz-medsample2"/>
 		<resource>
 			<!-- Sample content only -->
 			<MedicationOrder xmlns="http://hl7.org/fhir">
@@ -316,6 +325,7 @@
 	</entry>
 	<!-- Subject (Patient) -->
 	<entry>
+		<fullUrl value="https://example.com/base/Patient/patsypregnant"/>
 		<resource>
 			<!-- Sample content only -->
 			<Patient xmlns="http://hl7.org/fhir">
@@ -333,6 +343,7 @@
 	</entry>
 	<!-- Author (Practitioner) -->
 	<entry>
+		<fullUrl value="https://example.com/base/Practitioner/drdave"/>
 		<resource>
 			<!-- Sample content only -->
 			<Practitioner xmlns="http://hl7.org/fhir">
